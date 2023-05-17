@@ -360,7 +360,7 @@ CREATE OR ALTER VIEW zool.VW_tbTiposMantenimientos
 AS
 
 SELECT tima_Id, 
-	   tima_Observaciones, 
+	   tima_Descripcion, 
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tima_UserCreacion)) AS usua_UserCreaNombre,
 	   tima_UserCreacion, 

@@ -1,3 +1,4 @@
+--DROP DATABASE db_Lancetilla
 USE master 
 GO
 CREATE DATABASE db_Lancetilla
@@ -356,8 +357,8 @@ tima_UserModificacion	INT,
 tima_FechaModificacion	DATETIME,
 tima_Estado				BIT					DEFAULT 1,
 
-CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
+CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (tima_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (tima_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
 --*********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
