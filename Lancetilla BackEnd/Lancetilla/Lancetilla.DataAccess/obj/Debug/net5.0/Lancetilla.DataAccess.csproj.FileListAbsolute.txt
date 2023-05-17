@@ -1,0 +1,5 @@
+C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.csproj.AssemblyReference.cache
+C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.AssemblyInfoInputs.cache
+C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.AssemblyInfo.cs
+C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.csproj.CoreCompileInputs.cache

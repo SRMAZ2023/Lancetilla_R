@@ -1,0 +1,121 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "Db_LancetillaContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Context",
+   "ProjectRootNamespace": "Lancetilla.DataAccess",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 1,
+   "Tables": [
+      {
+         "Name": "[acce].[tbPantallas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbRolesPantallas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbUsuarios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[bota].[tbAreasBotanicas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[bota].[tbCuidados]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[bota].[tbPlantas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbFacturas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbFacturasDetalles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbMetodosPago]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbTickets]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbCargos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbDepartamentos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbEmpleados]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbEstadosCiviles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbMunicipios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbVisitantes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbAlimentacion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbAnimales]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbAreasZoologico]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbEspecies]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbMantenimientos]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "DESKTOP-QL1VPH4.db_Lancetilla",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
