@@ -130,6 +130,25 @@ CONSTRAINT FK_zool_tbAreasZoologico_arzo_UserModificacion_acce_tbUsuarios_usua_I
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--**************************************************************TABLA DE HABITAT************************************************************************--
+CREATE TABLE zool.tbHabitat(
+habi_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+habi_Descripcion			NVARCHAR(100)			NOT NULL,
+
+/**********Campos de auditoria***********/
+habi_UserCreacion			INT,
+habi_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+habi_UserModificacion		INT,
+habi_FechaModificacion		DATETIME,
+habi_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_zool_tbHabitat_habi_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (habi_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbHabitat_habi_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (habi_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--*************************************************************/TABLA DE HABITAT************************************************************************--
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --****************************************************************TABLA DE ESPECIES**************************************************************************--
 CREATE TABLE zool.tbEspecies(
 espe_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
@@ -172,7 +191,7 @@ anim_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 anim_Nombre						NVARCHAR(200)		NOT NULL,
 anim_NombreCientifico			NVARCHAR(200)		NOT NULL,
 anim_Reino						NVARCHAR(100)		NOT NULL,
-anim_Habitat					NVARCHAR(100)		NOT NULL,
+habi_Id							INT					NOT NULL,
 arzo_Id							INT					NOT NULL,
 alim_Id							INT					NOT NULL,
 espe_Id							INT					NOT NULL,
@@ -188,6 +207,7 @@ CONSTRAINT FK_zool_tbAnimales_anim_UserCreacion_acce_tbUsuarios_usua_Id				FOREI
 CONSTRAINT FK_zool_tbAnimales_anim_UserModificacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (anim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN KEY (arzo_Id)					REFERENCES zool.tbAreasZoologico(arzo_Id),
 CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
+CONSTRAINT FK_zool_tbAnimales_habi_Id_zool_tbHabitat_habi_Id						FOREIGN KEY (habi_Id)					REFERENCES zool.tbHabitat(habi_Id),
 CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
 CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCientifico));
 --***************************************************************/TABLA DE ANIMALES*************************************************************************--
@@ -669,6 +689,59 @@ VALUES
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--****************************************************************TABLA DE HABITATS***************************************************************************--
+INSERT INTO zool.tbHabitat (habi_Descripcion, habi_UserCreacion)
+VALUES 
+    -- Aves
+    ('Bosques templados', 1),
+    
+    -- Mamíferos
+    ('Bosques', 1),
+        
+    -- Anfibios
+    ('Bosques húmedos', 1),
+    
+    -- Peces
+    ('Océanos', 1),
+    
+    -- Arácnidos
+    ('Praderas', 1),
+    
+    -- Crustáceos
+    ('Estuarios', 1),
+    
+    -- Moluscos
+    ('Lagos', 1),
+    
+    -- Primates
+    ('Montañas', 1),
+    
+    -- Cetáceos
+    ('Mares', 1),
+    
+    -- Roedores
+    ('Zonas Urbanas', 1),
+    
+    -- Equinos
+    ('Cuevas', 1),
+    
+    -- Caninos
+    ('Jardines', 1),
+    
+    -- Felinos
+    ('Selvas tropicales', 1),
+    
+    -- Reptiles acuáticos
+    ('Ríos', 1),
+    
+    -- Reptiles terrestres
+    ('Desiertos', 1);
+
+--***************************************************************/TABLA DE HABITATS**************************************************************************--
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --****************************************************************TABLA DE ESPECIES***************************************************************************--
 INSERT INTO zool.tbEspecies (espe_Descripcion, espe_UserCreacion)
 VALUES 
@@ -721,105 +794,105 @@ VALUES
   ('Insectos y pequeños mamíferos', 1);
 --*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
-INSERT INTO zool.tbAnimales (anim_Nombre, anim_NombreCientifico, anim_Reino, anim_Habitat, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
+INSERT INTO zool.tbAnimales (anim_Nombre, anim_NombreCientifico, anim_Reino, habi_Id, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
 VALUES 
   -- Aves
-  ('Águila Real', 'Aquila chrysaetos', 'Animalia', 'Montañas y bosques',7, 1, 1, 1),
-  ('Colibrí', 'Trochilidae', 'Animalia', 'Bosques y jardines', 7, 1, 1, 1),
-  ('Avestruz', 'Struthio camelus', 'Animalia', 'Sabana y desiertos', 2, 1, 1, 1),
+  ('Águila Real', 'Aquila chrysaetos', 'Animalia', 8,7, 1, 1, 1),
+  ('Colibrí', 'Trochilidae', 'Animalia',12, 7, 1, 1, 1),
+  ('Avestruz', 'Struthio camelus', 'Animalia', 15, 2, 1, 1, 1),
 
   -- Mamíferos
-  ('Tigre', 'Panthera tigris', 'Animalia', 'Selva y praderas', 2, 2, 2, 1),
-  ('León', 'Panthera leo', 'Animalia', 'Savanas y arbustos', 2, 2, 2, 1),
-  ('Elefante', 'Loxodonta africana', 'Animalia', 'Sabana y bosques', 2, 2, 6, 1),
+  ('Tigre', 'Panthera tigris', 'Animalia', 13, 2, 2, 2, 1),
+  ('León', 'Panthera leo', 'Animalia', 12, 2, 2, 2, 1),
+  ('Elefante', 'Loxodonta africana', 'Animalia', 2, 2, 2, 6, 1),
 
   -- Reptiles
-  ('Tortuga Marina', 'Cheloniidae', 'Animalia', 'Océanos y playas', 1, 3, 3, 1),
-  ('Cocodrilo', 'Crocodylidae', 'Animalia', 'Ríos y pantanos', 1, 3, 3, 1),
+  ('Tortuga Marina', 'Cheloniidae', 'Animalia', 4, 1, 3, 3, 1),
+  ('Cocodrilo', 'Crocodylidae', 'Animalia', 14, 1, 3, 3, 1),
 
   -- Anfibios
-  ('Rana Arborícola', 'Hyla versicolor', 'Animalia', 'Bosques tropicales', 9, 4, 4, 1),
-  ('Salamandra', 'Salamandridae', 'Animalia', 'Bosques húmedos', 9, 4, 4, 1),
-  ('Sapo Común', 'Bufo bufo', 'Animalia', 'Prados y jardines', 9, 4, 4, 1),
+  ('Rana Arborícola', 'Hyla versicolor', 'Animalia', 1, 9, 4, 4, 1),
+  ('Salamandra', 'Salamandridae', 'Animalia',3, 9, 4, 4, 1),
+  ('Sapo Común', 'Bufo bufo', 'Animalia', 12, 9, 4, 4, 1),
 
   -- Peces
-  ('Salmón', 'Salmo salar', 'Animalia', 'Ríos y mares', 1, 5, 5, 1),
-  ('Tiburón Blanco', 'Carcharodon carcharias', 'Animalia', 'Océanos', 1, 5, 5, 1),
-  ('Pez Payaso', 'Amphiprioninae', 'Animalia', 'Arrecifes de coral', 1, 5, 5, 1),
+  ('Salmón', 'Salmo salar', 'Animalia', 14, 1, 5, 5, 1),
+  ('Tiburón Blanco', 'Carcharodon carcharias', 'Animalia', 4, 1, 5, 5, 1),
+  ('Pez Payaso', 'Amphiprioninae', 'Animalia', 9, 1, 5, 5, 1),
 
   -- Insectos
-  ('Mariposa Monarca', 'Danaus plexippus', 'Animalia', 'Praderas y jardines', 10, 6, 6, 1),
-  ('Abeja de Miel', 'Apis mellifera', 'Animalia', 'Colmenas y flores', 4, 6, 6, 1),
-  ('Escarabajo Rinoceronte', 'Dynastinae', 'Animalia', 'Bosques y selvas', 4, 6, 6, 1),
+  ('Mariposa Monarca', 'Danaus plexippus', 'Animalia', 12, 10, 6, 6, 1),
+  ('Abeja de Miel', 'Apis mellifera', 'Animalia', 12, 4, 6, 6, 1),
+  ('Escarabajo Rinoceronte', 'Dynastinae', 'Animalia', 13, 4, 6, 6, 1),
 
   -- Arácnidos
-  ('Tarántula', 'Theraphosidae', 'Animalia', 'Selvas tropicales', 4, 7, 7, 1),
-  ('Escorpión', 'Scorpiones', 'Animalia', 'Desiertos y selvas', 4, 7, 7, 1),
-  ('Viuda Negra', 'Latrodectus', 'Animalia', 'Prados y arbustos', 4, 7, 7, 1),
+  ('Tarántula', 'Theraphosidae', 'Animalia', 13, 4, 7, 7, 1),
+  ('Escorpión', 'Scorpiones', 'Animalia', 15, 4, 7, 7, 1),
+  ('Viuda Negra', 'Latrodectus', 'Animalia', 5, 4, 7, 7, 1),
 
   -- Crustáceos
-  ('Cangrejo Rojo', 'Callinectes sapidus', 'Animalia', 'Océanos y estuarios', 1, 8, 8, 1),
-  ('Langosta', 'Palinuridae', 'Animalia', 'Arrecifes de coral', 1, 8, 8, 1),
-  ('Camaron', 'Pandalidae', 'Animalia', 'Ríos y mares', 1, 8, 8, 1),
+  ('Cangrejo Rojo', 'Callinectes sapidus', 'Animalia', 4, 1, 8, 8, 1),
+  ('Langosta', 'Palinuridae', 'Animalia', 9, 1, 8, 8, 1),
+  ('Camaron', 'Pandalidae', 'Animalia', 9, 1, 8, 8, 1),
 
   -- Moluscos
-  ('Caracol de Jardín', 'Helix aspersa', 'Animalia', 'Jardines y bosques', 1, 9, 9, 1),
-  ('Pulpo', 'Octopoda', 'Animalia', 'Océanos y arrecifes', 1, 9, 9, 1),
-  ('Almeja', 'Bivalvia', 'Animalia', 'Ríos y lagos', 1, 9, 9, 1),
+  ('Caracol de Jardín', 'Helix aspersa', 'Animalia', 2, 1, 9, 9, 1),
+  ('Pulpo', 'Octopoda', 'Animalia', 4, 1, 9, 9, 1),
+  ('Almeja', 'Bivalvia', 'Animalia', 9, 1, 9, 9, 1),
 
   -- Marsupiales
-  ('Canguro Rojo', 'Macropus rufus', 'Animalia', 'Praderas y bosques', 2, 10, 10, 1),
-  ('Koala', 'Phascolarctos cinereus', 'Animalia', 'Bosques de eucaliptos', 2, 10, 10, 1),
-  ('Wombat', 'Vombatidae', 'Animalia', 'Bosques y matorrales', 2, 10, 10, 1),
+  ('Canguro Rojo', 'Macropus rufus', 'Animalia', 2, 2, 10, 10, 1),
+  ('Koala', 'Phascolarctos cinereus', 'Animalia',2, 2, 10, 10, 1),
+  ('Wombat', 'Vombatidae', 'Animalia', 2, 2, 10, 10, 1),
 
   -- Primates
-  ('Gorila', 'Gorilla gorilla', 'Animalia', 'Selvas y montañas', 5, 11, 11, 1),
-  ('Chimpancé', 'Pan troglodytes', 'Animalia', 'Selvas y bosques', 5, 11, 11, 1),
-  ('Orangután', 'Pongo abelii', 'Animalia', 'Bosques tropicales', 5, 11, 11, 1),
+  ('Gorila', 'Gorilla gorilla', 'Animalia', 8, 5, 11, 11, 1),
+  ('Chimpancé', 'Pan troglodytes', 'Animalia', 2, 5, 11, 11, 1),
+  ('Orangután', 'Pongo abelii', 'Animalia', 1, 5, 11, 11, 1),
 
   -- Cetáceos
-  ('Ballena Azul', 'Balaenoptera musculus', 'Animalia', 'Océanos', 1, 12, 12, 1),
-  ('Delfín Nariz de Botella', 'Tursiops truncatus', 'Animalia', 'Océanos y costas', 1, 12, 12, 1),
-  ('Orca', 'Orcinus orca', 'Animalia', 'Océanos y mares', 1, 12, 12, 1),
+  ('Ballena Azul', 'Balaenoptera musculus', 'Animalia', 4, 1, 12, 12, 1),
+  ('Delfín Nariz de Botella', 'Tursiops truncatus', 'Animalia', 4, 1, 12, 12, 1),
+  ('Orca', 'Orcinus orca', 'Animalia', 4, 1, 12, 12, 1),
 
   -- Carnívoros
-  ('Oso Polar', 'Ursus maritimus', 'Animalia', 'Regiones polares', 1, 13, 13, 1),
-  ('Lobo', 'Canis lupus', 'Animalia', 'Bosques y praderas', 2, 13, 13, 1),
+  ('Oso Polar', 'Ursus maritimus', 'Animalia', 3, 1, 13, 13, 1),
+  ('Lobo', 'Canis lupus', 'Animalia', 5, 2, 13, 13, 1),
 
   -- Hervíboros
-  ('Jirafa', 'Giraffa camelopardalis', 'Animalia', 'Savanas y arbustos', 2, 14, 14, 1),
-  ('Cebra', 'Equus quagga', 'Animalia', 'Praderas y sabanas', 2, 14, 14, 1),
+  ('Jirafa', 'Giraffa camelopardalis', 'Animalia', 5, 2, 14, 14, 1),
+  ('Cebra', 'Equus quagga', 'Animalia', 5, 2, 14, 14, 1),
 
   -- Roedores
-  ('Ratón', 'Mus musculus', 'Animalia', 'Campos y bosques', 4, 15, 15, 1),
-  ('Ardilla', 'Sciurus vulgaris', 'Animalia', 'Bosques y parques', 4, 15, 15, 1),
-  ('Conejo', 'Oryctolagus cuniculus', 'Animalia', 'Prados y campos', 4, 15, 15, 1),
+  ('Ratón', 'Mus musculus', 'Animalia', 2, 4, 15, 15, 1),
+  ('Ardilla', 'Sciurus vulgaris', 'Animalia', 2, 4, 15, 15, 1),
+  ('Conejo', 'Oryctolagus cuniculus', 'Animalia', 5, 4, 15, 15, 1),
 
   -- Equinos
-  ('Caballo', 'Equus ferus caballus', 'Animalia', 'Praderas y establos', 4, 16, 16, 1),
-  ('Cebra de Montaña', 'Equus zebra', 'Animalia', 'Montañas y praderas', 4, 16, 16, 1),
-  ('Asno', 'Equus africanus asinus', 'Animalia', 'Campos y granjas', 4, 16, 16, 1),
+  ('Caballo', 'Equus ferus caballus', 'Animalia', 5, 4, 16, 16, 1),
+  ('Cebra de Montaña', 'Equus zebra', 'Animalia', 4, 4, 16, 16, 1),
+  ('Asno', 'Equus africanus asinus', 'Animalia', 10, 4, 16, 16, 1),
     -- Caninos
-  ('Perro', 'Canis lupas familiaris', 'Animalia', 'Diversos', 4, 17, 17, 1),
-  ('Coyote', 'Canis latrans', 'Animalia', 'Desiertos y praderas', 4, 17, 17, 1),
+  ('Perro', 'Canis lupas familiaris', 'Animalia',10, 4, 17, 17, 1),
+  ('Coyote', 'Canis latrans', 'Animalia', 5, 4, 17, 17, 1),
 
     -- Felinos
-  ('Pantera', 'Panthera pardus', 'Animalia', 'Selvas y montañas', 6, 18, 18, 1),
-  ('Guepardo', 'Acinonyx jubatus', 'Animalia', 'Sabanas y praderas', 6, 18, 18, 1),
-  ('Jaguar', 'Panthera onca', 'Animalia', 'Selvas y pantanos', 6, 18, 18, 1),
+  ('Pantera', 'Panthera pardus', 'Animalia', 8, 6, 18, 18, 1),
+  ('Guepardo', 'Acinonyx jubatus', 'Animalia', 5, 6, 18, 18, 1),
+  ('Jaguar', 'Panthera onca', 'Animalia', 13, 6, 18, 18, 1),
 
   -- Reptiles acuáticos
-  ('Tortuga de Galápagos', 'Chelonoidis nigra', 'Animalia', 'Islas y costas', 1, 19, 19, 1),
-  ('Caimán', 'Caimaninae', 'Animalia', 'Ríos y lagos', 1, 19, 19, 1),
-  ('Serpiente Marina', 'Hydrophiinae', 'Animalia', 'Océanos y mares', 1, 19, 19, 1),
+  ('Tortuga de Galápagos', 'Chelonoidis nigra', 'Animalia', 8, 1, 19, 19, 1),
+  ('Caimán', 'Caimaninae', 'Animalia', 14, 1, 19, 19, 1),
+  ('Serpiente Marina', 'Hydrophiinae', 'Animalia',4, 1, 19, 19, 1),
 
   -- Reptiles terrestres
-  ('Dragón de Komodo', 'Varanus komodoensis', 'Animalia', 'Islas y sabanas', 4, 20, 20, 1),
-  ('Tortuga del Desierto', 'Gopherus agassizii', 'Animalia', 'Desiertos y praderas', 4, 20, 20, 1),
-  ('Camaleón', 'Chamaeleonidae', 'Animalia', 'Selvas y arbustos', 9, 20, 20, 1);
+  ('Dragón de Komodo', 'Varanus komodoensis', 'Animalia', 13, 4, 20, 20, 1),
+  ('Tortuga del Desierto', 'Gopherus agassizii', 'Animalia', 11, 4, 20, 20, 1),
+  ('Camaleón', 'Chamaeleonidae', 'Animalia', 11, 9, 20, 20, 1);
 
 --***************************************************************/TABLA DE ANIMALES***************************************************************************--
 

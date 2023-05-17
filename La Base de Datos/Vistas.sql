@@ -378,7 +378,8 @@ SELECT  anim_Id,
 		anim_Nombre, 
 		anim_NombreCientifico, 
 		anim_Reino,
-		anim_Habitat, 
+		T1.habi_Id, 
+		habi_Descripcion,
 		T1.arzo_Id, 
 		arzo_Descripcion,
 		T1.alim_Id, 
@@ -401,6 +402,8 @@ SELECT  anim_Id,
 		ON T1.alim_Id = T3.alim_Id
 		INNER JOIN zool.tbEspecies T4
 		ON T1.espe_Id = T4.espe_Id
+		INNER JOIN zool.tbHabitat T5
+		ON T1.habi_Id = T5.habi_Id
 
 GO
 --***************************************************************/TABLA DE ANIMALES**************************************************************************--
