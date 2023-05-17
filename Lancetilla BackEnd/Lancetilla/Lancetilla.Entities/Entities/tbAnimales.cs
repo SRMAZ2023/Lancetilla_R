@@ -17,7 +17,7 @@ namespace Lancetilla.Entities.Entities
         public string anim_Nombre { get; set; }
         public string anim_NombreCientifico { get; set; }
         public string anim_Reino { get; set; }
-        public string anim_Habitat { get; set; }
+        public int habi_Id { get; set; }
         public int arzo_Id { get; set; }
         public int alim_Id { get; set; }
         public int espe_Id { get; set; }
@@ -32,6 +32,7 @@ namespace Lancetilla.Entities.Entities
         public virtual tbUsuarios anim_UserModificacionNavigation { get; set; }
         public virtual tbAreasZoologico arzo { get; set; }
         public virtual tbEspecies espe { get; set; }
+        public virtual tbHabitat habi { get; set; }
         public virtual ICollection<tbMantenimientos> tbMantenimientos { get; set; }
     }
 }

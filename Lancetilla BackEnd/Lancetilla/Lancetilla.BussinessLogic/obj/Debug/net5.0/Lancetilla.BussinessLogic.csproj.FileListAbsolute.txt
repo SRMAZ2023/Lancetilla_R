@@ -3,3 +3,8 @@ C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lan
 C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.AssemblyInfoInputs.cache
 C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.AssemblyInfo.cs
 C:\Users\LAB02\Desktop\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.csproj.AssemblyReference.cache
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.AssemblyInfoInputs.cache
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.AssemblyInfo.cs
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.csproj.CoreCompileInputs.cache

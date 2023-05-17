@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HbXH4fYMhhLZZSMJ4OKfmVKekTKuVXmE45KijxxxlN5djTy4zedyKIOV5Okaz5ZHINGXS4fB8OWA5e6w0IHZ+g==",
+  "dgSpecHash": "IqnwBzyfhp6KD4PS2cBkcSCGRfpg6bB2lZW6SAOzB6+0hHcfcKN+xFIHbXrZcjK8zNtu3vtg75J3c1de3yGJaQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj",
+  "projectFilePath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LAB02\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\LAB02\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

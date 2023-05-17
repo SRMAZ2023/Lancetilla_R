@@ -12,7 +12,8 @@ namespace Lancetilla.Entities.Entities
         public string anim_Nombre { get; set; }
         public string anim_NombreCientifico { get; set; }
         public string anim_Reino { get; set; }
-        public string anim_Habitat { get; set; }
+        public int habi_Id { get; set; }
+        public string habi_Descripcion { get; set; }
         public int arzo_Id { get; set; }
         public string arzo_Descripcion { get; set; }
         public int alim_Id { get; set; }

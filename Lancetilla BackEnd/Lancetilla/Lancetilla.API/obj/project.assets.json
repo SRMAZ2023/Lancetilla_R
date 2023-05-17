@@ -6939,11 +6939,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
+      "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
       "projectName": "Lancetilla.API",
-      "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
+      "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
       "packagesPath": "C:\\Users\\LAB02\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.API\\obj\\",
+      "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6963,11 +6963,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj": {
-              "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj"
+            "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj": {
+              "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj"
             },
-            "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
-              "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj"
+            "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
+              "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj"
             }
           }
         }

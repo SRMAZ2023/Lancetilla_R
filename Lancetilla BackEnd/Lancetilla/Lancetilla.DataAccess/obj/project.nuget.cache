@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pl7b2UbNMBM45ODqqGJlD3vgL6vPCa7dvAHDC0P0YVl7RcGybKmFtsE0ke4oLXP0t+4ztOQ1+Tuae+VBH4gvlw==",
+  "dgSpecHash": "a2FrocWjwTS1Y8RSkFixCFzYYzWn5kWSbeJmsCjm0W6/UqMRrR3CLf3SeiPtdH2VK2FYb+X2lgCLkb42CMUNvA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj",
+  "projectFilePath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LAB02\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\LAB02\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

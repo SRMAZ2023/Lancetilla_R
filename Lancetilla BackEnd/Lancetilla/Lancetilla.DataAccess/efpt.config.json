@@ -74,7 +74,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[mant].[tbMantenimientos]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[mant].[tbMunicipios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbTiposMantenimientos]",
          "ObjectType": 0
       },
       {
@@ -98,8 +106,84 @@
          "ObjectType": 0
       },
       {
-         "Name": "[zool].[tbMantenimientos]",
+         "Name": "[zool].[tbHabitat]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[VW_tbUsuarios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[bota].[VW_tbAreasBotanicas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[bota].[VW_tbCuidados]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[bota].[VW_tbPlantas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[fact].[VW_FacturasDetalle]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[fact].[VW_tbMetodosPago]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[fact].[VW_tbTickets]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbCargos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbDepartamentos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbEmpleados]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbEstadosCiviles]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbMunicipios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbVisitantes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbALimentacion]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbAnimales]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbAreasZoologico]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbEspecies]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbMantenimientos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbTiposMantenimientos]",
+         "ObjectType": 3
       }
    ],
    "UiHint": "DESKTOP-QL1VPH4.db_Lancetilla",

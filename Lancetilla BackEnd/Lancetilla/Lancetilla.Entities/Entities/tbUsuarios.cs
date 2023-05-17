@@ -36,6 +36,8 @@ namespace Lancetilla.Entities.Entities
             tbFacturasDetallesfade_UserModificacionNavigation = new HashSet<tbFacturasDetalles>();
             tbFacturasfact_UserCreacionNavigation = new HashSet<tbFacturas>();
             tbFacturasfact_UserModificacionNavigation = new HashSet<tbFacturas>();
+            tbHabitathabi_UserCreacionNavigation = new HashSet<tbHabitat>();
+            tbHabitathabi_UserModificacionNavigation = new HashSet<tbHabitat>();
             tbMantenimientosmant_UserCreacionNavigation = new HashSet<tbMantenimientos>();
             tbMantenimientosmant_UserModificacionNavigation = new HashSet<tbMantenimientos>();
             tbMetodosPagometo_UserCreacionNavigation = new HashSet<tbMetodosPago>();
@@ -98,6 +100,8 @@ namespace Lancetilla.Entities.Entities
         public virtual ICollection<tbFacturasDetalles> tbFacturasDetallesfade_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbFacturas> tbFacturasfact_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbFacturas> tbFacturasfact_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbHabitat> tbHabitathabi_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbHabitat> tbHabitathabi_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbMantenimientos> tbMantenimientosmant_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbMantenimientos> tbMantenimientosmant_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbMetodosPago> tbMetodosPagometo_UserCreacionNavigation { get; set; }

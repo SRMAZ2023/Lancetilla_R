@@ -106,6 +106,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[zool].[tbHabitat]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[acce].[VW_tbUsuarios]",
          "ObjectType": 3
       },

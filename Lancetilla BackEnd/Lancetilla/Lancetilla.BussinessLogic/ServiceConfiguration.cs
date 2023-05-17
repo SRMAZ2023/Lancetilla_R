@@ -6,48 +6,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+using Lancetilla.BussinessLogic.Servicios.Acceso_Servicios;
+using Lancetilla.BussinessLogic.Servicios.Botanica_Servicios;
+using Lancetilla.BussinessLogic.Servicios.Factura_Servicios;
+using Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios;
+using Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios;
+
+using Lancetilla.DataAccess.Repositories.Acce;
+using Lancetilla.DataAccess.Repositories.Bota;
+using Lancetilla.DataAccess.Repositories.Fact;
+using Lancetilla.DataAccess.Repositories.Mant;
+using Lancetilla.DataAccess.Repositories.Zool;
+
+
 namespace Lancetilla.BussinessLogic
 {
     public static class ServiceConfiguration
     {
         public static void DataAccess(this IServiceCollection services, string connection)
         {
-            /*Events_Company.BuildConnectionString(connection);
+            
 
+            Lancetilla.DataAccess.Lancetilla.BuildConnectionString(connection);
+            
             //Acceso
             services.AddScoped<PantallasRepository>();
             services.AddScoped<RolesPorPantallaRepository>();
             services.AddScoped<RolesRepository>();
             services.AddScoped<UsuariosRepository>();
 
-            //Evento
-            services.AddScoped<EventosRepository>();
-            services.AddScoped<FacturasRepository>();
-            services.AddScoped<InventarioRepository>();
-            services.AddScoped<ProveedoresRepository>();
-            services.AddScoped<ServiciosRepository>();
-            services.AddScoped<PaqueteDetallesRepository>();
-            services.AddScoped<Paquetes_EncabezadoRepository>();
-            services.AddScoped<PedidosRepository>();
-            services.AddScoped<PedidosDetalllesRepository>();
-
-            //General
+            //Mantenimiento
+            services.AddScoped<CargosRepository>();
             services.AddScoped<DepartamentosRepository>();
-            services.AddScoped<EstadosCivilesRepository>();
+            services.AddScoped<EmpleadosRepository>();
+            services.AddScoped<EstadoCivilesRepository>();
+            services.AddScoped<MantenimientoServicios>();
             services.AddScoped<MunicipiosRepository>();
-            services.AddScoped<EmpleadoRepository>();
-            services.AddScoped<ClienteRepository>();
-            services.AddScoped<TipoPagoRepository>();
-            services.AddScoped<DireccionesRepository>();*/
+            services.AddScoped<TiposDeMantenimientoRepository>();
+            services.AddScoped<VisitantesRepository>();
+         
+
+            //Botanica
+            services.AddScoped<AreasBotanicasRepository>();
+            services.AddScoped<CuidadosRepository>();
+            services.AddScoped<PlantasRepository>();
+
+            //Factura
+            services.AddScoped<FacturaDetalleRepository>();
+            services.AddScoped<FacturaRepository>();
+            services.AddScoped<MetodoDePagoRepository>();
+            services.AddScoped<TicketsRepository>();
+
+            //Zoologico
+            services.AddScoped<AlimentacionRepository>();
+            services.AddScoped<AnimalesRepository>();
+            services.AddScoped<AreasBotanicasRepository>();
+            services.AddScoped<EspeciesRepository>();
 
         }
 
 
         public static void BussinessLogic(this IServiceCollection services)
         {
-           /* services.AddScoped<GeneralServices>();
-            services.AddScoped<AccesoServices>();
-            services.AddScoped<EventoServices>();*/
+            services.AddScoped<AccesoServicios>();
+            services.AddScoped<FacturaServicios>();
+            services.AddScoped<MantenimientoServicios>();
+            services.AddScoped<ZoologicoServicios>();
+            services.AddScoped<BotanicaServicios>();
         }
     }
 }

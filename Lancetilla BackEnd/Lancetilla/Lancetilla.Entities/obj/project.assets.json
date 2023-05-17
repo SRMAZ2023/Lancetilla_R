@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
+      "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
       "projectName": "Lancetilla.Entities",
-      "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
+      "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
       "packagesPath": "C:\\Users\\LAB02\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.Entities\\obj\\",
+      "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

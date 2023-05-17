@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VdLcmOYnKmqd4t5XM1HkU5llmcUo1qHyHXpkCfyG/+NezPC2wCYrGkDLvc/r4ojQmdSB9gCzcBSVcnmX5k893Q==",
+  "dgSpecHash": "4jwJUGaK46wyrrkdqm7Pbif/auFTdUkExVz8kr2rmTO4vhvZhWeOBHSK+T26QE7eEll4H6CBBcFyHO6kEIQDdw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\LAB02\\Desktop\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
+  "projectFilePath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LAB02\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\LAB02\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",
