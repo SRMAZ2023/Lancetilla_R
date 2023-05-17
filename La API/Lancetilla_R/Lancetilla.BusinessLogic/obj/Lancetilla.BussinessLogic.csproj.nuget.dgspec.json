@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BusinessLogic.csproj": {}
+    "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BussinessLogic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BusinessLogic.csproj": {
+    "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BussinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BusinessLogic.csproj",
-        "projectName": "Lancetilla.BusinessLogic",
-        "projectPath": "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BusinessLogic.csproj",
+        "projectUniqueName": "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BussinessLogic.csproj",
+        "projectName": "Lancetilla.BussinessLogic",
+        "projectPath": "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\Lancetilla.BussinessLogic.csproj",
         "packagesPath": "C:\\Users\\alexe\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\alexe\\Desktop\\Lancetilla_R\\La API\\Lancetilla_R\\Lancetilla.BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",

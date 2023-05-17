@@ -1,3 +1,4 @@
+using Lancetilla.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Lancetilla.BussinessLogic;
 
 namespace Lancetilla.API
 {
@@ -27,7 +30,7 @@ namespace Lancetilla.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.DataAcces(Configuration.GetConnectionString("ConexionExotica"));
+            services.DataAccess(Configuration.GetConnectionString("ConexionExotica"));
             services.BussinessLogic();
             services.AddAutoMapper(x => x.AddProfile<MappingProfileExntensions>(), AppDomain.CurrentDomain.GetAssemblies());
 
@@ -71,7 +74,7 @@ namespace Lancetilla.API
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+ 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

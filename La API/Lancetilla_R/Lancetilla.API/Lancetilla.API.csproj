@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lancetilla.BusinessLogic\Lancetilla.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Lancetilla.BusinessLogic\Lancetilla.BussinessLogic.csproj" />
+    <ProjectReference Include="..\Lancetilla.Entities\Lancetilla.Entities.csproj" />
   </ItemGroup>
 
 </Project>
