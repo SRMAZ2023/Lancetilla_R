@@ -318,7 +318,7 @@ CONSTRAINT FK_zool_tbAlimentacion_alim_UserModificacion_acce_tbUsuarios_usua_Id	
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
 CREATE TABLE zool.tbAnimales(
-anim_Id							INT IDENTITY(1,1)	NOT NULL,
+anim_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 anim_Nombre						NVARCHAR(200)		NOT NULL,
 anim_NombreCientifico			NVARCHAR(200)		NOT NULL,
 anim_Reino						NVARCHAR(100)		NOT NULL,
