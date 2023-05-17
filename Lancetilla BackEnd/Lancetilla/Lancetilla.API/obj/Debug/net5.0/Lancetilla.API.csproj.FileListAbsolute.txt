@@ -1,0 +1,6 @@
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.API\obj\Debug\net5.0\Lancetilla.API.csproj.AssemblyReference.cache
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.API\obj\Debug\net5.0\Lancetilla.API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.API\obj\Debug\net5.0\Lancetilla.API.AssemblyInfoInputs.cache
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.API\obj\Debug\net5.0\Lancetilla.API.AssemblyInfo.cs
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.API\obj\Debug\net5.0\Lancetilla.API.csproj.CoreCompileInputs.cache
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.API\obj\Debug\net5.0\Lancetilla.API.MvcApplicationPartsAssemblyInfo.cache

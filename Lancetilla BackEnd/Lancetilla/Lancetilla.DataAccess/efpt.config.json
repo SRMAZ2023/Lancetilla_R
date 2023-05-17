@@ -1,0 +1,205 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "Db_LancetillaContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Context",
+   "ProjectRootNamespace": "Lancetilla.DataAccess",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 1,
+   "Tables": [
+      {
+         "Name": "[acce].[tbPantallas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbRolesPantallas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[tbUsuarios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[bota].[tbAreasBotanicas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[bota].[tbCuidados]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[bota].[tbPlantas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbFacturas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbFacturasDetalles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbMetodosPago]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[fact].[tbTickets]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbCargos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbDepartamentos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbEmpleados]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbEstadosCiviles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbMantenimientos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbMunicipios]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbTiposMantenimientos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[mant].[tbVisitantes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbAlimentacion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbAnimales]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbAreasZoologico]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbEspecies]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[zool].[tbHabitat]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[acce].[VW_tbUsuarios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[bota].[VW_tbAreasBotanicas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[bota].[VW_tbCuidados]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[bota].[VW_tbPlantas]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[fact].[VW_FacturasDetalle]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[fact].[VW_tbMetodosPago]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[fact].[VW_tbTickets]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbCargos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbDepartamentos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbEmpleados]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbEstadosCiviles]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbMunicipios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbVisitantes]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbALimentacion]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbAnimales]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbAreasZoologico]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbEspecies]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbMantenimientos]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbTiposMantenimientos]",
+         "ObjectType": 3
+      }
+   ],
+   "UiHint": "DESKTOP-QL1VPH4.db_Lancetilla",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
