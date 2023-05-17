@@ -109,6 +109,100 @@ CONSTRAINT FK_acce_tbRolesPantallas_ropa_UserModificacion_acce_tbUsuarios_usua_I
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+--***************************************************************MÓDULO DE ZOOLOGICO**************************************************************************--
+
+--**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
+CREATE TABLE zool.tbAreasZoologico(
+arzo_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+arzo_Descripcion			NVARCHAR(100)			NOT NULL,
+
+/**********Campos de auditoria***********/
+arzo_UserCreacion			INT,
+arzo_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+arzo_UserModificacion		INT,
+arzo_FechaModificacion		DATETIME,
+arzo_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_zool_tbAreasZoologico_arzo_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (arzo_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbAreasZoologico_arzo_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (arzo_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--****************************************************************TABLA DE ESPECIES**************************************************************************--
+CREATE TABLE zool.tbEspecies(
+espe_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+espe_Descripcion			NVARCHAR(100)			NOT NULL,
+
+/**********Campos de auditoria***********/
+espe_UserCreacion			INT,
+espe_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+espe_UserModificacion		INT,
+espe_FechaModificacion		DATETIME,
+espe_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_zool_tbEspecies_espe_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (espe_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbEspecies_espe_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (espe_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--***************************************************************/TABLA DE ESPECIES**************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
+CREATE TABLE zool.tbAlimentacion(
+alim_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+alim_Descripcion			NVARCHAR(100)			NOT NULL,
+
+/**********Campos de auditoria***********/
+alim_UserCreacion			INT,
+alim_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+alim_UserModificacion		INT,
+alim_FechaModificacion		DATETIME,
+alim_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_zool_tbAlimentacion_alim_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (alim_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbAlimentacion_alim_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (alim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--****************************************************************TABLA DE ANIMALES**************************************************************************--
+CREATE TABLE zool.tbAnimales(
+anim_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+anim_Nombre						NVARCHAR(200)		NOT NULL,
+anim_NombreCientifico			NVARCHAR(200)		NOT NULL,
+anim_Reino						NVARCHAR(100)		NOT NULL,
+anim_Habitat					NVARCHAR(100)		NOT NULL,
+arzo_Id							INT					NOT NULL,
+alim_Id							INT					NOT NULL,
+espe_Id							INT					NOT NULL,
+
+/**********Campos de auditoria***********/
+anim_UserCreacion				INT,
+anim_FechaCreacion				DATETIME			DEFAULT GETDATE(),
+anim_UserModificacion			INT,
+anim_FechaModificacion			DATETIME,
+anim_Estado						BIT					DEFAULT 1,
+
+CONSTRAINT FK_zool_tbAnimales_anim_UserCreacion_acce_tbUsuarios_usua_Id				FOREIGN KEY (anim_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbAnimales_anim_UserModificacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (anim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN KEY (arzo_Id)					REFERENCES zool.tbAreasZoologico(arzo_Id),
+CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
+CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
+CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCientifico));
+--***************************************************************/TABLA DE ANIMALES*************************************************************************--
+
+--**************************************************************/MÓDULO DE ZOOLOGICO**************************************************************************--
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 --***********************************************************MÓDULO DE MANTENIMIENTO**************************************************************************--
 
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
@@ -250,103 +344,10 @@ CONSTRAINT CK_mant_tbVisitantes_visi_Sexo										CHECK(visi_Sexo IN ('F', 'M',
 CONSTRAINT UK_mant_tbVisitantes_visi_Identidad									UNIQUE(visi_Identidad));
 --************************************************************/TABLA DE VISITANTES****************************************************************************--
 
---**********************************************************/MÓDULO DE MANTENIMIENTO**************************************************************************--
-
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
---***************************************************************MÓDULO DE ZOOLOGICO**************************************************************************--
-
---**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
-CREATE TABLE zool.tbAreasZoologico(
-arzo_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
-arzo_Descripcion			NVARCHAR(100)			NOT NULL,
-
-/**********Campos de auditoria***********/
-arzo_UserCreacion			INT,
-arzo_FechaCreacion			DATETIME				DEFAULT GETDATE(),
-arzo_UserModificacion		INT,
-arzo_FechaModificacion		DATETIME,
-arzo_Estado					BIT						DEFAULT 1,
-
-CONSTRAINT FK_zool_tbAreasZoologico_arzo_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (arzo_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbAreasZoologico_arzo_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (arzo_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
---*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---****************************************************************TABLA DE ESPECIES**************************************************************************--
-CREATE TABLE zool.tbEspecies(
-espe_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
-espe_Descripcion			NVARCHAR(100)			NOT NULL,
-
-/**********Campos de auditoria***********/
-espe_UserCreacion			INT,
-espe_FechaCreacion			DATETIME				DEFAULT GETDATE(),
-espe_UserModificacion		INT,
-espe_FechaModificacion		DATETIME,
-espe_Estado					BIT						DEFAULT 1,
-
-CONSTRAINT FK_zool_tbEspecies_espe_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (espe_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbEspecies_espe_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (espe_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
---***************************************************************/TABLA DE ESPECIES**************************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
-CREATE TABLE zool.tbAlimentacion(
-alim_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
-alim_Descripcion			NVARCHAR(100)			NOT NULL,
-
-/**********Campos de auditoria***********/
-alim_UserCreacion			INT,
-alim_FechaCreacion			DATETIME				DEFAULT GETDATE(),
-alim_UserModificacion		INT,
-alim_FechaModificacion		DATETIME,
-alim_Estado					BIT						DEFAULT 1,
-
-CONSTRAINT FK_zool_tbAlimentacion_alim_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (alim_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbAlimentacion_alim_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (alim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
---*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---****************************************************************TABLA DE ANIMALES**************************************************************************--
-CREATE TABLE zool.tbAnimales(
-anim_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
-anim_Nombre						NVARCHAR(200)		NOT NULL,
-anim_NombreCientifico			NVARCHAR(200)		NOT NULL,
-anim_Reino						NVARCHAR(100)		NOT NULL,
-anim_Habitat					NVARCHAR(100)		NOT NULL,
-arzo_Id							INT					NOT NULL,
-alim_Id							INT					NOT NULL,
-espe_Id							INT					NOT NULL,
-
-/**********Campos de auditoria***********/
-anim_UserCreacion				INT,
-anim_FechaCreacion				DATETIME			DEFAULT GETDATE(),
-anim_UserModificacion			INT,
-anim_FechaModificacion			DATETIME,
-anim_Estado						BIT					DEFAULT 1,
-
-CONSTRAINT FK_zool_tbAnimales_anim_UserCreacion_acce_tbUsuarios_usua_Id				FOREIGN KEY (anim_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbAnimales_anim_UserModificacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (anim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN KEY (arzo_Id)					REFERENCES zool.tbAreasZoologico(arzo_Id),
-CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
-CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
-CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCientifico));
---***************************************************************/TABLA DE ANIMALES*************************************************************************--
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**********************************************************TABLA DE TIPOS MANTENIMIENTO********************************************************************--
-CREATE TABLE zool.tbTiposMantenimientos(
+CREATE TABLE mant.tbTiposMantenimientos(
 tima_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 tima_Descripcion		NVARCHAR(100)		NOT NULL,
 
@@ -364,7 +365,7 @@ CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MANTENIMIENTO*************************************************************************--
-CREATE TABLE zool.tbMantenimientos(
+CREATE TABLE mant.tbMantenimientos(
 mant_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 mant_Observaciones		NVARCHAR(100)		NOT NULL,
 anim_Id					INT					NOT NULL,
@@ -377,13 +378,14 @@ mant_UserModificacion	INT,
 mant_FechaModificacion	DATETIME,
 mant_Estado				BIT					DEFAULT 1,
 
-CONSTRAINT FK_zool_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbMantenimientos_anim_Id_zool_tbAnimales_anim_Id						FOREIGN KEY (anim_Id)				REFERENCES zool.tbAnimales(anim_Id),
-CONSTRAINT FK_zool_tbMantenimientos_tima_Id_zool_tbTiposMantenientos_tima_iD			FOREIGN KEY (tima_Id)				REFERENCES zool.tbTiposMantenimientos(tima_Id));
+CONSTRAINT FK_mant_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_mant_tbMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_mant_tbMantenimientos_anim_Id_mant_tbAnimales_anim_Id						FOREIGN KEY (anim_Id)				REFERENCES zool.tbAnimales(anim_Id),
+CONSTRAINT FK_mant_tbMantenimientos_tima_Id_mant_tbTiposMantenientos_tima_iD			FOREIGN KEY (tima_Id)				REFERENCES mant.tbTiposMantenimientos(tima_Id));
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
---**************************************************************/MÓDULO DE ZOOLOGICO**************************************************************************--
+
+--**********************************************************/MÓDULO DE MANTENIMIENTO**************************************************************************--
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -392,6 +394,7 @@ CONSTRAINT FK_zool_tbMantenimientos_tima_Id_zool_tbTiposMantenientos_tima_iD			F
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 --****************************************************************MÓDULO DE BOTÁNICA**************************************************************************--
@@ -627,7 +630,6 @@ VALUES
 --************************************************************TABLA DE PANTALLAS******************************************************************************--
 /*PENDIENTE*/
 --***********************************************************/TABLA DE PANTALLAS******************************************************************************--
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE ROLES POR PANTALLA**************************************************************************--
@@ -637,6 +639,191 @@ VALUES
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************/INSERT DE ACCESO******************************************************************************--
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+--***************************************************************INSERT DE ZOOLOGICO**************************************************************************--
+
+--**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
+INSERT INTO zool.tbAreasZoologico (arzo_Descripcion, arzo_UserCreacion)
+VALUES 
+  ('Acuario', 1),
+  ('Safari', 1),
+  ('Jardín de Aves', 1),
+  ('Terrario', 1),
+  ('Zona de Primates', 1),
+  ('Hábitat de Felinos', 1),
+  ('Aviario', 1),
+  ('Granja Educativa', 1),
+  ('Paseo de Reptiles', 1),
+  ('Pabellón de Mariposas', 1);
+--*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--****************************************************************TABLA DE ESPECIES***************************************************************************--
+INSERT INTO zool.tbEspecies (espe_Descripcion, espe_UserCreacion)
+VALUES 
+  ('Aves', 1),
+  ('Mamíferos', 1),
+  ('Reptiles', 1),
+  ('Anfibios', 2),
+  ('Peces', 1),
+  ('Insectos', 1),
+  ('Arácnidos', 1),
+  ('Crustáceos', 1),
+  ('Moluscos', 1),
+  ('Marsupiales', 1),
+  ('Primates', 1),
+  ('Cetáceos', 1),
+  ('Carnívoros', 1),
+  ('Herbívoros', 1),
+  ('Roedores', 1),
+  ('Equinos', 1),
+  ('Caninos', 1),
+  ('Felinos', 1),
+  ('Reptiles Acuáticos', 1),
+  ('Reptiles Terrestres', 1);
+--***************************************************************/TABLA DE ESPECIES**************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
+INSERT INTO zool.tbAlimentacion(alim_Descripcion, alim_UserCreacion)
+VALUES 
+  ('Semillas y frutas', 1),
+  ('Carne y pescado', 1),
+  ('Insectos y vegetales', 1),
+  ('Insectos y pequeños vertebrados', 1),
+  ('Alimento en escamas y pellets', 1),
+  ('Néctar y polen', 1),
+  ('Insectos y pequeños invertebrados', 1),
+  ('Alimento en escamas y vegetales', 1),
+  ('Fitoplancton y zooplancton', 1),
+  ('Frutas y pequeños insectos', 1),
+  ('Frutas y hojas', 1),
+  ('Peces y calamares', 1),
+  ('Carne fresca', 1),
+  ('Pasto y vegetales', 1),
+  ('Semillas y nueces', 1),
+  ('Hierbas y pasto', 1),
+  ('Croquetas y carne de res', 1),
+  ('Carne fresca y aves', 1),
+  ('Peces y crustáceos', 1),
+  ('Insectos y pequeños mamíferos', 1);
+--*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--****************************************************************TABLA DE ANIMALES**************************************************************************--
+INSERT INTO zool.tbAnimales (anim_Nombre, anim_NombreCientifico, anim_Reino, anim_Habitat, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
+VALUES 
+  -- Aves
+  ('Águila Real', 'Aquila chrysaetos', 'Animalia', 'Montañas y bosques',7, 1, 1, 1),
+  ('Colibrí', 'Trochilidae', 'Animalia', 'Bosques y jardines', 7, 1, 1, 1),
+  ('Avestruz', 'Struthio camelus', 'Animalia', 'Sabana y desiertos', 2, 1, 1, 1),
+
+  -- Mamíferos
+  ('Tigre', 'Panthera tigris', 'Animalia', 'Selva y praderas', 2, 2, 2, 1),
+  ('León', 'Panthera leo', 'Animalia', 'Savanas y arbustos', 2, 2, 2, 1),
+  ('Elefante', 'Loxodonta africana', 'Animalia', 'Sabana y bosques', 2, 2, 6, 1),
+
+  -- Reptiles
+  ('Tortuga Marina', 'Cheloniidae', 'Animalia', 'Océanos y playas', 1, 3, 3, 1),
+  ('Cocodrilo', 'Crocodylidae', 'Animalia', 'Ríos y pantanos', 1, 3, 3, 1),
+
+  -- Anfibios
+  ('Rana Arborícola', 'Hyla versicolor', 'Animalia', 'Bosques tropicales', 9, 4, 4, 1),
+  ('Salamandra', 'Salamandridae', 'Animalia', 'Bosques húmedos', 9, 4, 4, 1),
+  ('Sapo Común', 'Bufo bufo', 'Animalia', 'Prados y jardines', 9, 4, 4, 1),
+
+  -- Peces
+  ('Salmón', 'Salmo salar', 'Animalia', 'Ríos y mares', 1, 5, 5, 1),
+  ('Tiburón Blanco', 'Carcharodon carcharias', 'Animalia', 'Océanos', 1, 5, 5, 1),
+  ('Pez Payaso', 'Amphiprioninae', 'Animalia', 'Arrecifes de coral', 1, 5, 5, 1),
+
+  -- Insectos
+  ('Mariposa Monarca', 'Danaus plexippus', 'Animalia', 'Praderas y jardines', 10, 6, 6, 1),
+  ('Abeja de Miel', 'Apis mellifera', 'Animalia', 'Colmenas y flores', 4, 6, 6, 1),
+  ('Escarabajo Rinoceronte', 'Dynastinae', 'Animalia', 'Bosques y selvas', 4, 6, 6, 1),
+
+  -- Arácnidos
+  ('Tarántula', 'Theraphosidae', 'Animalia', 'Selvas tropicales', 4, 7, 7, 1),
+  ('Escorpión', 'Scorpiones', 'Animalia', 'Desiertos y selvas', 4, 7, 7, 1),
+  ('Viuda Negra', 'Latrodectus', 'Animalia', 'Prados y arbustos', 4, 7, 7, 1),
+
+  -- Crustáceos
+  ('Cangrejo Rojo', 'Callinectes sapidus', 'Animalia', 'Océanos y estuarios', 1, 8, 8, 1),
+  ('Langosta', 'Palinuridae', 'Animalia', 'Arrecifes de coral', 1, 8, 8, 1),
+  ('Camaron', 'Pandalidae', 'Animalia', 'Ríos y mares', 1, 8, 8, 1),
+
+  -- Moluscos
+  ('Caracol de Jardín', 'Helix aspersa', 'Animalia', 'Jardines y bosques', 1, 9, 9, 1),
+  ('Pulpo', 'Octopoda', 'Animalia', 'Océanos y arrecifes', 1, 9, 9, 1),
+  ('Almeja', 'Bivalvia', 'Animalia', 'Ríos y lagos', 1, 9, 9, 1),
+
+  -- Marsupiales
+  ('Canguro Rojo', 'Macropus rufus', 'Animalia', 'Praderas y bosques', 2, 10, 10, 1),
+  ('Koala', 'Phascolarctos cinereus', 'Animalia', 'Bosques de eucaliptos', 2, 10, 10, 1),
+  ('Wombat', 'Vombatidae', 'Animalia', 'Bosques y matorrales', 2, 10, 10, 1),
+
+  -- Primates
+  ('Gorila', 'Gorilla gorilla', 'Animalia', 'Selvas y montañas', 5, 11, 11, 1),
+  ('Chimpancé', 'Pan troglodytes', 'Animalia', 'Selvas y bosques', 5, 11, 11, 1),
+  ('Orangután', 'Pongo abelii', 'Animalia', 'Bosques tropicales', 5, 11, 11, 1),
+
+  -- Cetáceos
+  ('Ballena Azul', 'Balaenoptera musculus', 'Animalia', 'Océanos', 1, 12, 12, 1),
+  ('Delfín Nariz de Botella', 'Tursiops truncatus', 'Animalia', 'Océanos y costas', 1, 12, 12, 1),
+  ('Orca', 'Orcinus orca', 'Animalia', 'Océanos y mares', 1, 12, 12, 1),
+
+  -- Carnívoros
+  ('Oso Polar', 'Ursus maritimus', 'Animalia', 'Regiones polares', 1, 13, 13, 1),
+  ('Lobo', 'Canis lupus', 'Animalia', 'Bosques y praderas', 2, 13, 13, 1),
+
+  -- Hervíboros
+  ('Jirafa', 'Giraffa camelopardalis', 'Animalia', 'Savanas y arbustos', 2, 14, 14, 1),
+  ('Cebra', 'Equus quagga', 'Animalia', 'Praderas y sabanas', 2, 14, 14, 1),
+
+  -- Roedores
+  ('Ratón', 'Mus musculus', 'Animalia', 'Campos y bosques', 4, 15, 15, 1),
+  ('Ardilla', 'Sciurus vulgaris', 'Animalia', 'Bosques y parques', 4, 15, 15, 1),
+  ('Conejo', 'Oryctolagus cuniculus', 'Animalia', 'Prados y campos', 4, 15, 15, 1),
+
+  -- Equinos
+  ('Caballo', 'Equus ferus caballus', 'Animalia', 'Praderas y establos', 4, 16, 16, 1),
+  ('Cebra de Montaña', 'Equus zebra', 'Animalia', 'Montañas y praderas', 4, 16, 16, 1),
+  ('Asno', 'Equus africanus asinus', 'Animalia', 'Campos y granjas', 4, 16, 16, 1),
+    -- Caninos
+  ('Perro', 'Canis lupas familiaris', 'Animalia', 'Diversos', 4, 17, 17, 1),
+  ('Coyote', 'Canis latrans', 'Animalia', 'Desiertos y praderas', 4, 17, 17, 1),
+
+    -- Felinos
+  ('Pantera', 'Panthera pardus', 'Animalia', 'Selvas y montañas', 6, 18, 18, 1),
+  ('Guepardo', 'Acinonyx jubatus', 'Animalia', 'Sabanas y praderas', 6, 18, 18, 1),
+  ('Jaguar', 'Panthera onca', 'Animalia', 'Selvas y pantanos', 6, 18, 18, 1),
+
+  -- Reptiles acuáticos
+  ('Tortuga de Galápagos', 'Chelonoidis nigra', 'Animalia', 'Islas y costas', 1, 19, 19, 1),
+  ('Caimán', 'Caimaninae', 'Animalia', 'Ríos y lagos', 1, 19, 19, 1),
+  ('Serpiente Marina', 'Hydrophiinae', 'Animalia', 'Océanos y mares', 1, 19, 19, 1),
+
+  -- Reptiles terrestres
+  ('Dragón de Komodo', 'Varanus komodoensis', 'Animalia', 'Islas y sabanas', 4, 20, 20, 1),
+  ('Tortuga del Desierto', 'Gopherus agassizii', 'Animalia', 'Desiertos y praderas', 4, 20, 20, 1),
+  ('Camaleón', 'Chamaeleonidae', 'Animalia', 'Selvas y arbustos', 9, 20, 20, 1);
+
+--***************************************************************/TABLA DE ANIMALES***************************************************************************--
+
+--***************************************************************/INSERT DE ZOOLOGICO**************************************************************************--
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1033,194 +1220,10 @@ VALUES
   ('Ricardo', 'Sánchez', '0410-1985-89012', '1985-10-04', 'Calle Los Alamos 567', 'M', '0000-8901', 2, 1, 1);
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
 
---**********************************************************/INSERT DE MANTENIMIENTO**************************************************************************--
-
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
---***************************************************************INSERT DE ZOOLOGICO**************************************************************************--
-
---**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
-INSERT INTO zool.tbAreasZoologico (arzo_Descripcion, arzo_UserCreacion)
-VALUES 
-  ('Acuario', 1),
-  ('Safari', 1),
-  ('Jardín de Aves', 1),
-  ('Terrario', 1),
-  ('Zona de Primates', 1),
-  ('Hábitat de Felinos', 1),
-  ('Aviario', 1),
-  ('Granja Educativa', 1),
-  ('Paseo de Reptiles', 1),
-  ('Pabellón de Mariposas', 1);
---*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---****************************************************************TABLA DE ESPECIES***************************************************************************--
-INSERT INTO zool.tbEspecies (espe_Descripcion, espe_UserCreacion)
-VALUES 
-  ('Aves', 1),
-  ('Mamíferos', 1),
-  ('Reptiles', 1),
-  ('Anfibios', 2),
-  ('Peces', 1),
-  ('Insectos', 1),
-  ('Arácnidos', 1),
-  ('Crustáceos', 1),
-  ('Moluscos', 1),
-  ('Marsupiales', 1),
-  ('Primates', 1),
-  ('Cetáceos', 1),
-  ('Carnívoros', 1),
-  ('Herbívoros', 1),
-  ('Roedores', 1),
-  ('Equinos', 1),
-  ('Caninos', 1),
-  ('Felinos', 1),
-  ('Reptiles Acuáticos', 1),
-  ('Reptiles Terrestres', 1);
---***************************************************************/TABLA DE ESPECIES**************************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
-INSERT INTO zool.tbAlimentacion(alim_Descripcion, alim_UserCreacion)
-VALUES 
-  ('Semillas y frutas', 1),
-  ('Carne y pescado', 1),
-  ('Insectos y vegetales', 1),
-  ('Insectos y pequeños vertebrados', 1),
-  ('Alimento en escamas y pellets', 1),
-  ('Néctar y polen', 1),
-  ('Insectos y pequeños invertebrados', 1),
-  ('Alimento en escamas y vegetales', 1),
-  ('Fitoplancton y zooplancton', 1),
-  ('Frutas y pequeños insectos', 1),
-  ('Frutas y hojas', 1),
-  ('Peces y calamares', 1),
-  ('Carne fresca', 1),
-  ('Pasto y vegetales', 1),
-  ('Semillas y nueces', 1),
-  ('Hierbas y pasto', 1),
-  ('Croquetas y carne de res', 1),
-  ('Carne fresca y aves', 1),
-  ('Peces y crustáceos', 1),
-  ('Insectos y pequeños mamíferos', 1);
---*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---****************************************************************TABLA DE ANIMALES**************************************************************************--
-INSERT INTO zool.tbAnimales (anim_Nombre, anim_NombreCientifico, anim_Reino, anim_Habitat, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
-VALUES 
-  -- Aves
-  ('Águila Real', 'Aquila chrysaetos', 'Animalia', 'Montañas y bosques',7, 1, 1, 1),
-  ('Colibrí', 'Trochilidae', 'Animalia', 'Bosques y jardines', 7, 1, 1, 1),
-  ('Avestruz', 'Struthio camelus', 'Animalia', 'Sabana y desiertos', 2, 1, 1, 1),
-
-  -- Mamíferos
-  ('Tigre', 'Panthera tigris', 'Animalia', 'Selva y praderas', 2, 2, 2, 1),
-  ('León', 'Panthera leo', 'Animalia', 'Savanas y arbustos', 2, 2, 2, 1),
-  ('Elefante', 'Loxodonta africana', 'Animalia', 'Sabana y bosques', 2, 2, 6, 1),
-
-  -- Reptiles
-  ('Tortuga Marina', 'Cheloniidae', 'Animalia', 'Océanos y playas', 1, 3, 3, 1),
-  ('Cocodrilo', 'Crocodylidae', 'Animalia', 'Ríos y pantanos', 1, 3, 3, 1),
-
-  -- Anfibios
-  ('Rana Arborícola', 'Hyla versicolor', 'Animalia', 'Bosques tropicales', 9, 4, 4, 1),
-  ('Salamandra', 'Salamandridae', 'Animalia', 'Bosques húmedos', 9, 4, 4, 1),
-  ('Sapo Común', 'Bufo bufo', 'Animalia', 'Prados y jardines', 9, 4, 4, 1),
-
-  -- Peces
-  ('Salmón', 'Salmo salar', 'Animalia', 'Ríos y mares', 1, 5, 5, 1),
-  ('Tiburón Blanco', 'Carcharodon carcharias', 'Animalia', 'Océanos', 1, 5, 5, 1),
-  ('Pez Payaso', 'Amphiprioninae', 'Animalia', 'Arrecifes de coral', 1, 5, 5, 1),
-
-  -- Insectos
-  ('Mariposa Monarca', 'Danaus plexippus', 'Animalia', 'Praderas y jardines', 10, 6, 6, 1),
-  ('Abeja de Miel', 'Apis mellifera', 'Animalia', 'Colmenas y flores', 4, 6, 6, 1),
-  ('Escarabajo Rinoceronte', 'Dynastinae', 'Animalia', 'Bosques y selvas', 4, 6, 6, 1),
-
-  -- Arácnidos
-  ('Tarántula', 'Theraphosidae', 'Animalia', 'Selvas tropicales', 4, 7, 7, 1),
-  ('Escorpión', 'Scorpiones', 'Animalia', 'Desiertos y selvas', 4, 7, 7, 1),
-  ('Viuda Negra', 'Latrodectus', 'Animalia', 'Prados y arbustos', 4, 7, 7, 1),
-
-  -- Crustáceos
-  ('Cangrejo Rojo', 'Callinectes sapidus', 'Animalia', 'Océanos y estuarios', 1, 8, 8, 1),
-  ('Langosta', 'Palinuridae', 'Animalia', 'Arrecifes de coral', 1, 8, 8, 1),
-  ('Camaron', 'Pandalidae', 'Animalia', 'Ríos y mares', 1, 8, 8, 1),
-
-  -- Moluscos
-  ('Caracol de Jardín', 'Helix aspersa', 'Animalia', 'Jardines y bosques', 1, 9, 9, 1),
-  ('Pulpo', 'Octopoda', 'Animalia', 'Océanos y arrecifes', 1, 9, 9, 1),
-  ('Almeja', 'Bivalvia', 'Animalia', 'Ríos y lagos', 1, 9, 9, 1),
-
-  -- Marsupiales
-  ('Canguro Rojo', 'Macropus rufus', 'Animalia', 'Praderas y bosques', 2, 10, 10, 1),
-  ('Koala', 'Phascolarctos cinereus', 'Animalia', 'Bosques de eucaliptos', 2, 10, 10, 1),
-  ('Wombat', 'Vombatidae', 'Animalia', 'Bosques y matorrales', 2, 10, 10, 1),
-
-  -- Primates
-  ('Gorila', 'Gorilla gorilla', 'Animalia', 'Selvas y montañas', 5, 11, 11, 1),
-  ('Chimpancé', 'Pan troglodytes', 'Animalia', 'Selvas y bosques', 5, 11, 11, 1),
-  ('Orangután', 'Pongo abelii', 'Animalia', 'Bosques tropicales', 5, 11, 11, 1),
-
-  -- Cetáceos
-  ('Ballena Azul', 'Balaenoptera musculus', 'Animalia', 'Océanos', 1, 12, 12, 1),
-  ('Delfín Nariz de Botella', 'Tursiops truncatus', 'Animalia', 'Océanos y costas', 1, 12, 12, 1),
-  ('Orca', 'Orcinus orca', 'Animalia', 'Océanos y mares', 1, 12, 12, 1),
-
-  -- Carnívoros
-  ('Oso Polar', 'Ursus maritimus', 'Animalia', 'Regiones polares', 1, 13, 13, 1),
-  ('Lobo', 'Canis lupus', 'Animalia', 'Bosques y praderas', 2, 13, 13, 1),
-
-  -- Hervíboros
-  ('Jirafa', 'Giraffa camelopardalis', 'Animalia', 'Savanas y arbustos', 2, 14, 14, 1),
-  ('Cebra', 'Equus quagga', 'Animalia', 'Praderas y sabanas', 2, 14, 14, 1),
-
-  -- Roedores
-  ('Ratón', 'Mus musculus', 'Animalia', 'Campos y bosques', 4, 15, 15, 1),
-  ('Ardilla', 'Sciurus vulgaris', 'Animalia', 'Bosques y parques', 4, 15, 15, 1),
-  ('Conejo', 'Oryctolagus cuniculus', 'Animalia', 'Prados y campos', 4, 15, 15, 1),
-
-  -- Equinos
-  ('Caballo', 'Equus ferus caballus', 'Animalia', 'Praderas y establos', 4, 16, 16, 1),
-  ('Cebra de Montaña', 'Equus zebra', 'Animalia', 'Montañas y praderas', 4, 16, 16, 1),
-  ('Asno', 'Equus africanus asinus', 'Animalia', 'Campos y granjas', 4, 16, 16, 1),
-    -- Caninos
-  ('Perro', 'Canis lupas familiaris', 'Animalia', 'Diversos', 4, 17, 17, 1),
-  ('Coyote', 'Canis latrans', 'Animalia', 'Desiertos y praderas', 4, 17, 17, 1),
-
-    -- Felinos
-  ('Pantera', 'Panthera pardus', 'Animalia', 'Selvas y montañas', 6, 18, 18, 1),
-  ('Guepardo', 'Acinonyx jubatus', 'Animalia', 'Sabanas y praderas', 6, 18, 18, 1),
-  ('Jaguar', 'Panthera onca', 'Animalia', 'Selvas y pantanos', 6, 18, 18, 1),
-
-  -- Reptiles acuáticos
-  ('Tortuga de Galápagos', 'Chelonoidis nigra', 'Animalia', 'Islas y costas', 1, 19, 19, 1),
-  ('Caimán', 'Caimaninae', 'Animalia', 'Ríos y lagos', 1, 19, 19, 1),
-  ('Serpiente Marina', 'Hydrophiinae', 'Animalia', 'Océanos y mares', 1, 19, 19, 1),
-
-  -- Reptiles terrestres
-  ('Dragón de Komodo', 'Varanus komodoensis', 'Animalia', 'Islas y sabanas', 4, 20, 20, 1),
-  ('Tortuga del Desierto', 'Gopherus agassizii', 'Animalia', 'Desiertos y praderas', 4, 20, 20, 1),
-  ('Camaleón', 'Chamaeleonidae', 'Animalia', 'Selvas y arbustos', 9, 20, 20, 1);
-
---***************************************************************/TABLA DE ANIMALES***************************************************************************--
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
-INSERT INTO zool.tbTiposMantenimientos (tima_Descripcion, tima_UserCreacion)
+INSERT INTO mant.tbTiposMantenimientos (tima_Descripcion, tima_UserCreacion)
 VALUES
     ('Mantenimiento de limpieza en el área de aves',  1),
     ('Mantenimiento de alimentación de cetáceos',  1),
@@ -1238,7 +1241,7 @@ VALUES
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***************************************************************TABLA DE MANTENIMIENTO************************************************************************--
-INSERT INTO zool.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_UserCreacion)
+INSERT INTO mant.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_UserCreacion)
 VALUES
     ('Limpieza de excremento de aves', 7, 1,  1),
     ('Se le ha dado 2KG de suplementos a los delfines', 34, 2, 1),
@@ -1253,8 +1256,7 @@ VALUES
 
 --**************************************************************/TABLA DE MANTENIMIENTO************************************************************************--
 
-
---***************************************************************/INSERT DE ZOOLOGICO**************************************************************************--
+--**********************************************************/INSERT DE MANTENIMIENTO**************************************************************************--
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
