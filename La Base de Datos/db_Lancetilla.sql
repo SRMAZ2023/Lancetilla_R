@@ -357,7 +357,7 @@ mant_UserModificacion	INT,
 mant_FechaModificacion	DATETIME,
 mant_Estado				BIT					DEFAULT 1,
 
-CONSTRAINT FK_zool_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbMantenimientos_arzo_Id_zool_tbAreasZoologico_arzo_Id				FOREIGN KEY (arzo_Id)				REFERENCES zool.tbAreasZoologico(arzo_Id));
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
@@ -1031,13 +1031,13 @@ VALUES
   ('Acuario', 1),
   ('Safari', 1),
   ('Jardín de Aves', 1),
-  ('Terrario', 2),
-  ('Zona de Primates', 2),
-  ('Hábitat de Felinos', 2),
-  ('Aviario', 3),
-  ('Granja Educativa', 3),
-  ('Paseo de Reptiles', 3),
-  ('Pabellón de Mariposas', 2);
+  ('Terrario', 1),
+  ('Zona de Primates', 1),
+  ('Hábitat de Felinos', 1),
+  ('Aviario', 1),
+  ('Granja Educativa', 1),
+  ('Paseo de Reptiles', 1),
+  ('Pabellón de Mariposas', 1);
 --*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1049,8 +1049,8 @@ VALUES
   ('Mamíferos', 1),
   ('Reptiles', 1),
   ('Anfibios', 2),
-  ('Peces', 2),
-  ('Insectos', 2),
+  ('Peces', 1),
+  ('Insectos', 1),
   ('Arácnidos', 1),
   ('Crustáceos', 1),
   ('Moluscos', 1),

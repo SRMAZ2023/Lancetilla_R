@@ -169,10 +169,19 @@ SELECT empl_Id,
 	   empl_FechaNacimiento,
 	   empl_Direccion, 
 	   empl_Sexo,
+	   CASE empl_Sexo 
+	   WHEN 'F' THEN 'Femenino'
+	   WHEN 'M' THEN 'Masculino'
+	   ELSE 'Otro' END AS empl_Sexos,
 	   empl_Telefono,
-	   estc_Id, 
-	   carg_Id, 
-	   muni_Id,
+	   T1.estc_Id, 
+	   estc_Descripcion,
+	   T1.carg_Id,
+	   carg_Descripcion,
+	   T1.muni_Id,
+	   muni_Descripcion,
+	   T5.dept_Id,
+	   dept_Descripcion,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = empl_UserCreacion)) AS usua_UserCreaNombre,
 	   empl_UserCreacion,
@@ -186,15 +195,51 @@ SELECT empl_Id,
 	   INNER JOIN mant.tbEstadosCiviles T2
 	   ON T1.estc_Id = T2.estc_Id
 	   INNER JOIN mant.tbCargos T3
-
-
+	   ON T1.carg_Id = T3.carg_Id
+	   INNER JOIN mant.tbMunicipios T4
+	   ON T1.muni_Id = T4.muni_Id
+	   INNER JOIN mant.tbDepartamentos T5
+	    ON T4.dept_Id = T5.dept_Id
 GO
 --*************************************************************/TABLA DE EMPLEADOS****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*************************************************************/TABLA DE EMPLEADOS****************************************************************************--
---*************************************************************/TABLA DE EMPLEADOS****************************************************************************--
+--*************************************************************TABLA DE VISITANTES****************************************************************************--
+CREATE OR ALTER VIEW mant.VW_tbVisitantes
+AS 
+
+SELECT visi_Id, 
+       visi_Nombres + ' ' + visi_Apellido AS visi_Nombre, 
+	   visi_Identidad,
+	   visi_FechaNacimiento,
+	   visi_Direccion, 
+	   visi_Sexo,
+	   visi_Telefono,
+	   T1.estc_Id, 
+	   estc_Descripcion,
+	   T1.muni_Id, 
+	   muni_Descripcion,
+	   T5.dept_Id,
+	   dept_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = visi_UserCreacion)) AS usua_UserCreaNombre,
+	   visi_UserCreacion,
+	   visi_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = visi_UserModificacion)) AS usua_UserModiNombre,
+	   visi_UserModificacion,
+	   visi_FechaModificacion,
+	   visi_Estado
+	   FROM mant.tbVisitantes T1
+	   INNER JOIN mant.tbEstadosCiviles T2
+	   ON T1.estc_Id = T2.estc_Id
+	   INNER JOIN mant.tbMunicipios T4
+	   ON T1.muni_Id = T4.muni_Id
+	   INNER JOIN mant.tbDepartamentos T5
+	    ON T4.dept_Id = T5.dept_Id
+GO
+--************************************************************/TABLA DE VISITANTES****************************************************************************--
 
 --**********************************************************/INSERT DE MANTENIMIENTO**************************************************************************--
 
@@ -210,31 +255,127 @@ GO
 --***************************************************************INSERT DE ZOOLOGICO**************************************************************************--
 
 --*****************************************************************TABLA DE ÁREAS*****************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbAreasZoologico
+AS 
+
+SELECT arzo_Id, 
+       arzo_Descripcion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = arzo_UserCreacion)) AS usua_UserCreaNombre,
+	   arzo_UserCreacion,
+	   arzo_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = arzo_UserModificacion)) AS usua_UserModiNombre,
+	   arzo_UserModificacion,
+	   arzo_FechaModificacion,
+	   arzo_Estado 
+       FROM zool.tbAreasZoologico
+GO
 --****************************************************************/TABLA DE ÁREAS*****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ESPECIES**************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbEspecies
+AS 
+
+SELECT espe_Id, 
+       espe_Descripcion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = espe_UserCreacion)) AS usua_UserCreaNombre,
+	   espe_UserCreacion,
+	   espe_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = espe_UserModificacion)) AS usua_UserModiNombre,
+	   espe_UserModificacion, 
+	   espe_FechaModificacion,
+	   espe_Estado 
+	   FROM zool.tbEspecies
+GO
 --***************************************************************/TABLA DE ESPECIES**************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbALimentacion
+AS 
+
+SELECT alim_Id, 
+       alim_Descripcion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = alim_UserCreacion)) AS usua_UserCreaNombre,
+	   alim_UserCreacion,
+	   alim_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = alim_UserModificacion)) AS usua_UserModiNombre,
+	   alim_UserModificacion,
+	   alim_FechaModificacion,
+	   alim_Estado 
+	   FROM zool.tbAlimentacion
+GO
 --*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbAnimales
+AS 
+
+SELECT  anim_Id, 
+		anim_Nombre, 
+		anim_NombreCientifico, 
+		anim_Reino,
+		anim_Habitat, 
+		T1.arzo_Id, 
+		arzo_Descripcion,
+		T1.alim_Id, 
+		alim_Descripcion,
+		T1.espe_Id, 
+		espe_Descripcion,
+	    (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	    WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = anim_UserCreacion)) AS usua_UserCreaNombre,
+		anim_UserCreacion,
+		anim_FechaCreacion, 
+	    (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	    WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = anim_UserModificacion)) AS usua_UserModiNombre,
+		anim_UserModificacion, 
+		anim_FechaModificacion,
+		anim_Estado 
+		FROM zool.tbAnimales T1
+		INNER JOIN zool.tbAreasZoologico T2
+		ON T1.arzo_Id = T2.arzo_Id
+		INNER JOIN zool.tbAlimentacion T3
+		ON T1.alim_Id = T3.alim_Id
+		INNER JOIN zool.tbEspecies T4
+		ON T1.espe_Id = T4.espe_Id
+
+GO
 --***************************************************************/TABLA DE ANIMALES**************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
---*********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 --*************************************************************TABLA DE MANTENIMIENTO*************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbMantenimientos
+AS
+
+SELECT mant_Id, 
+	   mant_Observaciones, 
+	   T1.arzo_Id, 
+	   arzo_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = mant_UserCreacion)) AS usua_UserCreaNombre,
+	   mant_UserCreacion, 
+	   mant_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = mant_UserModificacion)) AS usua_UserModiNombre,
+	   mant_UserModificacion,
+	   mant_FechaModificacion,
+	   mant_Estado
+	   FROM zool.tbMantenimientos T1
+	   INNER JOIN zool.tbAreasZoologico T2
+	   ON T1.arzo_Id = T2.arzo_Id
+
+GO
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
 --**************************************************************/INSERT DE ZOOLOGICO**************************************************************************--
@@ -251,16 +392,76 @@ GO
 --****************************************************************INSERT DE BOTÁNICA**************************************************************************--
 
 --*************************************************************TABLA DE AREAS BOTÁNICAS***********************************************************************--
+CREATE OR ALTER VIEW bota.VW_tbAreasBotanicas
+AS 
+
+SELECT arbo_Id, 
+	   arbo_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = arbo_UserCreacion)) AS usua_UserCreaNombre,
+	   arbo_UserCreacion,
+	   arbo_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = arbo_UserModificacion)) AS usua_UserModiNombre,
+	   arbo_UserModificacion, 
+	   arbo_FechaModificacion, 
+	   arbo_Estado
+	   FROM bota.tbAreasBotanicas
+GO
 --************************************************************/TABLA DE AREAS BOTÁNICAS***********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE CUIDADOS***************************************************************************--
---****************************************************************/TABLA DE CUIDADOS***************************************************************************--
+--*****************************************************************TABLA DE CUIDADOS**************************************************************************--
+CREATE OR ALTER VIEW bota.VW_tbCuidados
+AS
+
+SELECT cuid_Id,
+       cuid_Descripcion,
+	   cuid_Frecuencia,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = cuid_UserCreacion)) AS usua_UserCreaNombre,
+	   cuid_UserCreacion, 
+	   cuid_FechaCreacion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = cuid_UserModificacion)) AS usua_UserModiNombre,
+	   cuid_UserModificacion,
+	   cuid_FechaModificacion, 
+	   cuid_Estado 
+	   FROM bota.tbCuidados
+GO
+--****************************************************************/TABLA DE CUIDADOS**************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE PLANTAS****************************************************************************--
+--*****************************************************************TABLA DE PLANTAS***************************************************************************--
+CREATE OR ALTER VIEW bota.VW_tbPlantas
+AS
+
+SELECT plan_Id, 
+	   plan_Nombre,
+	   plan_NombreCientifico,
+	   plan_Reino,
+	   T1.arbo_Id, 
+	   arbo_Descripcion,
+	   T1.cuid_Id,
+	   cuid_Descripcion,
+	   cuid_Frecuencia,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = plan_UserCreacion)) AS usua_UserCreaNombre,
+	   plan_UserCreacion,
+	   plan_FechaCreacion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = plan_UserModificacion)) AS usua_UserModiNombre,
+	   plan_UserModificacion,
+	   plan_FechaModificacion, 
+	   plan_Estado 
+	   FROM bota.tbPlantas T1
+	   INNER JOIN bota.tbAreasBotanicas T2
+	   ON T1.arbo_Id = T2.arbo_Id
+	   INNER JOIN bota.tbCuidados T3
+	   ON T1.cuid_Id = T3.cuid_Id
+GO
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
 --***************************************************************/MÓDULO DE BOTÁNICA**************************************************************************--
@@ -277,16 +478,68 @@ GO
 --***************************************************************INSERT DE FACTURACIÓN************************************************************************--
 
 --*****************************************************************TABLA DE TICKETS***************************************************************************--
+CREATE OR ALTER VIEW fact.VW_tbTickets
+AS 
+
+SELECT tick_Id,
+       tick_Descripcion, 
+	   tick_Precio,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tick_UserCreacion)) AS usua_UserCreaNombre,
+	   tick_UserCreacion, 
+	   tick_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tick_UserModificacion)) AS usua_UserModiNombre,
+	   tick_UserModificacion, 
+	   tick_FechaModificacion,
+	   tick_Estado
+       FROM fact.tbTickets
+
+GO
 --****************************************************************/TABLA DE TICKETS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MÉTODOS DE PAGO***********************************************************************--
+CREATE OR ALTER VIEW fact.VW_tbMetodosPago
+AS 
+
+SELECT meto_Id,
+       meto_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = meto_UserCreacion)) AS usua_UserCreaNombre,
+	   meto_UserCreacion,
+	   meto_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = meto_UserModificacion)) AS usua_UserModiNombre,
+	   meto_UserModificacion,
+	   meto_FechaModificacion,
+	   meto_Estado 
+	   FROM fact.tbMetodosPago
+GO
 --************************************************************/TABLA DE MÉTODOS DE PAGO***********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE FACTURAS***************************************************************************--
+CREATE OR ALTER PROC fact.VW_tbFacturas
+AS
+
+SELECT fact_Id,
+       empl_Id, 
+	   visi_Id,
+	   meto_Id,
+	   fact_Fecha, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = empl_UserCreacion)) AS usua_UserCreaNombre,
+	   fact_UserCreacion, 
+	   fact_FechaCreacion, 
+	   fact_UserModificacion, 
+	   fact_FechaModificacion, 
+	   fact_Estado 
+	   FROM fact.tbFacturas
+
+GO
 --***************************************************************/TABLA DE FACTURAS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
