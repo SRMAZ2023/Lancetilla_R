@@ -314,7 +314,7 @@ CONSTRAINT FK_zool_tbAlimentacion_alim_UserCreacion_acce_tbUsuarios_usua_Id			FO
 CONSTRAINT FK_zool_tbAlimentacion_alim_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (alim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
 --*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
 CREATE TABLE zool.tbAnimales(
@@ -340,7 +340,25 @@ CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN 
 CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
 CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
 CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCientifico));
---***************************************************************/TABLA DE ANIMALES**************************************************************************--
+--***************************************************************/TABLA DE ANIMALES*************************************************************************--
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--**********************************************************TABLA DE TIPOS MANTENIMIENTO********************************************************************--
+CREATE TABLE zool.tbTiposMantenimientos(
+tima_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+tima_Descripcion		NVARCHAR(100)		NOT NULL,
+
+/**********Campos de auditoria***********/
+tima_UserCreacion		INT,
+tima_FechaCreacion		DATETIME			DEFAULT GETDATE(),
+tima_UserModificacion	INT,
+tima_FechaModificacion	DATETIME,
+tima_Estado				BIT					DEFAULT 1,
+
+CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
+--*********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -348,7 +366,8 @@ CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCi
 CREATE TABLE zool.tbMantenimientos(
 mant_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 mant_Observaciones		NVARCHAR(100)		NOT NULL,
-arzo_Id					INT					NOT NULL,
+anim_Id					INT					NOT NULL,
+tima_Id					INT					NOT NULL,
 
 /**********Campos de auditoria***********/
 mant_UserCreacion		INT,
@@ -357,9 +376,10 @@ mant_UserModificacion	INT,
 mant_FechaModificacion	DATETIME,
 mant_Estado				BIT					DEFAULT 1,
 
-CONSTRAINT FK_zool_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_zool_tbMantenimientos_arzo_Id_zool_tbAreasZoologico_arzo_Id				FOREIGN KEY (arzo_Id)				REFERENCES zool.tbAreasZoologico(arzo_Id));
+CONSTRAINT FK_zool_tbMantenimientos_anim_Id_zool_tbAnimales_anim_Id						FOREIGN KEY (anim_Id)				REFERENCES zool.tbAnimales(anim_Id),
+CONSTRAINT FK_zool_tbMantenimientos_tima_Id_zool_tbTiposMantenientos_tima_iD			FOREIGN KEY (tima_Id)				REFERENCES zool.tbTiposMantenimientos(tima_Id));
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
 --**************************************************************/MÓDULO DE ZOOLOGICO**************************************************************************--
@@ -1198,23 +1218,42 @@ VALUES
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*************************************************************TABLA DE MANTENIMIENTO*************************************************************************--
-INSERT INTO zool.tbMantenimientos (mant_Observaciones, arzo_Id, mant_UserCreacion)
+--***********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
+INSERT INTO zool.tbTiposMantenimientos (tima_Descripcion, tima_UserCreacion)
 VALUES
-    ('Mantenimiento de limpieza en el área de aves',  1, 1),
-    ('Mantenimiento de alimentación de cetáceos',  2, 1),
-    ('Mantenimiento de revisión médica en el área de carnívoros',  3, 1),
-    ('Mantenimiento de cuidado y limpieza de hábitats en el área de herbívoros',  4, 1),
-    ('Mantenimiento de control de plagas en el área de roedores',  5, 1),
-    ('Mantenimiento de revisión veterinaria en el área de equinos', 6, 1),
-    ('Mantenimiento de entrenamiento y cuidado de caninos', 7, 1),
-    ('Mantenimiento de revisión médica en el área de felinos', 8, 1),
-    ('Mantenimiento de limpieza y cuidado de hábitats en el área de reptiles acuáticos', 9, 1),
-    ('Mantenimiento de monitoreo de temperatura y humedad en el área de reptiles terrestres',  10, 1);
+    ('Mantenimiento de limpieza en el área de aves',  1),
+    ('Mantenimiento de alimentación de cetáceos',  1),
+    ('Mantenimiento de revisión médica en el área de carnívoros',  1),
+    ('Mantenimiento de cuidado y limpieza de hábitats en el área de herbívoros',   1),
+    ('Mantenimiento de control de plagas en el área de roedores',   1),
+    ('Mantenimiento de revisión veterinaria en el área de equinos',  1),
+    ('Mantenimiento de entrenamiento y cuidado de caninos',  1),
+    ('Mantenimiento de revisión médica en el área de felinos',  1),
+    ('Mantenimiento de limpieza y cuidado de hábitats en el área de reptiles acuáticos', 1),
+    ('Mantenimiento de monitoreo de temperatura y humedad en el área de reptiles terrestres',  1);
 
---************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
+--**********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 
---**************************************************************/INSERT DE ZOOLOGICO**************************************************************************--
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--***************************************************************TABLA DE MANTENIMIENTO************************************************************************--
+INSERT INTO zool.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_UserCreacion)
+VALUES
+    ('Limpieza de excremento de aves', 7, 1,  1),
+    ('Se le ha dado 2KG de suplementos a los delfines', 34, 2, 1),
+    ('Çuración de herida al area de Felinos', 5,  3, 1),
+    ('Baño a las jirajas bebés',  38,  4, 1),
+    ('Control de cucarachas', 40, 5, 1),
+    ('Curación de la pata derecha de las cebras', 39, 6, 1),
+    ('Entrenamiento físico de los lobos', 37, 7, 1),
+    ('Curación de infección de los tigres', 4, 8, 1),
+    ('Limpieza de piscinas en el área de boas', 53, 9, 1),
+    ('Cambio de temperatura en el invernadero de los dragones de comodo', 52,  10, 1);
+
+--**************************************************************/TABLA DE MANTENIMIENTO************************************************************************--
+
+
+--***************************************************************/INSERT DE ZOOLOGICO**************************************************************************--
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------

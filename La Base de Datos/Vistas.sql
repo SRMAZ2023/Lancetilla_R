@@ -352,15 +352,39 @@ SELECT  anim_Id,
 GO
 --***************************************************************/TABLA DE ANIMALES**************************************************************************--
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*************************************************************TABLA DE MANTENIMIENTO*************************************************************************--
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--**********************************************************TABLA DE TIPOS MANTENIMIENTO*********************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbTiposMantenimientos
+AS
+
+SELECT tima_Id, 
+	   tima_Observaciones, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tima_UserCreacion)) AS usua_UserCreaNombre,
+	   tima_UserCreacion, 
+	   tima_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tima_UserModificacion)) AS usua_UserModiNombre,
+	   tima_UserModificacion,
+	   tima_FechaModificacion,
+	   tima_Estado
+	   FROM zool.tbTiposMantenimientos 
+
+GO
+--**********************************************************TABLA DE TIPOS MANTENIMIENTO*********************************************************************--
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*************************************************************TABLA DE MANTENIMIENTO************************************************************************--
 CREATE OR ALTER VIEW zool.VW_tbMantenimientos
 AS
 
 SELECT mant_Id, 
-	   mant_Observaciones, 
-	   T1.arzo_Id, 
+	   mant_Observaciones,
+	   anim_Nombre,
+	   T2.arzo_Id,
 	   arzo_Descripcion,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = mant_UserCreacion)) AS usua_UserCreaNombre,
@@ -372,8 +396,11 @@ SELECT mant_Id,
 	   mant_FechaModificacion,
 	   mant_Estado
 	   FROM zool.tbMantenimientos T1
-	   INNER JOIN zool.tbAreasZoologico T2
-	   ON T1.arzo_Id = T2.arzo_Id
+	   INNER JOIN zool.tbAnimales T2
+	   ON T1.anim_Id = T2.anim_Id
+	   INNER JOIN zool.tbAreasZoologico T3
+	   ON T2.arzo_Id = T3.arzo_Id
+
 
 GO
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
@@ -526,18 +553,29 @@ CREATE OR ALTER PROC fact.VW_tbFacturas
 AS
 
 SELECT fact_Id,
-       empl_Id, 
-	   visi_Id,
-	   meto_Id,
+       T1.empl_Id, 
+	   empl_Nombre + ' '+ empl_Apellido AS empleado,
+	   T1.visi_Id,
+	   visi_Nombres + ' ' + visi_Apellido AS visitante,
+	   T1.meto_Id,
+	   meto_Descripcion,
 	   fact_Fecha, 
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = empl_UserCreacion)) AS usua_UserCreaNombre,
 	   fact_UserCreacion, 
 	   fact_FechaCreacion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = fact_UserModificacion)) AS usua_UserModiNombre,
 	   fact_UserModificacion, 
 	   fact_FechaModificacion, 
 	   fact_Estado 
-	   FROM fact.tbFacturas
+	   FROM fact.tbFacturas T1
+	   INNER JOIN mant.tbEmpleados T2
+	   ON T1.empl_Id = T2.empl_Id 
+	   INNER JOIN mant.tbVisitantes T3
+	   ON T1.visi_Id = T3.visi_Id
+	   INNER JOIN fact.tbMetodosPago T4
+	   ON T1.meto_Id = T4.meto_Id
 
 GO
 --***************************************************************/TABLA DE FACTURAS***************************************************************************--
@@ -545,6 +583,27 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***********************************************************TABLA DE FACTURAS DETALLE************************************************************************--
+CREATE OR ALTER VIEW fact.VW_FacturasDetalle
+AS
+
+SELECT fade_Id,
+	   T1.tick_Id, 
+	   tick_Descripcion,
+	   fade_Cantidad,
+	   fade_Total,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = fade_UserCreacion)) AS usua_UserCreaNombre,
+	   fade_UserCreacion, 
+	   fade_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = fade_UserModificacion)) AS usua_UserModiNombre,
+	   fade_UserModificacion, 
+	   fade_FechaModificacion, 
+	   fade_Estado 
+	   FROM fact.tbFacturasDetalles T1
+	   INNER JOIN fact.tbTickets T2
+	   ON T1.tick_Id = T2.tick_Id
+GO
 --**********************************************************/TABLA DE FACTURAS DETALLE************************************************************************--
 
 --**************************************************************/INSERT DE FACTURACIÓN************************************************************************--
