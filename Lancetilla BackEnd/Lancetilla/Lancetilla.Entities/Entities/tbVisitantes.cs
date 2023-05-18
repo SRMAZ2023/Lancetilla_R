@@ -16,21 +16,14 @@ namespace Lancetilla.Entities.Entities
         public int visi_Id { get; set; }
         public string visi_Nombres { get; set; }
         public string visi_Apellido { get; set; }
-        public string visi_Identidad { get; set; }
-        public DateTime visi_FechaNacimiento { get; set; }
-        public string visi_Direccion { get; set; }
+        public string visi_RTN { get; set; }
         public string visi_Sexo { get; set; }
-        public string visi_Telefono { get; set; }
-        public int estc_Id { get; set; }
-        public int muni_Id { get; set; }
         public int? visi_UserCreacion { get; set; }
         public DateTime? visi_FechaCreacion { get; set; }
         public int? visi_UserModificacion { get; set; }
         public DateTime? visi_FechaModificacion { get; set; }
         public bool? visi_Estado { get; set; }
 
-        public virtual tbEstadosCiviles estc { get; set; }
-        public virtual tbMunicipios muni { get; set; }
         public virtual tbUsuarios visi_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios visi_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbFacturas> tbFacturas { get; set; }

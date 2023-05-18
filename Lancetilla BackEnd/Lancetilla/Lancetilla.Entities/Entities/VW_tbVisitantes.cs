@@ -10,17 +10,9 @@ namespace Lancetilla.Entities.Entities
     {
         public int visi_Id { get; set; }
         public string visi_Nombre { get; set; }
-        public string visi_Identidad { get; set; }
-        public DateTime visi_FechaNacimiento { get; set; }
-        public string visi_Direccion { get; set; }
+        public string visi_RTN { get; set; }
         public string visi_Sexo { get; set; }
-        public string visi_Telefono { get; set; }
-        public int estc_Id { get; set; }
-        public string estc_Descripcion { get; set; }
-        public int muni_Id { get; set; }
-        public string muni_Descripcion { get; set; }
-        public int dept_Id { get; set; }
-        public string dept_Descripcion { get; set; }
+        public string visi_Sexos { get; set; }
         public string usua_UserCreaNombre { get; set; }
         public int? visi_UserCreacion { get; set; }
         public DateTime? visi_FechaCreacion { get; set; }

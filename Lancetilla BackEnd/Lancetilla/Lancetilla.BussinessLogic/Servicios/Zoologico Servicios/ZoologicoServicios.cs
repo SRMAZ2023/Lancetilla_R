@@ -14,10 +14,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
         private readonly AnimalesRepository _animalesRepository;
         private readonly AreasZoologicoRepository _areasZoologicoRepository;
         private readonly EspeciesRepository _especiesRepository;
-
-       
-
-
+      
         public ZoologicoServicios(    AlimentacionRepository  alimentacionRepository,
                                       AnimalesRepository  animalesRepository,
                                       AreasZoologicoRepository  areasZoologicoRepository,
