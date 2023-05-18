@@ -9,6 +9,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 {
     public class RolesRepository : IRepository<tbRoles>
     {
+       
         public RequestStatus Delete(tbRoles item)
         {
             throw new NotImplementedException();

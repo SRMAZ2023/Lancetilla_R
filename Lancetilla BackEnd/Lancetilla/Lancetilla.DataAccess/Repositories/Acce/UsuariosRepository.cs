@@ -1,4 +1,5 @@
-﻿using Lancetilla.Entities.Entities;
+﻿using Dapper;
+using Lancetilla.Entities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 {
     public class UsuariosRepository : IRepository<tbUsuarios>
     {
+
+
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbUsuarios> ListarDepartamentos()
+        {
+            return con.VW_tbUsuarios.AsList();
+        }
         public RequestStatus Delete(tbUsuarios item)
         {
             throw new NotImplementedException();

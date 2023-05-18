@@ -45,6 +45,19 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
         }
 
         #region Cargos
+        public IEnumerable<VW_tbCargos> ListarCargos()
+        {
+            try
+            {
+                var list = _cargosRepository.ListarCargos();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbCargos>();
+            }
+        }
         #endregion
 
         #region Departamentos

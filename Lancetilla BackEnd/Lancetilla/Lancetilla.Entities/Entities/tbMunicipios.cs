@@ -11,7 +11,6 @@ namespace Lancetilla.Entities.Entities
         public tbMunicipios()
         {
             tbEmpleados = new HashSet<tbEmpleados>();
-            tbVisitantes = new HashSet<tbVisitantes>();
         }
 
         public int muni_Id { get; set; }
@@ -27,6 +26,5 @@ namespace Lancetilla.Entities.Entities
         public virtual tbUsuarios muni_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios muni_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
-        public virtual ICollection<tbVisitantes> tbVisitantes { get; set; }
     }
 }

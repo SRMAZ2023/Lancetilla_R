@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 using Lancetilla.Entities.Entities;
 
 namespace Lancetilla.DataAccess.Repositories.Mant
 {
     public class MunicipiosRepository : IRepository<tbMunicipios>
     {
+
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbMunicipios> ListarDepartamentos()
+        {
+            return con.VW_tbMunicipios.AsList();
+        }
         public RequestStatus Delete(tbMunicipios item)
         {
             throw new NotImplementedException();

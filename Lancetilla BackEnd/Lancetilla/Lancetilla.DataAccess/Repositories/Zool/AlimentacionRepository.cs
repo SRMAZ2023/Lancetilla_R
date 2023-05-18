@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 using Lancetilla.Entities.Entities;
 
 namespace Lancetilla.DataAccess.Repositories.Zool
 {
     public class AlimentacionRepository : IRepository<tbAlimentacion>
     {
+
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbALimentacion> ListarDepartamentos()
+        {
+            return con.VW_tbALimentacion.AsList();
+        }
         public RequestStatus Delete(tbAlimentacion item)
         {
             throw new NotImplementedException();

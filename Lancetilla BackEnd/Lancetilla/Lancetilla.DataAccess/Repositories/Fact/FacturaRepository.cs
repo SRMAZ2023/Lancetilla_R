@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 using Lancetilla.Entities.Entities;
 
 namespace Lancetilla.DataAccess.Repositories.Fact
 {
     public class FacturaRepository : IRepository<tbFacturas>
     {
+
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbFacturas> ListarFactura()
+        {
+            return con.VW_tbFacturas.AsList();
+        }
         public RequestStatus Delete(tbFacturas item)
         {
             throw new NotImplementedException();

@@ -130,6 +130,10 @@
          "ObjectType": 3
       },
       {
+         "Name": "[fact].[VW_tbFacturas]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[fact].[VW_tbMetodosPago]",
          "ObjectType": 3
       },
@@ -154,7 +158,15 @@
          "ObjectType": 3
       },
       {
+         "Name": "[mant].[VW_tbMantenimientos]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[mant].[VW_tbMunicipios]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[mant].[VW_tbTiposMantenimientos]",
          "ObjectType": 3
       },
       {
@@ -175,14 +187,6 @@
       },
       {
          "Name": "[zool].[VW_tbEspecies]",
-         "ObjectType": 3
-      },
-      {
-         "Name": "[zool].[VW_tbMantenimientos]",
-         "ObjectType": 3
-      },
-      {
-         "Name": "[zool].[VW_tbTiposMantenimientos]",
          "ObjectType": 3
       }
    ],

@@ -9,6 +9,9 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 {
     public class PantallasRepository : IRepository<tbPantallas>
     {
+
+
+        
         public RequestStatus Delete(tbPantallas item)
         {
             throw new NotImplementedException();

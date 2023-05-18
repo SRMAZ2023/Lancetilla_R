@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 using Lancetilla.Entities.Entities;
 
 namespace Lancetilla.DataAccess.Repositories.Fact
 {
     public class MetodoDePagoRepository : IRepository<tbMetodosPago>
     {
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbMetodosPago> ListarDepartamentos()
+        {
+            return con.VW_tbMetodosPago.AsList();
+        }
         public RequestStatus Delete(tbMetodosPago item)
         {
             throw new NotImplementedException();

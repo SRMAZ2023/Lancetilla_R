@@ -1,4 +1,5 @@
-﻿using Lancetilla.Entities.Entities;
+﻿using Dapper;
+using Lancetilla.Entities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,12 @@ namespace Lancetilla.DataAccess.Repositories.Bota
 {
     public class AreasBotanicasRepository : IRepository<tbAreasBotanicas>
     {
+
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbAreasBotanicas> ListarDepartamentos()
+        {
+            return con.VW_tbAreasBotanicas.AsList();
+        }
         public RequestStatus Delete(tbAreasBotanicas item)
         {
             throw new NotImplementedException();
