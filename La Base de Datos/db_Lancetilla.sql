@@ -383,6 +383,7 @@ mant_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 mant_Observaciones		NVARCHAR(100)		NOT NULL,
 anim_Id					INT					NOT NULL,
 tima_Id					INT					NOT NULL,
+mant_Fecha				DATE				NOT NULL,
 
 /**********Campos de auditoria***********/
 mant_UserCreacion		INT,
@@ -1307,18 +1308,18 @@ VALUES
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***************************************************************TABLA DE MANTENIMIENTO************************************************************************--
-INSERT INTO mant.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_UserCreacion)
+INSERT INTO mant.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_Fecha, mant_UserCreacion)
 VALUES
-    ('Limpieza de excremento de aves', 7, 1,  1),
-    ('Se le ha dado 2KG de suplementos a los delfines', 34, 2, 1),
-    ('Çuración de herida al area de Felinos', 5,  3, 1),
-    ('Baño a las jirajas bebés',  38,  4, 1),
-    ('Control de cucarachas', 40, 5, 1),
-    ('Curación de la pata derecha de las cebras', 39, 6, 1),
-    ('Entrenamiento físico de los lobos', 37, 7, 1),
-    ('Curación de infección de los tigres', 4, 8, 1),
-    ('Limpieza de piscinas en el área de boas', 53, 9, 1),
-    ('Cambio de temperatura en el invernadero de los dragones de comodo', 52,  10, 1);
+    ('Limpieza de excremento de aves', 7, 1, GETDATE(), 1),
+    ('Se le ha dado 2KG de suplementos a los delfines', 34, 2, GETDATE(),1),
+    ('Çuración de herida al area de Felinos', 5,  3,GETDATE(), 1),
+    ('Baño a las jirajas bebés',  38,  4, GETDATE(),1),
+    ('Control de cucarachas', 40, 5,GETDATE(), 1),
+    ('Curación de la pata derecha de las cebras', 39, 6, GETDATE(),1),
+    ('Entrenamiento físico de los lobos', 37, 7, GETDATE(),1),
+    ('Curación de infección de los tigres', 4, 8,GETDATE(), 1),
+    ('Limpieza de piscinas en el área de boas', 53, 9, GETDATE(),1),
+    ('Cambio de temperatura en el invernadero de los dragones de comodo', 52,  10, GETDATE(),1);
 
 --**************************************************************/TABLA DE MANTENIMIENTO************************************************************************--
 

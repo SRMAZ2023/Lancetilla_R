@@ -259,6 +259,7 @@ AS
 
 SELECT mant_Id, 
 	   mant_Observaciones,
+	   mant_Fecha,
 	   anim_Nombre,
 	   T2.arzo_Id,
 	   arzo_Descripcion,

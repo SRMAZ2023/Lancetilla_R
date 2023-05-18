@@ -996,17 +996,75 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
-CREATE OR ALTER PROC mantUDP_tbMantenimientos_INDEX
-AS BEGIN
 
-SELECT * FROM mant.VW_tbMantenimientos
-
-END
 --*********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MANTENIMIENTO*************************************************************************--
+CREATE OR ALTER PROC mantUDP_tbMantenimientos_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbMantenimientos
+WHERE mant_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbMantenimientos_CREATE 
+@mant_Observaciones NVARCHAR(200),
+@anim_Id INT,
+@tima_Id INT,
+@mant_UserCreacion INT
+AS BEGIN 
+
+BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_Observaciones AND mant_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El mantenimiento ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT carg_iD FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbCargos
+			SET
+				carg_Descripcion =  @carg_Descripcion,
+				carg_UserCreacion = @carg_UserCreacion,
+				carg_UserModificacion = NULL,
+				carg_Estado = 1
+			WHERE carg_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbCargos(carg_Descripcion, carg_UserCreacion)
+			VALUES (@carg_Descripcion, @carg_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+END
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
 
