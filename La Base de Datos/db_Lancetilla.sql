@@ -341,6 +341,7 @@ CREATE TABLE mant.tbVisitantes(
 visi_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
 visi_Nombres				NVARCHAR(100)			NOT NULL,
 visi_Apellido				NVARCHAR(100)			NOT NULL,
+visi_RTN					NVARCHAR(100)			NOT NULL,
 visi_Identidad				NVARCHAR(100)			NOT NULL,
 visi_FechaNacimiento		DATE					NOT NULL,
 visi_Direccion				NVARCHAR(200)			NOT NULL,
@@ -361,7 +362,8 @@ CONSTRAINT FK_mant_tbVisitantes_muni_Id_mant_tbMunicipios_muni_Id				FOREIGN KEY
 CONSTRAINT FK_mant_tbVisitantes_visi_UserCreacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (visi_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_mant_tbVisitantes_visi_UserModificacion_acce_tbUsuarios_usua_Id	FOREIGN KEY (visi_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT CK_mant_tbVisitantes_visi_Sexo										CHECK(visi_Sexo IN ('F', 'M', 'O')),
-CONSTRAINT UK_mant_tbVisitantes_visi_Identidad									UNIQUE(visi_Identidad));
+CONSTRAINT UK_mant_tbVisitantes_visi_Identidad									UNIQUE(visi_Identidad),
+CONSTRAINT UK_mant_tbVisitantes_visi_RTN									    UNIQUE(visi_RTN));
 --************************************************************/TABLA DE VISITANTES****************************************************************************--
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
