@@ -18,3 +18,18 @@ C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.Dat
 C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.dll
 C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\ref\Lancetilla.DataAccess.dll
 C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.pdb
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\bin\Debug\net5.0\Lancetilla.DataAccess.deps.json
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\bin\Debug\net5.0\Lancetilla.DataAccess.dll
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\bin\Debug\net5.0\ref\Lancetilla.DataAccess.dll
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\bin\Debug\net5.0\Lancetilla.DataAccess.pdb
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\bin\Debug\net5.0\Lancetilla.Entities.dll
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\bin\Debug\net5.0\Lancetilla.Entities.pdb
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.csproj.AssemblyReference.cache
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.AssemblyInfoInputs.cache
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.AssemblyInfo.cs
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.csproj.CopyComplete
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.dll
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\ref\Lancetilla.DataAccess.dll
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.DataAccess\obj\Debug\net5.0\Lancetilla.DataAccess.pdb

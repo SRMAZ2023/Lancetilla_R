@@ -155,8 +155,7 @@ AS BEGIN
 			BEGIN
 			UPDATE gral.tbEstadosCiviles
 			SET
-				civi_Estado		=	0
-				WHERE civi_ID	=	@civi_ID
+				
 
 			SELECT 200 AS codeStatus, 'Estado Civil Eliminado con éxito' AS messageStatus
 			END
@@ -225,6 +224,59 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ESPECIES**************************************************************************--
+GO 
+CREATE OR ALTER VIEW zool.VW_tbEspecies
+as
+SELECT TOP (100) [espe_Id]
+      ,[espe_Descripcion]
+      ,[espe_UserCreacion]
+      ,[espe_FechaCreacion]
+      ,[espe_UserModificacion]
+      ,[espe_FechaModificacion]
+      ,[espe_Estado]
+  FROM [db_Lancetilla].[zool].[tbEspecies]
+
+go
+CREATE OR ALTER PROCEDURE zool.UDP_tbEspecies_SELECT
+AS
+BEGIN
+	SELECT TOP (100) [espe_Id]
+      ,[espe_Descripcion]
+      ,[espe_UserCreacion]
+      ,[espe_FechaCreacion]
+      ,[espe_UserModificacion]
+      ,[espe_FechaModificacion]
+      ,[espe_Estado]
+  FROM [db_Lancetilla].[zool].[VW_tbEspecies]
+  WHERE espe_Estado = 1
+END
+
+
+go
+CREATE OR ALTER PROCEDURE zool.UDP_tbEspecies_INSERT
+AS
+BEGIN
+	BEGIN TRY
+	SELECT TOP (100) [espe_Id]
+      ,[espe_Descripcion]
+      ,[espe_UserCreacion]
+      ,[espe_FechaCreacion]
+      ,[espe_UserModificacion]
+      ,[espe_FechaModificacion]
+      ,[espe_Estado]
+  FROM [db_Lancetilla].[zool].[VW_tbEspecies]
+  WHERE espe_Estado = 1
+  	 	   SELECT 1 CodeStatus
+
+  END TRY
+  BEGIN CATCH
+  		   SELECT 0 CodeStatus
+
+  END CATCH
+END
+
+
+
 --***************************************************************/TABLA DE ESPECIES**************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
