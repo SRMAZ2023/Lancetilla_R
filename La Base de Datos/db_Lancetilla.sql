@@ -381,9 +381,7 @@ CONSTRAINT FK_zool_tbTiposMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_
 CREATE TABLE mant.tbMantenimientos(
 mant_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 mant_Observaciones		NVARCHAR(100)		NOT NULL,
-anim_Id					INT					NOT NULL,
 tima_Id					INT					NOT NULL,
-mant_Fecha				DATE				NOT NULL,
 
 /**********Campos de auditoria***********/
 mant_UserCreacion		INT,
@@ -394,10 +392,29 @@ mant_Estado				BIT					DEFAULT 1,
 
 CONSTRAINT FK_mant_tbMantenimientos_mant_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (mant_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_mant_tbMantenimientos_mant_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (mant_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_mant_tbMantenimientos_anim_Id_mant_tbAnimales_anim_Id						FOREIGN KEY (anim_Id)				REFERENCES zool.tbAnimales(anim_Id),
 CONSTRAINT FK_mant_tbMantenimientos_tima_Id_mant_tbTiposMantenientos_tima_iD			FOREIGN KEY (tima_Id)				REFERENCES mant.tbTiposMantenimientos(tima_Id));
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+CREATE TABLE mant.tbMantenimientoAnimal(
+maan_Id					INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+anim_Id					INT NOT NULL,
+mant_Id					INT NOT NULL,
+
+/**********Campos de auditoria***********/
+maan_UserCreacion		INT,
+maan_FechaCreacion		DATETIME			DEFAULT GETDATE(),
+maan_UserModificacion	INT,
+maan_FechaModificacion	DATETIME,
+maan_Estado				BIT					DEFAULT 1,
+
+CONSTRAINT FK_mant_tbMantenimientoAnimal_maan_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (maan_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_mant_tbMantenimientoAnimal_maan_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (maan_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_mant_tbMantenimientoAnimal_mant_tbMantenimientos_mant_Id						FOREIGN KEY (mant_Id)				REFERENCES mant.tbMantenimientos(mant_Id),
+CONSTRAINT FK_mant_tbMantenimientoAnimal_anim_tbAnimales_anim_Id							FOREIGN KEY (anim_Id)				REFERENCES zool.tbAnimales(anim_Id));
+--******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
 --**********************************************************/MÓDULO DE MANTENIMIENTO**************************************************************************--
 
@@ -1301,24 +1318,39 @@ VALUES
     ('Cambio de temperatura',1);
 
 --**********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***************************************************************TABLA DE MANTENIMIENTO************************************************************************--
-INSERT INTO mant.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_Fecha, mant_UserCreacion)
+INSERT INTO mant.tbMantenimientos (mant_Observaciones, tima_Id, mant_UserCreacion)
 VALUES
-    ('Limpieza de excremento de aves', 7, 1, GETDATE(), 1),
-    ('Se le ha dado 2KG de suplementos a los delfines', 34, 2, GETDATE(),1),
-    ('Çuración de herida al area de Felinos', 5,  4,GETDATE(), 1),
-    ('Baño a las jirajas bebés',  38,  3, GETDATE(),1),
-    ('Control de cucarachas', 40, 5,GETDATE(), 1),
-    ('Curación de la pata derecha de las cebras', 39, 4, GETDATE(),1),
-    ('Entrenamiento físico de los lobos', 37, 6, GETDATE(),1),
-    ('Curación de infección de los tigres', 4, 4,GETDATE(), 1),
-    ('Limpieza de piscinas en el área de boas', 53, 1, GETDATE(),1),
-    ('Cambio de temperatura en el invernadero de los dragones de comodo', 52,  7, GETDATE(),1);
+    ('Limpieza de excremento de aves',											1,   1),
+    ('Se le ha dado 2KG de suplementos a los delfines',							2,  1),
+    ('Çuración de herida al area de Felinos',									4,   1),
+    ('Baño a las jirajas bebés',												3, 1),
+    ('Control de cucarachas',													5,   1),
+    ('Curación de la pata derecha de las cebras',								4,  1),
+    ('Entrenamiento físico de los lobos',										6,  1),
+    ('Curación de infección de los tigres',										4,    1),
+    ('Limpieza de piscinas en el área de boas',									1,  1),
+    ('Cambio de temperatura en el invernadero de los dragones de comodo',		7, 1);
 
---**************************************************************/TABLA DE MANTENIMIENTO************************************************************************--
+--**************************************************************/TABLA DE MANTENIMIENTO***********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+INSERT INTO mant.tbMantenimientoAnimal(anim_Id, mant_Id, maan_UserCreacion)
+VALUES  (21, 1, 1),
+		(2, 2, 1),
+		(3, 3, 1),
+		(14, 4, 1),
+		(10, 5, 1),
+		(29, 6, 1),
+		(46, 7, 1),
+		(23, 1, 1),
+		(7, 2, 1),
+		(50, 3, 1);
+--******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
 --**********************************************************/INSERT DE MANTENIMIENTO**************************************************************************--
 
