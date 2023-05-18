@@ -946,8 +946,8 @@ END CATCH
 END
 GO
 
-EXEC mant.UDP_tbVisitantes_UPDATE 11, 'a', 'e', '111', 'f', 1
-select * from mant.tbVisitantes
+--EXEC mant.UDP_tbVisitantes_UPDATE 11, 'a', 'e', '111', 'f', 1
+--select * from mant.tbVisitantes
 
 
 CREATE OR ALTER PROC mant.UDP_tbVisitantes_UPDATE
@@ -996,6 +996,154 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
+CREATE OR ALTER PROC mant.UDP_tbTiposMantenimientos_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbTiposMantenimientos
+WHERE tima_Estado = 1;
+
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbTiposMantenimientos_CREATE
+@tima_Descripcion NVARCHAR(100),
+@tima_UserCreacion INT
+AS BEGIN
+
+	BEGIN TRY
+		BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion = @tima_Descripcion AND tima_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El tipo de mantenimiento ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion = @tima_Descripcion AND tima_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT tima_Id FROM mant.tbTiposMantenimientos WHERE tima_Descripcion = tima_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbTiposMantenimientos
+			SET
+				tima_Descripcion = @tima_Descripcion,
+				tima_UserCreacion = @tima_UserCreacion,
+				tima_UserModificacion = NULL,
+				tima_Estado = 1
+			WHERE tima_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El tipo de mantenimiento ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion = @tima_Descripcion AND tima_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbTiposMantenimientos(tima_Descripcion, tima_UserCreacion)
+			VALUES (@tima_Descripcion, @tima_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El tipo de mantenimiento ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+
+		COMMIT
+	END TRY
+
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbTiposMantenimientos_UPDATE
+@tima_Id INT,
+@tima_Descripcion NVARCHAR(100),
+@tima_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+			IF EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion= @tima_Descripcion AND tima_Estado= 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El tipo de mantenimiento ya existe.' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion = @tima_Descripcion AND tima_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT tima_Id FROM mant.tbTiposMantenimientos WHERE tima_Descripcion= @tima_Descripcion) 
+
+				UPDATE mant.tbTiposMantenimientos
+				SET
+						tima_Descripcion =     @tima_Descripcion,
+						tima_UserModificacion = @tima_UserModificacion,
+						tima_Estado = 1
+				WHERE   tima_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El tipo de mantenimiento ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Tipo de mantenimiento no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbTiposMantenimientos
+				SET
+					  tima_Descripcion =     @tima_Descripcion,
+					  tima_UserModificacion = @tima_UserModificacion,
+					  tima_FechaModificacion = GETDATE()
+				WHERE tima_Id = @tima_Id
+
+				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbTiposMantenimientos_DELETE
+@tima_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @tiposmants INT = (SELECT COUNT(*) FROM mant.tbMantenimientos WHERE tima_Id = @tima_Id)
+			
+			IF @tiposmants > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El tipo de mantenimiento está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE mant.tbTiposMantenimientos
+			SET
+				tima_Estado		=	0
+				WHERE tima_Id	=	@tima_Id
+
+			SELECT 200 AS codeStatus, 'El tipo de mantenimiento ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+END
+GO
 
 --*********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 
@@ -1013,12 +1161,10 @@ GO
 
 CREATE OR ALTER PROC mant.UDP_tbMantenimientos_CREATE 
 @mant_Observaciones NVARCHAR(200),
-@mant_Fecha DATE,
-@anim_Id INT,
 @tima_Id INT,
 @mant_UserCreacion INT
 AS BEGIN 
-
+BEGIN TRY
 BEGIN TRAN
 
 		-- Si existe
@@ -1028,34 +1174,35 @@ BEGIN TRAN
 		END
 
 
-		ELSE IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 0)
+		ELSE IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_Observaciones AND mant_Estado = 0)
 		BEGIN
-			DECLARE @Id INT = (SELECT carg_iD FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion) 
+			DECLARE @Id INT = (SELECT mant_Id FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_Observaciones) 
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
-			UPDATE mant.tbCargos
+			UPDATE mant.tbMantenimientos
 			SET
-				carg_Descripcion =  @carg_Descripcion,
-				carg_UserCreacion = @carg_UserCreacion,
-				carg_UserModificacion = NULL,
-				carg_Estado = 1
-			WHERE carg_Id = @Id
+				mant_Observaciones =  @mant_Observaciones,
+				tima_Id = @tima_Id,
+				mant_UserCreacion = @mant_UserCreacion,
+				mant_UserModificacion = NULL,
+				mant_Estado = 1
+			WHERE mant_Id = @Id
 
-		    SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+		    SELECT 200 AS codeStatus, 'El mantenimiento ha sido creado con éxito.' AS messageStatus
 
 			COMMIT -- Agregado COMMIT
 		END
 
 
-		ELSE IF NOT EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones= @mant_Observaciones AND mant_Estado = 1)
 		BEGIN
-			INSERT INTO mant.tbCargos(carg_Descripcion, carg_UserCreacion)
-			VALUES (@carg_Descripcion, @carg_UserCreacion)
+			INSERT INTO mant.tbMantenimientos(mant_Observaciones, tima_Id, mant_UserCreacion)
+			VALUES (@mant_Observaciones, @tima_Id, @mant_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
-			SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+			SELECT 200 AS codeStatus, 'El mantenimiento ha sido creado con éxito.' AS messageStatus
 
 			COMMIT -- Agregado COMMIT
 		END
@@ -1064,10 +1211,193 @@ BEGIN TRAN
 
 END TRY
 
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+END
+GO
+
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbMantenimientos_UPDATE
+@mant_Id INT,
+@tima_Id INT,
+@mant_Observaciones NVARCHAR(100),
+@mant_UserModificacion INT
+AS BEGIN
+
+BEGIN TRY
+BEGIN TRAN 
+
+IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_Observaciones AND mant_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El mantenimiento ya existe.' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones= @mant_Observaciones AND mant_Estado= 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT mant_Id FROM mant.tbMantenimientos WHERE mant_Observaciones= @mant_Observaciones) 
+
+				UPDATE mant.tbMantenimientos
+				SET
+						mant_Observaciones =    @mant_Observaciones,
+						tima_Id = @tima_Id,
+						mant_UserModificacion = @mant_UserModificacion,
+						mant_Estado = 1
+				WHERE   mant_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El mantenimiento ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- mantenimiento no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbMantenimientos
+				SET
+					  mant_Observaciones =    @mant_Observaciones,
+					  tima_Id = @tima_Id,
+					  mant_UserModificacion = @mant_UserModificacion,
+					  mant_FechaModificacion = GETDATE()
+				WHERE mant_Id = @tima_Id
+
+				SELECT 200 AS codeStatus, 'El mantenimiento ha sido actualizado con éxito.' AS messageStatus
+			END
+
+
+COMMIT
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+END CATCH 
+END
+GO
+
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbMantenimientos_DELETE
+@mant_Id INT
+AS BEGIN
+
+	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @mantes INT = (SELECT COUNT(*) FROM mant.tbMantenimientoAnimal WHERE mant_Id = @mant_Id)
+			
+			IF @mantes > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El mantenimiento todavía se usa.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE mant.tbMantenimientos
+			SET
+				mant_Estado		=	0
+				WHERE mant_Id	=	@mant_Id
+
+			SELECT 200 AS codeStatus, 'El mantenimiento ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
 
 END
+GO
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_MantenimientoAnimales
+WHERE maan_Estado = 1;
+
+END
+GO
+
+
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
+@anim_Id INT,
+@mant_Id INT,
+@maan_Fecha DATE,
+@maan_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+			INSERT INTO mant.tbMantenimientoAnimal(anim_Id, mant_Id, maan_Fecha, maan_FechaCreacion )
+			VALUES (@anim_Id, @mant_Id, @maan_Fecha, @maan_UserCreacion)
+
+
+			SELECT 200 AS codeStatus, 'El mantenimiento por animal ha sido creado con éxito.' AS messageStatus
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+END CATCH
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END
+GO
+
+
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_UPDATE
+@maan_Id INT,
+@anim_Id INT,
+@mant_Id INT,
+@maan_Fecha DATE,
+@maan_UserModificacion INT
+AS BEGIN
+BEGIN TRY
+
+BEGIN TRAN
+UPDATE mant.tbMantenimientoAnimal
+SET anim_Id = @anim_Id,
+mant_Id = @mant_Id,
+maan_Fecha = @maan_Fecha,
+maan_UserModificacion = @maan_UserModificacion,
+maan_FechaModificacion = GETDATE()
+WHERE maan_Id = @maan_Id
+			SELECT 200 AS codeStatus, 'El mantenimiento por animal ha sido creado con éxito.' AS messageStatus
+
+			COMMIT
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+
+
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
+@maan_Id INT
+ AS BEGIN
+
+ BEGIN TRY 
+ BEGIN TRAN
+
+ UPDATE mant.tbMantenimientoAnimal 
+ SET maan_Estado = 0
+ WHERE maan_Id = @maan_Id
+
+ COMMIT
+ END TRY
+
+
+ BEGIN CATCH
+ ROLLBACK
+ END CATCH
+ --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
 --**********************************************************/PROCS DE MANTENIMIENTO**************************************************************************--
 

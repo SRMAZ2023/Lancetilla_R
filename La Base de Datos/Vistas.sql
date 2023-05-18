@@ -298,6 +298,7 @@ SELECT maan_Id,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = maan_UserModificacion)) AS usua_UserModiNombre,
 	   maan_UserModificacion,
+	   maan_Estado,
 	   maan_FechaModificacion
 	   FROM mant.tbMantenimientoAnimal T1
 	   INNER JOIN zool.tbAnimales T2
