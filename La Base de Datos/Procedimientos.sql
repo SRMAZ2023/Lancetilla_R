@@ -41,6 +41,16 @@ GO
 --***********************************************************PROCS DE MANTENIMIENTO**************************************************************************--
 
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
+CREATE OR ALTER PROC mant.UPD_tbDepartamentos_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbDepartamentos
+WHERE dept_Estado = 1;
+
+END
+GO
+
+
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_CREATE
 @dept_Descripcion NVARCHAR(100),
 @dept_UserCreacion INT
@@ -97,6 +107,9 @@ AS BEGIN
 			SET dept_Estado = 1,
 			dept_FechaCreacion = GETDATE();
 
+			SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
+
+
 			COMMIT -- Agregado COMMIT
 		END
 
@@ -109,9 +122,7 @@ AS BEGIN
 	END
 GO
 
---EXEC mant.UDP_tbDepartamentos_CREATE 'AAAAA', 1
---select * from mant.tbDepartamentos
---EXEC mant.udp_tbDepartamentos_DELETE 22
+
 
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_UPDATE
 @dept_Id INT,
@@ -123,7 +134,7 @@ AS BEGIN
 		BEGIN TRAN
 			IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
 			BEGIN
-				SELECT 409 AS codeStatus, 'El departamento ya existe' AS messageStatus
+				SELECT 409 AS codeStatus, 'El departamento ya existe.' AS messageStatus
 			END
 			ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 0)
 			BEGIN
@@ -160,9 +171,6 @@ END
 GO
 
 
---EXEC mant.UDP_tbDepartamentos_UPDATE 22, 'hola', 1
---select * from mant.tbDepartamentos
---EXEC mant.udp_tbDepartamentos_DELETE 21
 
 
 
@@ -182,12 +190,8 @@ AS BEGIN
 			BEGIN
 			UPDATE mant.tbDepartamentos
 			SET
-<<<<<<< HEAD
-				
-=======
 				dept_Estado		=	0
 				WHERE dept_Id	=	@dept_Id
->>>>>>> b39071da32a69f9029e28d6a6de01c04ce8ffaab
 
 			SELECT 200 AS codeStatus, 'El departamento ha sido eliminado con éxito.' AS messageStatus
 			END
@@ -206,21 +210,718 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MUNICIPIOS****************************************************************************--
+CREATE OR ALTER PROC mant.UDP_tbMunicipios_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbMunicipios
+WHERE muni_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbMunicipios_CREATE
+@muni_Descripcion NVARCHAR(100),
+@dept_Id INT,
+@muni_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El municipio ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT muni_Id FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbMunicipios
+			SET
+				muni_Descripcion = @muni_Descripcion,
+				dept_Id			= @dept_Id,
+				muni_UserCreacion = @muni_UserCreacion,
+				muni_UserModificacion = NULL,
+				muni_Estado = 1
+			WHERE muni_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbMunicipios(muni_Descripcion, dept_Id, muni_UserCreacion)
+			VALUES (@muni_Descripcion, @dept_Id, @muni_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 0)
+		BEGIN
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbMunicipios 
+			SET muni_Estado = 1,
+			muni_FechaCreacion = GETDATE();
+
+			SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
+
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbMunicipios_UPDATE
+@muni_Id INT,
+@muni_Descripcion NVARCHAR(100),
+@dept_Id INT,
+@muni_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+			IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El municipio ya existe.' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT muni_Id FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion) 
+
+				UPDATE mant.tbMunicipios
+				SET
+					muni_Descripcion = @muni_Descripcion,
+					muni_UserModificacion = @muni_UserModificacion,
+					muni_Estado = 1
+				WHERE muni_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El muniçipio ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Municipio no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbMunicipios
+				SET
+					muni_Descripcion = @muni_Descripcion,
+					muni_UserModificacion = @muni_UserModificacion
+				WHERE muni_Id = @muni_Id
+
+				SELECT 200 AS codeStatus, 'El municipio ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbMunicipios_DELETE
+@muni_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @munis INT = (SELECT COUNT(*) FROM mant.tbEmpleados WHERE muni_Id = @muni_Id)
+			
+			IF @munis > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El municipio que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE mant.tbMunicipios
+			SET
+				muni_Estado		=	0
+				WHERE muni_Id	=	@muni_Id
+
+			SELECT 200 AS codeStatus, 'El municipios ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
+CREATE OR ALTER PROC mant.UDP_tbMunicipios_MUNISPORDEPTO
+@dept_Id INT
+AS BEGIN
+
+SELECT * FROM mant.tbMunicipios
+WHERE dept_Id = @dept_Id;
+
+END
+GO
 --*************************************************************/TABLA DE MUNICIPIOS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***********************************************************TABLA DE ESTADOS CIVILES*************************************************************************--
+CREATE OR ALTER PROC mant.UDP_tbEstadosCiviles_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbEstadosCiviles
+WHERE estc_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbEstadosCiviles_CREATE
+@estc_Descripcion NVARCHAR(100),
+@estc_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El estado civil ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT estc_Id FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbEstadosCiviles
+			SET
+				estc_Descripcion = @estc_Descripcion,
+				estc_UserCreacion = @estc_UserCreacion,
+				estc_UserModificacion = NULL,
+				estc_Estado = 1
+			WHERE estc_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El estado civil ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbEstadosCiviles(estc_Descripcion, estc_UserCreacion)
+			VALUES (@estc_Descripcion, @estc_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El estado civil ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 0)
+		BEGIN
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbEstadosCiviles 
+			SET estc_Estado = 1,
+			estc_FechaCreacion = GETDATE();
+
+			SELECT 200 AS codeStatus, 'El estado civil ha sido creado con éxito.' AS messageStatus
+
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbEstadosCiviles_UPDATE
+@estc_Id INT,
+@estc_Descripcion NVARCHAR(100),
+@estc_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+			IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El estado civil ya existe.' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT estc_Id FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion) 
+
+				UPDATE mant.tbEstadosCiviles
+				SET
+					estc_Descripcion = @estc_Descripcion,
+					estc_UserModificacion = @estc_UserModificacion,
+					estc_Estado = 1
+				WHERE estc_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El estado civil ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Estadi civil no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbEstadosCiviles
+				SET
+					estc_Descripcion = @estc_Descripcion,
+					estc_UserModificacion = @estc_UserModificacion
+				WHERE estc_Id = estc_Id
+
+				SELECT 200 AS codeStatus, 'El estado civil ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbMunicipios_DELETE
+@estc_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @estados INT = (SELECT COUNT(*) FROM mant.tbEmpleados WHERE estc_Id = @estc_Id)
+			
+			IF @estados > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El estado civil que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE mant.tbEstadosCiviles
+			SET
+				estc_Estado		=	0
+				WHERE estc_Id	=	@estc_Id
+
+			SELECT 200 AS codeStatus, 'El estado civil ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
 --**********************************************************/TABLA DE ESTADOS CIVILES*************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE CARGOS*****************************************************************************--
+CREATE OR ALTER PROC mant.UDP_tbEmpleados_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbEmpleados
+WHERE empl_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbEmpleados_CREATE
+@empl_Nombre NVARCHAR(100),
+@empl_Apellido NVARCHAR(100),
+@empl_Identidad NVARCHAR(100),
+@empl_FechaNacimiento DATE,
+@empl_Direccion NVARCHAR(100),
+@empl_Sexo CHAR(1),
+@empl_Telefono NVARCHAR(100),
+@estc_Id INT,
+@carg_Id INT,
+@muni_Id INT,
+@empl_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbEmpleados WHERE empl_Identidad = @empl_Identidad AND empl_Estado = 1)
+		BEGIN	
+			SELECT 409 AS codeStatus, 'El número de identidad ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbEmpleados WHERE empl_Identidad = @empl_Identidad AND empl_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT empl_Id FROM mant.tbEmpleados WHERE empl_Identidad = empl_Identidad) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbEmpleados
+			SET
+			empl_Nombre = @empl_Nombre,
+			empl_Apellido = @empl_Apellido,
+			empl_Identidad = @empl_Identidad,
+			empl_FechaNacimiento = @empl_FechaNacimiento,
+			empl_Direccion = @empl_Direccion,
+			empl_Sexo = @empl_Sexo,
+			empl_Telefono = @empl_Telefono,
+			estc_Id = @estc_Id,
+			carg_Id = @carg_Id,
+			muni_Id = @muni_Id,
+			empl_UserCreacion = @empl_UserCreacion
+			WHERE empl_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El empleado ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbEmpleados WHERE empl_Identidad = @empl_Identidad AND empl_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbEmpleados(empl_Nombre, empl_Apellido, empl_Identidad, empl_FechaNacimiento, empl_Direccion, empl_Sexo, empl_Telefono, estc_Id, carg_Id, muni_Id, empl_UserCreacion)
+			VALUES (@empl_Nombre, @empl_Apellido, @empl_Identidad, @empl_FechaNacimiento,@empl_Direccion, @empl_Sexo, @empl_Telefono, @estc_Id, @carg_Id, @muni_Id, @empl_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El empleado ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbEmpleados WHERE empl_Identidad = empl_Identidad AND empl_Estado= 0)
+		BEGIN
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbEmpleados 
+			SET 
+			empl_Estado = 1,
+			empl_FechaCreacion = GETDATE();
+
+			SELECT 200 AS codeStatus, 'El empleado ha sido creado con éxito.' AS messageStatus
+
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+exec mant.UDP_tbEmpleados_CREATE 'a', 'a', '123', '2005-02-22', 'sgfhdfghdfgh', 'f', '33333', 1,1,1,1
+select * from mant.tbEmpleados
+exec mant.UDP_tbEmpleados_DELETE 11
+
+
+CREATE OR ALTER PROC mant.UDP_tbCargos_UPDATE
+@carg_Id INT,
+@carg_Descripcion NVARCHAR(100),
+@carg_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+			IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El cargo ya existe.' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT carg_Id FROM mant.tbCargos WHERE carg_Descripcion= @carg_Descripcion) 
+
+				UPDATE mant.tbCargos
+				SET
+						carg_Descripcion =      @carg_Descripcion,
+						carg_UserModificacion = @carg_UserModificacion,
+						carg_Estado = 1
+				WHERE   carg_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Estadi civil no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbCargos
+				SET
+					  carg_Descripcion =      @carg_Descripcion,
+					  carg_UserModificacion = @carg_UserModificacion
+				WHERE carg_Id = carg_Id
+
+				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbEmpleados_DELETE
+@empl_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @emple INT = (SELECT COUNT(*) FROM fact.tbFacturas WHERE empl_Id = @empl_Id)
+			
+			IF @emple > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El empleado no ha sido despedido.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE mant.tbEmpleados
+			SET
+				empl_Estado		=	0
+				WHERE empl_Id	=	@empl_Id
+
+			SELECT 200 AS codeStatus, 'El empleado ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
 --***************************************************************/TABLA DE CARGOS*****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE EMPLEADOS****************************************************************************--
+CREATE OR ALTER PROC mant.UDP_tbCargos_INDEX
+AS BEGIN
+
+SELECT * FROM mant.VW_tbCargos
+WHERE carg_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbCargos_CREATE
+@carg_Descripcion NVARCHAR(100),
+@carg_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El cargo ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT carg_iD FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbCargos
+			SET
+				carg_Descripcion =  @carg_Descripcion,
+				carg_UserCreacion = @carg_UserCreacion,
+				carg_UserModificacion = NULL,
+				carg_Estado = 1
+			WHERE carg_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbCargos(carg_Descripcion, carg_UserCreacion)
+			VALUES (@carg_Descripcion, @carg_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado= 0)
+		BEGIN
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbCargos 
+			SET 
+			carg_Estado = 1,
+			carg_FechaCreacion = GETDATE();
+
+			SELECT 200 AS codeStatus, 'El cargo ha sido creado con éxito.' AS messageStatus
+
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbCargos_UPDATE
+@carg_Id INT,
+@carg_Descripcion NVARCHAR(100),
+@carg_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+			IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El cargo ya existe.' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT carg_Id FROM mant.tbCargos WHERE carg_Descripcion= @carg_Descripcion) 
+
+				UPDATE mant.tbCargos
+				SET
+						carg_Descripcion =      @carg_Descripcion,
+						carg_UserModificacion = @carg_UserModificacion,
+						carg_Estado = 1
+				WHERE   carg_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Estadi civil no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbCargos
+				SET
+					  carg_Descripcion =      @carg_Descripcion,
+					  carg_UserModificacion = @carg_UserModificacion
+				WHERE carg_Id = carg_Id
+
+				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbCargos_DELETE
+@carg_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @cargos INT = (SELECT COUNT(*) FROM mant.tbCargos WHERE carg_Id = @carg_Id)
+			
+			IF @cargos > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El cargo que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE mant.tbCargos
+			SET
+				carg_Estado		=	0
+				WHERE carg_Id	=	@carg_Id
+
+			SELECT 200 AS codeStatus, 'El cargo ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
 --*************************************************************/TABLA DE EMPLEADOS****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------

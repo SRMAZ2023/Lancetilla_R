@@ -211,17 +211,10 @@ AS
 
 SELECT visi_Id, 
        visi_Nombres + ' ' + visi_Apellido AS visi_Nombre, 
-	   visi_Identidad,
-	   visi_FechaNacimiento,
-	   visi_Direccion, 
+	   visi_RTN,
 	   visi_Sexo,
-	   visi_Telefono,
-	   T1.estc_Id, 
-	   estc_Descripcion,
-	   T1.muni_Id, 
-	   muni_Descripcion,
-	   T5.dept_Id,
-	   dept_Descripcion,
+	   CASE visi_Sexo WHEN 'F' THEN 'Femenino'
+	   ELSE 'Masculino' END AS visi_Sexos,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = visi_UserCreacion)) AS usua_UserCreaNombre,
 	   visi_UserCreacion,
@@ -231,13 +224,8 @@ SELECT visi_Id,
 	   visi_UserModificacion,
 	   visi_FechaModificacion,
 	   visi_Estado
-	   FROM mant.tbVisitantes T1
-	   INNER JOIN mant.tbEstadosCiviles T2
-	   ON T1.estc_Id = T2.estc_Id
-	   INNER JOIN mant.tbMunicipios T4
-	   ON T1.muni_Id = T4.muni_Id
-	   INNER JOIN mant.tbDepartamentos T5
-	    ON T4.dept_Id = T5.dept_Id
+	   FROM mant.tbVisitantes 
+
 GO
 --************************************************************/TABLA DE VISITANTES****************************************************************************--
 

@@ -342,13 +342,7 @@ visi_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
 visi_Nombres				NVARCHAR(100)			NOT NULL,
 visi_Apellido				NVARCHAR(100)			NOT NULL,
 visi_RTN					NVARCHAR(100)			NOT NULL,
-visi_Identidad				NVARCHAR(100)			NOT NULL,
-visi_FechaNacimiento		DATE					NOT NULL,
-visi_Direccion				NVARCHAR(200)			NOT NULL,
 visi_Sexo					CHAR(1)					NOT NULL,
-visi_Telefono				NVARCHAR(100)			NOT NULL,
-estc_Id						INT						NOT NULL,
-muni_Id						INT						NOT NULL,
 
 /**********Campos de auditoria***********/
 visi_UserCreacion			INT,
@@ -357,12 +351,9 @@ visi_UserModificacion		INT,
 visi_FechaModificacion		DATETIME,
 visi_Estado					BIT						DEFAULT 1,
 
-CONSTRAINT FK_mant_tbVisitantes_estc_Id_mant_tbEstadosCiviles_estc_Id			FOREIGN KEY (estc_Id)				REFERENCES mant.tbEstadosCiviles(estc_Id),
-CONSTRAINT FK_mant_tbVisitantes_muni_Id_mant_tbMunicipios_muni_Id				FOREIGN KEY (muni_Id)				REFERENCES mant.tbMunicipios(muni_Id),
 CONSTRAINT FK_mant_tbVisitantes_visi_UserCreacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (visi_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_mant_tbVisitantes_visi_UserModificacion_acce_tbUsuarios_usua_Id	FOREIGN KEY (visi_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT CK_mant_tbVisitantes_visi_Sexo										CHECK(visi_Sexo IN ('F', 'M', 'O')),
-CONSTRAINT UK_mant_tbVisitantes_visi_Identidad									UNIQUE(visi_Identidad),
 CONSTRAINT UK_mant_tbVisitantes_visi_RTN									    UNIQUE(visi_RTN));
 --************************************************************/TABLA DE VISITANTES****************************************************************************--
 
@@ -1281,18 +1272,18 @@ VALUES
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
-INSERT INTO mant.tbVisitantes (visi_Nombres, visi_Apellido, visi_Identidad, visi_FechaNacimiento, visi_Direccion, visi_Sexo, visi_Telefono, estc_Id, muni_Id, visi_UserCreacion)
+INSERT INTO mant.tbVisitantes (visi_Nombres, visi_Apellido, visi_RTN, visi_Sexo, visi_UserCreacion)
 VALUES 
-  ('María', 'González', '0801-1990-12345', '1990-01-08', 'Calle Principal 123', 'F', '9999-1234', 1, 1, 1),
-  ('Carlos', 'López', '0502-1985-67890', '1985-02-05', 'Avenida Central 456', 'M', '8888-5678', 2, 2, 1),
-  ('Laura', 'Hernández', '0303-1995-45678', '1995-03-03', 'Colonia Los Pinos 789', 'F', '7777-9876', 1, 3, 2),
-  ('Pedro', 'Rodríguez', '1004-1982-23456', '1982-04-10', 'Barrio El Bosque 567', 'M', '6666-2345', 3, 1, 2),
-  ('Ana', 'Torres', '0705-1993-34567', '1993-05-07', 'Residencial Las Flores 890', 'F', '5555-3456', 2, 2, 3),
-  ('Luis', 'Martínez', '2006-1988-45678', '1988-06-20', 'Colonia San Miguel 123', 'M', '4444-4567', 1, 3, 3),
-  ('Sofía', 'García', '1507-1998-56789', '1998-07-15', 'Barrio La Esperanza 456', 'F', '3333-5678', 2, 1, 1),
-  ('Jorge', 'Díaz', '1208-1987-67890', '1987-08-12', 'Residencial Los Ángeles 789', 'M', '2222-6789', 3, 2, 1),
-  ('Carolina', 'Ramírez', '0909-1997-78901', '1997-09-09', 'Avenida Central Sur 234', 'F', '1111-7890', 1, 3, 1),
-  ('Ricardo', 'Sánchez', '0410-1985-89012', '1985-10-04', 'Calle Los Alamos 567', 'M', '0000-8901', 2, 1, 1);
+  ('María', 'González', '0801199012345',  'F', 1),
+  ('Carlos', 'López', '0502198567890',    'M', 1),
+  ('Laura', 'Hernández', '0303199545678', 'F', 1),
+  ('Pedro', 'Rodríguez', '1004198223456', 'M', 1),
+  ('Ana', 'Torres', '0705199334567',      'F', 1),
+  ('Luis', 'Martínez', '2006198845678',   'M', 1),
+  ('Sofía', 'García', '1507199856789',    'F', 1),
+  ('Jorge', 'Díaz', '1208198767890',      'M', 1),
+  ('Carolina', 'Ramírez', '0909199778901','F', 1),
+  ('Ricardo', 'Sánchez', '0410198589012', 'M', 1);
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
