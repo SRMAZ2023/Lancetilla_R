@@ -1013,6 +1013,7 @@ GO
 
 CREATE OR ALTER PROC mant.UDP_tbMantenimientos_CREATE 
 @mant_Observaciones NVARCHAR(200),
+@mant_Fecha DATE,
 @anim_Id INT,
 @tima_Id INT,
 @mant_UserCreacion INT

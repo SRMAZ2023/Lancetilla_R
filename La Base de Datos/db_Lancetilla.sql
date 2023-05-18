@@ -1292,16 +1292,13 @@ VALUES
 --***********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 INSERT INTO mant.tbTiposMantenimientos (tima_Descripcion, tima_UserCreacion)
 VALUES
-    ('Mantenimiento de limpieza en el área de aves',  1),
-    ('Mantenimiento de alimentación de cetáceos',  1),
-    ('Mantenimiento de revisión médica en el área de carnívoros',  1),
-    ('Mantenimiento de cuidado y limpieza de hábitats en el área de herbívoros',   1),
-    ('Mantenimiento de control de plagas en el área de roedores',   1),
-    ('Mantenimiento de revisión veterinaria en el área de equinos',  1),
-    ('Mantenimiento de entrenamiento y cuidado de caninos',  1),
-    ('Mantenimiento de revisión médica en el área de felinos',  1),
-    ('Mantenimiento de limpieza y cuidado de hábitats en el área de reptiles acuáticos', 1),
-    ('Mantenimiento de monitoreo de temperatura y humedad en el área de reptiles terrestres',  1);
+    ('Limpieza de jaula',1),
+    ('Alimentación de animales',1),
+    ('Baño',1),
+	('Curación de animales',1),
+    ('Control de plagas',1),
+    ('Entrenamiento',1),
+    ('Cambio de temperatura',1);
 
 --**********************************************************/TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
 
@@ -1312,14 +1309,14 @@ INSERT INTO mant.tbMantenimientos (mant_Observaciones, anim_Id, tima_Id, mant_Fe
 VALUES
     ('Limpieza de excremento de aves', 7, 1, GETDATE(), 1),
     ('Se le ha dado 2KG de suplementos a los delfines', 34, 2, GETDATE(),1),
-    ('Çuración de herida al area de Felinos', 5,  3,GETDATE(), 1),
-    ('Baño a las jirajas bebés',  38,  4, GETDATE(),1),
+    ('Çuración de herida al area de Felinos', 5,  4,GETDATE(), 1),
+    ('Baño a las jirajas bebés',  38,  3, GETDATE(),1),
     ('Control de cucarachas', 40, 5,GETDATE(), 1),
-    ('Curación de la pata derecha de las cebras', 39, 6, GETDATE(),1),
-    ('Entrenamiento físico de los lobos', 37, 7, GETDATE(),1),
-    ('Curación de infección de los tigres', 4, 8,GETDATE(), 1),
-    ('Limpieza de piscinas en el área de boas', 53, 9, GETDATE(),1),
-    ('Cambio de temperatura en el invernadero de los dragones de comodo', 52,  10, GETDATE(),1);
+    ('Curación de la pata derecha de las cebras', 39, 4, GETDATE(),1),
+    ('Entrenamiento físico de los lobos', 37, 6, GETDATE(),1),
+    ('Curación de infección de los tigres', 4, 4,GETDATE(), 1),
+    ('Limpieza de piscinas en el área de boas', 53, 1, GETDATE(),1),
+    ('Cambio de temperatura en el invernadero de los dragones de comodo', 52,  7, GETDATE(),1);
 
 --**************************************************************/TABLA DE MANTENIMIENTO************************************************************************--
 
