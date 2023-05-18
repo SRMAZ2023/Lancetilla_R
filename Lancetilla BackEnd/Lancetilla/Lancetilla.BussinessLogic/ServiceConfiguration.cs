@@ -41,7 +41,7 @@ namespace Lancetilla.BussinessLogic
             services.AddScoped<DepartamentosRepository>();
             services.AddScoped<EmpleadosRepository>();
             services.AddScoped<EstadoCivilesRepository>();
-            services.AddScoped<MantenimientoServicios>();
+            services.AddScoped<MantenimientosRepository>();
             services.AddScoped<MunicipiosRepository>();
             services.AddScoped<TiposDeMantenimientoRepository>();
             services.AddScoped<VisitantesRepository>();
@@ -61,8 +61,9 @@ namespace Lancetilla.BussinessLogic
             //Zoologico
             services.AddScoped<AlimentacionRepository>();
             services.AddScoped<AnimalesRepository>();
-            services.AddScoped<AreasBotanicasRepository>();
+            services.AddScoped<AreasZoologicoRepository>();
             services.AddScoped<EspeciesRepository>();
+          
 
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lancetilla.DataAccess.Repositories.Mant;
+using Lancetilla.Entities.Entities;
 
 namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
 {
@@ -47,7 +48,19 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
         #endregion
 
         #region Departamentos
+        public IEnumerable<VW_tbDepartamentos> ListarDepartamentos()
+        {
+            try
+            {
+                var list = _departamentosRepository.ListarDepartamentos();
+                return list;
+            }
+            catch (Exception ex)
+            {
 
+                return Enumerable.Empty<VW_tbDepartamentos>();
+            }
+        }
         #endregion
 
         #region Estados Civiles

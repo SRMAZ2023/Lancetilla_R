@@ -11,7 +11,6 @@ namespace Lancetilla.Entities.Entities
         public tbEstadosCiviles()
         {
             tbEmpleados = new HashSet<tbEmpleados>();
-            tbVisitantes = new HashSet<tbVisitantes>();
         }
 
         public int estc_Id { get; set; }
@@ -25,6 +24,5 @@ namespace Lancetilla.Entities.Entities
         public virtual tbUsuarios estc_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios estc_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
-        public virtual ICollection<tbVisitantes> tbVisitantes { get; set; }
     }
 }
