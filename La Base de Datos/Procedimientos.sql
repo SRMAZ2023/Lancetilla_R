@@ -41,14 +41,6 @@ GO
 --***********************************************************PROCS DE MANTENIMIENTO**************************************************************************--
 
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbDepartamentos_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbDepartamentos
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_CREATE
 @dept_Descripcion NVARCHAR(100),
 @dept_UserCreacion INT
@@ -57,44 +49,71 @@ AS BEGIN
 	BEGIN TRY
 		BEGIN TRAN
 
-	--si existe
-		 IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado  = 1)
-	     BEGIN
-            SELECT 409 AS codeStatus, 'El departamento ya existe.' AS messageStatus
-         END
-
-
-	--si no existe
-		 ELSE IF NOT EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado  = 1)
-		 BEGIN
-			
-			INSERT INTO mant.tbDepartamentos(dept_Descripcion, dept_UserCreacion)
-			VALUES(@dept_Descripcion, @dept_UserCreacion)
-
-		 			SELECT 200 AS codeStatus, 'El departamento ha sido creado con éxito.' AS messageStatus
-					COMMIT
+		-- Si existe
+		IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El departamento ya existe.' AS messageStatus
 		END
-		
-	--si existe pero esta eliminado
-		 ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado  = 0)
-	     BEGIN
-            UPDATE mant.tbDepartamentos 
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT dept_Id FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbDepartamentos
+			SET
+				dept_Descripcion = @dept_Descripcion,
+				dept_UserCreacion = @dept_UserCreacion,
+				dept_UserModificacion = NULL,
+				dept_Estado = 1
+			WHERE dept_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El departamento ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbDepartamentos (dept_Descripcion, dept_UserCreacion)
+			VALUES (@dept_Descripcion, @dept_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El departamento ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 0)
+		BEGIN
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE mant.tbDepartamentos 
 			SET dept_Estado = 1,
-				dept_FechaCreacion = GETDATE();
-         END
+			dept_FechaCreacion = GETDATE();
+
+			COMMIT -- Agregado COMMIT
+		END
+
 		COMMIT
 	END TRY
-
-	     BEGIN CATCH
-		 ROLLBACK
-	     		SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
-	     END CATCH
-
-END
+	BEGIN CATCH
+		ROLLBACK
+		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+	END CATCH
+	END
 GO
 
+--EXEC mant.UDP_tbDepartamentos_CREATE 'AAAAA', 1
+--select * from mant.tbDepartamentos
+--EXEC mant.udp_tbDepartamentos_DELETE 22
 
-CREATE OR ALTER PROC mant.UDP_tbDepartamento_UPDATE
+CREATE OR ALTER PROC mant.UDP_tbDepartamentos_UPDATE
 @dept_Id INT,
 @dept_Descripcion NVARCHAR(100),
 @dept_UserModificacion INT
@@ -102,42 +121,49 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado  = 1)
+			IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
 			BEGIN
+				SELECT 409 AS codeStatus, 'El departamento ya existe' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT dept_Id FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion) 
 
-			SELECT 500 AS codeStatus, 'El departamento ya existe' AS messageStatus
+				UPDATE mant.tbDepartamentos
+				SET
+					dept_Descripcion = @dept_Descripcion,
+					dept_UserModificacion = @dept_UserModificacion,
+					dept_Estado = 1
+				WHERE dept_Id = @Id
 
+				SELECT 200 AS codeStatus, 'El departamento ha sido actualizado con éxito.' AS messageStatus
+			END
+			ELSE -- Departamento no existe, se realiza la actualización
+			BEGIN
+				UPDATE mant.tbDepartamentos
+				SET
+					dept_Descripcion = @dept_Descripcion,
+					dept_UserModificacion = @dept_UserModificacion
+				WHERE dept_Id = @dept_Id
+
+				SELECT 200 AS codeStatus, 'El departamento ha sido actualizado con éxito.' AS messageStatus
 			END
 
-			ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado  = 0)
-			BEGIN
-			UPDATE mant.tbDepartamentos
-			SET
-				dept_Descripcion			=	@dept_Descripcion,
-				dept_UserModificacion		=	@dept_UserModificacion,
-				dept_Estado					=	1
-				WHERE dept_Id				=	@dept_Id
-
-			END
-
-			ELSE IF NOT EXISTS (SELECT * FROM  mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion)
-
-			UPDATE mant.tbDepartamentos
-			SET
-				dept_Descripcion		    =	@dept_Descripcion,
-				dept_UserModificacion	    =	@dept_UserModificacion
-				WHERE dept_Id			    =	dept_Id
-										
-			SELECT 200 AS codeStatus, 'El departamento ha sido creado con éxito.' AS messageStatus
-	COMMIT
-	END TRY
-	BEGIN CATCH
-	ROLLBACK
-			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
-	END CATCH
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
 
 END
 GO
+
+
+--EXEC mant.UDP_tbDepartamentos_UPDATE 22, 'hola', 1
+--select * from mant.tbDepartamentos
+--EXEC mant.udp_tbDepartamentos_DELETE 21
+
 
 
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_DELETE
@@ -145,23 +171,26 @@ CREATE OR ALTER PROC mant.UDP_tbDepartamentos_DELETE
 AS BEGIN
 
   	BEGIN TRY
+	BEGIN TRAN
 			DECLARE @deptos INT = (SELECT COUNT(*) FROM mant.tbMunicipios WHERE dept_Id = @dept_Id)
 			
 			IF @deptos > 0
 			BEGIN
-			SELECT 500 AS codeStatus, 'El departamento que desea eliminar está en uso.' AS messageStatus
+			SELECT 150 AS codeStatus, 'El departamento que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
-			UPDATE gral.tbEstadosCiviles
+			UPDATE mant.tbDepartamentos
 			SET
-				civi_Estado		=	0
-				WHERE civi_ID	=	@civi_ID
+				dept_Estado		=	0
+				WHERE dept_Id	=	@dept_Id
 
-			SELECT 200 AS codeStatus, 'Estado Civil Eliminado con éxito' AS messageStatus
+			SELECT 200 AS codeStatus, 'El departamento ha sido eliminado con éxito.' AS messageStatus
 			END
+	COMMIT
 	END TRY
 	BEGIN CATCH
+	ROLLBACK
 			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
 	END CATCH
 
