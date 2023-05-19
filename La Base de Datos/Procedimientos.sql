@@ -1739,6 +1739,150 @@ GO
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--**************************************************************TABLA DE HABITATS*****************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbHabitat_CREATE
+@habi_Descripcion NVARCHAR(100),
+@habi_UserCreacion INT
+AS BEGIN
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion AND habi_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El habitat ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion AND habi_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT habi_Id FROM zool.tbHabitat WHERE habi_Descripcion  = @habi_Descripcion ) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE zool.tbHabitat
+			SET
+				habi_Descripcion  =  @habi_Descripcion ,
+				habi_UserCreacion = @habi_UserCreacion,
+				habi_UserModificacion = NULL,
+				habi_Estado = 1
+			WHERE habi_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El hábitat ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion  = @habi_Descripcion AND habi_Estado = 1)
+		BEGIN
+			INSERT INTO zool.tbHabitat(habi_Descripcion , habi_UserCreacion)
+			VALUES (@habi_Descripcion , @habi_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El hábitat ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+END
+
+GO
+
+
+CREATE OR ALTER PROC zool.UDP_tbHabitat_UPDATE
+@habi_Id INT,
+@habi_Descripcion NVARCHAR(100),
+@habi_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion AND habi_Estado= 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El hábitat ya existe.' AS messageStatus
+			END
+		IF EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion AND habi_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT habi_Id FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion ) 
+
+				UPDATE zool.tbHabitat
+				SET
+						habi_Descripcion =      @habi_Descripcion,
+						habi_UserModificacion = @habi_UserModificacion,
+						habi_Estado = 1
+				WHERE   habi_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El hábitat ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Estadi civil no existe, se realiza la actualización
+			BEGIN
+				UPDATE zool.tbHabitat
+				SET
+					  habi_Descripcion =      @habi_Descripcion,
+					  habi_FechaModificacion = GETDATE(),
+					  habi_UserModificacion = @habi_UserModificacion
+				WHERE habi_Id = @habi_Id
+
+				SELECT 200 AS codeStatus, 'El hábitat ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbHabitat_DELETE
+@habi_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @habis INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE habi_Id = @habi_Id)
+			
+			IF @habis > 0
+			BEGIN
+			SELECT 202 AS codeStatus, 'El hábitat que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE zool.tbHabitat
+			SET
+				habi_Estado	=	0
+				WHERE habi_Id	=	@habi_Id
+
+			SELECT 200 AS codeStatus, 'El hábitat ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+--*************************************************************TABLA DE HABITATS*****************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --****************************************************************TABLA DE ESPECIES**************************************************************************--
 CREATE OR ALTER PROC zool.UDP_tbtbEspecies_CREATE
 @espe_Descripcion NVARCHAR(100),

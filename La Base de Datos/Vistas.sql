@@ -411,6 +411,27 @@ SELECT espe_Id,
 GO
 --***************************************************************/TABLA DE ESPECIES**************************************************************************--
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--***************************************************************TABLA DE HÁBITATS***************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbHabitat
+AS 
+
+SELECT habi_Id, 
+	   habi_Descripcion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = habi_UserCreacion)) AS usua_UserCreaNombre,
+	   habi_UserCreacion,
+	   habi_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = habi_UserModificacion)) AS usua_UserModiNombre,
+	   habi_UserModificacion, 
+	   habi_FechaModificacion,
+	   habi_Estado
+	   FROM zool.tbHabitat
+GO
+--**************************************************************/TABLA DE HÁBITATS***************************************************************************--
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
