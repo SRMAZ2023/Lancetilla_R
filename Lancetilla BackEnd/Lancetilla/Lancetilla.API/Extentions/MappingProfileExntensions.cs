@@ -40,6 +40,7 @@ namespace Lancetilla.API.Extentions
             CreateMap<MunicipiosViewModel, tbMunicipios>().ReverseMap();
             CreateMap<TiposDeMantenimientoViewModel, tbTiposMantenimientos>().ReverseMap();
             CreateMap<VisitantesViewModel, tbVisitantes>().ReverseMap();
+            CreateMap<MantenimientoAnimalViewModel, tbMantenimientoAnimal>().ReverseMap();
 
 
             //Zoologico

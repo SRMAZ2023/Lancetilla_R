@@ -45,7 +45,8 @@ namespace Lancetilla.BussinessLogic
             services.AddScoped<MunicipiosRepository>();
             services.AddScoped<TiposDeMantenimientoRepository>();
             services.AddScoped<VisitantesRepository>();
-         
+            services.AddScoped<MantenimientoPorAnimalRepository>();
+
 
             //Botanica
             services.AddScoped<AreasBotanicasRepository>();

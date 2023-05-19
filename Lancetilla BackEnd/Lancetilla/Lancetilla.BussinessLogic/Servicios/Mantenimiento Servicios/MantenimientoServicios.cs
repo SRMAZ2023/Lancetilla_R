@@ -12,25 +12,27 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
     public class MantenimientoServicios
     {
 
-        private readonly CargosRepository  _cargosRepository;
+        private readonly CargosRepository _cargosRepository;
         private readonly DepartamentosRepository _departamentosRepository;
         private readonly EmpleadosRepository _empleadosRepository;
         private readonly EstadoCivilesRepository _estadoCivilesRepository;
-      
-        private readonly MantenimientosRepository  _mantenimientosRepository;
+        private readonly MantenimientoPorAnimalRepository _mantenimientoPorAnimalRepository;
+
+        private readonly MantenimientosRepository _mantenimientosRepository;
         private readonly MunicipiosRepository _municipiosRepository;
-        private readonly TiposDeMantenimientoRepository  _tiposDeMantenimientoRepository;
+        private readonly TiposDeMantenimientoRepository _tiposDeMantenimientoRepository;
         private readonly VisitantesRepository _visitantesRepository;
 
 
         public MantenimientoServicios(CargosRepository cargosRepository,
-                                      DepartamentosRepository  departamentosRepository,
-                                      EmpleadosRepository  empleadosRepository,
-                                      EstadoCivilesRepository  estadoCivilesRepository,
+                                      DepartamentosRepository departamentosRepository,
+                                      EmpleadosRepository empleadosRepository,
+                                      EstadoCivilesRepository estadoCivilesRepository,
                                       MantenimientosRepository mantenimientosRepository,
                                       MunicipiosRepository municipiosRepository,
                                       TiposDeMantenimientoRepository tiposDeMantenimientoRepository,
-                                      VisitantesRepository visitantesRepository)
+                                      VisitantesRepository visitantesRepository,
+                                      MantenimientoPorAnimalRepository mantenimientoPorAnimalRepository)
 
         {
             _cargosRepository = cargosRepository;
@@ -42,7 +44,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             _municipiosRepository = municipiosRepository;
             _tiposDeMantenimientoRepository = tiposDeMantenimientoRepository;
             _visitantesRepository = visitantesRepository;
-
+            _mantenimientoPorAnimalRepository = mantenimientoPorAnimalRepository;
         }
 
         #region Cargos
@@ -496,6 +498,101 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             try
             {
                 var map = _mantenimientosRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Mantenimiento Animal
+        public IEnumerable<VW_MantenimientoAnimales> ListarMantenimientosAnimal()
+        {
+            try
+            {
+                var list = _mantenimientoPorAnimalRepository.ListarMantenimientoAnimal();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_MantenimientoAnimales>();
+
+            }
+        }
+
+        public ServiceResult InsertMantenimientoAnimal(tbMantenimientoAnimal item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _mantenimientoPorAnimalRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarMantenimientoAnimal(tbMantenimientoAnimal item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _mantenimientoPorAnimalRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarMantenimientoAnimal(tbMantenimientoAnimal item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _mantenimientoPorAnimalRepository.Delete(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);

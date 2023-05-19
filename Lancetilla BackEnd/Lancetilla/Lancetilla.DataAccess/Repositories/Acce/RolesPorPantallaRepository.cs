@@ -35,6 +35,18 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             return result;
         }
 
+        public IEnumerable<tbRolesPantallas> PantallasPorRol(tbRolesPantallas item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+           
+            parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.Query<tbRolesPantallas>(ScriptsDataBase.PantallasRolPorPantalla, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
         public RequestStatus Delete(tbRolesPantallas item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
