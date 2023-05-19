@@ -43,7 +43,7 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@espe_Id", item.espe_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@espe_Descripcion", item.espe_Descripcion, DbType.String, ParameterDirection.Input);
             parametros.Add("@espe_UserModificacion", item.espe_UserModificacion, DbType.Int32, ParameterDirection.Input);
 

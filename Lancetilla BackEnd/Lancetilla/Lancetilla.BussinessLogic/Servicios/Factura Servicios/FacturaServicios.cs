@@ -79,6 +79,84 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
 
             }
         }
+
+        public ServiceResult InsertarMetodoDePago(tbMetodosPago item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _metodoDePagoRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarMetodoDePago(tbMetodosPago item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _metodoDePagoRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarMetodoDePago(tbMetodosPago item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _metodoDePagoRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
 
         #region Tickets
@@ -94,6 +172,32 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
 
                 return Enumerable.Empty<VW_tbTickets>();
 
+            }
+        }
+
+        public ServiceResult InsertarTicket(tbTickets item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _ticketsRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
             }
         }
         #endregion

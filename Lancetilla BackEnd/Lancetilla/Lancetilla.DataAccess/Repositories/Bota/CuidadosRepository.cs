@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Lancetilla.Entities.Entities;
+using Microsoft.Data.SqlClient;
 
 namespace Lancetilla.DataAccess.Repositories.Bota
 {
@@ -19,8 +21,15 @@ namespace Lancetilla.DataAccess.Repositories.Bota
 
         public RequestStatus Delete(tbCuidados item)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@cuid_Id", item.cuid_Id, DbType.Int32, ParameterDirection.Input);
+          
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarCuidados, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
+
 
         public tbCuidados Find(int? id)
         {
@@ -29,7 +38,29 @@ namespace Lancetilla.DataAccess.Repositories.Bota
 
         public RequestStatus Insert(tbCuidados item)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@cuid_Descripcion", item.cuid_Descripcion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_Frecuencia", item.cuid_Frecuencia, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_UserCreacion", item.cuid_UserCreacion, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarCuidados, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        public RequestStatus Update(tbCuidados item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@cuid_Id", item.cuid_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@cuid_Descripcion", item.cuid_Descripcion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_Frecuencia", item.cuid_Frecuencia, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_UserModificacion", item.cuid_UserModificacion, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarCuidados, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
 
         public IEnumerable<tbCuidados> List()

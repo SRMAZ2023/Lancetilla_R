@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Lancetilla.Entities.Entities;
+using Microsoft.Data.SqlClient;
 
 namespace Lancetilla.DataAccess.Repositories.Fact
 {
@@ -28,8 +30,19 @@ namespace Lancetilla.DataAccess.Repositories.Fact
 
         public RequestStatus Insert(tbTickets item)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@tick_Descripcion", item.tick_Descripcion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@tick_Precio", item.tick_Precio, DbType.Decimal, ParameterDirection.Input);
+            parametros.Add("@tick_UserCreacion", item.tick_UserCreacion, DbType.Int32, ParameterDirection.Input);
+           
+
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarTicket, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
+
+       
 
         public IEnumerable<tbTickets> List()
         {

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Botanica_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +29,30 @@ namespace Lancetilla.API.Controllers
         {
             var list = _botanicaServicios.ListarPlantas();
             return Ok(list);
+        }
+
+        [HttpPost("InsertarPlanta")]
+        public IActionResult InsertarPlanta(PlantasViewModel item)
+        {
+            var plantas = _mapper.Map<tbPlantas>(item);
+            var List = _botanicaServicios.InsertarPlanta(plantas);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarPlanta")]
+        public IActionResult ActualizarPlanta(PlantasViewModel item)
+        {
+            var plantas = _mapper.Map<tbPlantas>(item);
+            var List = _botanicaServicios.ActualizarPlanta(plantas);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarPlanta")]
+        public IActionResult EliminarPlanta(PlantasViewModel item)
+        {
+            var plantas = _mapper.Map<tbPlantas>(item);
+            var List = _botanicaServicios.EliminarPlanta(plantas);
+            return Ok(List);
         }
     }
 }

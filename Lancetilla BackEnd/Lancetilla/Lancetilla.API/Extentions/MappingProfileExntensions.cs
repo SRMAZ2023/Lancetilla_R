@@ -12,13 +12,46 @@ namespace Lancetilla.API.Extentions
     {
         public MappingProfileExntensions()
         {
-            CreateMap<DepartamentosViewModel, tbDepartamentos>().ReverseMap();
 
-            CreateMap<CargosViewModel, tbCargos>().ReverseMap();
-
-            CreateMap<EspeciesViewModel, tbEspecies>().ReverseMap();
-
+            //Seguridad
             CreateMap<UsuariosViewModel, tbUsuarios>().ReverseMap();
+            CreateMap<RolesPorPantallaViewModel, tbRolesPantallas>().ReverseMap();
+            CreateMap<RolViewModel, tbRoles>().ReverseMap();
+
+
+            //Botanica
+            CreateMap<AreasBotanicasViewModel, tbAreasBotanicas>().ReverseMap();
+            CreateMap<CuidadosDePlantaViewModel, tbCuidados>().ReverseMap();
+            CreateMap<PlantasViewModel, tbPlantas>().ReverseMap();
+
+            //Facturas
+            CreateMap<FacturaDetalleViewModel, tbFacturasDetalles>().ReverseMap();
+            CreateMap<FacturasViewModel, tbFacturas>().ReverseMap();
+            CreateMap<MetodosDePagoViewModel, tbMetodosPago>().ReverseMap();
+            CreateMap<TicketsViewModel, tbTickets>().ReverseMap();
+
+
+            //Mantenimiento
+            CreateMap<DepartamentosViewModel, tbDepartamentos>().ReverseMap();
+            CreateMap<CargosViewModel, tbCargos>().ReverseMap();
+            CreateMap<EmpleadosViewModel, tbEmpleados>().ReverseMap();
+            CreateMap<EstadoCivilViewModel, tbEstadosCiviles>().ReverseMap();
+            CreateMap<MantenimientosViewModel, tbMantenimientos>().ReverseMap();
+            CreateMap<MunicipiosViewModel, tbMunicipios>().ReverseMap();
+            CreateMap<TiposDeMantenimientoViewModel, tbTiposMantenimientos>().ReverseMap();
+            CreateMap<VisitantesViewModel, tbVisitantes>().ReverseMap();
+
+
+            //Zoologico
+            CreateMap<AlimentacionViewModel, tbAlimentacion>().ReverseMap();
+            CreateMap<AnimalesViewModel, tbAnimales>().ReverseMap();
+            CreateMap<AreasDeZoologicoViewModel, tbAreasZoologico>().ReverseMap();
+            CreateMap<EspeciesViewModel, tbEspecies>().ReverseMap();
+          
+            // CreateMap<, tbHabitat>().ReverseMap();
+
+
+
         }
     }
 }

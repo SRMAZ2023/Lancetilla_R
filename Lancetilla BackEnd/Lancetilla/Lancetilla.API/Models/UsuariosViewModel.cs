@@ -21,16 +21,12 @@ namespace Lancetilla.API.Models
         public string role_Descripcion { get; set; }
         public bool usua_Admin { get; set; }
         public string usua_EsAdmin { get; set; }
-        [NotMapped]
-        public string usua_UserCreaNombre { get; set; }
+      
         public int? usua_UserCreacion { get; set; }
-        public DateTime? usua_FechaCreacion { get; set; }
-
-        [NotMapped]
-        public string usua_UserModiNombre { get; set; }
+            
         public int? usua_UserModificacion { get; set; }
-        public DateTime? usua_FechaModificacion { get; set; }
-        public bool? usua_Estado { get; set; }
+     
+   
     }
 
 }

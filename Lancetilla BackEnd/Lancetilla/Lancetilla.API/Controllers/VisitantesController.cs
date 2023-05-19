@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,5 +30,23 @@ namespace Lancetilla.API.Controllers
             var list = _mantenimientoServicios.ListarVisitantes();
             return Ok(list);
         }
+
+        [HttpPost("InsertVisitantes")]
+        public IActionResult InsertVisitantes(VisitantesViewModel item)
+        {
+            var visitantes = _mapper.Map<tbVisitantes>(item);
+            var List = _mantenimientoServicios.InsertVisitantes(visitantes);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarVisitantes")]
+        public IActionResult ActualizarVisitantes(VisitantesViewModel item)
+        {
+            var visitantes = _mapper.Map<tbVisitantes>(item);
+            var List = _mantenimientoServicios.ActualizarVisitantes(visitantes);
+            return Ok(List);
+        }
+
+     
     }
 }

@@ -36,7 +36,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             parametros.Add("@empl_Id", item.empl_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@usua_Contraseña", item.usua_Contraseña, DbType.String, ParameterDirection.Input);
             parametros.Add("@usua_Admin", item.usua_Admin, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@role_Id", item.role_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@usua_UserCreacion", item.usua_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarUsuarios, parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -49,10 +49,10 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             var parametros = new DynamicParameters();
 
 
-            parametros.Add("@usua_Id", item.usua_Id, DbType.String, ParameterDirection.Input);        
+            parametros.Add("@usua_Id", item.usua_Id, DbType.Int32, ParameterDirection.Input);        
             parametros.Add("@empl_Id", item.empl_Id, DbType.Int32, ParameterDirection.Input);       
             parametros.Add("@usua_Admin", item.usua_Admin, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@role_Id", item.role_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@usua_UserModificacion", item.usua_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarUsuarios, parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -65,7 +65,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             var parametros = new DynamicParameters();
 
 
-            parametros.Add("@usua_Id", item.usua_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@usua_Id", item.usua_Id, DbType.Int32, ParameterDirection.Input);
             
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarUsuario, parametros, commandType: System.Data.CommandType.StoredProcedure);

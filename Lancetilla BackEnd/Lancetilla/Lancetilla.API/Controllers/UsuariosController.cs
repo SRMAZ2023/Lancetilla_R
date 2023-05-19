@@ -43,5 +43,30 @@ namespace Lancetilla.API.Controllers
 
             return Ok(respuesta);
         }
+
+
+        [HttpPost("InsertarUsuario")]
+        public IActionResult InsertarUsuario(UsuariosViewModel item)
+        {
+            var usuarios = _mapper.Map<tbUsuarios>(item);
+            var List = _AccesoServicios.InsertarUsuario(usuarios);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarUsuario")]
+        public IActionResult ActualizarUsuario(UsuariosViewModel item)
+        {
+            var usuarios = _mapper.Map<tbUsuarios>(item);
+            var List = _AccesoServicios.ActualizarUsuario(usuarios);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarUsuario")]
+        public IActionResult EliminarUsuario(UsuariosViewModel item)
+        {
+            var usuarios = _mapper.Map<tbUsuarios>(item);
+            var List = _AccesoServicios.EliminarUsuario(usuarios);
+            return Ok(List);
+        }
     }
 }

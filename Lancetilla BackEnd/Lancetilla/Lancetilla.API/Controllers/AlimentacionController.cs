@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,5 +30,30 @@ namespace Lancetilla.API.Controllers
             var list = _zoologicoServicios.ListarAlimentacion();
             return Ok(list);
         }
+
+        [HttpPost("InsertAlimentos")]
+        public IActionResult InsertAlimentos(AlimentacionViewModel item)
+        {
+            var departamento = _mapper.Map<tbAlimentacion>(item);
+            var List = _zoologicoServicios.InsertAlimentos(departamento);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarAlimentos")]
+        public IActionResult ActualizarAlimentos(AlimentacionViewModel item)
+        {
+            var departamento = _mapper.Map<tbAlimentacion>(item);
+            var List = _zoologicoServicios.ActualizarAlimentos(departamento);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarAlimentos")]
+        public IActionResult EliminarAlimentos(AlimentacionViewModel item)
+        {
+            var departamento = _mapper.Map<tbAlimentacion>(item);
+            var List = _zoologicoServicios.EliminarAlimentos(departamento);
+            return Ok(List);
+        }
+
     }
 }

@@ -17,12 +17,13 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         {
             return con.VW_tbCargos.AsList();
         }
+      
         public RequestStatus Delete(tbCargos item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@carg_Id", item.carg_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@carg_Id", item.carg_Id, DbType.Int32, ParameterDirection.Input);
            
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarCargos, parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -52,7 +53,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@carg_Id", item.carg_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@carg_Id", item.carg_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@carg_Descripcion", item.carg_Descripcion, DbType.String, ParameterDirection.Input);
             parametros.Add("@carg_UserModificacion", item.carg_UserModificacion, DbType.Int32, ParameterDirection.Input);
 

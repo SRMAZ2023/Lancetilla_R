@@ -137,13 +137,159 @@ namespace Lancetilla.BussinessLogic.Servicios.Acceso_Servicios
 
         #region Roles Por Pantalla
 
+        public ServiceResult InsertarRolPorPantalla(tbRolesPantallas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _rolesPorPantallaRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarRolPorPantalla(tbRolesPantallas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _rolesPorPantallaRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Roles
 
+        public ServiceResult InsertarRol(tbRoles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _rolesRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarRol(tbRoles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _rolesRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarRol(tbRoles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _rolesRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+
+
         #endregion
 
         #region Pantallas
+
+        public IEnumerable<tbPantallas> ListarMunicipioPorId(tbRoles item)
+        {
+            try
+            {
+                var list = _pantallasRepository.PantallasPorRol(item);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<tbPantallas>();
+            }
+        }
 
         #endregion
 

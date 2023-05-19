@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Factura_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +29,31 @@ namespace Lancetilla.API.Controllers
         {
             var list = _facturaServicios.ListarMetodosDePago();
             return Ok(list);
+        }
+
+
+        [HttpPost("InsertarMetodoDePago")]
+        public IActionResult InsertarMetodoDePago(MetodosDePagoViewModel item)
+        {
+            var metodosPago = _mapper.Map<tbMetodosPago>(item);
+            var List = _facturaServicios.InsertarMetodoDePago(metodosPago);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarMetodoDePago")]
+        public IActionResult ActualizarMetodoDePago(MetodosDePagoViewModel item)
+        {
+            var metodosPago = _mapper.Map<tbMetodosPago>(item);
+            var List = _facturaServicios.ActualizarMetodoDePago(metodosPago);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarMetodoDePago")]
+        public IActionResult EliminarMetodoDePago(MetodosDePagoViewModel item)
+        {
+            var metodosPago = _mapper.Map<tbMetodosPago>(item);
+            var List = _facturaServicios.EliminarMetodoDePago(metodosPago);
+            return Ok(List);
         }
     }
 }

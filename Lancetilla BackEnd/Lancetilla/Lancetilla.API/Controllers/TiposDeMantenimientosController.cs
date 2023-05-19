@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,5 +30,32 @@ namespace Lancetilla.API.Controllers
             var list = _mantenimientoServicios.ListarTiposDeMantenimientos();
             return Ok(list);
         }
+
+        [HttpPost("InsertTipoDeMantenimiento")]
+        public IActionResult InsertTipoDeMantenimiento(TiposDeMantenimientoViewModel item)
+        {
+            var  tiposMantenimientos = _mapper.Map<tbTiposMantenimientos>(item);
+            var List = _mantenimientoServicios.InsertTipoDeMantenimiento(tiposMantenimientos);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarTipoDeMantenimiento")]
+        public IActionResult ActualizarTipoDeMantenimiento(TiposDeMantenimientoViewModel item)
+        {
+            var tiposMantenimientos = _mapper.Map<tbTiposMantenimientos>(item);
+            var List = _mantenimientoServicios.ActualizarTipoDeMantenimiento(tiposMantenimientos);
+            return Ok(List);
+        }
+
+
+        [HttpPost("EliminarTipoDeMantenimiento")]
+        public IActionResult EliminarTipoDeMantenimiento(TiposDeMantenimientoViewModel item)
+        {
+            var tiposMantenimientos = _mapper.Map<tbTiposMantenimientos>(item);
+            var List = _mantenimientoServicios.EliminarTipoDeMantenimiento(tiposMantenimientos);
+            return Ok(List);
+        }
+
+
     }
 }

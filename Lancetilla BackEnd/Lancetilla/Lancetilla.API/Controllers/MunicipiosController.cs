@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +29,38 @@ namespace Lancetilla.API.Controllers
         {
             var list = _mantenimientoServicios.ListarMunicipios();
             return Ok(list);
+        }
+
+        [HttpPost("InsertMunicipio")]
+        public IActionResult InsertMunicipio(MunicipiosViewModel item)
+        {
+            var municipios = _mapper.Map<tbMunicipios>(item);
+            var List = _mantenimientoServicios.InsertMunicipio(municipios);
+            return Ok(List);
+        }
+
+        [HttpPost("ActualizarMunicipio")]
+        public IActionResult ActualizarMunicipio(MunicipiosViewModel item)
+        {
+            var municipios = _mapper.Map<tbMunicipios>(item);
+            var List = _mantenimientoServicios.ActualizarMunicipio(municipios);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarMunicipio")]
+        public IActionResult EliminarMunicipio(MunicipiosViewModel item)
+        {
+            var municipios = _mapper.Map<tbMunicipios>(item);
+            var List = _mantenimientoServicios.EliminarMunicipio(municipios);
+            return Ok(List);
+        }
+
+        [HttpPost("CargarMunicipiosPorDepa")]
+        public IActionResult CargarMunicipiosPorDepa(MunicipiosViewModel item)
+        {
+            var municipios = _mapper.Map<tbMunicipios>(item);
+            var List = _mantenimientoServicios.CargarMunicipiosPorDepa(municipios);
+            return Ok(List);
         }
     }
 }

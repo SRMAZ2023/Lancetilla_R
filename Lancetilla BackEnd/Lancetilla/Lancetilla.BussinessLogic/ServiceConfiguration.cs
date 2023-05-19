@@ -63,7 +63,8 @@ namespace Lancetilla.BussinessLogic
             services.AddScoped<AnimalesRepository>();
             services.AddScoped<AreasZoologicoRepository>();
             services.AddScoped<EspeciesRepository>();
-          
+            services.AddScoped<HabitatRepository>();
+
 
         }
 

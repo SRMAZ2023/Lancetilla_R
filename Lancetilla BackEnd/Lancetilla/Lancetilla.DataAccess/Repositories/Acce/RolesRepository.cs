@@ -56,7 +56,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             parametros.Add("@role_UserModificacion", item.role_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
 
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarRol, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarRol, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
 

@@ -2439,7 +2439,7 @@ GO
 
 
 
-CREATE OR ALTER PROC zool.UDP_tbCuidados_UPDATE
+CREATE OR ALTER PROC bota.UDP_tbCuidados_UPDATE
 @cuid_Id INT,
 @cuid_Descripcion NVARCHAR(100),
 @cuid_Frecuencia NVARCHAR(100),
@@ -2490,7 +2490,7 @@ AS BEGIN
 END
 GO
 
-CREATE OR ALTER PROC zool.UDP_tbCuidados_DELETE
+CREATE OR ALTER PROC bota.UDP_tbCuidados_DELETE
 @cuid_Id INT
 AS BEGIN
 
