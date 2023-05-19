@@ -1389,6 +1389,7 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
  UPDATE mant.tbMantenimientoAnimal 
  SET maan_Estado = 0
  WHERE maan_Id = @maan_Id
+ 			SELECT 200 AS codeStatus, 'El mantenimiento ha sido eliminado con éxito.' AS messageStatus
 
  COMMIT
  END TRY
@@ -1396,7 +1397,11 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
 
  BEGIN CATCH
  ROLLBACK
+ 			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
  END CATCH
+ END
+ GO
  --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
 --**********************************************************/PROCS DE MANTENIMIENTO**************************************************************************--
@@ -1413,62 +1418,315 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
 --***************************************************************PROCS DE ZOOLOGICO**************************************************************************--
 
 --*****************************************************************TABLA DE ÁREAS*****************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbAreasZoologico_INDEX
+AS BEGIN
+
+SELECT * FROM zool.VW_tbAreasZoologico
+WHERE arzo_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_CREATE
+@arzo_Descripcion NVARCHAR(100),
+@arzo_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion= @arzo_Descripcion AND arzo_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El área zoológica ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion = @arzo_Descripcion AND arzo_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT arzo_Id FROM zool.tbAreasZoologico WHERE arzo_Descripcion = @arzo_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE zool.tbAreasZoologico
+			SET
+				arzo_Descripcion =  @arzo_Descripcion,
+				arzo_UserCreacion = @arzo_UserCreacion,
+				arzo_UserModificacion = NULL,
+				arzo_Estado = 1
+			WHERE arzo_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El área zoológica ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion = @arzo_Descripcion AND arzo_Estado = 1)
+		BEGIN
+			INSERT INTO zool.tbAreasZoologico(arzo_Descripcion, arzo_UserCreacion)
+			VALUES (@arzo_Descripcion, @arzo_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El área zoológica ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_UPDATE
+@arzo_Id INT,
+@arzo_Descripcion NVARCHAR(100),
+@arzo_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion= @arzo_Descripcion AND arzo_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El área zoológica ya existe.' AS messageStatus
+			END
+		IF EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion= @arzo_Descripcion AND arzo_Estado = 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT arzo_Id FROM zool.tbAreasZoologico WHERE arzo_Descripcion = @arzo_Descripcion) 
+
+				UPDATE zool.tbAreasZoologico
+				SET
+						arzo_Descripcion =      @arzo_Descripcion,
+						arzo_UserModificacion = @arzo_UserModificacion,
+						arzo_Estado = 1
+				WHERE   arzo_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El área zoológica ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE -- Estadi civil no existe, se realiza la actualización
+			BEGIN
+				UPDATE zool.tbAreasZoologico
+				SET
+					  arzo_Descripcion =      @arzo_Descripcion,
+					  arzo_FechaModificacion = GETDATE(),
+					  arzo_UserModificacion = @arzo_UserModificacion
+				WHERE arzo_Id = @arzo_Id
+
+				SELECT 200 AS codeStatus, 'El área zoológica ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_DELETE
+@arzo_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @areaszoo INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE arzo_Id = @arzo_Id)
+			
+			IF @areaszoo > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El área zoológica que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE zool.tbAreasZoologico
+			SET
+				arzo_Estado	=	0
+				WHERE arzo_Id	=	@arzo_Id
+
+			SELECT 200 AS codeStatus, 'El área zoológica ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
 --****************************************************************/TABLA DE ÁREAS*****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ESPECIES**************************************************************************--
-GO 
-CREATE OR ALTER VIEW zool.VW_tbEspecies
-as
-SELECT TOP (100) [espe_Id]
-      ,[espe_Descripcion]
-      ,[espe_UserCreacion]
-      ,[espe_FechaCreacion]
-      ,[espe_UserModificacion]
-      ,[espe_FechaModificacion]
-      ,[espe_Estado]
-  FROM [db_Lancetilla].[zool].[tbEspecies]
+CREATE OR ALTER PROC zool.UDP_tbEspecies_INDEX
+AS BEGIN
 
-go
-CREATE OR ALTER PROCEDURE zool.UDP_tbEspecies_SELECT
-AS
-BEGIN
-	SELECT TOP (100) [espe_Id]
-      ,[espe_Descripcion]
-      ,[espe_UserCreacion]
-      ,[espe_FechaCreacion]
-      ,[espe_UserModificacion]
-      ,[espe_FechaModificacion]
-      ,[espe_Estado]
-  FROM [db_Lancetilla].[zool].[VW_tbEspecies]
-  WHERE espe_Estado = 1
+SELECT * FROM zool.VW_tbEspecies
+WHERE espe_Estado = 1;
+
 END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbtbEspecies_CREATE
+@espe_Descripcion NVARCHAR(100),
+@espe_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La especie ya existe.' AS messageStatus
+		END
 
 
-go
-CREATE OR ALTER PROCEDURE zool.UDP_tbEspecies_INSERT
-AS
-BEGIN
-	BEGIN TRY
-	SELECT TOP (100) [espe_Id]
-      ,[espe_Descripcion]
-      ,[espe_UserCreacion]
-      ,[espe_FechaCreacion]
-      ,[espe_UserModificacion]
-      ,[espe_FechaModificacion]
-      ,[espe_Estado]
-  FROM [db_Lancetilla].[zool].[VW_tbEspecies]
-  WHERE espe_Estado = 1
-  	 	   SELECT 1 CodeStatus
+		ELSE IF EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT espe_Id FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion) 
 
-  END TRY
-  BEGIN CATCH
-  		   SELECT 0 CodeStatus
+			BEGIN TRAN -- Agregado BEGIN TRAN
 
-  END CATCH
+			UPDATE zool.tbEspecies
+			SET
+				  espe_Descripcion =  @espe_Descripcion,
+				  espe_UserCreacion = @espe_UserCreacion,
+				  espe_UserModificacion = NULL,
+				  espe_Estado = 1
+			WHERE espe_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'La especie ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Estado= 1)
+		BEGIN
+			INSERT INTO zool.tbEspecies(espe_Descripcion, espe_UserCreacion)
+			VALUES (@espe_Descripcion, @espe_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'La especie ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
 END
+GO
 
+
+
+CREATE OR ALTER PROC zool.UDP_tbEspecie_UPDATE
+@espe_Id INT,
+@espe_Descripcion NVARCHAR(100),
+@espe_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Estado= 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'La especie ya existe.' AS messageStatus
+			END
+		IF EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Estado= 0)
+			BEGIN
+			DECLARE @Id INT = (SELECT espe_Id FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion) 
+
+				UPDATE zool.tbEspecies
+				SET
+						espe_Descripcion =      @espe_Descripcion,
+						espe_UserModificacion = @espe_UserModificacion,
+						espe_Estado = 1
+				WHERE   espe_Id = @Id
+
+				SELECT 200 AS codeStatus, 'La especie ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE --Especie no existe, se realiza la actualización
+			BEGIN
+				UPDATE zool.tbEspecies
+				SET
+					  espe_Descripcion =      @espe_Descripcion,
+					  espe_FechaModificacion = GETDATE(),
+					  espe_UserModificacion = @espe_UserModificacion
+				WHERE espe_Id = @espe_Id
+
+				SELECT 200 AS codeStatus, 'La especie ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbEspecies_DELETE
+@espe_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @especies INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE espe_Id = @espe_Id)
+			
+			IF @especies > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'La especie que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE zool.tbEspecies
+			SET
+				espe_Estado	=	0
+				WHERE espe_Id	=	@espe_Id
+
+			SELECT 200 AS codeStatus, 'La especie ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
 
 
 --***************************************************************/TABLA DE ESPECIES**************************************************************************--
@@ -1476,11 +1734,344 @@ END
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbEspecies_INDEX
+AS BEGIN
+
+SELECT * FROM zool.VW_tbEspecies
+WHERE espe_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbAlimentacion_CREATE
+@alim_Descripcion NVARCHAR(100),
+@alim_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion = @alim_Descripcion AND alim_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La alimentación ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion = @alim_Descripcion AND alim_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT alim_Id FROM zool.tbAlimentacion WHERE alim_Descripcion= @alim_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE zool.tbAlimentacion
+			SET
+				  alim_Descripcion =  @alim_Descripcion,
+				  alim_UserCreacion = @alim_UserCreacion,
+				  alim_UserModificacion = NULL,
+				  alim_Estado = 1
+			WHERE alim_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'La alimentación ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion= @alim_Descripcion AND alim_Estado= 1)
+		BEGIN
+			INSERT INTO zool.tbAlimentacion(alim_Descripcion, alim_UserCreacion)
+			VALUES (@alim_Descripcion, @alim_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'La especie ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC zool.UDP_tbAlimentacion_UPDATE
+@alim_Id INT,
+@alim_Descripcion NVARCHAR(100),
+@alim_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion = @alim_Descripcion AND alim_Estado= 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'La alimentación ya existe.' AS messageStatus
+			END
+		IF EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion = @alim_Descripcion AND alim_Estado= 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT alim_Id FROM zool.tbAlimentacion WHERE alim_Descripcion= @alim_Descripcion) 
+
+				UPDATE zool.tbAlimentacion
+				SET
+						alim_Descripcion =      @alim_Descripcion,
+						alim_UserModificacion = @alim_UserModificacion,
+						alim_Estado = 1
+				WHERE   alim_Id = @Id
+
+				SELECT 200 AS codeStatus, 'La alimentación ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE --Especie no existe, se realiza la actualización
+			BEGIN
+				UPDATE zool.tbAlimentacion
+				SET
+					  alim_Descripcion =      @alim_Descripcion,
+					  alim_FechaModificacion = GETDATE(),
+					  alim_UserModificacion = @alim_UserModificacion
+				WHERE alim_Id = @alim_Id
+
+				SELECT 200 AS codeStatus, 'La alimentación ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbAlimentacion_DELETE
+@alim_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @alims INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE alim_Id= @alim_Id)
+			
+			IF @alims > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'La alaimentación que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE zool.tbAlimentacion
+			SET
+				alim_Estado	=	0
+				WHERE alim_Id	=	@alim_Id
+
+			SELECT 200 AS codeStatus, 'La alimentación ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
 --*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbAnimales_INDEX
+AS BEGIN
+
+SELECT * FROM zool.VW_tbAnimales
+WHERE anim_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbAnimales_CREATE
+@anim_Nombre NVARCHAR(100),
+@anim_NombreCientifico NVARCHAR(100),
+@anim_Reino NVARCHAR(100),
+@habi_Id INT,
+@arzo_Id INT,
+@alim_Id INT,
+@espe_Id INT,
+@anim_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre AND anim_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre del animal ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_NombreCientifico = @anim_NombreCientifico AND anim_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico del animal ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre AND anim_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT anim_Id FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre ) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE zool.tbAnimales
+			SET
+				  anim_Nombre = @anim_Nombre,
+				  anim_NombreCientifico = @anim_NombreCientifico,
+				  anim_Reino = @anim_Reino,
+				  habi_Id = @habi_Id,
+				  arzo_Id = @arzo_Id,
+				  alim_Id = @alim_Id,
+				  espe_Id = @espe_Id,
+				  anim_UserModificacion = NULL,
+				  anim_Estado = 1
+			WHERE anim_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El animal ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre AND anim_Estado= 1)
+		BEGIN
+			INSERT INTO zool.tbAnimales(anim_Nombre, anim_NombreCientifico, anim_Reino, habi_Id, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
+			VALUES (@anim_Nombre, @anim_NombreCientifico, @anim_Reino, @habi_Id, @arzo_Id, @alim_Id, @espe_Id, @anim_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El animal ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+--exec zool.UDP_tbAnimales_CREATE 'R', 'GGG', 'a', 1, 1, 1,1,1
+--select * from zool.tbAnimales
+
+CREATE OR ALTER PROC zool.UDP_tbAnimales_UPDATE
+@anim_Id INT,
+@anim_Nombre NVARCHAR(100),
+@anim_NombreCientifico NVARCHAR(100),
+@anim_Reino NVARCHAR(100),
+@habi_Id INT,
+@arzo_Id INT,
+@alim_Id INT,
+@espe_Id INT,
+@anim_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre AND anim_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre del animal ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_NombreCientifico = @anim_NombreCientifico AND anim_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico del animal ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre AND anim_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT anim_Id FROM zool.tbAnimales WHERE anim_Nombre = @anim_Nombre ) 
+
+				UPDATE zool.tbAnimales
+				SET
+				  anim_Nombre = @anim_Nombre,
+				  anim_NombreCientifico = @anim_NombreCientifico,
+				  anim_Reino = @anim_Reino,
+				  habi_Id = @habi_Id,
+				  arzo_Id = @arzo_Id,
+				  alim_Id = @alim_Id,
+				  espe_Id = @espe_Id,
+				  anim_UserModificacion = @anim_UserModificacion,
+				  anim_Estado = 1
+				WHERE   anim_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El animal ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE --Especie no existe, se realiza la actualización
+			BEGIN
+				UPDATE zool.tbAnimales
+				SET
+				  anim_Nombre = @anim_Nombre,
+				  anim_NombreCientifico = @anim_NombreCientifico,
+				  anim_Reino = @anim_Reino,
+				  habi_Id = @habi_Id,
+				  arzo_Id = @arzo_Id,
+				  alim_Id = @alim_Id,
+				  espe_Id = @espe_Id,
+				  anim_UserModificacion = @anim_UserModificacion,
+				  anim_FechaModificacion = GETDATE()
+				WHERE anim_Id = @anim_Id
+
+				SELECT 200 AS codeStatus, 'El animal ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbAnimales_DELETE
+@anim_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+			UPDATE zool.tbAnimales
+			SET
+				anim_Estado	=	0
+				WHERE anim_Id	=	anim_Id
+
+			SELECT 200 AS codeStatus, 'El animal ha sido eliminado con éxito.' AS messageStatus
+			
+	
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
+
 --***************************************************************/TABLA DE ANIMALES**************************************************************************--
 
 --**************************************************************/PROCS DE ZOOLOGICO**************************************************************************--
@@ -1497,16 +2088,500 @@ END
 --****************************************************************PROCS DE BOTÁNICA**************************************************************************--
 
 --*************************************************************TABLA DE AREAS BOTÁNICAS***********************************************************************--
+CREATE OR ALTER PROC bota.UDP_tbAreasBotanicas_INDEX
+AS BEGIN
+
+SELECT * FROM bota.VW_tbAreasBotanicas
+WHERE arbo_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC bota.UDP_tbAreasBotanicas_CREATE
+@arbo_Descripcion NVARCHAR(100),
+@arbo_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion AND arbo_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El área botánica ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion AND arbo_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT arbo_Id FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion ) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE bota.tbAreasBotanicas
+			SET
+				  arbo_Descripcion =  @arbo_Descripcion,
+				  arbo_UserCreacion = @arbo_UserCreacion,
+				  arbo_UserModificacion = NULL,
+				  arbo_Estado = 1
+			WHERE arbo_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El área botánica ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion AND arbo_Estado= 1)
+		BEGIN
+			INSERT INTO bota.tbAreasBotanicas(arbo_Descripcion , arbo_UserCreacion)
+			VALUES (@arbo_Descripcion , @arbo_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El área botánica ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC bota.UDP_tbAreasBotanicas_UPDATE
+@arbo_Id INT,
+@arbo_Descripcion NVARCHAR(100),
+@arbo_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion  AND arbo_Estado = 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El área botánica ya existe.' AS messageStatus
+			END
+		IF EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion AND arbo_Estado= 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT arbo_Id FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion ) 
+
+				UPDATE bota.tbAreasBotanicas
+				SET
+						arbo_Descripcion =      @arbo_Descripcion,
+						arbo_UserModificacion = @arbo_UserModificacion,
+						arbo_Estado = 1
+				WHERE   arbo_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El área botánica ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE --Área botánica no existe, se realiza la actualización
+			BEGIN
+				UPDATE bota.tbAreasBotanicas
+				SET
+					  arbo_Descripcion =      @arbo_Descripcion,
+					  arbo_FechaModificacion = GETDATE(),
+					  arbo_UserModificacion = @arbo_UserModificacion
+				WHERE arbo_Id = @arbo_Id
+
+				SELECT 200 AS codeStatus, 'El área botánica ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC bota.UDP_tbAreasBotanicas_DELETE
+@arbo_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @arbos INT = (SELECT COUNT(*) FROM bota.tbPlantas WHERE arbo_Id = @arbo_Id)
+			
+			IF @arbos > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El área botánica que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE bota.tbAreasBotanicas
+			SET
+				arbo_Estado	=	0
+				WHERE arbo_Id	=	@arbo_Id
+
+			SELECT 200 AS codeStatus, 'El área botánica ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
 --************************************************************/TABLA DE AREAS BOTÁNICAS***********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*****************************************************************TABLA DE CUIDADOS***************************************************************************--
+CREATE OR ALTER PROC bota.UDP_tbCuidados_INDEX
+AS BEGIN
+
+SELECT * FROM bota.VW_tbCuidados
+WHERE cuid_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC bota.UDP_tbCuidados_CREATE
+@cuid_Descripcion NVARCHAR(100),
+@cuid_Frecuencia NVARCHAR(100),
+@cuid_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion AND cuid_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El cuidado ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion AND cuid_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion ) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE bota.tbCuidados
+			SET
+				  cuid_Descripcion =  @cuid_Descripcion,
+				  cuid_Frecuencia = @cuid_Frecuencia,
+				  cuid_UserCreacion = @cuid_UserCreacion,
+				  cuid_UserModificacion = NULL,
+				  cuid_Estado = 1
+			WHERE cuid_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El cuidado ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion AND cuid_Estado= 1)
+		BEGIN
+			INSERT INTO bota.tbCuidados(cuid_Descripcion, cuid_Frecuencia, cuid_UserCreacion)
+			VALUES (@cuid_Descripcion, @cuid_Frecuencia, @cuid_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El cuidado ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC zool.UDP_tbCuidados_UPDATE
+@cuid_Id INT,
+@cuid_Descripcion NVARCHAR(100),
+@cuid_Frecuencia NVARCHAR(100),
+@cuid_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion AND cuid_Estado= 1)
+			BEGIN
+				SELECT 409 AS codeStatus, 'El cuidado ya existe.' AS messageStatus
+			END
+		IF EXISTS (SELECT * FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion AND cuid_Estado= 0)
+			BEGIN
+						DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbCuidados WHERE cuid_Descripcion = @cuid_Descripcion ) 
+
+				UPDATE bota.tbCuidados
+				SET
+						cuid_Descripcion =      @cuid_Descripcion,
+						cuid_Frecuencia = @cuid_Frecuencia,
+						cuid_UserModificacion = @cuid_UserModificacion,
+						cuid_Estado = 1
+				WHERE   cuid_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El cuidado ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE --Cuidado no existe, se realiza la actualización
+			BEGIN
+				UPDATE bota.tbCuidados
+				SET
+					  cuid_Descripcion =      @cuid_Descripcion,
+					  cuid_Frecuencia = @cuid_Frecuencia,
+					  cuid_FechaModificacion = GETDATE(),
+					  cuid_UserModificacion = @cuid_UserModificacion
+				WHERE cuid_Id = @cuid_Id
+
+				SELECT 200 AS codeStatus, 'El cuidado ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbCuidados_DELETE
+@cuid_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @cuidas INT = (SELECT COUNT(*) FROM bota.tbPlantas WHERE cuid_Id = @cuid_Id)
+			
+			IF @cuidas > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El cuidado que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE bota.tbCuidados
+			SET
+				cuid_Estado	=	0
+				WHERE cuid_Id	=	@cuid_Id
+
+			SELECT 200 AS codeStatus, 'El cuidado ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
 --****************************************************************/TABLA DE CUIDADOS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*****************************************************************TABLA DE PLANTAS****************************************************************************--
+CREATE OR ALTER PROC bota.UDP_tbPlantas_INDEX
+AS BEGIN
+
+SELECT * FROM bota.VW_tbPlantas
+WHERE plan_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC bota.UDP_tbPlantas_CREATE
+@plan_Nombre NVARCHAR(100),
+@plan_NombreCientifico NVARCHAR(100),
+@plan_Reino NVARCHAR(100),
+@arbo_Id INT,
+@cuid_Id INT,
+@plan_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre AND plan_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La planta ya existe.' AS messageStatus
+		END
+
+				ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR  plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 0 )
+		BEGIN
+			DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR plan_NombreCientifico = @plan_NombreCientifico) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE bota.tbPlantas
+			SET
+				  plan_Nombre = @plan_Nombre,
+				  plan_NombreCientifico = @plan_NombreCientifico,
+				  plan_Reino = @plan_Reino,
+				  arbo_Id = @arbo_Id,
+				  cuid_Id = @cuid_Id,
+				  plan_UserCreacion = @plan_UserCreacion,
+				  plan_UserModificacion = NULL,
+				  plan_Estado = 1
+			WHERE plan_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'La planta ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre  OR plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado= 1)
+		BEGIN
+			INSERT INTO bota.tbPlantas(plan_Nombre, plan_NombreCientifico, plan_Reino, arbo_Id, cuid_Id, plan_UserCreacion)
+			VALUES (@plan_Nombre, @plan_NombreCientifico, @plan_Reino, @arbo_Id, @cuid_Id, @plan_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'La planta ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC zool.UDP_tbPlantas_UPDATE
+@plan_Id INT,
+@plan_Nombre NVARCHAR(100),
+@plan_NombreCientifico NVARCHAR(100),
+@plan_Reino NVARCHAR(100),
+@arbo_Id INT,
+@cuid_Id INT,
+@plan_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre AND plan_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La planta ya existe.' AS messageStatus
+		END
+
+				ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR  plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 0 )
+		BEGIN
+			DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR plan_NombreCientifico = @plan_NombreCientifico) 
+
+				UPDATE bota.tbPlantas
+				SET
+						plan_Nombre = @plan_Nombre,
+						plan_NombreCientifico = @plan_NombreCientifico,
+						plan_Reino = @plan_Reino,
+						arbo_Id = @arbo_Id,
+						cuid_Id = @cuid_Id,
+						plan_UserModificacion = @plan_UserModificacion,
+						plan_Estado = 1
+				WHERE   plan_Id = @Id
+
+				SELECT 200 AS codeStatus, 'La planta ha sido actualizada con éxito.' AS messageStatus
+			END
+
+			ELSE --Planta no existe, se realiza la actualización
+			BEGIN
+				UPDATE bota.tbPlantas
+				SET
+						plan_Nombre = @plan_Nombre,
+						plan_NombreCientifico = @plan_NombreCientifico,
+						plan_Reino = @plan_Reino,
+						arbo_Id = @arbo_Id,
+						cuid_Id = @cuid_Id,
+					  plan_FechaModificacion = GETDATE(),
+					  plan_UserModificacion = @plan_UserModificacion
+				WHERE plan_Id = @cuid_Id
+
+				SELECT 200 AS codeStatus, 'La planta ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC zool.UDP_tbPlanta_DELETE
+@plan_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+	
+			UPDATE bota.tbPlantas
+			SET
+				plan_Estado	=	0
+				WHERE plan_Id	=	@plan_Id
+
+			SELECT 200 AS codeStatus, 'La planta ha sido eliminada con éxito.' AS messageStatus
+			
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
 --***************************************************************/PROCS DE BOTÁNICA**************************************************************************--
@@ -1523,11 +2598,240 @@ END
 --***************************************************************PROCS DE FACTURACIÓN************************************************************************--
 
 --*****************************************************************TABLA DE TICKETS***************************************************************************--
+CREATE OR ALTER PROC fact.UDP_tbTickets_INDEX
+AS BEGIN
+
+SELECT * FROM fact.VW_tbTickets
+WHERE tick_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC bota.UDP_tbTickets_CREATE
+@tick_Descripcion NVARCHAR(100),
+@tick_Precio DECIMAL(8,2),
+@tick_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El ticket ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT tick_Id FROM fact.tbTickets WHERE tick_Descripcion = tick_Descripcion ) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE fact.tbTickets
+			SET
+				  tick_Descripcion =  @tick_Descripcion,
+				  tick_Precio = @tick_Precio,
+				  tick_UserCreacion = @tick_UserCreacion,
+				  tick_UserModificacion = NULL,
+				  tick_Estado = 1
+			WHERE tick_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El ticket ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 1)
+		BEGIN
+			INSERT INTO fact.tbTickets(tick_Descripcion , tick_UserCreacion)
+			VALUES (@tick_Descripcion, @tick_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El área botánica ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
 --****************************************************************/TABLA DE TICKETS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MÉTODOS DE PAGO***********************************************************************--
+CREATE OR ALTER PROC fact.UDP_tbMetodosPago_INDEX
+AS BEGIN
+
+SELECT * FROM fact.VW_tbMetodosPago
+WHERE meto_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC fact.UDP_tbAreasBotanicas_CREATE
+@meto_Descripcion NVARCHAR(100),
+@meto_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion AND meto_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El método de pago ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion  AND meto_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT meto_Id FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion ) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE fact.tbMetodosPago
+			SET
+				  meto_Descripcion =  @meto_Descripcion,
+				  meto_UserCreacion = @meto_UserCreacion,
+				  meto_UserModificacion = NULL,
+				  meto_Estado = 1
+			WHERE meto_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El método de pago ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion AND meto_Estado= 1)
+		BEGIN
+			INSERT INTO fact.tbMetodosPago(meto_Descripcion , meto_UserCreacion)
+			VALUES (@meto_Descripcion, @meto_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El método de pago ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC fact.UDP_tbMetodosPago_UPDATE
+@meto_Id INT,
+@meto_Descripcion NVARCHAR(100),
+@meto_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		-- Si existe
+		IF EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion AND meto_Estado= 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El método de pago ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion  AND meto_Estado = 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT meto_Id FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion ) 
+				UPDATE fact.tbMetodosPago
+				SET
+						meto_Descripcion =      @meto_Descripcion,
+						meto_UserModificacion = @meto_UserModificacion,
+						meto_Estado = 1
+				WHERE   meto_Id = @Id
+
+				SELECT 200 AS codeStatus, 'El método de pago ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			ELSE --Métodos de pago no existe, se realiza la actualización
+			BEGIN
+				UPDATE fact.tbMetodosPago
+				SET
+					  meto_Descripcion =      @meto_Descripcion,
+					  meto_FechaModificacion = GETDATE(),
+					  meto_UserModificacion = @meto_UserModificacion
+				WHERE meto_Id = @meto_Id
+
+				SELECT 200 AS codeStatus, 'El método de pago ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC fact.UDP_tbMetodosPago_DELETE
+@meto_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @arbos INT = (SELECT COUNT(*) FROM fact.tbFacturas WHERE meto_Id = @meto_Id)
+			
+			IF @arbos > 0
+			BEGIN
+			SELECT 150 AS codeStatus, 'El método de pago que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE fact.tbMetodosPago
+			SET
+				meto_Estado	=	0
+				WHERE meto_Id	=	@meto_Id
+
+			SELECT 200 AS codeStatus, 'El método de pago ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
+
 --************************************************************/TABLA DE MÉTODOS DE PAGO***********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
