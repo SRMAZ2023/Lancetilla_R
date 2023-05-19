@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
     public class EstadoCivilesRepository : IRepository<tbEstadosCiviles>
     {
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbEstadosCiviles> ListarDepartamentos()
+        public IEnumerable<VW_tbEstadosCiviles> ListarEstadoCiviles()
         {
             return con.VW_tbEstadosCiviles.AsList();
         }

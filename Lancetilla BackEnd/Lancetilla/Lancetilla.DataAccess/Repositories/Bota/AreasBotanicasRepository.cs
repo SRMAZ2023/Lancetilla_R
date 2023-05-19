@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Bota
     {
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbAreasBotanicas> ListarDepartamentos()
+        public IEnumerable<VW_tbAreasBotanicas> ListarAreasBotanicas()
         {
             return con.VW_tbAreasBotanicas.AsList();
         }

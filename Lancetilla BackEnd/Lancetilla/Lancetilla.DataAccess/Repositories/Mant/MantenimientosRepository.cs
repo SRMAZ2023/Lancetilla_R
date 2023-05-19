@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
     {
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbMantenimientos> ListarDepartamentos()
+        public IEnumerable<VW_tbMantenimientos> ListarMantenimientos()
         {
             return con.VW_tbMantenimientos.AsList();
         }

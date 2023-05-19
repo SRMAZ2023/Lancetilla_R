@@ -6,18 +6,21 @@ using System.Collections.Generic;
 
 namespace Lancetilla.Entities.Entities
 {
-    public partial class VW_tbMantenimientos
+    public partial class VW_MantenimientoAnimales
     {
+        public int maan_Id { get; set; }
+        public int anim_Id { get; set; }
+        public string anim_Nombre { get; set; }
         public int mant_Id { get; set; }
         public string mant_Observaciones { get; set; }
         public int tima_Id { get; set; }
         public string tima_Descripcion { get; set; }
         public string usua_UserCreaNombre { get; set; }
-        public int? mant_UserCreacion { get; set; }
-        public DateTime? mant_FechaCreacion { get; set; }
+        public int? maan_UserCreacion { get; set; }
+        public DateTime? maan_FechaCreacion { get; set; }
         public string usua_UserModiNombre { get; set; }
-        public int? mant_UserModificacion { get; set; }
-        public DateTime? mant_FechaModificacion { get; set; }
-        public bool? mant_Estado { get; set; }
+        public int? maan_UserModificacion { get; set; }
+        public bool? maan_Estado { get; set; }
+        public DateTime? maan_FechaModificacion { get; set; }
     }
 }

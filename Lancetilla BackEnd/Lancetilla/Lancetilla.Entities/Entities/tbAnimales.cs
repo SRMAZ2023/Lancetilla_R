@@ -10,7 +10,7 @@ namespace Lancetilla.Entities.Entities
     {
         public tbAnimales()
         {
-            tbMantenimientos = new HashSet<tbMantenimientos>();
+            tbMantenimientoAnimal = new HashSet<tbMantenimientoAnimal>();
         }
 
         public int anim_Id { get; set; }
@@ -33,6 +33,6 @@ namespace Lancetilla.Entities.Entities
         public virtual tbAreasZoologico arzo { get; set; }
         public virtual tbEspecies espe { get; set; }
         public virtual tbHabitat habi { get; set; }
-        public virtual ICollection<tbMantenimientos> tbMantenimientos { get; set; }
+        public virtual ICollection<tbMantenimientoAnimal> tbMantenimientoAnimal { get; set; }
     }
 }

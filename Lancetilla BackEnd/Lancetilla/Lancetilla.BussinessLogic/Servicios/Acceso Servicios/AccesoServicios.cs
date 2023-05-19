@@ -1,4 +1,5 @@
 ﻿using Lancetilla.DataAccess.Repositories.Acce;
+using Lancetilla.Entities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Acceso_Servicios
         }
 
         #region Usuarios
+        public IEnumerable<VW_tbUsuarios> ListarUsuarios()
+        {
+            try
+            {
+                var list = _usuariosRepository.ListarUsuarios();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbUsuarios>();
+
+            }
+        }
         #endregion
 
         #region Roles Por Pantalla

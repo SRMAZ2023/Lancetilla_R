@@ -74,6 +74,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[mant].[tbMantenimientoAnimal]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[mant].[tbMantenimientos]",
          "ObjectType": 0
       },
@@ -142,6 +146,10 @@
          "ObjectType": 3
       },
       {
+         "Name": "[mant].[VW_MantenimientoAnimales]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[mant].[VW_tbCargos]",
          "ObjectType": 3
       },
@@ -190,7 +198,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "DESKTOP-QL1VPH4.db_Lancetilla",
+   "UiHint": "DESKTOP-UFHO4DN\\SQLEXPRESS.db_Lancetilla",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

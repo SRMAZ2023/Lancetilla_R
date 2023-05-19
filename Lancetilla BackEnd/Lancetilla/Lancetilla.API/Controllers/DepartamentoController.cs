@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +29,31 @@ namespace Lancetilla.API.Controllers
         {
             var list = _mantenimientoServicios.ListarDepartamentos();
             return Ok(list);
+        }
+
+        [HttpPost("InsertarDedepartamento")]
+        public IActionResult InsertarDepartamento(DepartamentosViewModel item)
+        {
+            var departamento = _mapper.Map<tbDepartamentos>(item);
+            var List = _mantenimientoServicios.InsertDepartamento(departamento);
+            return Ok(List);
+        }
+
+
+        [HttpPost("ActualizarDepartamento")]
+        public IActionResult ActualizarDepartamento(DepartamentosViewModel item)
+        {
+            var departamento = _mapper.Map<tbDepartamentos>(item);
+            var List = _mantenimientoServicios.ActualizarDepartamento(departamento);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarDepartamento")]
+        public IActionResult EliminarDepartamento(DepartamentosViewModel item)
+        {
+            var departamento = _mapper.Map<tbDepartamentos>(item);
+            var List = _mantenimientoServicios.EliminarDepartamento(departamento);
+            return Ok(List);
         }
     }
 }

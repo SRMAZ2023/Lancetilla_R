@@ -13,7 +13,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbUsuarios> ListarDepartamentos()
+        public IEnumerable<VW_tbUsuarios> ListarUsuarios()
         {
             return con.VW_tbUsuarios.AsList();
         }

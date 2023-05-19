@@ -38,6 +38,8 @@ namespace Lancetilla.Entities.Entities
             tbFacturasfact_UserModificacionNavigation = new HashSet<tbFacturas>();
             tbHabitathabi_UserCreacionNavigation = new HashSet<tbHabitat>();
             tbHabitathabi_UserModificacionNavigation = new HashSet<tbHabitat>();
+            tbMantenimientoAnimalmaan_UserCreacionNavigation = new HashSet<tbMantenimientoAnimal>();
+            tbMantenimientoAnimalmaan_UserModificacionNavigation = new HashSet<tbMantenimientoAnimal>();
             tbMantenimientosmant_UserCreacionNavigation = new HashSet<tbMantenimientos>();
             tbMantenimientosmant_UserModificacionNavigation = new HashSet<tbMantenimientos>();
             tbMetodosPagometo_UserCreacionNavigation = new HashSet<tbMetodosPago>();
@@ -102,6 +104,8 @@ namespace Lancetilla.Entities.Entities
         public virtual ICollection<tbFacturas> tbFacturasfact_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbHabitat> tbHabitathabi_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbHabitat> tbHabitathabi_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbMantenimientoAnimal> tbMantenimientoAnimalmaan_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbMantenimientoAnimal> tbMantenimientoAnimalmaan_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbMantenimientos> tbMantenimientosmant_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbMantenimientos> tbMantenimientosmant_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbMetodosPago> tbMetodosPagometo_UserCreacionNavigation { get; set; }
