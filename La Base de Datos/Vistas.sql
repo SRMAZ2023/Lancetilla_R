@@ -43,16 +43,50 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ROLES********************************************************************************--
+CREATE OR ALTER VIEW acce.VW_tbRoles
+AS
+SELECT role_Id, 
+	   role_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = role_UserCreacion)) AS usua_UserCreaNombre,
+	   role_UserCreacion,
+	   role_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = role_UserModificacion)) AS usua_UserModiNombre,
+	   role_UserModificacion,
+	   role_FechaModificacion, 
+	   role_Estado
+	   FROM acce.tbRoles
+
+
+GO
 --*************************************************************/TABLA DE ROLES********************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---************************************************************TABLA DE PANTALLAS******************************************************************************--
---***********************************************************/TABLA DE PANTALLAS******************************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 --*******************************************************TABLA DE ROLES POR PANTALLA**************************************************************************--
+CREATE OR ALTER VIEW acce.VW_tbRolesPantalla_INDEX
+AS 
+SELECT ropa_Id, 
+	   T1.role_Id, 
+	   role_Descripcion,
+	   T1.pant_Id,
+	   pant_Descripcion,	   
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = ropa_UserCreacion)) AS usua_UserCreaNombre,
+	   ropa_UserCreacion,
+	   ropa_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = ropa_UserModificacion)) AS usua_UserModiNombre,
+	   ropa_UserModificacion,
+	   ropa_FechaModificacion
+	   FROM acce.tbRolesPantallas T1
+	   INNER JOIN acce.tbPantallas T2
+	   ON T1.pant_Id = T2.pant_Id
+	   INNER JOIN acce.tbRoles T3
+	   ON T1.role_Id = T3.role_Id
+
+GO
 --******************************************************/TABLA DE ROLES POR PANTALLA**************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------

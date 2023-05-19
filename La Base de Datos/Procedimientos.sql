@@ -8,17 +8,128 @@ GO
 --**************************************************************PROCS DE ACCESO******************************************************************************--
 
 --*************************************************************TABLA DE USUARIOS******************************************************************************--
+CREATE OR ALTER PROC acce.UDP_tbUsuarios_INDEX
+AS BEGIN
+
+SELECT * FROM acce.VW_tbUsuarios
+WHERE usua_Estado = 1;
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
+@usua_NombreUsuario			NVARCHAR(200),
+@empl_Id					INT,
+@usua_Contraseña			NVARCHAR(150),
+@usua_Admin					BIT,
+@role_Id					INT,
+@usua_UserCreacion			INT
+AS
+BEGIN
+	BEGIN TRY
+	--si existe
+		IF EXISTS (SELECT * FROM acce.tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario)
+	     BEGIN
+            SELECT 409 AS codeStatus, 'El nombre de usuario ya existe.' AS messageStatus
+         END
+	--si no existe
+		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario)
+		 BEGIN
+			
+			DECLARE @Encrypt NVARCHAR(MAX) = (HASHBYTES('SHA2_512',@usua_Contraseña))
+		
+
+			INSERT INTO acce.tbUsuarios
+			(usua_NombreUsuario,empl_Id, usua_Contraseña, usua_Admin,role_Id,usua_UserCreacion)
+			VALUES
+			(@usua_NombreUsuario,@empl_Id,@Encrypt,@usua_Admin,@role_Id,@usua_UserCreacion)
+
+			SELECT 200 AS codeStatus, 'Usuario creado con éxito.' AS messageStatus
+		END
+
+	END TRY
+	BEGIN CATCH
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_UPDATE
+@usua_Id					INT,
+@empl_Id					INT,
+@usua_Admin					BIT,
+@role_Id					INT,
+@usua_UserModificacion		INT
+AS
+BEGIN
+	BEGIN TRY
+
+			UPDATE acce.tbUsuarios
+			SET
+				empl_Id				=	@empl_Id,
+				usua_Admin			=	@usua_Admin,
+				role_Id				=	@role_Id,
+				usua_UserModificacion	=	@usua_UserModificacion
+				WHERE [usua_Id]		=	@usua_Id
+
+			SELECT 200 AS codeStatus, 'Usuario modificado con éxito.' AS messageStatus
+
+	END TRY
+	BEGIN CATCH
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+END
+GO
+
+CREATE OR ALTER PROC acce.UDP_tbUsuarios_DELETE
+@usua_Id INT
+AS BEGIN
+
+DELETE FROM acce.tbUsuarios WHERE usua_Id = @usua_Id
+
+END
+GO
+
+
+
+CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN
+@usua_NombreUsuario NVARCHAR(100),
+@usua_Contraseña NVARCHAR(100)
+AS BEGIN
+DECLARE @Encrypt NVARCHAR(MAX) = (HASHBYTES('SHA2_512',@usua_Contraseña))
+
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt AND usua_Estado = 1)
+	BEGIN
+            SELECT * FROM acce.VW_tbUsuarios
+			WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt
+    END
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt AND usua_Estado = 0)
+	BEGIN
+			SELECT	usua_Id = 0 ,
+					usua_NombreUsuario = 'Usuario No Valido'
+	END
+	IF NOT EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt)
+	BEGIN
+			SELECT	usua_Id = 0 ,
+					usua_NombreUsuario = 'Usuario o Contraseña Incorrectos'
+	END
+END
+GO
 --************************************************************/TABLA DE USUARIOS******************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ROLES********************************************************************************--
+CREATE OR ALTER PROC acce.UDP_tbRoles_INDEX
+AS BEGIN
+
+SELECT * FROM acce.VW_tbRoles
+
+END
+GO
 --*************************************************************/TABLA DE ROLES********************************************************************************--
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---************************************************************TABLA DE PANTALLAS******************************************************************************--
---***********************************************************/TABLA DE PANTALLAS******************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -171,7 +282,7 @@ AS BEGIN
 			
 			IF @deptos > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El departamento que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El departamento que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -331,7 +442,7 @@ AS BEGIN
 			
 			IF @munis > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El municipio que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El municipio que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -490,7 +601,7 @@ AS BEGIN
 END
 GO
 
-CREATE OR ALTER PROC mant.UDP_tbMunicipios_DELETE
+CREATE OR ALTER PROC mant.UDP_tbEstadosCiviles_DELETE
 @estc_Id INT
 AS BEGIN
 
@@ -500,7 +611,7 @@ AS BEGIN
 			
 			IF @estados > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El estado civil que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El estado civil que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -655,7 +766,7 @@ AS BEGIN
 			
 			IF @cargos > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El cargo que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El cargo que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -871,7 +982,7 @@ AS BEGIN
 			
 			IF @emple > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El empleado no ha sido despedido.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El empleado no ha sido despedido.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -1125,7 +1236,7 @@ AS BEGIN
 			
 			IF @tiposmants > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El tipo de mantenimiento está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El tipo de mantenimiento está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -1286,7 +1397,7 @@ AS BEGIN
 			
 			IF @mantes > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El mantenimiento todavía se usa.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El mantenimiento todavía se usa.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -1548,7 +1659,7 @@ AS BEGIN
 			
 			IF @areaszoo > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El área zoológica que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El área zoológica que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -1706,7 +1817,7 @@ AS BEGIN
 			
 			IF @especies > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'La especie que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'La especie que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -1864,7 +1975,7 @@ AS BEGIN
 			
 			IF @alims > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'La alaimentación que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'La alaimentación que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -2218,7 +2329,7 @@ AS BEGIN
 			
 			IF @arbos > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El área botánica que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El área botánica que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -2381,7 +2492,7 @@ AS BEGIN
 			
 			IF @cuidas > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El cuidado que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El cuidado que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
@@ -2808,7 +2919,7 @@ AS BEGIN
 			
 			IF @arbos > 0
 			BEGIN
-			SELECT 150 AS codeStatus, 'El método de pago que desea eliminar está en uso.' AS messageStatus
+			SELECT 202 AS codeStatus, 'El método de pago que desea eliminar está en uso.' AS messageStatus
 			END
 			ELSE
 			BEGIN
