@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Fact
     {
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbTickets> ListarDepartamentos()
+        public IEnumerable<VW_tbTickets> ListarTickets()
         {
             return con.VW_tbTickets.AsList();
         }

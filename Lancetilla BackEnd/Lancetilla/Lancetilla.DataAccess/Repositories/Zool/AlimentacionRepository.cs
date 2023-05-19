@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Zool
     {
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbALimentacion> ListarDepartamentos()
+        public IEnumerable<VW_tbALimentacion> ListarAlimentacion()
         {
             return con.VW_tbALimentacion.AsList();
         }

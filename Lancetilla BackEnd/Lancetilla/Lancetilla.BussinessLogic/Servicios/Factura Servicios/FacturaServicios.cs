@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lancetilla.DataAccess.Repositories.Fact;
+using Lancetilla.Entities.Entities;
 
 namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
 {
@@ -29,18 +30,72 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
         }
 
         #region Factura
+
+        public IEnumerable<VW_tbFacturas> ListarFacturas()
+        {
+            try
+            {
+                var list = _facturaRepository.ListarFacturas();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbFacturas>();
+
+            }
+        }
         #endregion
 
         #region Factura Detalle
+        public IEnumerable<VW_FacturasDetalle> ListarFacturaDetalles()
+        {
+            try
+            {
+                var list = _facturaDetalleRepository.ListarFacturasDetalles();
+                return list;
+            }
+            catch (Exception ex)
+            {
 
+                return Enumerable.Empty<VW_FacturasDetalle>();
+
+            }
+        }
         #endregion
 
         #region Metodo de Pago
+        public IEnumerable<VW_tbMetodosPago> ListarMetodosDePago()
+        {
+            try
+            {
+                var list = _metodoDePagoRepository.ListarMetodosDePago();
+                return list;
+            }
+            catch (Exception ex)
+            {
 
+                return Enumerable.Empty<VW_tbMetodosPago>();
+
+            }
+        }
         #endregion
 
         #region Tickets
+        public IEnumerable<VW_tbTickets> ListarTickets()
+        {
+            try
+            {
+                var list = _ticketsRepository.ListarTickets();
+                return list;
+            }
+            catch (Exception ex)
+            {
 
+                return Enumerable.Empty<VW_tbTickets>();
+
+            }
+        }
         #endregion
 
 

@@ -11,7 +11,7 @@ namespace Lancetilla.DataAccess.Repositories.Fact
     public class MetodoDePagoRepository : IRepository<tbMetodosPago>
     {
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbMetodosPago> ListarDepartamentos()
+        public IEnumerable<VW_tbMetodosPago> ListarMetodosDePago()
         {
             return con.VW_tbMetodosPago.AsList();
         }

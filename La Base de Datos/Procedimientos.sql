@@ -1591,7 +1591,7 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
 --***************************************************************PROCS DE ZOOLOGICO**************************************************************************--
 
 --*****************************************************************TABLA DE ÁREAS*****************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_CREATE
+CREATE OR ALTER PROC zool.UDP_tbAreasZoologico_CREATE
 @arzo_Descripcion NVARCHAR(100),
 @arzo_UserCreacion INT
 AS BEGIN
@@ -1654,7 +1654,7 @@ GO
 
 
 
-CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_UPDATE
+CREATE OR ALTER PROC zool.UDP_tbAreasZoologico_UPDATE
 @arzo_Id INT,
 @arzo_Descripcion NVARCHAR(100),
 @arzo_UserModificacion INT
@@ -1702,7 +1702,7 @@ AS BEGIN
 END
 GO
 
-CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_DELETE
+CREATE OR ALTER PROC zool.UDP_tbAreasZoologico_DELETE
 @arzo_Id INT
 AS BEGIN
 
@@ -2602,7 +2602,7 @@ GO
 
 
 
-CREATE OR ALTER PROC zool.UDP_tbPlantas_UPDATE
+CREATE OR ALTER PROC bota.UDP_tbPlantas_UPDATE
 @plan_Id INT,
 @plan_Nombre NVARCHAR(100),
 @plan_NombreCientifico NVARCHAR(100),
@@ -2667,7 +2667,7 @@ AS BEGIN
 END
 GO
 
-CREATE OR ALTER PROC zool.UDP_tbPlanta_DELETE
+CREATE OR ALTER PROC bota.UDP_tbPlanta_DELETE
 @plan_Id INT
 AS BEGIN
 
@@ -2708,7 +2708,7 @@ GO
 --***************************************************************PROCS DE FACTURACIÓN************************************************************************--
 
 --*****************************************************************TABLA DE TICKETS***************************************************************************--
-CREATE OR ALTER PROC bota.UDP_tbTickets_CREATE
+CREATE OR ALTER PROC fact.UDP_tbTickets_CREATE
 @tick_Descripcion NVARCHAR(100),
 @tick_Precio DECIMAL(8,2),
 @tick_UserCreacion INT
@@ -2777,7 +2777,7 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MÉTODOS DE PAGO***********************************************************************--
-CREATE OR ALTER PROC fact.UDP_tbAreasBotanicas_CREATE
+CREATE OR ALTER PROC fact.UDP_tbMetodosPago_CREATE
 @meto_Descripcion NVARCHAR(100),
 @meto_UserCreacion INT
 AS BEGIN

@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Fact
     {
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbFacturas> ListarFactura()
+        public IEnumerable<VW_tbFacturas> ListarFacturas()
         {
             return con.VW_tbFacturas.AsList();
         }

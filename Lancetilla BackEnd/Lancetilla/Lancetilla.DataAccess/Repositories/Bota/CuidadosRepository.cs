@@ -12,7 +12,7 @@ namespace Lancetilla.DataAccess.Repositories.Bota
     {
 
         Lancetilla con = new Lancetilla();
-        public IEnumerable<VW_tbCuidados> ListarDepartamentos()
+        public IEnumerable<VW_tbCuidados> ListarCuidadosDePlantas()
         {
             return con.VW_tbCuidados.AsList();
         }

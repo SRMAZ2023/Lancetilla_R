@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-
+using Lancetilla.API.Models;
+using Lancetilla.Entities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,13 @@ namespace Lancetilla.API.Extentions
     {
         public MappingProfileExntensions()
         {
-            /*CreateMap<DepartamentosViewModel, tbDepartamentos>().ReverseMap();*/
+            CreateMap<DepartamentosViewModel, tbDepartamentos>().ReverseMap();
+
+            CreateMap<CargosViewModel, tbCargos>().ReverseMap();
+
+            CreateMap<EspeciesViewModel, tbEspecies>().ReverseMap();
+
+            CreateMap<UsuariosViewModel, tbUsuarios>().ReverseMap();
         }
     }
 }
