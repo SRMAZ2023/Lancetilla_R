@@ -17,6 +17,8 @@ namespace Lancetilla.API.Extentions
             CreateMap<CargosViewModel, tbCargos>().ReverseMap();
 
             CreateMap<EspeciesViewModel, tbEspecies>().ReverseMap();
+
+            CreateMap<UsuariosViewModel, tbUsuarios>().ReverseMap();
         }
     }
 }

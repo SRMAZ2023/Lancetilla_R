@@ -24,10 +24,10 @@ namespace Lancetilla.API.Controllers
             _zoologicoServicios = zoologicoServicios;
             _mapper = mapper;
         }
-        [HttpGet("ListarAnimales")]
-        public IActionResult ListarAnimales()
+        [HttpGet("ListarEspecies")]
+        public IActionResult ListarEspecies()
         {
-            var list = _zoologicoServicios.ListarAnimales();
+            var list = _zoologicoServicios.ListarEspecies();
             return Ok(list);
         }
 

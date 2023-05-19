@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Acceso_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +29,19 @@ namespace Lancetilla.API.Controllers
         {
             var list = _AccesoServicios.ListarUsuarios();
             return Ok(list);
+        }
+
+
+        [HttpPost("ValidarLogin")]
+        public IActionResult ValidarLogin(UsuariosViewModel item)
+        {
+            var resultMapeado = _mapper.Map<tbUsuarios>(item);
+
+            var respuesta = _AccesoServicios.InicioSession(resultMapeado);
+
+            respuesta.Data = _mapper.Map<UsuariosViewModel>(respuesta.Data);
+
+            return Ok(respuesta);
         }
     }
 }
