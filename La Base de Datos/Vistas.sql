@@ -37,6 +37,7 @@ SELECT T1.usua_Id,
 	   ON T1.usua_Id = T4.usua_Id
 	   LEFT JOIN acce.tbUsuarios T5
 	   ON T1.usua_Id = T5.usua_Id
+	   WHERE T1.usua_Estado = 1;
 GO
 --************************************************************/TABLA DE USUARIOS******************************************************************************--
 
@@ -57,6 +58,7 @@ SELECT role_Id,
 	   role_FechaModificacion, 
 	   role_Estado
 	   FROM acce.tbRoles
+	   WHERE role_Estado = 1;
 
 
 GO
@@ -120,6 +122,7 @@ SELECT  dept_Id,
 		dept_FechaModificacion, 
 		dept_Estado 
 		FROM mant.tbDepartamentos
+		WHERE dept_Estado = 1;
 GO
 --**********************************************************/TABLA DE DEPARTAMENTOS***************************************************************************--
 
@@ -145,6 +148,7 @@ SELECT muni_Id,
        FROM mant.tbMunicipios T1
 	   INNER JOIN mant.tbDepartamentos T2
 	   ON T1.dept_Id = T2.dept_Id
+	   WHERE muni_Estado = 1;
 GO
 --*************************************************************/TABLA DE MUNICIPIOS***************************************************************************--
 
@@ -166,6 +170,7 @@ SELECT  estc_Id,
 		estc_FechaModificacion,
 		estc_Estado 
 		FROM mant.tbEstadosCiviles
+		WHERE estc_Estado = 1;
 
 GO
 --**********************************************************/TABLA DE ESTADOS CIVILES*************************************************************************--
@@ -188,6 +193,7 @@ SELECT carg_Id,
 	   carg_FechaModificacion,
 	   carg_Estado 
 	   FROM mant.tbCargos
+	   WHERE carg_Estado = 1;
 GO
 --***************************************************************/TABLA DE CARGOS*****************************************************************************--
 
@@ -234,6 +240,7 @@ SELECT empl_Id,
 	   ON T1.muni_Id = T4.muni_Id
 	   INNER JOIN mant.tbDepartamentos T5
 	    ON T4.dept_Id = T5.dept_Id
+		WHERE empl_Estado = 1;
 GO
 --*************************************************************/TABLA DE EMPLEADOS****************************************************************************--
 
@@ -259,6 +266,7 @@ SELECT visi_Id,
 	   visi_FechaModificacion,
 	   visi_Estado
 	   FROM mant.tbVisitantes 
+	   WHERE visi_Estado = 1;
 
 GO
 --************************************************************/TABLA DE VISITANTES****************************************************************************--
@@ -281,6 +289,7 @@ SELECT tima_Id,
 	   tima_FechaModificacion,
 	   tima_Estado
 	   FROM mant.tbTiposMantenimientos 
+	   WHERE tima_Estado =1;
 
 GO
 --**********************************************************TABLA DE TIPOS MANTENIMIENTO*********************************************************************--
@@ -307,6 +316,7 @@ SELECT mant_Id,
 	   FROM mant.tbMantenimientos  T1
 	   INNER JOIN mant.tbTiposMantenimientos T2
 	   ON T1.tima_Id = T2.tima_Id
+	   WHERE mant_Estado = 1;
 
 
 GO
@@ -341,6 +351,7 @@ SELECT maan_Id,
 	   ON T1.mant_Id = T3.mant_Id
 	   INNER JOIN mant.tbTiposMantenimientos T4
 	   ON T3.tima_Id = T4.tima_Id
+	   WHERE maan_Estado = 1;
 GO
 --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
@@ -373,6 +384,7 @@ SELECT arzo_Id,
 	   arzo_FechaModificacion,
 	   arzo_Estado 
        FROM zool.tbAreasZoologico
+	   WHERE arzo_Estado = 1;
 GO
 --****************************************************************/TABLA DE ÁREAS*****************************************************************************--
 
@@ -394,6 +406,8 @@ SELECT espe_Id,
 	   espe_FechaModificacion,
 	   espe_Estado 
 	   FROM zool.tbEspecies
+	   WHERE espe_Estado = 1;
+
 GO
 --***************************************************************/TABLA DE ESPECIES**************************************************************************--
 
@@ -415,6 +429,7 @@ SELECT alim_Id,
 	   alim_FechaModificacion,
 	   alim_Estado 
 	   FROM zool.tbAlimentacion
+	   WHERE alim_Estado = 1;
 GO
 --*************************************************************/TABLA DE ALIMENTACIÓN************************************************************************--
 
@@ -454,6 +469,7 @@ SELECT  anim_Id,
 		ON T1.espe_Id = T4.espe_Id
 		INNER JOIN zool.tbHabitat T5
 		ON T1.habi_Id = T5.habi_Id
+	    WHERE anim_Estado = 1;
 
 GO
 --***************************************************************/TABLA DE ANIMALES**************************************************************************--
@@ -486,7 +502,8 @@ SELECT arbo_Id,
 	   arbo_UserModificacion, 
 	   arbo_FechaModificacion, 
 	   arbo_Estado
-	   FROM bota.tbAreasBotanicas
+	   FROM bota.tbAreasBotanicas  
+	   WHERE arbo_Estado = 1;
 GO
 --************************************************************/TABLA DE AREAS BOTÁNICAS***********************************************************************--
 
@@ -508,7 +525,8 @@ SELECT cuid_Id,
 	   cuid_UserModificacion,
 	   cuid_FechaModificacion, 
 	   cuid_Estado 
-	   FROM bota.tbCuidados
+	   FROM bota.tbCuidados   
+	   WHERE cuid_Estado = 1;
 GO
 --****************************************************************/TABLA DE CUIDADOS**************************************************************************--
 
@@ -540,7 +558,8 @@ SELECT plan_Id,
 	   INNER JOIN bota.tbAreasBotanicas T2
 	   ON T1.arbo_Id = T2.arbo_Id
 	   INNER JOIN bota.tbCuidados T3
-	   ON T1.cuid_Id = T3.cuid_Id
+	   ON T1.cuid_Id = T3.cuid_Id	   
+	   WHERE plan_Estado = 1;
 GO
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
@@ -573,7 +592,8 @@ SELECT tick_Id,
 	   tick_UserModificacion, 
 	   tick_FechaModificacion,
 	   tick_Estado
-       FROM fact.tbTickets
+       FROM fact.tbTickets  
+	   WHERE tick_Estado = 1;
 
 GO
 --****************************************************************/TABLA DE TICKETS***************************************************************************--
@@ -596,6 +616,7 @@ SELECT meto_Id,
 	   meto_FechaModificacion,
 	   meto_Estado 
 	   FROM fact.tbMetodosPago
+	   WHERE meto_Estado = 1;
 GO
 --************************************************************/TABLA DE MÉTODOS DE PAGO***********************************************************************--
 
@@ -628,7 +649,8 @@ SELECT fact_Id,
 	   INNER JOIN mant.tbVisitantes T3
 	   ON T1.visi_Id = T3.visi_Id
 	   INNER JOIN fact.tbMetodosPago T4
-	   ON T1.meto_Id = T4.meto_Id
+	   ON T1.meto_Id = T4.meto_Id   
+	   WHERE fact_Estado = 1;
 
 GO
 --***************************************************************/TABLA DE FACTURAS***************************************************************************--
@@ -640,6 +662,7 @@ CREATE OR ALTER VIEW fact.VW_FacturasDetalle
 AS
 
 SELECT fade_Id,
+	   T1.fact_Id,
 	   T1.tick_Id, 
 	   tick_Descripcion,
 	   fade_Cantidad,
@@ -655,7 +678,10 @@ SELECT fade_Id,
 	   fade_Estado 
 	   FROM fact.tbFacturasDetalles T1
 	   INNER JOIN fact.tbTickets T2
-	   ON T1.tick_Id = T2.tick_Id
+	   ON T1.tick_Id = T2.tick_Id  
+	   INNER JOIN fact.tbFacturas T3
+	   ON T1.fact_Id = T3.fact_Id
+	   WHERE fade_Estado = 1;
 GO
 --**********************************************************/TABLA DE FACTURAS DETALLE************************************************************************--
 

@@ -8,15 +8,6 @@ GO
 --**************************************************************PROCS DE ACCESO******************************************************************************--
 
 --*************************************************************TABLA DE USUARIOS******************************************************************************--
-CREATE OR ALTER PROC acce.UDP_tbUsuarios_INDEX
-AS BEGIN
-
-SELECT * FROM acce.VW_tbUsuarios
-WHERE usua_Estado = 1;
-END
-GO
-
-
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
 @usua_NombreUsuario			NVARCHAR(200),
 @empl_Id					INT,
@@ -64,7 +55,7 @@ CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_UPDATE
 AS
 BEGIN
 	BEGIN TRY
-
+	BEGIN TRAN
 			UPDATE acce.tbUsuarios
 			SET
 				empl_Id				=	@empl_Id,
@@ -74,9 +65,10 @@ BEGIN
 				WHERE [usua_Id]		=	@usua_Id
 
 			SELECT 200 AS codeStatus, 'Usuario modificado con éxito.' AS messageStatus
-
+			COMMIT
 	END TRY
 	BEGIN CATCH
+	ROLLBACK
 			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
 	END CATCH
 
@@ -122,11 +114,103 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ROLES********************************************************************************--
-CREATE OR ALTER PROC acce.UDP_tbRoles_INDEX
+CREATE OR ALTER PROC acce.UDP_tbRoles_CREATE
+@role_DEscripcion NVARCHAR(100),
+@role_UserCreacion INT
+AS BEGIN
+BEGIN TRY
+	--si existe
+		IF EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+	     BEGIN
+            SELECT 409 AS codeStatus, 'El rol ya existe.' AS messageStatus
+         END
+	--si no existe
+		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+		 BEGIN
+			
+			INSERT INTO acce.tbRoles
+			(role_Descripcion, role_UserCreacion)
+			VALUES
+			(@role_Descripcion, @role_UserCreacion)
+
+			SELECT 200 AS codeStatus, 'Rol creado con éxito.' AS messageStatus
+
+		END
+
+COMMIT
+END TRY
+BEGIN CATCH
+ROLLBACK
+		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+
+END CATCH
+END
+GO
+
+CREATE OR ALTER PROC acce.UDP_tbRoles_UPDATE
+@role_Id INT,
+@role_Descripcion NVARCHAR(100),
+@role_UserModificacion INT
 AS BEGIN
 
-SELECT * FROM acce.VW_tbRoles
+	BEGIN TRY
+	BEGIN TRAN
+	--si existe
+		IF EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+	     BEGIN
+            SELECT 409 AS codeStatus, 'El Rol ya existe.' AS messageStatus
+         END
+	--si no existe
+		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+		 BEGIN
+			
 
+
+	UPDATE acce.tbRoles
+	SET role_Descripcion	= @role_Descripcion,
+		role_UserModificacion	= @role_UserModificacion
+		WHERE role_Id = @role_Id
+
+			SELECT 200 AS codeStatus, 'Rol modificado con éxito.' AS messageStatus
+		END
+		COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+END
+GO
+
+
+CREATE OR ALTER PROC acce.UDP_tbRoles_DELETE
+@role_Id INT
+AS BEGIN 
+BEGIN TRY 
+BEGIN TRAN
+
+			DECLARE @rol INT = (SELECT COUNT(*) FROM acce.tbUsuarios WHERE role_Id = @role_Id)
+			
+			IF @rol > 0
+			BEGIN
+			SELECT 202 AS codeStatus, 'El rol que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+
+			DELETE FROM acce.tbRoles WHERE role_Id = @role_Id
+			SELECT 200 AS codeStatus, 'El rol ha sido eliminado con éxito.' AS messageStatus
+			END
+
+COMMIT
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+
+END CATCH
 END
 GO
 --*************************************************************/TABLA DE ROLES********************************************************************************--
@@ -134,6 +218,69 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE ROLES POR PANTALLA**************************************************************************--
+CREATE OR ALTER PROC acce.UDP_tbRolesPantalla_CREATE
+@role_Id INT,
+@pant_Id INT,
+@ropa_UserCreacion INT
+AS BEGIN
+BEGIN TRY
+
+BEGIN TRAN
+
+INSERT INTO acce.tbRolesPantallas(role_Id, pant_Id, ropa_UserCreacion)
+VALUES (@role_Id, @pant_Id, @ropa_UserCreacion)
+
+			SELECT 200 AS codeStatus, 'Rol por pantalla creado con éxito.' AS messageStatus
+
+COMMIT
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+
+END CATCH
+END
+GO
+
+CREATE OR ALTER PROC acce.UDP_tbRolesPantalla_UPDATE
+@ropa_Id INT,
+@role_Id INT,
+@pant_Id INT,
+@ropa_UserModificacion INT
+AS BEGIN
+BEGIN TRY
+BEGIN TRAN
+
+UPDATE acce.tbRolesPantallas 
+SET role_Id = @role_Id,
+	pant_Id = @pant_Id,
+	ropa_UserModificacion = @ropa_UserModificacion,
+	ropa_FechaModificacion = GETDATE()
+	WHERE ropa_Id = @ropa_Id
+
+	SELECT 200 AS codeStatus, 'Rol por pantalla modificado con éxito.' AS messageStatus
+
+COMMIT
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+
+END CATCH
+END
+GO
+
+CREATE OR ALTER PROC acce.UDP_tbRolesPantallas_PANTALLAROL
+@role_Id INT
+AS BEGIN
+
+SELECT * FROM acce.tbRolesPantallas
+WHERE role_Id = @role_Id
+
+END
+GO
 --******************************************************/TABLA DE ROLES POR PANTALLA**************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,16 +299,6 @@ GO
 --***********************************************************PROCS DE MANTENIMIENTO**************************************************************************--
 
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
-CREATE OR ALTER PROC mant.UPD_tbDepartamentos_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbDepartamentos
-WHERE dept_Estado = 1;
-
-END
-GO
-
-
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_CREATE
 @dept_Descripcion NVARCHAR(100),
 @dept_UserCreacion INT
@@ -308,15 +445,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MUNICIPIOS****************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbMunicipios_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbMunicipios
-WHERE muni_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbMunicipios_CREATE
 @muni_Descripcion NVARCHAR(100),
 @dept_Id INT,
@@ -479,15 +607,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***********************************************************TABLA DE ESTADOS CIVILES*************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbEstadosCiviles_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbEstadosCiviles
-WHERE estc_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbEstadosCiviles_CREATE
 @estc_Descripcion NVARCHAR(100),
 @estc_UserCreacion INT
@@ -637,15 +756,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE CARGOS*****************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbCargos_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbCargos
-WHERE carg_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbCargos_CREATE
 @carg_Descripcion NVARCHAR(100),
 @carg_UserCreacion INT
@@ -793,15 +903,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE EMPLEADOS****************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbEmpleados_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbEmpleados
-WHERE empl_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbEmpleados_FIND
 @empl_Id INT
 AS BEGIN
@@ -1009,15 +1110,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbVisitantes_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbVisitantes
-WHERE visi_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbVisitantes_CREATE
 @visi_Nombres NVARCHAR(100),
 @visi_Apellido NVARCHAR(100),
@@ -1107,17 +1199,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**********************************************************TABLA DE TIPOS MANTENIMIENTO**********************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbTiposMantenimientos_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbTiposMantenimientos
-WHERE tima_Estado = 1;
-
-END
-GO
-
-
-
 CREATE OR ALTER PROC mant.UDP_tbTiposMantenimientos_CREATE
 @tima_Descripcion NVARCHAR(100),
 @tima_UserCreacion INT
@@ -1261,15 +1342,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MANTENIMIENTO*************************************************************************--
-CREATE OR ALTER PROC mantUDP_tbMantenimientos_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_tbMantenimientos
-WHERE mant_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbMantenimientos_CREATE 
 @mant_Observaciones NVARCHAR(200),
 @tima_Id INT,
@@ -1422,16 +1494,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_INDEX
-AS BEGIN
-
-SELECT * FROM mant.VW_MantenimientoAnimales
-WHERE maan_Estado = 1;
-
-END
-GO
-
-
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
 @anim_Id INT,
 @mant_Id INT,
@@ -1529,15 +1591,6 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
 --***************************************************************PROCS DE ZOOLOGICO**************************************************************************--
 
 --*****************************************************************TABLA DE ÁREAS*****************************************************************************--
-CREATE OR ALTER PROC zool.UDP_tbAreasZoologico_INDEX
-AS BEGIN
-
-SELECT * FROM zool.VW_tbAreasZoologico
-WHERE arzo_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC mant.UDP_tbAreasZoologico_CREATE
 @arzo_Descripcion NVARCHAR(100),
 @arzo_UserCreacion INT
@@ -1687,15 +1740,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ESPECIES**************************************************************************--
-CREATE OR ALTER PROC zool.UDP_tbEspecies_INDEX
-AS BEGIN
-
-SELECT * FROM zool.VW_tbEspecies
-WHERE espe_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC zool.UDP_tbtbEspecies_CREATE
 @espe_Descripcion NVARCHAR(100),
 @espe_UserCreacion INT
@@ -1845,15 +1889,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
-CREATE OR ALTER PROC zool.UDP_tbEspecies_INDEX
-AS BEGIN
-
-SELECT * FROM zool.VW_tbEspecies
-WHERE espe_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC zool.UDP_tbAlimentacion_CREATE
 @alim_Descripcion NVARCHAR(100),
 @alim_UserCreacion INT
@@ -2002,15 +2037,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
-CREATE OR ALTER PROC zool.UDP_tbAnimales_INDEX
-AS BEGIN
-
-SELECT * FROM zool.VW_tbAnimales
-WHERE anim_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC zool.UDP_tbAnimales_CREATE
 @anim_Nombre NVARCHAR(100),
 @anim_NombreCientifico NVARCHAR(100),
@@ -2199,15 +2225,6 @@ GO
 --****************************************************************PROCS DE BOTÁNICA**************************************************************************--
 
 --*************************************************************TABLA DE AREAS BOTÁNICAS***********************************************************************--
-CREATE OR ALTER PROC bota.UDP_tbAreasBotanicas_INDEX
-AS BEGIN
-
-SELECT * FROM bota.VW_tbAreasBotanicas
-WHERE arbo_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC bota.UDP_tbAreasBotanicas_CREATE
 @arbo_Descripcion NVARCHAR(100),
 @arbo_UserCreacion INT
@@ -2357,15 +2374,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*****************************************************************TABLA DE CUIDADOS***************************************************************************--
-CREATE OR ALTER PROC bota.UDP_tbCuidados_INDEX
-AS BEGIN
-
-SELECT * FROM bota.VW_tbCuidados
-WHERE cuid_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC bota.UDP_tbCuidados_CREATE
 @cuid_Descripcion NVARCHAR(100),
 @cuid_Frecuencia NVARCHAR(100),
@@ -2520,15 +2528,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*****************************************************************TABLA DE PLANTAS****************************************************************************--
-CREATE OR ALTER PROC bota.UDP_tbPlantas_INDEX
-AS BEGIN
-
-SELECT * FROM bota.VW_tbPlantas
-WHERE plan_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC bota.UDP_tbPlantas_CREATE
 @plan_Nombre NVARCHAR(100),
 @plan_NombreCientifico NVARCHAR(100),
@@ -2709,15 +2708,6 @@ GO
 --***************************************************************PROCS DE FACTURACIÓN************************************************************************--
 
 --*****************************************************************TABLA DE TICKETS***************************************************************************--
-CREATE OR ALTER PROC fact.UDP_tbTickets_INDEX
-AS BEGIN
-
-SELECT * FROM fact.VW_tbTickets
-WHERE tick_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC bota.UDP_tbTickets_CREATE
 @tick_Descripcion NVARCHAR(100),
 @tick_Precio DECIMAL(8,2),
@@ -2787,15 +2777,6 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*************************************************************TABLA DE MÉTODOS DE PAGO***********************************************************************--
-CREATE OR ALTER PROC fact.UDP_tbMetodosPago_INDEX
-AS BEGIN
-
-SELECT * FROM fact.VW_tbMetodosPago
-WHERE meto_Estado = 1;
-
-END
-GO
-
 CREATE OR ALTER PROC fact.UDP_tbAreasBotanicas_CREATE
 @meto_Descripcion NVARCHAR(100),
 @meto_UserCreacion INT
@@ -2953,6 +2934,14 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***********************************************************TABLA DE FACTURAS DETALLE************************************************************************--
+CREATE OR ALTER PROC fact.UDP_tbFacturasDetalle_DETALLESPORFACTS
+@fact_Id INT
+AS BEGIN
+
+SELECT * FROM fact.VW_FacturasDetalle
+WHERE fact_Id = @fact_Id
+
+END
 --**********************************************************/TABLA DE FACTURAS DETALLE************************************************************************--
 
 --**************************************************************/PROCS DE FACTURACIÓN************************************************************************--

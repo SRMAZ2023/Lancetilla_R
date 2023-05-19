@@ -569,6 +569,7 @@ CONSTRAINT FK_fact_tbFacturas_meto_Id_fact_tbMetodosPago							FOREIGN KEY (meto
 --***********************************************************TABLA DE FACTURAS DETALLE************************************************************************--
 CREATE TABLE fact.tbFacturasDetalles(
 fade_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+fact_Id					INT					NOT NULL,
 tick_Id					INT					NOT NULL,
 fade_Cantidad			INT					NOT NULL,
 fade_Total				DECIMAL(8,2)		NOT NULL,
@@ -582,7 +583,9 @@ fade_Estado				BIT					DEFAULT 1
 
 CONSTRAINT FK_fact_tbFacturasDetalles_fade_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (fade_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_fact_tbFacturasDetalles_fade_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (fade_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_fact_tbFacturasDetalles_tick_Id_fact_tbTickets_tick_Id					FOREIGN KEY (tick_Id)					REFERENCES fact.tbTickets(tick_Id));
+CONSTRAINT FK_fact_tbFacturasDetalles_tick_Id_fact_tbTickets_tick_Id					FOREIGN KEY (tick_Id)					REFERENCES fact.tbTickets(tick_Id),
+CONSTRAINT FK_fact_tbFacturasDetalles_fact_Id_fact_tbFacturas_fact_Id					FOREIGN KEY (fact_Id)					REFERENCES fact.tbFacturas(fact_Id));
+
 
 --**********************************************************/TABLA DE FACTURAS DETALLE************************************************************************--
 
