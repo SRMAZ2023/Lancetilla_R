@@ -1492,7 +1492,7 @@ GO
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+select * from mant.tbMantenimientoAnimal
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
 @anim_Id INT,
@@ -1527,8 +1527,10 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_UPDATE
 AS BEGIN
 BEGIN TRY
 
+
 BEGIN TRAN
 UPDATE mant.tbMantenimientoAnimal
+
 SET anim_Id = @anim_Id,
 mant_Id = @mant_Id,
 maan_Fecha = @maan_Fecha,
@@ -1536,8 +1538,8 @@ maan_UserModificacion = @maan_UserModificacion,
 maan_FechaModificacion = GETDATE()
 WHERE maan_Id = @maan_Id
 			SELECT 200 AS codeStatus, 'El mantenimiento por animal ha sido creado con éxito.' AS messageStatus
-
-			COMMIT
+COMMIT
+			
 END TRY
 
 BEGIN CATCH
@@ -1545,10 +1547,9 @@ ROLLBACK
 			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
 
 END CATCH
-
-
 END
 GO
+EXEC  mant.UDP_tbMantenimientosAnimal_UPDATE 0, 0, 0, null, 0
 
 
 
@@ -2748,8 +2749,8 @@ BEGIN TRY
 
 		ELSE IF NOT EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 1)
 		BEGIN
-			INSERT INTO fact.tbTickets(tick_Descripcion , tick_UserCreacion)
-			VALUES (@tick_Descripcion, @tick_UserCreacion)
+			INSERT INTO fact.tbTickets(tick_Descripcion ,tick_Precio, tick_UserCreacion)
+			VALUES (@tick_Descripcion, @tick_Precio,@tick_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 

@@ -152,6 +152,19 @@ namespace Lancetilla.DataAccess
 
         #endregion
 
+
+        #region Mantenimientos Animal
+
+        public static string InsertarMantenimientoAnimal = "mant.UDP_tbMantenimientosAnimal_CREATE";
+
+        public static string ActualizarMantenimientoAnimal = "mant.UDP_tbMantenimientosAnimal_UPDATE";
+
+        public static string EliminarMantenimientoAnimal = "mant.UDP_tbMantenimientoAnimal_DELETE";
+
+
+        #endregion
+
+
         #endregion
 
         ////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -160,7 +173,7 @@ namespace Lancetilla.DataAccess
 
         #region Areas de Botanica
 
-         public static string InsertarAreaBotanica = "bota.UDP_tbAreasBotanicas_CREATE";
+        public static string InsertarAreaBotanica = "bota.UDP_tbAreasBotanicas_CREATE";
 
          public static string ActualizarAreaBotanica = "bota.UDP_tbAreasBotanicas_UPDATE";
 
