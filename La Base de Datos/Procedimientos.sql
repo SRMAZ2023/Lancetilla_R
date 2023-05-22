@@ -11,7 +11,7 @@ GO
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
 @usua_NombreUsuario			NVARCHAR(200),
 @empl_Id					INT,
-@usua_Contraseña			NVARCHAR(150),
+@usua_Clave			NVARCHAR(150),
 @usua_Admin					BIT,
 @role_Id					INT,
 @usua_UserCreacion			INT
@@ -27,11 +27,11 @@ BEGIN
 		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario)
 		 BEGIN
 			
-			DECLARE @Encrypt NVARCHAR(MAX) = (HASHBYTES('SHA2_512',@usua_Contraseña))
+			DECLARE @Encrypt NVARCHAR(MAX) = (HASHBYTES('SHA2_512',@usua_Clave))
 		
 
 			INSERT INTO acce.tbUsuarios
-			(usua_NombreUsuario,empl_Id, usua_Contraseña, usua_Admin,role_Id,usua_UserCreacion)
+			(usua_NombreUsuario,empl_Id, usua_Clave, usua_Admin,role_Id,usua_UserCreacion)
 			VALUES
 			(@usua_NombreUsuario,@empl_Id,@Encrypt,@usua_Admin,@role_Id,@usua_UserCreacion)
 
@@ -88,24 +88,24 @@ GO
 
   CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN  
 @usua_NombreUsuario NVARCHAR(100),
-@usua_Contraseña VARCHAR(100)
+@usua_Clave VARCHAR(100)
 AS BEGIN
 
 	DECLARE @Pass AS VARCHAR(MAX);
-	SET @Pass = CONVERT(VARCHAR(MAX), HASHBYTES('sha2_512', @usua_Contraseña), 2);
+	SET @Pass = CONVERT(VARCHAR(MAX), HASHBYTES('sha2_512', @usua_Clave), 2);
 	
 	
-	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass AND usua_Estado = 1)
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Clave = @Pass AND usua_Estado = 1)
 	BEGIN
             SELECT * FROM acce.VW_tbUsuarios
-			WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass
+			WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Clave = @Pass
     END
-	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass AND usua_Estado = 0)
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Clave = @Pass AND usua_Estado = 0)
 	BEGIN
 			SELECT	usua_Id = 0 ,
 					usua_NombreUsuario = 'Usuario No Valido'
 	END
-	IF NOT EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass)
+	IF NOT EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Clave = @Pass)
 	BEGIN
 			SELECT	usua_Id = 0 ,
 					usua_NombreUsuario = 'Usuario o Contraseña Incorrectos'

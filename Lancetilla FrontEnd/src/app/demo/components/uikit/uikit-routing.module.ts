@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
     imports: [RouterModule.forChild([
         { path: 'Especies', data: { breadcrumb: 'especies' }, loadChildren: () => import('./Especies/especies.module').then(m => m.especiesModule) },
         { path: 'cargos', data: { breadcrumb: 'cargos' }, loadChildren: () => import('./cargos/cargos.module').then(m => m.cargosModule) },
+        { path: 'departamentos', data: { breadcrumb: 'departamentos' }, loadChildren: () => import('./departamentos/departamentos.module').then(m => m.departamentosModule) },
         { path: 'TiposDeMantenimiento', data: { breadcrumb: 'TiposDeMantenimiento' }, loadChildren: () => import('./TipoDeMantenimiento/TiposDeMantenimiento.module').then(m => m.TiposDeMantenimientosModule) },
         { path: 'Plantas', data: { breadcrumb: 'Plantas' }, loadChildren: () => import('./Plantas/Plantas.module').then(m => m.PlantasModule) },
         { path: 'MetodoDePago', data: { breadcrumb: 'MetodoDePago' }, loadChildren: () => import('./MetodoDePago/MetodoPago.module').then(m => m.MetodoPagoModule) },

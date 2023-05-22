@@ -15,7 +15,7 @@ namespace Lancetilla.API.Models
         public int empl_Id { get; set; }
         [NotMapped]
         public string empl_Nombre { get; set; }
-        public string usua_Contraseña { get; set; }
+        public string usua_Clave { get; set; }
         public int role_Id { get; set; }
         [NotMapped]
         public string role_Descripcion { get; set; }

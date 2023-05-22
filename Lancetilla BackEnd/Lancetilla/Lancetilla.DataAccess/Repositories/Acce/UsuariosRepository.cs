@@ -34,7 +34,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 
             parametros.Add("@usua_NombreUsuario", item.usua_NombreUsuario, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Id", item.empl_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@usua_Contraseña", item.usua_Contraseña, DbType.String, ParameterDirection.Input);
+            parametros.Add("@usua_Clave", item.usua_Clave, DbType.String, ParameterDirection.Input);
             parametros.Add("@usua_Admin", item.usua_Admin, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@usua_UserCreacion", item.usua_UserCreacion, DbType.Int32, ParameterDirection.Input);
@@ -79,7 +79,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 
 
             parametros.Add("@usua_NombreUsuario", item.usua_NombreUsuario, DbType.String, ParameterDirection.Input);
-            parametros.Add("@usua_Contraseña", item.usua_Contraseña, DbType.String, ParameterDirection.Input);
+            parametros.Add("@usua_Clave", item.usua_Clave, DbType.String, ParameterDirection.Input);
 
 
             return db.QueryFirst<tbUsuarios>(ScriptsDataBase.IniciarSesion, parametros, commandType: CommandType.StoredProcedure);
