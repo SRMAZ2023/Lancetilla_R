@@ -73,9 +73,9 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Especie</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="Especie.espe_Descripcion" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !Especie.espe_Descripcion}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Especie.espe_Descripcion">La especies es
+                    <input type="text" pInputText id="name"   [(ngModel)]="Especie.espe_Descripcion" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Especie.espe_Descripcion)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Especie.espe_Descripcion)">La especies es
                         requerida.</small>
                 </div>
 

@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj": {}
+    "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj": {
+    "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
+        "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
         "projectName": "Lancetilla.API",
-        "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
-        "packagesPath": "C:\\Users\\selvin almendarez\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\obj\\",
+        "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\Lancetilla.API.csproj",
+        "packagesPath": "C:\\Users\\LAB02\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\selvin almendarez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LAB02\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -31,11 +32,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj": {
-                "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj"
+              "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj": {
+                "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj"
               },
-              "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
-                "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj"
+              "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
+                "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj"
               }
             }
           }
@@ -99,24 +100,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.413\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj": {
+    "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj",
+        "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj",
         "projectName": "Lancetilla.BussinessLogic",
-        "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj",
-        "packagesPath": "C:\\Users\\selvin almendarez\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\obj\\",
+        "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\Lancetilla.BussinessLogic.csproj",
+        "packagesPath": "C:\\Users\\LAB02\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.BussinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\selvin almendarez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LAB02\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -130,8 +132,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj": {
-                "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj"
+              "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj": {
+                "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj"
               }
             }
           }
@@ -166,24 +168,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.413\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj": {
+    "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj",
         "projectName": "Lancetilla.DataAccess",
-        "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj",
-        "packagesPath": "C:\\Users\\selvin almendarez\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\obj\\",
+        "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\Lancetilla.DataAccess.csproj",
+        "packagesPath": "C:\\Users\\LAB02\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\selvin almendarez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LAB02\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -197,8 +200,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
-                "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj"
+              "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
+                "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj"
               }
             }
           }
@@ -249,24 +252,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.413\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
+    "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
+        "projectUniqueName": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
         "projectName": "Lancetilla.Entities",
-        "projectPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
-        "packagesPath": "C:\\Users\\selvin almendarez\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\selvin almendarez\\Documents\\GitHub\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\obj\\",
+        "projectPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\Lancetilla.Entities.csproj",
+        "packagesPath": "C:\\Users\\LAB02\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\LAB02\\Desktop\\Lancetilla_R\\Lancetilla BackEnd\\Lancetilla\\Lancetilla.Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\selvin almendarez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LAB02\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -306,7 +310,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.413\\RuntimeIdentifierGraph.json"
         }
       }
     }

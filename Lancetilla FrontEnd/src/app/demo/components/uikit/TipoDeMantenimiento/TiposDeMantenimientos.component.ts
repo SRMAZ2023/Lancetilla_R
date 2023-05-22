@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { TiposDeMantenimientoService } from 'src/app/demo/service/TipoDeMantenimiento.service';
 import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeManteniminetoViewModel';
-import { error } from 'console';
+import { Console, error } from 'console';
 
 @Component({
     templateUrl: './TiposDeMantenimientos.component.html',
@@ -18,6 +18,8 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
     deleteProductsDialog: boolean = false;
     //Dialogs
+
+    datos:any = {};
 
 
     public Editar: boolean = false;
@@ -123,6 +125,14 @@ export class TiposDeMantenimientosComponent implements OnInit {
     }
     //Confirma el eliminar
 
+    isInputEmptyOrWhitespace(value: string | undefined): boolean {
+        if (value === undefined) {
+          return true; // Tratar 'undefined' como un valor vacío
+        }
+        
+        return value.trim() === '';
+      }
+      
 
     //Enviamos y editamos datos
     saveTiposDeMantenimientos() {
@@ -130,7 +140,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
         var params = {
             "tima_Id": this.TiposDeMantenimiento.tima_Id,
-            "tima_Descripcion": this.TiposDeMantenimiento.tima_Descripcion,
+            "tima_Descripcion": this.TiposDeMantenimiento.tima_Descripcion!.trim(),
             "tima_UserCreacion": 1,
             "tima_UserModificacion": 1
         }
@@ -149,15 +159,19 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
                 this.TiposDeMantenimientosService.postTiposDeMantenimientos(params).subscribe(
                     Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva TiposDeMantenimiento', life: 3000 });
-                            console.log("esta dentrando")
+                        this.datos = Response;
+                        if(this.datos.code == 409){
+                            
+                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                        }else  if (this.datos.code  == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.TiposDeMantenimiento = {};
                             this.TiposDeMantenimientostDialog = false;
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                            
+                        } else  {
+                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
@@ -168,16 +182,19 @@ export class TiposDeMantenimientosComponent implements OnInit {
             } else {
                 this.TiposDeMantenimientosService.EditTiposDeMantenimientos(params).subscribe(
                     Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva TiposDeMantenimiento', life: 3000 });
-                            console.log("esta dentrando")
+                        this.datos = Response;
+                        if(this.datos.code == 409){
+                            
+                            this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+
+                        }else  if (this.datos.code  == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.TiposDeMantenimiento = {};
                             this.TiposDeMantenimientostDialog = false;
-
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                            
+                        } else  {
+                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {

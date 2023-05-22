@@ -73,9 +73,9 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Tipos De Mantenimiento</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="TiposDeMantenimiento.tima_Descripcion" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !TiposDeMantenimiento.tima_Descripcion}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !TiposDeMantenimiento.tima_Descripcion">La TiposDeMantenimientos es
+                    <input type="text" pInputText id="name"    [(ngModel)]="TiposDeMantenimiento.tima_Descripcion" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(TiposDeMantenimiento.tima_Descripcion)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(TiposDeMantenimiento.tima_Descripcion)">La TiposDeMantenimientos es
                         requerida.</small>
                 </div>
 

@@ -19,6 +19,8 @@ export class PlantasComponent implements OnInit {
     deleteProductsDialog: boolean = false;
     //Dialogs
 
+    datos:any = {};
+
 
     public Editar: boolean = false;
     Plantas: PlantasViewModel[] = [];
@@ -110,13 +112,19 @@ export class PlantasComponent implements OnInit {
         console.log(params)
         this.PlantasService.DeletePlantas(params).subscribe(
             Response => {
-                if (Response) {
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Planta', life: 3000 });
-                    console.log("esta dentrando")
-                    this.Planta = {};
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 409) {
+
+                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                 
 
                 } else {
-                    this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {

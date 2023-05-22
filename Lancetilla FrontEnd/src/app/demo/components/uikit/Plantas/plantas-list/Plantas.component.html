@@ -88,28 +88,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="PlantastDialog" [style]="{width: '450px'}" header="Plantas" [modal]="true"
-            class="p-fluid">
-            
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="name">Planta</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="Planta.plan_Nombre" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !Planta.plan_Nombre}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Planta.plan_Nombre">La Plantas es
-                        requerida.</small>
-                </div>
-
-
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-                    (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
-                    (click)="savePlantas()"></button>
-            </ng-template>
-        </p-dialog>
+         
 
         <p-dialog [(visible)]="deletePlantasDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">

@@ -20,6 +20,8 @@ export class cargosComponent implements OnInit {
     deleteProductsDialog: boolean = false;
     //Dialogs
 
+    datos: any = {};
+
 
     public Editar: boolean = false;
     Cargos: CargoViewModel[] = [];
@@ -36,6 +38,8 @@ export class cargosComponent implements OnInit {
     cols: any[] = [];
 
     statuses: any[] = [];
+    //validar espacio
+    espacio: boolean = false;
 
 
     constructor(private cargosService: CargosService, private messageService: MessageService) {
@@ -104,16 +108,23 @@ export class cargosComponent implements OnInit {
             "carg_UserCreacion": 1,
             "carg_UserModificacion": 1
         }
-        console.log(params)
+
         this.cargosService.DeleteCargos(params).subscribe(
             Response => {
-                if (Response) {
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva cargo', life: 3000 });
-                    console.log("esta dentrando")
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 409) {
+
+                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.Cargo = {};
+                    this.CargostDialog = false;
 
                 } else {
-                    this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -124,6 +135,14 @@ export class cargosComponent implements OnInit {
     }
     //Confirma el eliminar
 
+    isInputEmptyOrWhitespace(value: string | undefined): boolean {
+        if (value === undefined) {
+            return true; // Tratar 'undefined' como un valor vacío
+        }
+
+        return value.trim() === '';
+    }
+
 
     //Enviamos y editamos datos
     saveCargos() {
@@ -131,34 +150,40 @@ export class cargosComponent implements OnInit {
 
         var params = {
             "carg_Id": this.Cargo.carg_Id,
-            "carg_Descripcion": this.Cargo.carg_Descripcion,
+            "carg_Descripcion": this.Cargo.carg_Descripcion!.trim(),
             "carg_UserCreacion": 1,
             "carg_UserModificacion": 1
         }
 
 
-        console.log(params)
-
+        if (this.Cargo.carg_Descripcion?.trim() == '') {
+            console.log(this.Cargo.carg_Descripcion?.toString().length);
+            this.espacio = true;
+        }
         //Validacion de params
         if (params.carg_Descripcion !== undefined &&
             params.carg_Descripcion.trim() !== '' &&
             params.carg_UserCreacion !== undefined &&
             params.carg_UserModificacion !== undefined) {
-            
+
             //Si insertara o editara
             if (!this.Editar) {
 
                 this.cargosService.postCargos(params).subscribe(
                     Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva cargo', life: 3000 });
-                            console.log("esta dentrando")
+                        this.datos = Response;
+                        if (this.datos.code == 409) {
+
+                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                        } else if (this.datos.code == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Cargo = {};
                             this.CargostDialog = false;
 
                         } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
@@ -169,16 +194,19 @@ export class cargosComponent implements OnInit {
             } else {
                 this.cargosService.EditCargos(params).subscribe(
                     Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva cargo', life: 3000 });
-                            console.log("esta dentrando")
+                        this.datos = Response;
+                        if (this.datos.code == 409) {
+
+                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                        } else if (this.datos.code == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Cargo = {};
                             this.CargostDialog = false;
 
-
                         } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
