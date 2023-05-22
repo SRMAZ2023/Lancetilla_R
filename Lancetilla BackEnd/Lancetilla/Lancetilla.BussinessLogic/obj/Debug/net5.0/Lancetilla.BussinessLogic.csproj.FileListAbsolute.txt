@@ -25,3 +25,15 @@ C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lanc
 C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.dll
 C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\ref\Lancetilla.BussinessLogic.dll
 C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.pdb
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.BussinessLogic.deps.json
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.BussinessLogic.dll
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\ref\Lancetilla.BussinessLogic.dll
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.BussinessLogic.pdb
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.DataAccess.dll
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.Entities.dll
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.DataAccess.pdb
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\bin\Debug\net5.0\Lancetilla.Entities.pdb
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.csproj.CopyComplete
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.dll
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\ref\Lancetilla.BussinessLogic.dll
+C:\Users\LAB02\Desktop\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.BussinessLogic\obj\Debug\net5.0\Lancetilla.BussinessLogic.pdb

@@ -30,8 +30,14 @@ export class especiesComponent implements OnInit {
     rowsPerPageOptions = [5, 10, 20];
     //Paginacion de el datatable
 
+    datos:any = {};
+
+
     //Validacion
     submitted: boolean = false;
+
+    //validar espacio
+    espacio: boolean = false;
 
     cols: any[] = [];
 
@@ -114,7 +120,7 @@ export class especiesComponent implements OnInit {
                     this.Especie = {};
 
                 } else {
-                    this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
                 }
             },
             error => {
@@ -125,6 +131,14 @@ export class especiesComponent implements OnInit {
     }
     //Confirma el eliminar
 
+    isInputEmptyOrWhitespace(value: string | undefined): boolean {
+        if (value === undefined) {
+          return true; // Tratar 'undefined' como un valor vacío
+        }
+        
+        return value.trim() === '';
+      }
+      
 
     //Enviamos y editamos datos
     saveEspecies() {
@@ -132,14 +146,16 @@ export class especiesComponent implements OnInit {
 
         var params = {
             "espe_Id": this.Especie.espe_Id,
-            "espe_Descripcion": this.Especie.espe_Descripcion,
+            "espe_Descripcion": this.Especie.espe_Descripcion!.trim(),
             "espe_UserCreacion": 1,
             "espe_UserModificacion": 1
         }
 
 
-        console.log(params)
-
+        if(this.Especie.espe_Descripcion?.trim() == ''){
+            console.log(this.Especie.espe_Descripcion?.toString().length);
+            this.espacio = true;
+        } 
         //Validacion de params
         if (params.espe_Descripcion !== undefined &&
             params.espe_Descripcion.trim() !== '' &&
@@ -151,15 +167,19 @@ export class especiesComponent implements OnInit {
 
                 this.productService.postEspecies(params).subscribe(
                     Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva especie', life: 3000 });
-                            console.log("esta dentrando")
+                        this.datos = Response;
+                        if(this.datos.code == 409){
+                            
+                            this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+
+                        }else  if (this.datos.code  == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
                             this.Especie = {};
                             this.EspeciestDialog = false;
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                            
+                        } else  {
+                            this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
                         }
                     },
                     error => {
@@ -170,16 +190,19 @@ export class especiesComponent implements OnInit {
             } else {
                 this.productService.EditEspecies(params).subscribe(
                     Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva especie', life: 3000 });
-                            console.log("esta dentrando")
+                        this.datos = Response;
+                        if(this.datos.code == 409){
+                            
+                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                        }else  if (this.datos.code  == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
                             this.Especie = {};
                             this.EspeciestDialog = false;
-
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                            
+                        } else  {
+                            this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
                         }
                     },
                     error => {

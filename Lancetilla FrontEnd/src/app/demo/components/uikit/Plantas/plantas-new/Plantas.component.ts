@@ -18,7 +18,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class PlantasNewComponent implements OnInit {
 
     public planta!: PlantasCrud;
-    public page_title!:string;;
+    public page_title!: string;;
     submitted: boolean = false;
 
     cuidado: CuidadoDePlantasViewModel[] = [];
@@ -27,6 +27,7 @@ export class PlantasNewComponent implements OnInit {
     public formValid = false;
     PlantasForm: any;
 
+    datos: any = {};
 
 
 
@@ -48,7 +49,7 @@ export class PlantasNewComponent implements OnInit {
             },
             error => {
                 // Manejo del error
-            } 
+            }
         );
 
         this.CuidadosDePlantasService.getCuidadosDePlantas().subscribe(
@@ -80,12 +81,18 @@ export class PlantasNewComponent implements OnInit {
             console.log("Todos los campos están llenos");
 
             this.PlantasService.postPlantas(this.planta).subscribe(Response => {
-                console.log(Response);
-                this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Planta', life: 1500 });
+                this.datos = Response;
+                if (this.datos.code == 409) {
 
-                setTimeout(() => {
-                    this._rauter.navigate(['/uikit/Plantas']);
-                   }, 1500);
+                    this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code = 200) {
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
+                    setTimeout(() => {
+                        this._rauter.navigate(['/uikit/Plantas']);
+                    }, 1500);
+                }
+
 
             }, error => {
                 console.log(error)

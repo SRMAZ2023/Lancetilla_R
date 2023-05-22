@@ -29,7 +29,7 @@ export class PlantasEditComponent {
   public formValid = false;
   PlantasForm: any;
 
-
+  datos:any = {};
 
 
   constructor(private PlantasService: PlantasService,
@@ -85,12 +85,19 @@ export class PlantasEditComponent {
       console.log("Todos los campos están llenos");
 
       this.PlantasService.EditPlantas(this.planta).subscribe(Response => {
-        console.log(Response);
-        this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una Editado Planta', life: 1500 });
+        this.datos = Response;
+        if(this.datos.code == 409){
 
-        setTimeout(() => {
-          this._rauter.navigate(['/uikit/Plantas']);
-        }, 1500);
+          this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+        }else if(this.datos.code = 200){
+          this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
+          setTimeout(() => {
+            this._rauter.navigate(['/uikit/Plantas']);
+          }, 1500);
+        }
+
+      
 
       }, error => {
         console.log(error)

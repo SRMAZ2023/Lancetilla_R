@@ -125,7 +125,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
 
                 }
-                else if (map.CodeStatus == 409)
+                else if (map.CodeStatus == 202)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
                 }
