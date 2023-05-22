@@ -18,6 +18,11 @@ export class PlantasService {
         return this.http.get(this.url + "Plantas/ListarCuidadosDePlantas");
     }
 
+    findPlantas(plan_id:any): Observable<any> {
+        return this.http.get(this.url + `Plantas/BuscarPlanta/${plan_id}`);
+
+    }
+
     postPlantas(PlantasViewModel: any): Observable<Response> {
 
         let params = JSON.stringify(PlantasViewModel);

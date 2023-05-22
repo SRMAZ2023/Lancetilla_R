@@ -198,6 +198,8 @@ namespace Lancetilla.DataAccess
 
         public static string InsertarPlantas = "bota.UDP_tbPlantas_CREATE";
 
+        public static string UDP_tbPlantas_FIND = "bota.UDP_tbPlantas_FIND";
+
         public static string ActualizarPlantas = "bota.UDP_tbPlantas_UPDATE";
 
         public static string EliminarPlantas = "bota.UDP_tbPlanta_DELETE";

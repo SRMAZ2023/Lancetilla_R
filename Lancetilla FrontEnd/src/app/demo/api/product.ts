@@ -21,6 +21,20 @@ export interface Product {
     rating?: number;
 }
 
+
+export interface nuevo {
+    id?: string;
+    code?: string;
+    name?: string;
+    description?: string;
+    price?: number;
+    quantity?: number;
+    inventoryStatus?: InventoryStatus;
+    category?: string;
+    image?: string;
+    rating?: number;
+}
+
 export class Especies {
     static cate_Id: any;
     constructor(

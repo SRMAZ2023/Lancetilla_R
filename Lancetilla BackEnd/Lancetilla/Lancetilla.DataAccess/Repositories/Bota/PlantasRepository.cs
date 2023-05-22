@@ -29,9 +29,15 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             return result;
         }
 
-        public tbPlantas Find(int? id)
+        public VW_tbPlantas Find(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@plan_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.QueryFirst<VW_tbPlantas>(ScriptsDataBase.UDP_tbPlantas_FIND, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
 
         public RequestStatus Insert(tbPlantas item)
@@ -75,6 +81,11 @@ namespace Lancetilla.DataAccess.Repositories.Bota
         }
 
         public RequestStatus Update(tbPlantas item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        tbPlantas IRepository<tbPlantas>.Find(int? id)
         {
             throw new NotImplementedException();
         }

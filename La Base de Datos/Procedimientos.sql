@@ -1494,6 +1494,7 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 select * from mant.tbMantenimientoAnimal
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+GO
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
 @anim_Id INT,
 @mant_Id INT,
@@ -1552,7 +1553,7 @@ GO
 EXEC  mant.UDP_tbMantenimientosAnimal_UPDATE 0, 0, 0, null, 0
 
 
-
+GO
 CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
 @maan_Id INT
  AS BEGIN
@@ -2673,6 +2674,35 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*****************************************************************TABLA DE PLANTAS****************************************************************************--
+GO
+CREATE OR ALTER PROCEDURE bota.UDP_tbPlantas_FIND
+@plan_Id	 int
+AS
+BEGIN
+
+	/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [plan_Id]
+      ,[plan_Nombre]
+      ,[plan_NombreCientifico]
+      ,[plan_Reino]
+      ,[arbo_Id]
+      ,[arbo_Descripcion]
+      ,[cuid_Id]
+      ,[cuid_Descripcion]
+      ,[cuid_Frecuencia]
+      ,[usua_UserCreaNombre]
+      ,[plan_UserCreacion]
+      ,[plan_FechaCreacion]
+      ,[usua_UserModiNombre]
+      ,[plan_UserModificacion]
+      ,[plan_FechaModificacion]
+      ,[plan_Estado]
+  FROM [db_Lancetilla].[bota].[VW_tbPlantas]
+WHERE [plan_Id] = @plan_Id
+
+END
+
+go
 CREATE OR ALTER PROC bota.UDP_tbPlantas_CREATE
 @plan_Nombre NVARCHAR(100),
 @plan_NombreCientifico NVARCHAR(100),

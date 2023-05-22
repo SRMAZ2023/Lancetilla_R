@@ -1,0 +1,116 @@
+import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { PlantasService } from 'src/app/demo/service/Plantas.service';
+import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
+import { CuidadosDePlantasService } from 'src/app/demo/service/CuidadoDePlantas';
+import { error } from 'console';
+import { PlantasCrud } from 'src/app/demo/Models/PlantasViewModel';
+import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
+import { CuidadoDePlantasViewModel } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
+import { PlantasViewModel } from 'src/app/demo/Models/PlantasViewModel';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+@Component({
+  selector: 'app-plantas-edit',
+  // templateUrl: './plantas-edit.component.html',
+  templateUrl: '../plantas-new/PlantasNew.component.html',
+  styleUrls: ['./plantas-edit.component.scss'],
+  providers: [MessageService, PlantasService, AreaBotanicaService, CuidadosDePlantasService]
+
+})
+export class PlantasEditComponent {
+  public planta!: PlantasCrud;
+  public page_title!: string;
+  submitted: boolean = false;
+
+  cuidado: CuidadoDePlantasViewModel[] = [];
+  areaBotanica: AreaBotanicaViewModel[] = [];
+
+  public formValid = false;
+  PlantasForm: any;
+
+
+
+
+  constructor(private PlantasService: PlantasService,
+    private messageService: MessageService,
+    private AreaBotanicaService: AreaBotanicaService,
+    private CuidadosDePlantasService: CuidadosDePlantasService,
+    private _route: ActivatedRoute,
+    private _rauter: Router) {
+    this.planta = new PlantasCrud(undefined, "", "", "", undefined, "", undefined, "", "", 1, 1)
+    this.page_title = "Editar Planta"
+
+  }
+
+  ngOnInit() {
+
+    this.getPlanta();
+
+    this.AreaBotanicaService.getAreaBotanica().subscribe(
+      response => {
+        this.areaBotanica = response.map((item: { arbo_Descripcion: any; arbo_Id: any; }) => ({ label: item.arbo_Descripcion, value: item.arbo_Id }));
+      },
+      error => {
+        // Manejo del error
+      }
+    );
+
+    this.CuidadosDePlantasService.getCuidadosDePlantas().subscribe(
+      Response => {
+
+        this.cuidado = Response.map((item: { cuid_Descripcion: any; cuid_Id: any; }) => ({ label: item.cuid_Descripcion, value: item.cuid_Id }));
+      },
+      error => { }
+    );
+
+
+
+  }
+
+  checkFormValidity() {
+    this.formValid = this.PlantasForm.valid && this.planta.arbo_Id || this.planta.cuid_Id;
+  }
+
+
+  //Enviamos y editamos datos
+  savePlantas() {
+    // Verificar si todos los campos están llenos
+    if (this.planta.plan_Nombre &&
+      this.planta.plan_NombreCientifico &&
+      this.planta.plan_Reino &&
+      this.planta.arbo_Id &&
+      this.planta.cuid_Id) {
+      // Todos los campos están llenos, realizar acciones adicionales
+      console.log("Todos los campos están llenos");
+
+      this.PlantasService.EditPlantas(this.planta).subscribe(Response => {
+        console.log(Response);
+        this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una Editado Planta', life: 1500 });
+
+        setTimeout(() => {
+          this._rauter.navigate(['/uikit/Plantas']);
+        }, 1500);
+
+      }, error => {
+        console.log(error)
+      })
+
+    }
+  }
+
+  //Enviamos y editamos datos
+
+  getPlanta() {
+    this._route.params.subscribe(Params => {
+      let plan_Id = Params['id'];
+
+      this.PlantasService.findPlantas(plan_Id).subscribe(Response => {
+        this.planta = Response;
+        console.log(Response);
+      }, error => {
+        console.log(error);
+      })
+    });
+  }
+}

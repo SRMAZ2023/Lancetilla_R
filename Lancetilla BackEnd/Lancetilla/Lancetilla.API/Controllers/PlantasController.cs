@@ -31,6 +31,13 @@ namespace Lancetilla.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("BuscarPlanta/{id}")]
+        public IActionResult BuscarPlanta(int id)
+        {
+            var list = _botanicaServicios.BuscarPlantas(id);
+            return Ok(list);
+        }
+
         [HttpPost("InsertarPlanta")]
         public IActionResult InsertarPlanta(PlantasViewModel item)
         {

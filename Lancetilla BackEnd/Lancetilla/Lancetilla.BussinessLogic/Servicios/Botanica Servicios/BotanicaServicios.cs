@@ -233,6 +233,23 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             }
         }
 
+        public VW_tbPlantas BuscarPlantas(int id)
+        {
+            try
+            {
+                var list = _plantasRepository.Find(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+
+            }
+        }
+
+
+
 
         public ServiceResult InsertarPlanta(tbPlantas item)
         {

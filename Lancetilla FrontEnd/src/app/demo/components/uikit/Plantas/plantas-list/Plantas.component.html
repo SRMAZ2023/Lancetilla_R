@@ -6,7 +6,7 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                        [routerLink]="['/uikit/Plantas/PlantasInsert']"></button>
+                        [routerLink]="['/uikit/Plantas/Create']"></button>
                     </div>
                 </ng-template>
 
@@ -77,8 +77,8 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
-                                    (click)="editPlantas(Plantas)"></button>
+                                    class="p-button-rounded p-button-success mr-2"  
+                                    [routerLink]="['/uikit/Plantas/Edit',Plantas.plan_Id]"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                                     (click)="deletePlantas(Plantas)"></button>
                             </div>
