@@ -1,0 +1,234 @@
+import { Component, OnInit } from '@angular/core';
+import { CargoViewModel } from 'src/app/demo/Models/CargoViewModel';
+import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { CargosService } from 'src/app/demo/service/cargo.service';
+import { error } from 'console';
+import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
+import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
+//import { Cargoss } from 'src/app/demo/api/CargossViewModel';
+
+@Component({
+    templateUrl: './alimentacion.component.html',
+    providers: [MessageService, CargosService]
+})
+export class AlimentacionComponent implements OnInit {
+
+    //Dialogs
+    AlimentaciontDialog: boolean = false;
+
+    deleteAlimentacionDialog: boolean = false;
+
+    deleteProductDialog: boolean = false;
+    //Dialogs
+
+    datos: any = {};
+
+
+    public Editar: boolean = false;
+    Alimentacion: AlimentacionViewModel[] = [];
+    Alimento: AlimentacionViewModel = {};
+
+    //Paginacion de el datatable
+    selectedAlimentos: AlimentacionViewModel[] = [];
+    rowsPerPageOptions = [5, 10, 20];
+    //Paginacion de el datatable
+
+    //Validacion
+    submitted: boolean = false;
+
+    cols: any[] = [];
+
+    statuses: any[] = [];
+    //validar espacio
+    espacio: boolean = false;
+
+
+    constructor(private alimentosService: AlimentacionService, private messageService: MessageService) {
+    }
+
+    ngOnInit() {
+
+        this.alimentosService.getAlimentacion().subscribe(
+            Response => {
+                console.log(Response);
+                this.Alimentacion = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+
+        //Modelo de los datos de la tabla
+        this.cols = [
+            { field: 'alim_Id', header: 'alim_Id' },
+            { field: 'alim_Descripcion', header: 'alim_Descripcion' }
+
+        ];
+        //Modelo de los datos de la tabla
+
+    }
+
+    //Metodo que desactiva el dialog
+    hideDialog() {
+        this.AlimentaciontDialog = false;
+        this.submitted = false;
+    }
+    //Metodo que desactiva el dialog
+
+    //Metodo que activa el dialog
+    openNew() {
+        this.Alimento = {};
+        this.submitted = false;
+        this.AlimentaciontDialog = true;
+    }
+    //Metodo que activa el dialog
+
+
+    //Toma los datos de ka tabla
+    editAlimentacion(alimentos: AlimentacionViewModel) {
+        this.Editar = true;
+        this.Alimento = { ...alimentos };
+        this.AlimentaciontDialog = true;
+    }
+    //Toma los datos de ka tabla
+
+    //Toma el id del item
+    deleteAlimentacion(alimentos: AlimentacionViewModel) {
+        this.deleteAlimentacionDialog = true;
+        this.Alimento = { ...alimentos };
+    }
+    //Toma el id del item
+
+    //Confirma el eliminar
+    confirmDelete() {
+        this.deleteAlimentacionDialog = false;
+        this.Alimentacion = this.Alimentacion.filter(val => val.alim_Id !== this.Alimento.alim_Id);
+        var params = {
+            "alim_Id": this.Alimento.alim_Id,
+            "alim_Descripcion": "",
+            "alim_UserCreacion": 1,
+            "alim_UserModificacion": 1
+        }
+
+        this.alimentosService.DeleteAlimentacion(params).subscribe(
+            Response => {
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 409) {
+
+                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.Alimento = {};
+                    this.AlimentaciontDialog = false;
+
+                } else {
+                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                }
+            },
+            error => {
+                console.log("manzana")
+            }
+        );
+
+    }
+    //Confirma el eliminar
+
+    isInputEmptyOrWhitespace(value: string | undefined): boolean {
+        if (value === undefined) {
+            return true; // Tratar 'undefined' como un valor vacío
+        }
+
+        return value.trim() === '';
+    }
+
+
+    //Enviamos y editamos datos
+    saveAlimentacion() {
+        this.submitted = true;
+
+        var params = {
+            "alim_Id": this.Alimento.alim_Id,
+            "alim_Descripcion": this.Alimento.alim_Descripcion!.trim(),
+            "alim_UserCreacion": 1,
+            "alim_UserModificacion": 1
+        }
+
+
+        if (this.Alimento.alim_Descripcion?.trim() == '') {
+            console.log(this.Alimento.alim_Descripcion?.toString().length);
+            this.espacio = true;
+        }
+        //Validacion de params
+        if (params.alim_Descripcion !== undefined &&
+            params.alim_Descripcion.trim() !== '' &&
+            params.alim_UserCreacion !== undefined &&
+            params.alim_UserModificacion !== undefined) {
+
+            //Si insertara o editara
+            if (!this.Editar) {
+
+                this.alimentosService.postAlimentacion(params).subscribe(
+                    Response => {
+                        this.datos = Response;
+                        if (this.datos.code == 409) {
+
+                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                        } else if (this.datos.code == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                            this.Alimento = {};
+                            this.AlimentaciontDialog = false;
+
+                        } else {
+                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                        }
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                )
+
+            } else {
+                this.alimentosService.EditAlimentacion(params).subscribe(
+                    Response => {
+                        this.datos = Response;
+                        if (this.datos.code == 409) {
+
+                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                        } else if (this.datos.code == 200) {
+
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                            this.Alimento = {};
+                            this.AlimentaciontDialog = false;
+
+                        } else {
+                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                        }
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                )
+
+            }
+
+
+        }
+    }
+    //Enviamos y editamos datos
+
+
+
+    //Buscador
+    onGlobalFilter(table: Table, event: Event) {
+        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
+    //Buscador
+
+}
