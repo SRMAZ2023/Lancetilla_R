@@ -24,7 +24,7 @@ CREATE TABLE acce.tbUsuarios(
 usua_Id					INT IDENTITY(1,1)	NOT NULL	PRIMARY KEY,
 usua_NombreUsuario		NVARCHAR(100)		NOT NULL,
 empl_Id					INT					NOT NULL,
-usua_Contraseña			NVARCHAR(MAX)		NOT NULL,
+usua_Clave			NVARCHAR(MAX)		NOT NULL,
 role_Id					INT					NOT NULL,
 usua_Admin				BIT					NOT NULL,
 
@@ -643,7 +643,7 @@ ALTER TABLE acce.tbUsuarios ADD CONSTRAINT FK_acce_tbUsuarios_usua_UserModificac
 
 --*************************************************************TABLA DE USUARIOS******************************************************************************--
 
-INSERT INTO acce.tbUsuarios(usua_NombreUsuario, empl_Id, usua_Contraseña, role_Id, usua_Admin, usua_UserCreacion)
+INSERT INTO acce.tbUsuarios(usua_NombreUsuario, empl_Id, usua_Clave, role_Id, usua_Admin, usua_UserCreacion)
 VALUES 
   ('juans', 1, '123', 1, 0, 1),
   ('selvin', 2, '123', 2, 0, 2),
