@@ -1,0 +1,38 @@
+DECLARE @Pass AS NVARCHAR(MAX);
+	SET @Pass = CONVERT(NVARCHAR(MAX), HASHBYTES('sha2_512', '123'), 2);
+
+Print @Pass
+
+INSERT INTO acce.tbUsuarios(usua_NombreUsuario, empl_Id, usua_Contraseña, role_Id, usua_Admin, usua_UserCreacion)
+VALUES 
+  ('Admin', 1, @Pass, 1, 0, 1)
+  
+
+
+
+  CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN  
+@usua_NombreUsuario NVARCHAR(100),
+@usua_Contraseña VARCHAR(100)
+AS BEGIN
+
+	DECLARE @Pass AS VARCHAR(MAX);
+	SET @Pass = CONVERT(VARCHAR(MAX), HASHBYTES('sha2_512', @usua_Contraseña), 2);
+	
+	
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass AND usua_Estado = 1)
+	BEGIN
+            SELECT * FROM acce.VW_tbUsuarios
+			WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass
+    END
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass AND usua_Estado = 0)
+	BEGIN
+			SELECT	usua_Id = 0 ,
+					usua_NombreUsuario = 'Usuario No Valido'
+	END
+	IF NOT EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass)
+	BEGIN
+			SELECT	usua_Id = 0 ,
+					usua_NombreUsuario = 'Usuario o Contraseña Incorrectos'
+	END
+END
+GO
