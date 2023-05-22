@@ -86,23 +86,26 @@ GO
 
 
 
-CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN
+  CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN  
 @usua_NombreUsuario NVARCHAR(100),
-@usua_Contraseña NVARCHAR(100)
+@usua_Contraseña VARCHAR(100)
 AS BEGIN
-DECLARE @Encrypt NVARCHAR(MAX) = (HASHBYTES('SHA2_512',@usua_Contraseña))
 
-	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt AND usua_Estado = 1)
+	DECLARE @Pass AS VARCHAR(MAX);
+	SET @Pass = CONVERT(VARCHAR(MAX), HASHBYTES('sha2_512', @usua_Contraseña), 2);
+	
+	
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass AND usua_Estado = 1)
 	BEGIN
             SELECT * FROM acce.VW_tbUsuarios
-			WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt
+			WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass
     END
-	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt AND usua_Estado = 0)
+	IF EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass AND usua_Estado = 0)
 	BEGIN
 			SELECT	usua_Id = 0 ,
 					usua_NombreUsuario = 'Usuario No Valido'
 	END
-	IF NOT EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Encrypt)
+	IF NOT EXISTS (SELECT * FROM acce.VW_tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND usua_Contraseña = @Pass)
 	BEGIN
 			SELECT	usua_Id = 0 ,
 					usua_NombreUsuario = 'Usuario o Contraseña Incorrectos'
@@ -1492,7 +1495,7 @@ GO
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-select * from mant.tbMantenimientoAnimal
+
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 GO
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
@@ -1550,7 +1553,9 @@ ROLLBACK
 END CATCH
 END
 GO
-EXEC  mant.UDP_tbMantenimientosAnimal_UPDATE 0, 0, 0, null, 0
+
+
+
 
 
 GO
