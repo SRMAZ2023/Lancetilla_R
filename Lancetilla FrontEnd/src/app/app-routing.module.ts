@@ -9,6 +9,12 @@ import { LoginComponent } from "../app/demo/components/auth/login/login.componen
     imports: [
         RouterModule.forRoot([
             {
+                path: 'login', component: LoginComponent
+            },
+            {
+                path: '1', redirectTo: 'login', pathMatch: 'full' // Redirige la ruta raíz a 'login'
+              },
+            {
                 path: '', component: AppLayoutComponent,
                 children: [
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },

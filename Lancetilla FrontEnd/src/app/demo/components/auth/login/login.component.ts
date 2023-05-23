@@ -75,7 +75,7 @@ export class LoginComponent {
             life: 1500
           });
           setTimeout(() => {
-           this._router.navigate(['../../../../layout']);
+           this._router.navigate(['']);
           }, 1500);
         }
       }, error => {
