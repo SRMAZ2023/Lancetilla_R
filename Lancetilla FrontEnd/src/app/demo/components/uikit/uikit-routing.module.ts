@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
         { path: 'Plantas', data: { breadcrumb: 'Plantas' }, loadChildren: () => import('./Plantas/Plantas.module').then(m => m.PlantasModule) },
         { path: 'MetodoDePago', data: { breadcrumb: 'MetodoDePago' }, loadChildren: () => import('./MetodoDePago/MetodoPago.module').then(m => m.MetodoPagoModule) },
         { path: 'EstadoCivil', data: { breadcrumb: 'EstadoCivil' }, loadChildren: () => import('./EstadoCivil/EstadoCivil.module').then(m => m.EstadoCivilModule) },
+        { path: 'Empleados', data: { breadcrumb: 'Empleados' }, loadChildren: () => import('./Empleados/empleados.module').then(m => m.EmpleadosModule) },
         { path: 'Create', data: { breadcrumb: 'Create' }, loadChildren: () => import('./Plantas/Plantas.module').then(m => m.PlantasModule) },
         { path: 'Edit', data: { breadcrumb: 'Edit' }, loadChildren: () => import('./Plantas/Plantas.module').then(m => m.PlantasModule) },
         { path: 'button', data: { breadcrumb: 'Button' }, loadChildren: () => import('./button/buttondemo.module').then(m => m.ButtonDemoModule) },

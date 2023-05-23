@@ -7,6 +7,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from "primeng/calendar";
+
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { InputTextModule } from 'primeng/inputtext';
@@ -18,6 +20,7 @@ import { DialogModule } from 'primeng/dialog';
 import { empleadosComponent } from './empleados-list/empleados.component';
 import { empleadosNewComponent } from './empleados-new/empleadosNew.component';
 import { empleadosEditComponent } from './empleados-edit/empleados-edit.component';
+import { InputMaskModule } from "primeng/inputmask";
 
 @NgModule({
     imports: [
@@ -29,6 +32,8 @@ import { empleadosEditComponent } from './empleados-edit/empleados-edit.componen
         ButtonModule,
         RippleModule,
         ToastModule,
+        CalendarModule,
+        InputMaskModule,
         ToolbarModule,
         RatingModule,
         InputTextModule,
@@ -40,4 +45,4 @@ import { empleadosEditComponent } from './empleados-edit/empleados-edit.componen
     ],
     declarations: [empleadosComponent, empleadosNewComponent, empleadosEditComponent ]
 })
-export class PlantasModule { }
+export class EmpleadosModule { }

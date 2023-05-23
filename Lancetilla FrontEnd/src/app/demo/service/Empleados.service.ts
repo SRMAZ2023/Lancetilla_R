@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EmpleadosViewModel } from '../Models/EmpleadosViewModel';
+import { EmpleadosViewModel } from '../Models/EmpleadaoViewModel';
 import { Observable } from "rxjs"
 import { Global } from './Global';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
@@ -20,6 +20,14 @@ export class EmpleadosService {
 
     findEmpleados(empl_Id:any): Observable<any> {
         return this.http.get(this.url + `Empleados/BuscarEmpleados/${empl_Id}`);
+
+    }
+
+    findMunicipios(empl_Id:any): Observable<any> {
+        let params = JSON.stringify(empl_Id);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        return this.http.post<Response>(this.url + 'Municipios/CargarMunicipiosPorDepa', params, { headers: headers });
 
     }
 

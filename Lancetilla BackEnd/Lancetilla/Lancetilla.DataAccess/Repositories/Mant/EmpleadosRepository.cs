@@ -28,7 +28,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             parametros.Add("@empl_Nombre", item.empl_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Apellido", item.empl_Apellido, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Identidad", item.empl_Identidad, DbType.String, ParameterDirection.Input);
-            parametros.Add("@empl_FechaNacimiento", item.empl_FechaNacimiento, DbType.String, ParameterDirection.Input);
+            parametros.Add("@empl_FechaNacimiento", item.empl_FechaNacimiento, DbType.Date, ParameterDirection.Input);
             parametros.Add("@empl_Direccion", item.empl_Direccion, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Sexo", item.empl_Sexo, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Telefono", item.empl_Telefono, DbType.String, ParameterDirection.Input);
