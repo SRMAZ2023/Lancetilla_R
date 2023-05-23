@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UsuarioViewModel } from 'src/app/demo/Models/UsuarioViewModel';
 import { UsuarioCrud } from 'src/app/demo/Models/UsuarioViewModel';
 import { UsuarioService } from 'src/app/demo/service/Usuario.service';
+import { AppLayoutComponent } from "../../../../layout/app.layout.component";
 
 
 @Component({
@@ -74,7 +75,7 @@ export class LoginComponent {
             life: 1500
           });
           setTimeout(() => {
-           this._router.navigate(['/']);
+           this._router.navigate(['../../../../layout']);
           }, 1500);
         }
       }, error => {
