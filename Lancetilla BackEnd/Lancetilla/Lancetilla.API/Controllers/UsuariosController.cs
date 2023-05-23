@@ -68,5 +68,12 @@ namespace Lancetilla.API.Controllers
             var List = _AccesoServicios.EliminarUsuario(usuarios);
             return Ok(List);
         }
+
+        [HttpGet("ListarEmpleadoNoTieneUser")]
+        public IActionResult ListarEmpleadoNoTieneUser()
+        {
+            var list = _AccesoServicios.ListarEmpleadoNoTieneUser();
+            return Ok(list);
+        }
     }
 }

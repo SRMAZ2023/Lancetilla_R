@@ -20,7 +20,8 @@ namespace Lancetilla.DataAccess
 
         public static string EliminarUsuario = "acce.UDP_tbUsuarios_DELETE";
 
-    
+        public static string ListarEmpleadoNoTieneUser = "Acce.UDP_tbUsuarios_DDLempleadosTieneusuario";
+
         public static string IniciarSesion = "acce.UDP_tbUsuarios_LOGIN";
 
 

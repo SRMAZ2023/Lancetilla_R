@@ -40,6 +40,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Acceso_Servicios
             }
         }
 
+        public IEnumerable<tbUsuarios> ListarEmpleadoNoTieneUser()
+        {
+            try
+            {
+                var list = _usuariosRepository.ListarEmpleadoNoTieneUser();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<tbUsuarios>();
+            }
+        }
+
         public ServiceResult EliminarUsuario(tbUsuarios item)
         {
             var result = new ServiceResult();

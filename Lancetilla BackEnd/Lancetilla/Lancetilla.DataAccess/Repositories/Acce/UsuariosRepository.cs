@@ -85,6 +85,12 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             return db.QueryFirst<tbUsuarios>(ScriptsDataBase.IniciarSesion, parametros, commandType: CommandType.StoredProcedure);
         }
 
+        public IEnumerable<tbUsuarios> ListarEmpleadoNoTieneUser()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query<tbUsuarios>(ScriptsDataBase.ListarEmpleadoNoTieneUser, commandType: CommandType.StoredProcedure);
+        }
+
 
 
         public IEnumerable<tbUsuarios> List()
