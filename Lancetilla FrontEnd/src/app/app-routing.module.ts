@@ -9,7 +9,7 @@ import { LoginComponent } from "../app/demo/components/auth/login/login.componen
     imports: [
         RouterModule.forRoot([
             {
-                path: '', component: LoginComponent,
+                path: '', component: AppLayoutComponent,
                 children: [
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
