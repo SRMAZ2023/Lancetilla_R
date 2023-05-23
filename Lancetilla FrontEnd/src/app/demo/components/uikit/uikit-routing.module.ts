@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [RouterModule.forChild([
+        { path: 'Empleados', data: { breadcrumb: 'Empleados' }, loadChildren: () => import('./Empleados/empleados.module').then(m => m.EmpleadosModule) },
+        { path: 'Mantenimineto', data: { breadcrumb: 'Mantenimineto' }, loadChildren: () => import('./Mantenimineto/Mantenimiento.module').then(m => m.MantenimientoModule) },
         { path: 'Especies', data: { breadcrumb: 'especies' }, loadChildren: () => import('./Especies/especies.module').then(m => m.especiesModule) },
         { path: 'cuidadosplantas', data: { breadcrumb: 'cuidadosplantas' }, loadChildren: () => import('./cuidadosplantas/cuidadosplantas.module').then(m => m.CuidadosPlantasModule) },
         { path: 'visitantes', data: { breadcrumb: 'visitantes' }, loadChildren: () => import('./visitantes/visitantes.module').then(m => m.visitantesModule) },
