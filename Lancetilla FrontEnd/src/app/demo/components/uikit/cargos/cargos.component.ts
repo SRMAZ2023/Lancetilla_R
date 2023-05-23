@@ -47,16 +47,11 @@ export class cargosComponent implements OnInit {
 
     ngOnInit() {
 
-        this.cargosService.getCatgos().subscribe(
-            Response => {
-                console.log(Response);
-                this.Cargos = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
+        //Trae los datos de la api
+        this.loadData();
+        //Trae los datos de la api
 
+     
         //Modelo de los datos de la tabla
         this.cols = [
             { field: 'carg_Id', header: 'carg_Id' },
@@ -66,6 +61,19 @@ export class cargosComponent implements OnInit {
         //Modelo de los datos de la tabla
 
     }
+
+    //trae los datos
+    private loadData() {
+        this.cargosService.getCatgos().subscribe(
+            Response => {
+                this.Cargos = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+    }
+    //trae los datos
 
     //Metodo que desactiva el dialog
     hideDialog() {
@@ -101,7 +109,6 @@ export class cargosComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteCargosDialog = false;
-        this.Cargos = this.Cargos.filter(val => val.carg_Id !== this.Cargo.carg_Id);
         var params = {
             "carg_Id": this.Cargo.carg_Id,
             "carg_Descripcion": "",
@@ -118,7 +125,7 @@ export class cargosComponent implements OnInit {
                     this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
-
+                    this.Cargos = this.Cargos.filter(val => val.carg_Id !== this.Cargo.carg_Id);
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.Cargo = {};
                     this.CargostDialog = false;
@@ -174,13 +181,15 @@ export class cargosComponent implements OnInit {
                         this.datos = Response;
                         if (this.datos.code == 409) {
 
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'info', summary: 'Advertencia', detail: this.datos.message, life: 3000 });
 
                         } else if (this.datos.code == 200) {
 
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Cargo = {};
                             this.CargostDialog = false;
+                            this.loadData();
+
 
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -204,6 +213,8 @@ export class cargosComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Cargo = {};
                             this.CargostDialog = false;
+                            this.loadData();
+
 
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -218,6 +229,7 @@ export class cargosComponent implements OnInit {
 
 
         }
+
     }
     //Enviamos y editamos datos
 
@@ -228,5 +240,7 @@ export class cargosComponent implements OnInit {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
     //Buscador
+
+
 
 }
