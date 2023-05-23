@@ -345,6 +345,21 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             }
         }
 
+        public VW_tbEmpleados BuscarEmpleados(int id)
+        {
+            try
+            {
+                var list = _empleadosRepository.FindE(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+
+            }
+        }
+
         public ServiceResult InsertEmpleados(tbEmpleados item)
         {
             var result = new ServiceResult();

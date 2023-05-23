@@ -2720,20 +2720,20 @@ AS BEGIN
 BEGIN TRY
 
 	BEGIN TRAN
-		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre AND plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado= 1)
+				IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Nombre) = RTRIM(@plan_Nombre) AND RTRIM(plan_NombreCientifico) = RTRIM(@plan_NombreCientifico) AND plan_Estado = 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El nombre y el nombre científico ya existe.' AS messageStatus
 		END
 		-- Si existe
-		ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre AND plan_Estado= 1)
+		ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Nombre) = RTRIM(@plan_Nombre) AND plan_Estado = 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'La planta ya existe.' AS messageStatus
 		END
-
-	    ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_NombreCientifico) = RTRIM(@plan_NombreCientifico) AND plan_Estado = 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
 		END
+
 		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR  plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 0 )
 		BEGIN
 			DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR plan_NombreCientifico = @plan_NombreCientifico) 
@@ -2797,20 +2797,20 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre AND plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado= 1)
-		BEGIN
-			SELECT 409 AS codeStatus, 'El nombre y el nombre científico ya existe.' AS messageStatus
-		END
-		-- Si existe
-		ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre AND plan_Estado= 1)
-		BEGIN
-			SELECT 409 AS codeStatus, 'La planta ya existe.' AS messageStatus
-		END
+		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Nombre) = RTRIM(@plan_Nombre) AND RTRIM(plan_NombreCientifico) = RTRIM(@plan_NombreCientifico) AND plan_Estado = 1)
+BEGIN
+    SELECT 409 AS codeStatus, 'El nombre y el nombre científico ya existe.' AS messageStatus
+END
+-- Si existe
+ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Nombre) = RTRIM(@plan_Nombre) AND plan_Estado = 1)
+BEGIN
+    SELECT 409 AS codeStatus, 'La planta ya existe.' AS messageStatus
+END
+ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_NombreCientifico) = RTRIM(@plan_NombreCientifico) AND plan_Estado = 1)
+BEGIN
+    SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
+END
 
-	    ELSE IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 1)
-		BEGIN
-			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
-		END
 		 IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR  plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 0 )
 		BEGIN
 			DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR plan_NombreCientifico = @plan_NombreCientifico) 

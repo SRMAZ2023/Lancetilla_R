@@ -9,22 +9,22 @@
                     <div class="field col-6">
                         <label for="plan_Nombre">Nombre </label>
                         <input type="text" pInputText id="plan_Nombre" name="plan_Nombre" #plan_Nombre="ngModel"
-                          [(ngModel)]="planta.plan_Nombre" required autofocus
-                          [ngClass]="{'ng-invalid ng-dirty' : submitted && plan_Nombre.invalid}" 
-                          pattern="^(?!\s*$).+" />
+                            [(ngModel)]="planta.plan_Nombre" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && plan_Nombre.invalid}"
+                            pattern="^(?!\s*$).+" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                          *ngIf="plan_Nombre.invalid && (plan_Nombre.touched || submitted)">
-                          La Plantas es requerida.
+                            *ngIf="plan_Nombre.invalid && (plan_Nombre.touched || submitted)">
+                            La Plantas es requerida.
                         </small>
-                      </div>
-                      
+                    </div>
+
 
                     <div class="field col-6">
                         <label for="plan_NombreCientifico">Nombre Cientifico</label>
                         <input type="text" pInputText id="plan_NombreCientifico" name="plan_NombreCientifico"
                             #plan_NombreCientifico="ngModel" [(ngModel)]="planta.plan_NombreCientifico" required
-                            autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !planta.plan_NombreCientifico}"  pattern="^(?!\s*$).+" />
+                            autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !planta.plan_NombreCientifico}"
+                            pattern="^(?!\s*$).+" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="!plan_NombreCientifico.valid && plan_NombreCientifico.touched">La Nombre Cientifico
                             es
@@ -35,7 +35,8 @@
                         <label for="plan_Reino">Reino</label>
                         <input type="text" pInputText id="plan_Reino" name="plan_Reino" #plan_Reino="ngModel"
                             [(ngModel)]="planta.plan_Reino" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !planta.plan_Reino}"  pattern="^(?!\s*$).+" />
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !planta.plan_Reino}"
+                            pattern="^(?!\s*$).+" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="!plan_Reino.valid && plan_Reino.touched">La Reino es
                             requerida.</small>
@@ -67,10 +68,20 @@
 
 
                 </div>
-                <div class="field col-4">
-                    <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
-                        [disabled]="PlantasForm.invalid" class="p-button-success"></button>
+                <div class="grid p-fluid">
 
+                    <div class="field col-2">
+                        <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
+                            [disabled]="PlantasForm.invalid" class="p-button-success"></button>
+
+
+                    </div>
+                    <div class="field col-2">
+
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                            class="p-button-danger" [routerLink]="['/uikit/Plantas']"></button>
+
+                    </div>
                 </div>
             </form>
 

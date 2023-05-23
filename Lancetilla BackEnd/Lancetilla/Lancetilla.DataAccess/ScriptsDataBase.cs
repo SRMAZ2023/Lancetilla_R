@@ -114,7 +114,7 @@ namespace Lancetilla.DataAccess
 
         public static string EliminarEmpleados = "mant.UDP_tbEmpleados_DELETE";
 
-        public static string CargarInfoEmpleados = "mant.UDP_tbEmpleados_FIND";
+        public static string UDP_tbEmpleados_FIND = "mant.UDP_tbEmpleados_FIND";
 
         #endregion
 
@@ -151,7 +151,6 @@ namespace Lancetilla.DataAccess
         public static string EliminarTiposDeMantenimiento = "mant.UDP_tbTiposMantenimientos_DELETE";
 
         #endregion
-
 
         #region Mantenimientos Animal
 

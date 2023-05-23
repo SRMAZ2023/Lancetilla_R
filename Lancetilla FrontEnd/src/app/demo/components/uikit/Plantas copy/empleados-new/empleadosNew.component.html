@@ -1,0 +1,94 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-toast></p-toast>
+            <h1>{{page_title}}</h1>
+            <form class="mid-from" #empleadosForm="ngForm" (ngSubmit)="saveEmpleados()">
+                <div class="grid p-fluid">
+
+                    <div class="field col-6">
+                        <label for="empl_Nombre">Nombre </label>
+                        <input type="text" pInputText id="empl_Nombre" name="empl_Nombre" #empl_Nombre="ngModel"
+                            [(ngModel)]="empleado.empl_Nombre" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && empl_Nombre.invalid}"
+                            pattern="^(?!\s*$).+" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empl_Nombre.invalid && (empl_Nombre.touched || submitted)">
+                            La empleados es requerida.
+                        </small>
+                    </div>
+
+
+                    <div class="field col-6">
+                        <label for="empl_Apellido">Nombre Cientifico</label>
+                        <input type="text" pInputText id="empl_Apellido" name="empl_Apellido"
+                            #empl_Apellido="ngModel" [(ngModel)]="empleado.empl_Apellido" required
+                            autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Apellido}"
+                            pattern="^(?!\s*$).+" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Apellido.valid && empl_Apellido.touched">La Nombre Cientifico
+                            es
+                            requerida.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="empl_Direccion">Reino</label>
+                        <input type="text" pInputText id="empl_Direccion" name="empl_Direccion" #empl_Direccion="ngModel"
+                            [(ngModel)]="empleado.empl_Direccion" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Direccion}"
+                            pattern="^(?!\s*$).+" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Direccion.valid && empl_Direccion.touched">La Reino es
+                            requerida.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="empl_Identidad">Reino</label>
+                        <p-inputMask type="text" inputId="empl_Identidad" mask="0000-0000-00000" name="empl_Identidad" #empl_Identidad="ngModel"
+                            [(ngModel)]="empleado.empl_Identidad" required 
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Identidad}"
+                            pattern="^(?!\s*$).+" ></p-inputMask>   
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Identidad.valid && empl_Identidad.touched">La Reino es
+                            requerida.</small>
+                    </div>
+                    
+                    <div class="field col-6">
+                        <label for="estc_Id">Area Botanica</label>
+                        <p-dropdown placeholder="Seleccione Una Area Botanica" inputId="dropdown"
+                            [autoDisplayFirst]="false" name="estc_Id" #estc_Id="ngModel" [options]="areaBotanica"
+                            [(ngModel)]="empleado.estc_Id" optionLabel="label" optionValue="value"
+                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.estc_Id }"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empleadosForm.submitted && !empleado.estc_Id">La Area Botanica es requerida.</small>
+                    </div>
+
+                   
+
+
+
+
+
+
+                </div>
+                <div class="grid p-fluid">
+
+                    <div class="field col-2">
+                        <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
+                            [disabled]="empleadosForm.invalid" class="p-button-success"></button>
+
+
+                    </div>
+                    <div class="field col-2">
+
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                            class="p-button-danger" [routerLink]="['/uikit/empleados']"></button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

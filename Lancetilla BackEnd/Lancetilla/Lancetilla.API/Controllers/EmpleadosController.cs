@@ -30,7 +30,14 @@ namespace Lancetilla.API.Controllers
             var list = _mantenimientoServicios.ListarEmpleados();
             return Ok(list);
         }
-      
+
+        [HttpGet("BuscarEmpleados/{id}")]
+        public IActionResult BuscarEmpleados(int id)
+        {
+            var list = _mantenimientoServicios.BuscarEmpleados(id);
+            return Ok(list);
+        }
+
         [HttpPost("InsertEmpleados")]
         public IActionResult InsertEmpleados(EmpleadosViewModel item)
         {

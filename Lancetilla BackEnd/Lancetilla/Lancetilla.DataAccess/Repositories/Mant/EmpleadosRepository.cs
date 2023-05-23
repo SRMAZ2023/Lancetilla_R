@@ -75,9 +75,15 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             return result;
         }
 
-        public tbEmpleados Find(int? id)
+        public VW_tbEmpleados FindE(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@empl_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.QueryFirst<VW_tbEmpleados>(ScriptsDataBase.UDP_tbEmpleados_FIND, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
 
        
@@ -88,6 +94,11 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         }
 
         public RequestStatus Update(tbEmpleados item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        tbEmpleados IRepository<tbEmpleados>.Find(int? id)
         {
             throw new NotImplementedException();
         }
