@@ -48,7 +48,7 @@ export class empleadosEditComponent {
     private DepartamentosService: DepartamentosService,
     private _route: ActivatedRoute,
     private _rauter: Router) {
-    this.empleado = new EmpleadosViewModel(undefined, "", "", "", "", "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", undefined, "", undefined,)
+    this.empleado = new EmpleadosViewModel(undefined, "", "", "", undefined, "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", undefined, "", undefined,)
     this.page_title = "Editar empleado"
   }
 
@@ -58,7 +58,7 @@ export class empleadosEditComponent {
 
 
 
-    
+
     this.EstadoCivilesService.getEstadoCiviles().subscribe(
       response => {
         this.estadoCivil = response.map((item: { estc_Descripcion: any; estc_Id: any; }) => ({ label: item.estc_Descripcion, value: item.estc_Id }));
@@ -86,11 +86,6 @@ export class empleadosEditComponent {
     );
 
 
-    if(this.empleado.dept_Id != 0){
-      console.log("dentro " + this.empleado.dept_Id);
-      this.takeMunicipio(this.empleado.dept_Id);
-    }
-
 
   }
 
@@ -103,7 +98,7 @@ export class empleadosEditComponent {
     const selectedDepartamento = event.value;
     console.log(selectedDepartamento);
 
-    
+
     this.takeMunicipio(selectedDepartamento);
 
 
@@ -161,7 +156,7 @@ export class empleadosEditComponent {
       } else if (this.datos.code = 200) {
         this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
         setTimeout(() => {
-          //this._rauter.navigate(['/uikit/empleados']);
+          this._rauter.navigate(['/uikit/Empleados']);
         }, 1500);
       }
 
@@ -179,29 +174,39 @@ export class empleadosEditComponent {
   getEmpleado() {
     this._route.params.subscribe(Params => {
       let plan_Id = Params['id'];
-  
+
       this.EmpleadosService.findEmpleados(plan_Id).subscribe(Response => {
         this.empleado = Response;
-        console.log(Response);
-  
-        if (this.empleado.dept_Id !== 0) {
+
+
+
+       var fecha = new Date(this.empleado.empl_FechaNacimiento!);
+       console.log("Fecha = " + fecha)
+
+       this.empleado.empl_FechaNacimiento = fecha;
+
+        if (this.empleado.dept_Id !== 0 || this.empleado.muni_Id !== 0) {
+          console.log(Response);
+
           this.municipioDisabled = true;
           console.log("dentro " + this.empleado.dept_Id);
+          console.log("dentro M " + this.empleado.muni_Id);
           this.takeMunicipio(this.empleado.dept_Id);
-  
           // Buscar el objeto municipio que coincide con this.empleado.muni_Id
           const municipioSeleccionado = this.municipios.find(municipio => municipio.muni_Id === this.empleado.muni_Id);
-  
+
           if (municipioSeleccionado) {
             // Establecer el objeto municipio como valor seleccionado en el dropdown
             this.empleado.muni_Id = municipioSeleccionado.muni_Id;
             console.log(this.empleado.muni_Id);
           }
+
+
         }
       }, error => {
         console.log(error);
       });
     });
   }
-  
+
 }

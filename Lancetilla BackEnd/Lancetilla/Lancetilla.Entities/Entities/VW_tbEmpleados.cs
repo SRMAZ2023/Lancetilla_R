@@ -9,7 +9,8 @@ namespace Lancetilla.Entities.Entities
     public partial class VW_tbEmpleados
     {
         public int empl_Id { get; set; }
-        public string empl_Nombres { get; set; }
+        public string empl_Nombre { get; set; }
+        public string empl_Apellido { get; set; }
         public string empl_Identidad { get; set; }
         public DateTime empl_FechaNacimiento { get; set; }
         public string empl_Direccion { get; set; }

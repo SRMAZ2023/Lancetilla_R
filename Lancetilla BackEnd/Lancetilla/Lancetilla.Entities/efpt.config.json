@@ -114,6 +114,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[acce].[VW_tbRoles]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[acce].[VW_tbRolesPantalla_INDEX]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[acce].[VW_tbUsuarios]",
          "ObjectType": 3
       },
@@ -196,9 +204,13 @@
       {
          "Name": "[zool].[VW_tbEspecies]",
          "ObjectType": 3
+      },
+      {
+         "Name": "[zool].[VW_tbHabitat]",
+         "ObjectType": 3
       }
    ],
-   "UiHint": "DESKTOP-UFHO4DN\\SQLEXPRESS.db_Lancetilla",
+   "UiHint": "DESKTOP-QEULE6U\\SQLEXPRESSLOCAL.db_Lancetilla",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

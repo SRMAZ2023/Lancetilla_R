@@ -47,7 +47,7 @@ export class empleadosNewComponent implements OnInit {
         private DepartamentosService: DepartamentosService,
         private _route: ActivatedRoute,
         private _rauter: Router) {
-        this.empleado = new EmpleadosViewModel(undefined, "", "", "", "", "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", 1, "", 1,)
+        this.empleado = new EmpleadosViewModel(undefined, "", "", "", undefined, "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", 1, "", 1,)
         this.page_title = "Crear empleado"
     }
 
@@ -142,7 +142,7 @@ export class empleadosNewComponent implements OnInit {
             } else if (this.datos.code = 200) {
                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
                 setTimeout(() => {
-                    //this._rauter.navigate(['/uikit/empleados']);
+                    this._rauter.navigate(['/uikit/Empleados']);
                 }, 1500);
             }
 

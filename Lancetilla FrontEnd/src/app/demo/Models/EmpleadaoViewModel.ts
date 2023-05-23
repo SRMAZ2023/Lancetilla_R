@@ -6,7 +6,7 @@ export class EmpleadosViewModel {
         public empl_Nombre?: string,
         public empl_Apellido?: string,
         public empl_Identidad?: string,
-        public empl_FechaNacimiento?: string,
+        public empl_FechaNacimiento?: Date,
         public empl_Direccion?: string,
         public empl_Sexo?: string,
         public empl_Sexos?: string,

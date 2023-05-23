@@ -65,7 +65,7 @@ namespace Lancetilla.Entities.Entities
         public int usua_Id { get; set; }
         public string usua_NombreUsuario { get; set; }
         public int empl_Id { get; set; }
-        public string usua_Clave { get; set; }
+        public string usua_Contraseña { get; set; }
         public int role_Id { get; set; }
         public bool usua_Admin { get; set; }
         public int? usua_UserCreacion { get; set; }
