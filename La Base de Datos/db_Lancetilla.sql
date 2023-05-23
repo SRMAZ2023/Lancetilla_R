@@ -649,6 +649,14 @@ VALUES
   ('selvin', 2, '123', 2, 0, 2),
   ('alex', 3, '123', 3, 1, 1);
 
+  DECLARE @Pass AS NVARCHAR(MAX);
+	SET @Pass = CONVERT(NVARCHAR(MAX), HASHBYTES('sha2_512', '123'), 2);
+
+
+INSERT INTO acce.tbUsuarios(usua_NombreUsuario, empl_Id, usua_Clave, role_Id, usua_Admin, usua_UserCreacion)
+VALUES 
+  ('Admin', 1, @Pass, 1, 0, 1)
+
 --************************************************************/TABLA DE USUARIOS******************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
