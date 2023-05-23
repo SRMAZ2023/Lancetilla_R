@@ -1497,8 +1497,70 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+GO 
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_SELECT
+AS
+BEGIN
+	
+	SELECT * FROM mant.VW_MantenimientoAnimales where maan_Estado = 1
+
+END
+
+GO 
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_FIND 29
+@anim_Id INT
+AS
+BEGIN
+
+BEGIN TRY
+
+
+    DECLARE @FechaActual DATE = CONVERT(DATE, GETDATE())
+
+	DECLARE @ExisteHoy INT = (SELECT COUNT(*)
+    FROM mant.VW_MantenimientoAnimales
+    WHERE maan_Estado = 1
+        AND anim_Id = @anim_Id
+        AND CONVERT(DATE, maan_FechaCreacion) = @FechaActual)
+
+	IF @ExisteHoy > 0 
+	BEGIN
+	 SELECT *
+    FROM mant.VW_MantenimientoAnimales
+    WHERE maan_Estado = 1
+        AND anim_Id = @anim_Id
+        AND CONVERT(DATE, maan_FechaCreacion) = @FechaActual
+		UNION ALL
+	SELECT 200 AS codeStatus, @ExisteHoy AS messageStatus
+	END
+   
+   IF @ExisteHoy = 0 
+	BEGIN
+	 SELECT *
+    FROM mant.VW_MantenimientoAnimales
+    WHERE maan_Estado = 1
+        AND anim_Id = @anim_Id
+		UNION ALL
+	SELECT 200 AS codeStatus, @ExisteHoy AS messageStatus
+	END
+
+
+
+			
+END TRY
+
+BEGIN CATCH
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+go
+
+--select getdate()
+
 GO
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE   
 @anim_Id INT,
 @mant_Id INT,
 @maan_Fecha DATE,
@@ -1506,9 +1568,9 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE
 AS BEGIN
 
 BEGIN TRY
-			INSERT INTO mant.tbMantenimientoAnimal(anim_Id, mant_Id, maan_Fecha, maan_FechaCreacion )
-			VALUES (@anim_Id, @mant_Id, @maan_Fecha, @maan_UserCreacion)
 
+			INSERT INTO mant.tbMantenimientoAnimal(anim_Id, mant_Id, maan_Fecha,maan_UserCreacion)
+			VALUES  (@anim_Id, @mant_Id,@maan_Fecha, @maan_UserCreacion)
 
 			SELECT 200 AS codeStatus, 'El mantenimiento por animal ha sido creado con éxito.' AS messageStatus
 END TRY
@@ -1516,7 +1578,6 @@ END TRY
 BEGIN CATCH
 ROLLBACK
 END CATCH
-			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
 
 END
 GO
@@ -1582,6 +1643,8 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientoAnimal_DELETE
  END CATCH
  END
  GO
+
+
  --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
 --**********************************************************/PROCS DE MANTENIMIENTO**************************************************************************--

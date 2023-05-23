@@ -105,7 +105,7 @@ export class empleadosNewComponent implements OnInit {
                 console.log(Response)
                 this.datos = Response;
 
-                this.municipios = Response.map((item: { muni_Descripcion: any; muni_Id: any; }) => ({ label: item.muni_Descripcion, value: item.muni_Id })); 
+                this.municipios = Response.map((item: { muni_Descripcion: any; muni_Id: any; }) => ({ label: item.muni_Descripcion, value: item.muni_Id }));
 
                 // Activa el otro dropdown
                 this.municipioDisabled = false;
@@ -122,36 +122,38 @@ export class empleadosNewComponent implements OnInit {
     }
     //Enviamos y editamos datos
     saveEmpleados() {
-        // Verificar si todos los campos están llenos
-        // if (this.empleado.plan_Nombre &&
-        //     this.empleado.plan_NombreCientifico &&
-        //     this.empleado.plan_Reino &&
-        //     this.empleado.estc_Id &&
-        //     this.empleado.cuid_Id) {
-        // Todos los campos están llenos, realizar acciones adicionales
-        console.log("Todos los campos están llenos");
+        //Verificar si todos los campos están llenos
+        if (this.empleado.empl_Nombre!.trim() == "" &&
+            this.empleado.empl_Apellido!.trim() == "" &&
+            this.empleado.empl_Sexo!.trim() == "" &&
+            this.empleado.muni_Id != 0 &&
+            this.empleado.dept_Id != 0) {
 
-        console.log(this.empleado)
+            console.log("Todos los campos están llenos");
 
-        this.EmpleadosService.postEmpleados(this.empleado).subscribe(Response => {
-            this.datos = Response;
-            if (this.datos.code == 409) {
+            console.log(this.empleado)
 
-                this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+            this.EmpleadosService.postEmpleados(this.empleado).subscribe(Response => {
+                this.datos = Response;
+                if (this.datos.code == 409) {
 
-            } else if (this.datos.code = 200) {
-                this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
-                setTimeout(() => {
-                    this._rauter.navigate(['/uikit/Empleados']);
-                }, 1500);
-            }
+                    this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code = 200) {
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
+                    setTimeout(() => {
+                        this._rauter.navigate(['/uikit/Empleados']);
+                    }, 1500);
+                }
 
 
-        }, error => {
-            console.log(error)
-        })
+            }, error => {
+                console.log(error)
+            })
 
-        //}
+        }else{
+            console.log(this.empleado.empl_Sexo);
+        }
     }
 
     //Enviamos y editamos datos

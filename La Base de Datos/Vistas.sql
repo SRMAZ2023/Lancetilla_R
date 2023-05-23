@@ -204,7 +204,8 @@ CREATE OR ALTER VIEW mant.VW_tbEmpleados
 AS 
 
 SELECT empl_Id,
-       empl_Nombre + ' '+ empl_Apellido AS empl_Nombres, 
+       empl_Nombre,
+	   empl_Apellido,
 	   empl_Identidad,
 	   empl_FechaNacimiento,
 	   empl_Direccion, 
