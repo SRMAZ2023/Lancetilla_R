@@ -23,7 +23,7 @@ export class AreaBotanicaService {
         let params = JSON.stringify(AreaBotanicaViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + 'AreaBotanica/InsertarCargo', params, { headers: headers });
+        return this.http.post<Response>(this.url + 'AreasBotanicas/InsertarAreaBotanica', params, { headers: headers });
 
     }
 
@@ -31,14 +31,14 @@ export class AreaBotanicaService {
         let params = JSON.stringify(AreaBotanicaViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + "AreaBotanica/ActualizarCargo", params, { headers: headers });
+        return this.http.post<Response>(this.url + "AreasBotanicas/ActualizarAreaBotanica", params, { headers: headers });
     }
 
     DeleteAreaBotanica(AreaBotanicaViewModel: any): Observable<Response> {
         let params = JSON.stringify(AreaBotanicaViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + `AreaBotanica/EliminarCargo`, params, { headers: headers });
+        return this.http.post<Response>(this.url + `AreasBotanicas/EliminarAreaBotanica`, params, { headers: headers });
     }
 
    

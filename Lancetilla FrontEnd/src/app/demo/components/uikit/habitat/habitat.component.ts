@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
-import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
+import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasViewModel';
+import { HabitatViewModel } from 'src/app/demo/Models/HabitatViewModel';
+import { AreasZoologicasService } from 'src/app/demo/service/AreasZoologicas.service';
+import { HabitatService } from 'src/app/demo/service/Habitat.service';
 
 @Component({
-    templateUrl: './alimentacion.component.html',
-    styleUrls:   ['./alimentacion-design.scss'],
-    providers: [MessageService, AlimentacionService]
+    templateUrl: './habitat.component.html',
+    styleUrls:   ['./habitat-design.scss'],
+    providers: [MessageService, HabitatService]
 })
-export class AlimentacionComponent implements OnInit {
+export class HabitatComponent implements OnInit {
 
     //Dialogs
-    AlimentaciontDialog: boolean = false;
+    HabitatDialog: boolean = false;
 
-    deleteAlimentacionDialog: boolean = false;
+    deleteHabitatDialog: boolean = false;
 
     deleteProductDialog: boolean = false;
     //Dialogs
@@ -23,11 +25,11 @@ export class AlimentacionComponent implements OnInit {
 
 
     public Editar: boolean = false;
-    Alimentacion: AlimentacionViewModel[] = [];
-    Alimento: AlimentacionViewModel = {};
+    habitat: HabitatViewModel[] = [];
+    habi: HabitatViewModel = {};
 
     //Paginacion de el datatable
-    selectedAlimentos: AlimentacionViewModel[] = [];
+    selectedHabitat: HabitatViewModel[] = [];
     rowsPerPageOptions = [5, 10, 20];
     //Paginacion de el datatable
 
@@ -41,92 +43,92 @@ export class AlimentacionComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private alimentosService: AlimentacionService, private messageService: MessageService) {
+    constructor(private habitatservice: HabitatService, private messageService: MessageService) {
     }
 
     ngOnInit() {
 
-this.CargarDatos();
+       this.CargarDatos();
+
         //Modelo de los datos de la tabla
         this.cols = [
-            { field: 'alim_Id', header: 'alim_Id' },
-            { field: 'alim_Descripcion', header: 'alim_Descripcion' }
+            { field: 'habi_Id',          header: 'habi_Id' },
+            { field: 'habi_Descripcion', header: 'habi_Descripcion' }
 
         ];
         //Modelo de los datos de la tabla
 
     }
 
-    private CargarDatos(){
-        this.alimentosService.getAlimentacion().subscribe(
-            Response => {
-                console.log(Response);
-                this.Alimentacion = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
-    }
-
+private CargarDatos(){
+    this.habitatservice.getHabitat().subscribe(
+        Response => {
+            console.log(Response);
+            this.habitat = Response
+        },
+        error => (
+            console.log(error)
+        )
+    );
+}
 
     //Metodo que desactiva el dialog
     hideDialog() {
-        this.AlimentaciontDialog = false;
+        this.HabitatDialog = false;
         this.submitted = false;
     }
     //Metodo que desactiva el dialog
 
     //Metodo que activa el dialog
     openNew() {
-        this.Alimento = {};
+        this.habi = {};
         this.submitted = false;
-        this.AlimentaciontDialog = true;
+        this.HabitatDialog = true;
     }
     //Metodo que activa el dialog
 
 
     //Toma los datos de ka tabla
-    editAlimentacion(alimentos: AlimentacionViewModel) {
+    editHabitat(habi: HabitatViewModel) {
         this.Editar = true;
-        this.Alimento = { ...alimentos };
-        this.AlimentaciontDialog = true;
+        this.habi = { ...this.habi };
+        this.HabitatDialog = true;
     }
     //Toma los datos de ka tabla
 
     //Toma el id del item
-    deleteAlimentacion(alimentos: AlimentacionViewModel) {
-        this.deleteAlimentacionDialog = true;
-        this.Alimento = { ...alimentos };
+    deleteHabitat(habi: HabitatViewModel) {
+        this.deleteHabitatDialog = true;
+        this.habi = { ...habi };
     }
     //Toma el id del item
 
     //Confirma el eliminar
     confirmDelete() {
-        this.deleteAlimentacionDialog = false;
-
+        this.deleteHabitatDialog = false;
         var params = {
-            "alim_Id": this.Alimento.alim_Id,
-            "alim_Descripcion": "",
-            "alim_UserCreacion": 1,
-            "alim_UserModificacion": 1
+            "habi_Id": this.habi.habi_Id,
+            "habi_Descripcion": "",
+            "habi_UserCreacion": 1,
+            "habi_UserModificacion": 1
         }
 
-        this.alimentosService.DeleteAlimentacion(params).subscribe(
+        this.habitatservice.DeleteHabitat(params).subscribe(
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
-                if (this.datos.code == 409) {
+                if (this.datos.code == 500) {
 
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Atención', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                    this.Alimento = {};
-                    this.AlimentaciontDialog = false;
-                    this.Alimentacion = this.Alimentacion.filter(val => val.alim_Id !== this.Alimento.alim_Id);
+                    this.habi = {};
+                    this.HabitatDialog = false;
+                    this.habitat = this.habitat.filter(val => val.habi_Id !== this.habi.habi_Id);
                     this.CargarDatos();
+
 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -150,51 +152,51 @@ this.CargarDatos();
 
 
     //Enviamos y editamos datos
-    saveAlimentacion() {
+    saveHabitat() {
         this.submitted = true;
 
         var params = {
-            "alim_Id": this.Alimento.alim_Id,
-            "alim_Descripcion": this.Alimento.alim_Descripcion ? this.Alimento.alim_Descripcion.trim() : '',
-            "alim_UserCreacion": 1,
-            "alim_UserModificacion": 1
+            "habi_Id": this.habi.habi_Id,
+            "habi_Descripcion": this.habi.habi_Descripcion? this.habi.habi_Descripcion.trim() : '',
+            "habi_UserCreacion": 1,
+            "habi_UserModificacion": 1
         }
 
 
-        if (this.Alimento.alim_Descripcion?.trim() == '') {
-            console.log(this.Alimento.alim_Descripcion?.toString().length);
+        if (this.habi.habi_Descripcion?.trim() == '') {
+            console.log(this.habi.habi_Descripcion?.toString().length);
             this.espacio = true;
         }
 
-        if(params.alim_Descripcion === ""){
+        if(params.habi_Descripcion === ""){
             this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
 
         }
         else{
-            if (params.alim_Descripcion !== undefined &&
-                params.alim_Descripcion.trim() !== '' &&
-                params.alim_UserCreacion !== undefined &&
-                params.alim_UserModificacion !== undefined) {
+            if (params.habi_Descripcion !== undefined &&
+                params.habi_Descripcion.trim() !== '' &&
+                params.habi_UserCreacion !== undefined &&
+                params.habi_UserModificacion !== undefined) {
     
                 //Si insertara o editara
                 if (!this.Editar) {
     
-                    this.alimentosService.postAlimentacion(params).subscribe(
+                    this.habitatservice.postHabitat(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
     
-                                this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
     
                             } else if (this.datos.code == 200) {
     
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                                this.Alimento = {};
-                                this.AlimentaciontDialog = false
-                                this.CargarDatos();
+                                this.habi = {};
+                                this.HabitatDialog = false;
+                                this.CargarDatos()
     
                             } else {
-                                this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                             }
                         },
                         error => {
@@ -203,7 +205,7 @@ this.CargarDatos();
                     )
     
                 } else {
-                    this.alimentosService.EditAlimentacion(params).subscribe(
+                    this.habitatservice.EditHabitat(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
@@ -213,8 +215,8 @@ this.CargarDatos();
                             } else if (this.datos.code == 200) {
     
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                                this.Alimento = {};
-                                this.AlimentaciontDialog = false;
+                                this.habi = {};
+                                this.HabitatDialog = false;
                                 this.CargarDatos();
     
                             } else {

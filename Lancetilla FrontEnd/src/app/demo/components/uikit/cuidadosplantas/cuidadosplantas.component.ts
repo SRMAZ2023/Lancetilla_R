@@ -1,33 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
-import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
+import { CuidadoDePlantasViewModel } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
+import { CuidadosDePlantasService } from 'src/app/demo/service/CuidadoDePlantas';
 
 @Component({
-    templateUrl: './alimentacion.component.html',
-    styleUrls:   ['./alimentacion-design.scss'],
-    providers: [MessageService, AlimentacionService]
+    templateUrl: './cuidadosplantas.component.html',
+    providers: [MessageService, CuidadosDePlantasService]
 })
-export class AlimentacionComponent implements OnInit {
+export class CuidadosPlantasComponent implements OnInit {
 
     //Dialogs
-    AlimentaciontDialog: boolean = false;
+    CuidadosPlantasDialog: boolean = false;
 
-    deleteAlimentacionDialog: boolean = false;
+    deleteCuidadosPlantasDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
+    deleteProductsDialog: boolean = false;
     //Dialogs
 
     datos: any = {};
 
 
     public Editar: boolean = false;
-    Alimentacion: AlimentacionViewModel[] = [];
-    Alimento: AlimentacionViewModel = {};
+    cuidadosplans: CuidadoDePlantasViewModel[] = [];
+    cuidado: CuidadoDePlantasViewModel = {};
 
     //Paginacion de el datatable
-    selectedAlimentos: AlimentacionViewModel[] = [];
+    selectedCuidadosPlantas: CuidadoDePlantasViewModel[] = [];
     rowsPerPageOptions = [5, 10, 20];
     //Paginacion de el datatable
 
@@ -41,27 +40,27 @@ export class AlimentacionComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private alimentosService: AlimentacionService, private messageService: MessageService) {
+    constructor(private CuidadosPlantasService: CuidadosDePlantasService, private messageService: MessageService) {
     }
 
     ngOnInit() {
 
-this.CargarDatos();
+        this.CargarDatos();
         //Modelo de los datos de la tabla
         this.cols = [
-            { field: 'alim_Id', header: 'alim_Id' },
-            { field: 'alim_Descripcion', header: 'alim_Descripcion' }
+            { field: 'cuid_Id', header: 'cuid_Id' },
+            { field: 'cuid_Descripcion', header: 'cuid_Descripcion' },
+            { field: 'cuid_Frecuencia', header: 'cuid_Frecuencia' }
 
         ];
         //Modelo de los datos de la tabla
 
     }
-
-    private CargarDatos(){
-        this.alimentosService.getAlimentacion().subscribe(
+    private CargarDatos() {
+        this.CuidadosPlantasService.getCuidadosDePlantas().subscribe(
             Response => {
                 console.log(Response);
-                this.Alimentacion = Response
+                this.cuidadosplans = Response
             },
             error => (
                 console.log(error)
@@ -69,50 +68,49 @@ this.CargarDatos();
         );
     }
 
-
     //Metodo que desactiva el dialog
     hideDialog() {
-        this.AlimentaciontDialog = false;
+        this.CuidadosPlantasDialog = false;
         this.submitted = false;
     }
     //Metodo que desactiva el dialog
 
     //Metodo que activa el dialog
     openNew() {
-        this.Alimento = {};
+        this.cuidado = {};
         this.submitted = false;
-        this.AlimentaciontDialog = true;
+        this.CuidadosPlantasDialog = true;
     }
     //Metodo que activa el dialog
 
 
     //Toma los datos de ka tabla
-    editAlimentacion(alimentos: AlimentacionViewModel) {
+    editCuidadosPlantas(Cuidados: CuidadoDePlantasViewModel) {
         this.Editar = true;
-        this.Alimento = { ...alimentos };
-        this.AlimentaciontDialog = true;
+        this.cuidado = { ...Cuidados };
+        this.CuidadosPlantasDialog = true;
     }
     //Toma los datos de ka tabla
 
     //Toma el id del item
-    deleteAlimentacion(alimentos: AlimentacionViewModel) {
-        this.deleteAlimentacionDialog = true;
-        this.Alimento = { ...alimentos };
+    deleteCuidadosPlantas(Cuidados: CuidadoDePlantasViewModel) {
+        this.deleteCuidadosPlantasDialog = true;
+        this.cuidado = { ...Cuidados };
     }
     //Toma el id del item
 
     //Confirma el eliminar
     confirmDelete() {
-        this.deleteAlimentacionDialog = false;
-
+        this.deleteCuidadosPlantasDialog = false;
         var params = {
-            "alim_Id": this.Alimento.alim_Id,
-            "alim_Descripcion": "",
-            "alim_UserCreacion": 1,
-            "alim_UserModificacion": 1
+            "cuid_Id": this.cuidado.cuid_Id,
+            "cuid_Descripcion": "",
+            "cuid_Frecuencia": "",
+            "cuid_UserCreacion": 1,
+            "cuid_UserModificacion": 1
         }
 
-        this.alimentosService.DeleteAlimentacion(params).subscribe(
+        this.CuidadosPlantasService.DeleteCuidadosDePlantas(params).subscribe(
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
@@ -123,11 +121,10 @@ this.CargarDatos();
                 } else if (this.datos.code == 200) {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                    this.Alimento = {};
-                    this.AlimentaciontDialog = false;
-                    this.Alimentacion = this.Alimentacion.filter(val => val.alim_Id !== this.Alimento.alim_Id);
+                    this.cuidado = {};
+                    this.CuidadosPlantasDialog = false;
+                    this.cuidadosplans = this.cuidadosplans.filter(val => val.cuid_Id !== this.cuidado.cuid_Id);                  
                     this.CargarDatos();
-
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                 }
@@ -150,49 +147,55 @@ this.CargarDatos();
 
 
     //Enviamos y editamos datos
-    saveAlimentacion() {
+    saveCuidadosPlantas() {
         this.submitted = true;
 
         var params = {
-            "alim_Id": this.Alimento.alim_Id,
-            "alim_Descripcion": this.Alimento.alim_Descripcion ? this.Alimento.alim_Descripcion.trim() : '',
-            "alim_UserCreacion": 1,
-            "alim_UserModificacion": 1
+            "cuid_Id": this.cuidado.cuid_Id,
+            "cuid_Descripcion": this.cuidado.cuid_Descripcion ? this.cuidado.cuid_Descripcion.trim() : '',
+            "cuid_Frecuencia": this.cuidado.cuid_Frecuencia ? this.cuidado.cuid_Frecuencia.trim() : '',
+            "cuid_UserCreacion": 1,
+            "cuid_UserModificacion": 1
         }
 
 
-        if (this.Alimento.alim_Descripcion?.trim() == '') {
-            console.log(this.Alimento.alim_Descripcion?.toString().length);
+        if (this.cuidado.cuid_Descripcion?.trim() == '' || this.cuidado.cuid_Frecuencia?.trim() == '') {
             this.espacio = true;
         }
 
-        if(params.alim_Descripcion === ""){
-            this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
+
+
+        if (params.cuid_Descripcion === "" || params.cuid_Frecuencia === "") {
+            this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'Los campos son requeridos.', life: 3000 });
 
         }
-        else{
-            if (params.alim_Descripcion !== undefined &&
-                params.alim_Descripcion.trim() !== '' &&
-                params.alim_UserCreacion !== undefined &&
-                params.alim_UserModificacion !== undefined) {
-    
+        else {
+            //Validacion de params
+            if (params.cuid_Descripcion !== undefined &&
+                params.cuid_Descripcion.trim() !== '' &&
+                params.cuid_Frecuencia !== undefined &&
+                params.cuid_Frecuencia.trim() !== '' &&
+                params.cuid_UserCreacion !== undefined &&
+                params.cuid_UserModificacion !== undefined) {
+
                 //Si insertara o editara
                 if (!this.Editar) {
-    
-                    this.alimentosService.postAlimentacion(params).subscribe(
+
+                    this.CuidadosPlantasService.postCuidadosDePlantas(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
-    
+
                                 this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-    
+
                             } else if (this.datos.code == 200) {
-    
+
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                                this.Alimento = {};
-                                this.AlimentaciontDialog = false
+                                this.cuidado = {};
+                                this.CuidadosPlantasDialog = false;
+
                                 this.CargarDatos();
-    
+
                             } else {
                                 this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                             }
@@ -201,22 +204,23 @@ this.CargarDatos();
                             console.log(error);
                         }
                     )
-    
+
                 } else {
-                    this.alimentosService.EditAlimentacion(params).subscribe(
+                    this.CuidadosPlantasService.EditCuidadosDePlantas(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
-    
+
                                 this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-    
+
                             } else if (this.datos.code == 200) {
-    
+
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                                this.Alimento = {};
-                                this.AlimentaciontDialog = false;
+                                this.cuidado = {};
+                                this.CuidadosPlantasDialog = false;
+
                                 this.CargarDatos();
-    
+
                             } else {
                                 this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                             }
@@ -225,15 +229,13 @@ this.CargarDatos();
                             console.log(error);
                         }
                     )
-    
+
                 }
-    
-    
+
+
             }
         }
-        }
-        //Validacion de params
-      
+    }
     //Enviamos y editamos datos
 
 

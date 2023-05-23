@@ -22,7 +22,7 @@ export class AlimentacionService {
         let params = JSON.stringify(AlimentacionViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + 'Alimentacion/InsertarAlimentos', params, { headers: headers });
+        return this.http.post<Response>(this.url + 'Alimentacion/InsertAlimentos', params, { headers: headers });
 
     }
 

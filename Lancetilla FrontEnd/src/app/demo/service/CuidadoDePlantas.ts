@@ -23,7 +23,7 @@ export class CuidadosDePlantasService {
         let params = JSON.stringify(CuidadoDePlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + 'CuidadosDePlantas/InsertarCargo', params, { headers: headers });
+        return this.http.post<Response>(this.url + 'CuidadosDePlantas/InsertarCuidados', params, { headers: headers });
 
     }
 
@@ -31,14 +31,14 @@ export class CuidadosDePlantasService {
         let params = JSON.stringify(CuidadoDePlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + "CuidadosDePlantas/ActualizarCargo", params, { headers: headers });
+        return this.http.post<Response>(this.url + "CuidadosDePlantas/ActualizarCuidado", params, { headers: headers });
     }
 
     DeleteCuidadosDePlantas(CuidadoDePlantasViewModel: any): Observable<Response> {
         let params = JSON.stringify(CuidadoDePlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + `CuidadosDePlantas/EliminarCargo`, params, { headers: headers });
+        return this.http.post<Response>(this.url + `CuidadosDePlantas/EliminarCuidado`, params, { headers: headers });
     }
 
    

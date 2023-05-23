@@ -18,14 +18,14 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="Alimentacion" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['alim_Descripcion']" [paginator]="true"
+            <p-table #dt [value]="habitat" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['habi_Descripcion']" [paginator]="true"
                 [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedAlimentos"
+                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedHabitat"
                 selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Alimentación</h5>
+                        <h5 class="m-0">Áreas Zoológicas</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
@@ -36,50 +36,50 @@
                 <ng-template pTemplate="header">
                     <tr>
 
-                        <th pSortableColumn="alim_Id">Id <p-sortIcon field="alim_Id"></p-sortIcon></th>
-                        <th pSortableColumn="alim_Descripcion">Descripcion <p-sortIcon field="alim_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="habi_Id">Id <p-sortIcon                   field="habi_Id"></p-sortIcon></th>
+                        <th pSortableColumn="habi_Descripcion">Descripcion <p-sortIcon field="habi_Descripcion"></p-sortIcon></th>
 
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-Alimentacion>
+                <ng-template pTemplate="body" let-habitat>
                     <tr>
 
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
-                            {{Alimentacion.alim_Id}}
+                            {{habitat.habi_Id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
-                            {{Alimentacion.alim_Descripcion}}
+                            {{habitat.habi_Descripcion}}
                         </td>
 
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="editAlimentacion(Alimentacion)"></button>
+                                    (click)="editHabitat (habitat)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                    (click)="deleteAlimentacion(Alimentacion)"></button>
+                                    (click)="deleteHabitat(habitat)"></button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog [(visible)]="AlimentaciontDialog" [style]="{width: '520px', 'background-color': '#97d4ad'}"  [modal]="true"  class="p-fluid" styleClass="custom-header">
+        <p-dialog [(visible)]="HabitatDialog" [style]="{width: '520px', 'background-color': '#97d4ad'}"  [modal]="true"  class="p-fluid" styleClass="custom-header">
             <p-header>
                 <div class="header-content">
-                <h5>Alimentación</h5>
+                <h5>Hábitat</h5>
             </div>
               </p-header>
             <br>
             <ng-template pTemplate="content">
                 <div class="field"> 
                     <label for="name">Descripción</label>
-                    <input type="text" pInputText id="name"   [(ngModel)]="Alimento.alim_Descripcion" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Alimento.alim_Descripcion)}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Alimento.alim_Descripcion)">
-                        La descripción de la alimentación es requerida.</small>
+                    <input type="text" pInputText id="name"   [(ngModel)]="habi.habi_Descripcion" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(habi.habi_Descripcion)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(habi.habi_Descripcion)">
+                        La descripción del hábitat es requerida.</small>
                 </div>
 
 
@@ -89,18 +89,18 @@
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
                     (click)="hideDialog()"></button>
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
-                    (click)="saveAlimentacion()"></button>
+                    (click)="saveHabitat()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteAlimentacionDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteHabitatDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Alimento">Estas seguro de querer eliminar a <b>{{Alimento.alim_Descripcion}}</b>?</span>
+                <span *ngIf="habi">Estas seguro de querer eliminar a <b>{{habi.habi_Descripcion}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
-                    (click)="deleteAlimentacionDialog = false"></button>
+                    (click)="deleteHabitatDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-success" label="Yes"
                     (click)="confirmDelete()"></button>
             </ng-template>
