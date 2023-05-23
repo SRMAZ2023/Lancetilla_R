@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
+import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasViewModel';
 import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
+import { AreasZoologicasService } from 'src/app/demo/service/AreasZoologicas.service';
 
 @Component({
-    templateUrl: './alimentacion.component.html',
-    styleUrls:   ['./alimentacion-design.scss'],
-    providers: [MessageService, AlimentacionService]
+    templateUrl: './areaszoologicas.component.html',
+    styleUrls:   ['./areaszoologicas-design.scss'],
+    providers: [MessageService, AreasZoologicasService]
 })
-export class AlimentacionComponent implements OnInit {
+export class AreasZoologicasComponent implements OnInit {
 
     //Dialogs
-    AlimentaciontDialog: boolean = false;
+    AreasZoologicastDialog: boolean = false;
 
-    deleteAlimentacionDialog: boolean = false;
+    deleteAreasZoologicasDialog: boolean = false;
 
     deleteProductDialog: boolean = false;
     //Dialogs
@@ -23,11 +24,11 @@ export class AlimentacionComponent implements OnInit {
 
 
     public Editar: boolean = false;
-    Alimentacion: AlimentacionViewModel[] = [];
-    Alimento: AlimentacionViewModel = {};
+    AreasZoo: AreasZoologicasViewModel[] = [];
+    Area: AreasZoologicasViewModel = {};
 
     //Paginacion de el datatable
-    selectedAlimentos: AlimentacionViewModel[] = [];
+    selectedAreasZoo: AreasZoologicasViewModel[] = [];
     rowsPerPageOptions = [5, 10, 20];
     //Paginacion de el datatable
 
@@ -41,92 +42,92 @@ export class AlimentacionComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private alimentosService: AlimentacionService, private messageService: MessageService) {
+    constructor(private AreasZoologicasService: AreasZoologicasService, private messageService: MessageService) {
     }
 
     ngOnInit() {
 
-this.CargarDatos();
+       this.CargarDatos();
+
         //Modelo de los datos de la tabla
         this.cols = [
-            { field: 'alim_Id', header: 'alim_Id' },
-            { field: 'alim_Descripcion', header: 'alim_Descripcion' }
+            { field: 'arzo_Id', header: 'arzo_Id' },
+            { field: 'arzo_Descripcion', header: 'arzo_Descripcion' }
 
         ];
         //Modelo de los datos de la tabla
 
     }
 
-    private CargarDatos(){
-        this.alimentosService.getAlimentacion().subscribe(
-            Response => {
-                console.log(Response);
-                this.Alimentacion = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
-    }
-
+private CargarDatos(){
+    this.AreasZoologicasService.getAreasZoologicas().subscribe(
+        Response => {
+            console.log(Response);
+            this.AreasZoo = Response
+        },
+        error => (
+            console.log(error)
+        )
+    );
+}
 
     //Metodo que desactiva el dialog
     hideDialog() {
-        this.AlimentaciontDialog = false;
+        this.AreasZoologicastDialog = false;
         this.submitted = false;
     }
     //Metodo que desactiva el dialog
 
     //Metodo que activa el dialog
     openNew() {
-        this.Alimento = {};
+        this.Area = {};
         this.submitted = false;
-        this.AlimentaciontDialog = true;
+        this.AreasZoologicastDialog = true;
     }
     //Metodo que activa el dialog
 
 
     //Toma los datos de ka tabla
-    editAlimentacion(alimentos: AlimentacionViewModel) {
+    editAreasZoologicas(alimentos: AreasZoologicasViewModel) {
         this.Editar = true;
-        this.Alimento = { ...alimentos };
-        this.AlimentaciontDialog = true;
+        this.Area = { ...alimentos };
+        this.AreasZoologicastDialog = true;
     }
     //Toma los datos de ka tabla
 
     //Toma el id del item
-    deleteAlimentacion(alimentos: AlimentacionViewModel) {
-        this.deleteAlimentacionDialog = true;
-        this.Alimento = { ...alimentos };
+    deleteAreasZoologicas(Area: AreasZoologicasViewModel) {
+        this.deleteAreasZoologicasDialog = true;
+        this.Area = { ...Area };
     }
     //Toma el id del item
 
     //Confirma el eliminar
     confirmDelete() {
-        this.deleteAlimentacionDialog = false;
-
+        this.deleteAreasZoologicasDialog = false;
         var params = {
-            "alim_Id": this.Alimento.alim_Id,
-            "alim_Descripcion": "",
-            "alim_UserCreacion": 1,
-            "alim_UserModificacion": 1
+            "arzo_Id": this.Area.arzo_Id,
+            "arzo_Descripcion": "",
+            "arzo_UserCreacion": 1,
+            "arzo_UserModificacion": 1
         }
 
-        this.alimentosService.DeleteAlimentacion(params).subscribe(
+        this.AreasZoologicasService.DeleteAreasZoologicas(params).subscribe(
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
-                if (this.datos.code == 409) {
+                if (this.datos.code == 500) {
 
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Atención', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                    this.Alimento = {};
-                    this.AlimentaciontDialog = false;
-                    this.Alimentacion = this.Alimentacion.filter(val => val.alim_Id !== this.Alimento.alim_Id);
+                    this.Area = {};
+                    this.AreasZoologicastDialog = false;
+                    this.AreasZoo = this.AreasZoo.filter(val => val.arzo_Id !== this.Area.arzo_Id);
                     this.CargarDatos();
+
 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -150,51 +151,51 @@ this.CargarDatos();
 
 
     //Enviamos y editamos datos
-    saveAlimentacion() {
+    saveAreasZoologicas() {
         this.submitted = true;
 
         var params = {
-            "alim_Id": this.Alimento.alim_Id,
-            "alim_Descripcion": this.Alimento.alim_Descripcion ? this.Alimento.alim_Descripcion.trim() : '',
-            "alim_UserCreacion": 1,
-            "alim_UserModificacion": 1
+            "arzo_Id": this.Area.arzo_Id,
+            "arzo_Descripcion": this.Area.arzo_Descripcion ? this.Area.arzo_Descripcion.trim() : '',
+            "arzo_UserCreacion": 1,
+            "arzo_UserModificacion": 1
         }
 
 
-        if (this.Alimento.alim_Descripcion?.trim() == '') {
-            console.log(this.Alimento.alim_Descripcion?.toString().length);
+        if (this.Area.arzo_Descripcion?.trim() == '') {
+            console.log(this.Area.arzo_Descripcion?.toString().length);
             this.espacio = true;
         }
 
-        if(params.alim_Descripcion === ""){
+        if(params.arzo_Descripcion === ""){
             this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
 
         }
         else{
-            if (params.alim_Descripcion !== undefined &&
-                params.alim_Descripcion.trim() !== '' &&
-                params.alim_UserCreacion !== undefined &&
-                params.alim_UserModificacion !== undefined) {
+            if (params.arzo_Descripcion !== undefined &&
+                params.arzo_Descripcion.trim() !== '' &&
+                params.arzo_UserCreacion !== undefined &&
+                params.arzo_UserModificacion !== undefined) {
     
                 //Si insertara o editara
                 if (!this.Editar) {
     
-                    this.alimentosService.postAlimentacion(params).subscribe(
+                    this.AreasZoologicasService.postAreasZoologicas(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
     
-                                this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
     
                             } else if (this.datos.code == 200) {
     
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                                this.Alimento = {};
-                                this.AlimentaciontDialog = false
-                                this.CargarDatos();
+                                this.Area = {};
+                                this.AreasZoologicastDialog = false;
+                                this.CargarDatos()
     
                             } else {
-                                this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                             }
                         },
                         error => {
@@ -203,7 +204,7 @@ this.CargarDatos();
                     )
     
                 } else {
-                    this.alimentosService.EditAlimentacion(params).subscribe(
+                    this.AreasZoologicasService.EditAreasZoologicas(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
@@ -213,8 +214,8 @@ this.CargarDatos();
                             } else if (this.datos.code == 200) {
     
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                                this.Alimento = {};
-                                this.AlimentaciontDialog = false;
+                                this.Area = {};
+                                this.AreasZoologicastDialog = false;
                                 this.CargarDatos();
     
                             } else {

@@ -418,23 +418,100 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
         }
 
         #endregion
-   
+
         #region Habitat
-        /* public IEnumerable<VW_tbHabitat> ListarHabitat()
-         {
-             try
-             {
-                 var list = _especiesRepository.ListarHabitat();
-                 return list;
-             }
-             catch (Exception ex)
-             {
+        public IEnumerable<VW_tbHabitat> ListarHabitat()
+        {
+            try
+            {
+                var list = _habitatRepository.ListarHabitat();
+                return list;
+            }
+            catch (Exception ex)
+            {
 
-                 return Enumerable.Empty<VW_tbHabitat>();
+                return Enumerable.Empty<VW_tbHabitat>();
 
-             }
-         }*/
+            }
+        }
 
+        public ServiceResult EliminarHabitat(tbHabitat item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _habitatRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult InsertarHabitat(tbHabitat item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _habitatRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarHabitat(tbHabitat item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _habitatRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
 
 
 

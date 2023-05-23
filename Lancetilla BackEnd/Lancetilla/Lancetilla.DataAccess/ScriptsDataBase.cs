@@ -297,6 +297,16 @@ namespace Lancetilla.DataAccess
         #endregion
 
 
+        #region Habitat
+        public static string InsertarHabitat= "zool.UDP_tbHabitat_CREATE";
+
+        public static string ActualizarHabitat= "zool.UDP_tbHabitat_UPDATE";
+
+        public static string EliminacionHabitat= "zool.UDP_tbHabitat_DELETE";
+
+        #endregion
+
+
         #endregion
 
         ////////////////////////////////////////////////////////////////////////////////////////////// 
