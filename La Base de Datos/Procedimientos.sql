@@ -8,6 +8,21 @@ GO
 --**************************************************************PROCS DE ACCESO******************************************************************************--
 
 --*************************************************************TABLA DE USUARIOS******************************************************************************--
+
+CREATE OR ALTER PROCEDURE Acce.UDP_tbUsuarios_DDLempleadosTieneusuario
+AS
+BEGIN
+	SELECT t2.empl_Id, 
+		   t2.empl_Nombre +' '+  t2.empl_Apellido as empl_Nombre 		  
+	  FROM Acce. tbUsuarios  t1 
+ FULL JOIN mant.tbEmpleados  t2  
+		ON t1.empl_Id = t2.empl_Id 
+	 WHERE t1.usua_Id IS NULL 
+	   AND t2. empl_Estado  = 1 
+END
+
+
+
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
 @usua_NombreUsuario			NVARCHAR(200),
 @empl_Id					INT,
