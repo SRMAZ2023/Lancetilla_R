@@ -9,6 +9,7 @@ namespace Lancetilla.Entities.Entities
     public partial class VW_FacturasDetalle
     {
         public int fade_Id { get; set; }
+        public int fact_Id { get; set; }
         public int tick_Id { get; set; }
         public string tick_Descripcion { get; set; }
         public int fade_Cantidad { get; set; }

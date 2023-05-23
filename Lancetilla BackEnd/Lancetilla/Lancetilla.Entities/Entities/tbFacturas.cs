@@ -8,6 +8,11 @@ namespace Lancetilla.Entities.Entities
 {
     public partial class tbFacturas
     {
+        public tbFacturas()
+        {
+            tbFacturasDetalles = new HashSet<tbFacturasDetalles>();
+        }
+
         public int fact_Id { get; set; }
         public int empl_Id { get; set; }
         public int visi_Id { get; set; }
@@ -24,5 +29,6 @@ namespace Lancetilla.Entities.Entities
         public virtual tbUsuarios fact_UserModificacionNavigation { get; set; }
         public virtual tbMetodosPago meto { get; set; }
         public virtual tbVisitantes visi { get; set; }
+        public virtual ICollection<tbFacturasDetalles> tbFacturasDetalles { get; set; }
     }
 }

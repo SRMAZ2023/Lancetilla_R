@@ -44,15 +44,9 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
     ngOnInit() {
 
-        this.TiposDeMantenimientosService.getTiposDeMantenimientos().subscribe(
-            Response => {
-                console.log(Response);
-                this.TiposDeMantenimientos = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
+        //Trae los datos de la api
+        this.loadData();
+        //Trae los datos de la api
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -63,6 +57,20 @@ export class TiposDeMantenimientosComponent implements OnInit {
         //Modelo de los datos de la tabla
 
     }
+
+    //trae los datos
+    private loadData() {
+        this.TiposDeMantenimientosService.getTiposDeMantenimientos().subscribe(
+            Response => {
+                console.log(Response);
+                this.TiposDeMantenimientos = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+    }
+    //trae los datos
 
     //Metodo que desactiva el dialog
     hideDialog() {
@@ -98,7 +106,6 @@ export class TiposDeMantenimientosComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteTiposDeMantenimientosDialog = false;
-        this.TiposDeMantenimientos = this.TiposDeMantenimientos.filter(val => val.tima_Id !== this.TiposDeMantenimiento.tima_Id);
         var params = {
             "tima_Id": this.TiposDeMantenimiento.tima_Id,
             "tima_Descripcion": "",
@@ -108,13 +115,20 @@ export class TiposDeMantenimientosComponent implements OnInit {
         console.log(params)
         this.TiposDeMantenimientosService.DeleteTiposDeMantenimientos(params).subscribe(
             Response => {
-                if (Response) {
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva TiposDeMantenimiento', life: 3000 });
-                    console.log("esta dentrando")
-                    this.TiposDeMantenimiento = {};
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 500) {
+                    
+                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    
+                } else if (this.datos.code == 200) {
+                    
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.TiposDeMantenimientos = this.TiposDeMantenimientos.filter(val => val.tima_Id !== this.TiposDeMantenimiento.tima_Id);
+                 
 
                 } else {
-                    this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -169,6 +183,8 @@ export class TiposDeMantenimientosComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.TiposDeMantenimiento = {};
                             this.TiposDeMantenimientostDialog = false;
+                            this.loadData();
+
                             
                         } else  {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -192,6 +208,8 @@ export class TiposDeMantenimientosComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.TiposDeMantenimiento = {};
                             this.TiposDeMantenimientostDialog = false;
+                            this.loadData();
+
                             
                         } else  {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });

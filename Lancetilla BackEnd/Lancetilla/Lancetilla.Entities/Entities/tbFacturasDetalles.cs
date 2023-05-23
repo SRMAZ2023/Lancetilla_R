@@ -9,6 +9,7 @@ namespace Lancetilla.Entities.Entities
     public partial class tbFacturasDetalles
     {
         public int fade_Id { get; set; }
+        public int fact_Id { get; set; }
         public int tick_Id { get; set; }
         public int fade_Cantidad { get; set; }
         public decimal fade_Total { get; set; }
@@ -18,6 +19,7 @@ namespace Lancetilla.Entities.Entities
         public DateTime? fade_FechaModificacion { get; set; }
         public bool? fade_Estado { get; set; }
 
+        public virtual tbFacturas fact { get; set; }
         public virtual tbUsuarios fade_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios fade_UserModificacionNavigation { get; set; }
         public virtual tbTickets tick { get; set; }

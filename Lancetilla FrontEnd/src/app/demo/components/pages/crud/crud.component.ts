@@ -108,7 +108,7 @@ export class CrudComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
             }
 
-            this.products = [...this.products];
+            //this.products = [...this.products];
             this.productDialog = false;
             this.product = {};
         }

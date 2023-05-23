@@ -102,7 +102,6 @@ export class PlantasComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deletePlantasDialog = false;
-        this.Plantas = this.Plantas.filter(val => val.plan_Id !== this.Planta.plan_Id);
         var plan_Id = this.Planta.plan_Id;
         var params = {
             "plan_Id": this.Planta.plan_Id,
@@ -115,12 +114,13 @@ export class PlantasComponent implements OnInit {
                 this.datos = Response;
                 console.log(this.datos)
                 if (this.datos.code == 409) {
-
+                    
                     this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
-
+                    
                 } else if (this.datos.code == 200) {
-
+                    
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.Plantas = this.Plantas.filter(val => val.plan_Id !== this.Planta.plan_Id);
                  
 
                 } else {

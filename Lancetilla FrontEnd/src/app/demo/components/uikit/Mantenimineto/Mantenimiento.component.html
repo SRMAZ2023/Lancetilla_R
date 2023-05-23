@@ -1,0 +1,253 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button
+                            (click)="openNew()"
+                            pButton
+                            pRipple
+                            label="Nuevo"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                        ></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload
+                        [maxFileSize]="1000000"
+                        mode="basic"
+                        accept="image/*"
+                        label="Import"
+                        chooseLabel="Import"
+                        class="mr-2 inline-block"
+                    ></p-fileUpload>
+                    <button
+                        (click)="dt.exportCSV()"
+                        pButton
+                        pRipple
+                        label="Export"
+                        icon="pi pi-upload"
+                        class="p-button-help"
+                    ></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table
+                #dt
+                [value]="Mantenimiento"
+                [columns]="cols"
+                [rows]="10"
+                [globalFilterFields]="['mant_Observaciones']"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [showCurrentPageReport]="true"
+                [(selection)]="selectedMantenimiento"
+                [rowHover]="true"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} "
+                selectionMode="multiple"
+                dataKey="id"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h5 class="m-0">Mantenimiento</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                (input)="onGlobalFilter(dt, $event)"
+                                pInputText
+                                type="text"
+                                placeholder="Buscar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="mant_Id">
+                            Id
+                            <p-sortIcon field="mant_Id"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="mant_Observaciones">
+                            Observacion
+                            <p-sortIcon field="mant_Observaciones"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tima_Descripcion">
+                            Tipo de Mantenimiento
+                            <p-sortIcon field="tima_Descripcion"></p-sortIcon>
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Mantenimiento>
+                    <tr>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Code</span>
+                            {{ Mantenimiento.mant_Id }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Name</span>
+                            {{ Mantenimiento.mant_Observaciones }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Name</span>
+                            {{ Mantenimiento.tima_Descripcion }}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button
+                                    (click)="editMantenimiento(Mantenimiento)"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                ></button>
+                                <button
+                                    (click)="deleteMantenimiento(Mantenimiento)"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-warning"
+                                ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog
+            [(visible)]="MantenimientotDialog"
+            [style]="{ width: '450px' }"
+            [modal]="true"
+            header="Mantenimiento"
+            class="p-fluid"
+        >
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="tima_Id"> Tipo de Manteniminto </label>
+                    <p-dropdown
+                        name="tima_Id"
+                        #tima_Id="ngModel"
+                        [autoDisplayFirst]="false"
+                        [options]="TipoMantenimiento"
+                        [(ngModel)]="Mantenimient.tima_Id"
+                        [ngClass]="{
+                            'ng-invalid': submitted && !Mantenimient.tima_Id
+                        }"
+                        placeholder="Seleccione Un Tipo De Mantenimineto"
+                        inputId="dropdown"
+                        optionLabel="label"
+                        optionValue="value"
+                    ></p-dropdown>
+                    <small
+                        *ngIf="submitted && !Mantenimient.tima_Id"
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        El Tipo de Mantenimiento es requerido.
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="name">Observacion</label>
+
+                    <textarea
+                        rows="5"
+                        cols="30"
+                        placeholder="Your Message"
+                        pInputTextarea
+                        [(ngModel)]="Mantenimient.mant_Observaciones"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted &&
+                                isInputEmptyOrWhitespace(
+                                    Mantenimient.mant_Observaciones
+                                )
+                        }"
+                    ></textarea>
+
+                    <small
+                        *ngIf="
+                            submitted &&
+                            isInputEmptyOrWhitespace(
+                                Mantenimient.mant_Observaciones
+                            )
+                        "
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        La Observacion es requerida.
+                    </small>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button
+                    (click)="hideDialog()"
+                    pButton
+                    pRipple
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    class="p-button-text"
+                ></button>
+                <button
+                    (click)="saveMantenimiento()"
+                    pButton
+                    pRipple
+                    label="Guardar"
+                    icon="pi pi-check"
+                    class="p-button-text"
+                ></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog
+            [(visible)]="deleteMantenimientoDialog"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+            header="Confirm"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span *ngIf="Mantenimient">
+                    Estas seguro de querer eliminar a
+                    <b>
+                        {{ Mantenimient.mant_Observaciones }}
+                    </b>
+                    ?
+                </span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button
+                    (click)="deleteMantenimientoDialog = false"
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="No"
+                ></button>
+                <button
+                    (click)="confirmDelete()"
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="Yes"
+                ></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

@@ -28,7 +28,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             parametros.Add("@empl_Nombre", item.empl_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Apellido", item.empl_Apellido, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Identidad", item.empl_Identidad, DbType.String, ParameterDirection.Input);
-            parametros.Add("@empl_FechaNacimiento", item.empl_FechaNacimiento, DbType.String, ParameterDirection.Input);
+            parametros.Add("@empl_FechaNacimiento", item.empl_FechaNacimiento, DbType.Date, ParameterDirection.Input);
             parametros.Add("@empl_Direccion", item.empl_Direccion, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Sexo", item.empl_Sexo, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_Telefono", item.empl_Telefono, DbType.String, ParameterDirection.Input);
@@ -75,9 +75,15 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             return result;
         }
 
-        public tbEmpleados Find(int? id)
+        public VW_tbEmpleados FindE(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@empl_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.QueryFirst<VW_tbEmpleados>(ScriptsDataBase.UDP_tbEmpleados_FIND, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
 
        
@@ -88,6 +94,11 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         }
 
         public RequestStatus Update(tbEmpleados item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        tbEmpleados IRepository<tbEmpleados>.Find(int? id)
         {
             throw new NotImplementedException();
         }

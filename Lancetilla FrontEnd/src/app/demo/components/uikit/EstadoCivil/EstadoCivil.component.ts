@@ -46,15 +46,9 @@ export class EstadoCivilesComponent implements OnInit {
 
     ngOnInit() {
 
-        this.EstadoCivilesService.getEstadoCiviles().subscribe(
-            Response => {
-                console.log(Response);
-                this.EstadoCiviles = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
+        //Trae los datos de la api
+        this.loadData();
+        //Trae los datos de la api
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -66,6 +60,19 @@ export class EstadoCivilesComponent implements OnInit {
 
     }
 
+    //trae los datos
+    private loadData() {
+        this.EstadoCivilesService.getEstadoCiviles().subscribe(
+            Response => {
+                console.log(Response);
+                this.EstadoCiviles = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+    }
+    //trae los datos
     //Metodo que desactiva el dialog
     hideDialog() {
         this.EstadoCivilestDialog = false;
@@ -100,7 +107,6 @@ export class EstadoCivilesComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteEstadoCivilesDialog = false;
-        this.EstadoCiviles = this.EstadoCiviles.filter(val => val.estc_Id !== this.EstadoCivil.estc_Id);
         var params = {
             "estc_Id": this.EstadoCivil.estc_Id,
             "estc_Descripcion": "",
@@ -112,7 +118,7 @@ export class EstadoCivilesComponent implements OnInit {
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
-                if (this.datos.code == 409) {
+                if (this.datos.code == 500) {
 
                     this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
 
@@ -121,6 +127,8 @@ export class EstadoCivilesComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.EstadoCivil = {};
                     this.EstadoCivilestDialog = false;
+                    this.EstadoCiviles = this.EstadoCiviles.filter(val => val.estc_Id !== this.EstadoCivil.estc_Id);
+                    
 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -180,6 +188,8 @@ export class EstadoCivilesComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.EstadoCivil = {};
                             this.EstadoCivilestDialog = false;
+                            this.loadData();
+
 
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -203,6 +213,8 @@ export class EstadoCivilesComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.EstadoCivil = {};
                             this.EstadoCivilestDialog = false;
+                            this.loadData();
+
 
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });

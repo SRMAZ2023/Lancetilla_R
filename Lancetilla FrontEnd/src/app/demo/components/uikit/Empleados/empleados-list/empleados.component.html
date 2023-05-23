@@ -1,0 +1,108 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+                        [routerLink]="['/uikit/Empleados/Create']"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="empleados" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['empl_Nombre','empl_Nombre','plan_Reino','plan_Reino','empl_Nombre','carg_Descripcion']" [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedempleados"
+                selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">empleados</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="empl_Id">Id <p-sortIcon field="empl_Id"></p-sortIcon></th>
+                        <th pSortableColumn="empl_Nombre">Nombre <p-sortIcon field="empl_Nombre"></p-sortIcon></th>
+                        <th pSortableColumn="empl_Identidad"> DNI <p-sortIcon field="empl_Identidad"></p-sortIcon></th>
+                        <th pSortableColumn="EstadoCivil">Estado Civil <p-sortIcon field="EstadoCivil"></p-sortIcon></th>
+                        <th pSortableColumn="empl_Telefono"> Telefono <p-sortIcon field="empl_Telefono"></p-sortIcon></th>
+                        <th pSortableColumn="carg_Descripcion">  Cargo  <p-sortIcon field="carg_Descripcion"></p-sortIcon></th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-empleados>
+                    <tr>
+
+                        <td style="width:2%; min-width:5rem;"><span class="p-column-title">id</span>
+                            {{empleados.empl_Id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{empleados.empl_Nombre + " " + empleados.empl_Apellido}}
+                        </td>
+                        
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">DNI</span>
+                            {{empleados.empl_Identidad}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Apellido</span>
+                            {{empleados.estc_Descripcion}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Telefono</span>
+                            {{empleados.empl_Telefono}}
+                        </td>
+                        <td style="width:16%; min-width:14rem;">
+                            <span class="p-column-title">Cargo</span>
+                            {{empleados.carg_Descripcion}}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"  
+                                    [routerLink]="['/uikit/Empleados/Edit',empleados.empl_Id]"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteempleados(empleados)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+         
+
+        <p-dialog [(visible)]="deleteempleadosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="empleado">Estas seguro de querer eliminar a <b>{{empleado.empl_Nombre}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteempleadosDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
+</div>

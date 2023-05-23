@@ -1,0 +1,175 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-toast></p-toast>
+            <h1>{{page_title}}</h1>
+            <form class="mid-from" #empleadosForm="ngForm" (ngSubmit)="saveEmpleados()">
+                <div class="grid p-fluid">
+
+                    <div class="field col-6">
+                        <label for="empl_Nombre">Nombre </label>
+                        <input type="text" pInputText id="empl_Nombre" name="empl_Nombre" #empl_Nombre="ngModel"
+                            [(ngModel)]="empleado.empl_Nombre" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && empl_Nombre.invalid}"
+                            pattern="^(?!\s*$).+" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empl_Nombre.invalid && (empl_Nombre.touched || submitted)">
+                            La Nombre es requerida.
+                        </small>
+                    </div>
+
+
+                    <div class="field col-6">
+                        <label for="empl_Apellido">Apellido</label>
+                        <input type="text" pInputText id="empl_Apellido" name="empl_Apellido" #empl_Apellido="ngModel"
+                            [(ngModel)]="empleado.empl_Apellido" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Apellido}"
+                            pattern="^(?!\s*$).+" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Apellido.valid && empl_Apellido.touched">El Apellido es requerido.</small>
+                    </div>
+
+
+                    <div class="field col-6">
+                        <label for="empl_Identidad">DNI</label>
+                        <p-inputMask type="text" inputId="empl_Identidad" mask="9999-9999-99999" name="empl_Identidad"
+                            #empl_Identidad="ngModel" [(ngModel)]="empleado.empl_Identidad"
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Identidad}"
+                            pattern="^(?!\s*$).+" [required]="true"></p-inputMask>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Identidad.valid && empl_Identidad.touched">El DNI es
+                            requerido.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="empl_Telefono">Telefono</label>
+                        <p-inputMask type="text" inputId="empl_Telefono" mask="9999-9999" name="empl_Telefono"
+                            #empl_Telefono="ngModel" [(ngModel)]="empleado.empl_Telefono"
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Telefono}"
+                            pattern="^(?!\s*$).+" [required]="true"></p-inputMask>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Telefono.valid && empl_Telefono.touched">El Telefono es
+                            requerido.</small>
+                    </div>
+
+
+                    <div class="field col-6">
+                        <label for="empl_FechaNacimiento">Fecha de Nacimiento</label>
+                        <p-calendar [showIcon]="true" id="empl_FechaNacimiento" name="empl_FechaNacimiento"
+                            #empl_FechaNacimiento="ngModel" [(ngModel)]="empleado.empl_FechaNacimiento"
+                            inputId="icon"></p-calendar>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_FechaNacimiento.valid && empl_FechaNacimiento.touched">La Fecha de Nacimiento
+                            es requerida.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="empl_Direccion">Direccion</label>
+                        <input type="text" pInputText id="empl_Direccion" name="empl_Direccion"
+                            #empl_Direccion="ngModel" [(ngModel)]="empleado.empl_Direccion" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Direccion}"
+                            pattern="^(?!\s*$).+" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="!empl_Direccion.valid && empl_Direccion.touched">La DIreccion es
+                            requerida.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="muni_Id">Sexo</label>
+                        <div class="grid formgrid">
+                            <div class="col-12 md:col-4">
+                                <div class="field-radiobutton">
+                                    <p-radioButton id="empl_Sexo_M" name="empl_Sexo" value="M"
+                                        [(ngModel)]="empleado.empl_Sexo"></p-radioButton>
+                                    <label for="city1">Masculino</label>
+                                </div>
+                            </div>
+                            <div class="col-12 md:col-4">
+                                <div class="field-radiobutton">
+                                    <p-radioButton id="empl_Sexo_F" name="empl_Sexo" #empl_Direccion="ngModel" value="F"
+                                        [(ngModel)]="empleado.empl_Sexo"></p-radioButton>
+                                    <label for="city2">Femenino</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empleadosForm.submitted && !empleado.empl_Sexo">El Sexo es requerido.</small>
+                    </div>
+
+
+
+                    <div class="field col-6">
+                        <label for="estc_Id">Estado Civil</label>
+                        <p-dropdown placeholder="Seleccione Un Estado Civil" inputId="dropdown"
+                            [autoDisplayFirst]="false" name="estc_Id" #estc_Id="ngModel" [options]="estadoCivil"
+                            [(ngModel)]="empleado.estc_Id" optionLabel="label" optionValue="value"
+                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.estc_Id }"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empleadosForm.submitted && !empleado.estc_Id">El Estado Civil es requerido.</small>
+                    </div>
+
+
+                    <div class="field col-6">
+                        <label for="carg_Id">Cargo</label>
+                        <p-dropdown placeholder="Seleccione Un Cargo" inputId="dropdown" [autoDisplayFirst]="false"
+                            name="carg_Id" #carg_Id="ngModel" [options]="cargo" [(ngModel)]="empleado.carg_Id"
+                            optionLabel="label" optionValue="value"
+                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.carg_Id }"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empleadosForm.submitted && !empleado.carg_Id">El Cargo es requerido.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="dept_Id">Departamento</label>
+                        <p-dropdown placeholder="Seleccione Un Departamento" inputId="dropdown"
+                            [autoDisplayFirst]="false" name="dept_Id" #dept_Id="ngModel" [options]="departamento"
+                            [(ngModel)]="empleado.dept_Id" optionLabel="label" optionValue="value"
+                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.dept_Id }"
+                            (onChange)="onDepartamentoChange($event)"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empleadosForm.submitted && !empleado.dept_Id">
+                            El Departamento es requerido.
+                        </small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="muni_Id">Municipio</label>
+                        <p-dropdown placeholder="Seleccione Un Municipio" inputId="dropdown" [autoDisplayFirst]="false"
+                            name="muni_Id" value="empleado.muni_Id" #muni_Id="ngModel" [options]="municipios"
+                            [(ngModel)]="empleado.muni_Id" optionLabel="label" optionValue="value"
+                            [disabled]="municipioDisabled"
+                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.muni_Id }"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="empleadosForm.submitted && !empleado.muni_Id">
+                            El Municipio es requerido.
+                        </small>
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="grid p-fluid">
+
+                    <div class="field col-2">
+                        <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
+                            [disabled]="empleadosForm.invalid" class="p-button-success"></button>
+
+
+                    </div>
+                    <div class="field col-2">
+
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                            class="p-button-danger" [routerLink]="['/uikit/Empleados']"></button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

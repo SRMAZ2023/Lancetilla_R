@@ -49,15 +49,9 @@ export class especiesComponent implements OnInit {
 
     ngOnInit() {
 
-        this.productService.getEspecies().subscribe(
-            Response => {
-                console.log(Response);
-                this.Especies = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
+        //Trae los datos de la api
+        this.loadData();
+        //Trae los datos de la api
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -68,6 +62,20 @@ export class especiesComponent implements OnInit {
         //Modelo de los datos de la tabla
 
     }
+
+    //trae los datos
+    private loadData() {
+        this.productService.getEspecies().subscribe(
+            Response => {
+                console.log(Response);
+                this.Especies = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+    }
+    //trae los datos
 
     //Metodo que desactiva el dialog
     hideDialog() {
@@ -103,7 +111,6 @@ export class especiesComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteEspeciesDialog = false;
-        this.Especies = this.Especies.filter(val => val.espe_Id !== this.Especie.espe_Id);
         var espe_Id = this.Especie.espe_Id;
         var params = {
             "espe_Id": this.Especie.espe_Id,
@@ -114,13 +121,20 @@ export class especiesComponent implements OnInit {
         console.log(params)
         this.productService.DeleteEspecies(params).subscribe(
             Response => {
-                if (Response) {
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva especie', life: 3000 });
-                    console.log("esta dentrando")
-                    this.Especie = {};
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 500) {
+                    
+                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    
+                } else if (this.datos.code == 200) {
+                    
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.Especies = this.Especies.filter(val => val.espe_Id !== this.Especie.espe_Id);
+                 
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -177,6 +191,9 @@ export class especiesComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
                             this.Especie = {};
                             this.EspeciestDialog = false;
+
+                            this.loadData();
+
                             
                         } else  {
                             this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
@@ -200,6 +217,8 @@ export class especiesComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
                             this.Especie = {};
                             this.EspeciestDialog = false;
+                            this.loadData();
+
                             
                         } else  {
                             this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });

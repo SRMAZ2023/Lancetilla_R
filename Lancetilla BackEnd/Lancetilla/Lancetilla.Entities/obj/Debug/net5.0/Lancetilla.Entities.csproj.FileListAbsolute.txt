@@ -33,3 +33,4 @@ C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lanc
 C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.Entities\obj\Debug\net5.0\Lancetilla.Entities.dll
 C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.Entities\obj\Debug\net5.0\ref\Lancetilla.Entities.dll
 C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.Entities\obj\Debug\net5.0\Lancetilla.Entities.pdb
+C:\Users\selvin almendarez\Documents\GitHub\Lancetilla_R\Lancetilla BackEnd\Lancetilla\Lancetilla.Entities\obj\Debug\net5.0\Lancetilla.Entities.csproj.AssemblyReference.cache
