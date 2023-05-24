@@ -4,6 +4,7 @@ export class ManteniminetoXAnimalViewModel {
     public maan_Id?: number,
     public anim_Id?: number,
     public anim_Nombre?: string,
+    public maan_Fecha?: string,
     public mant_Id?: number,
     public mant_Observaciones?: string,
     public tima_Id?: number,

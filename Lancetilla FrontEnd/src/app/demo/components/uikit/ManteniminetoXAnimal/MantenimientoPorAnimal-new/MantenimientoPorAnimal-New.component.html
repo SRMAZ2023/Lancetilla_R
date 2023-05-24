@@ -1,0 +1,57 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-toast></p-toast>
+            <h1>{{page_title}}</h1>
+            <form class="mid-from" #MantenimientoPorAnimalForm="ngForm" (ngSubmit)="saveMantenimientoPorAnimal()">
+                <div class="grid p-fluid">
+
+                     
+
+                    <div class="field col-6">
+
+                        <p-dropdown [options]="Animal" name="anim_Id" [(ngModel)]="MantenimientoXanimal" placeholder="Seleccione Un Animal" [showClear]="true"></p-dropdown>
+                    </div>
+
+
+
+                    <div class="field col-6">
+
+                        <p-dropdown [options]="tipoMantenimiento" name="tima_Id" [(ngModel)]="MantenimientoXanimal.tima_Id" placeholder="Seleccione Un Tipo e Mantenimiento"  ></p-dropdown>
+                    </div>
+
+
+
+                    <!--<div class="field col-6">
+                        <label for="anim_Id">Animales</label>
+                        <p-dropdown placeholder="Seleccione Un Animal" inputId="dropdown"
+                            [autoDisplayFirst]="false" name="anim_Id" #anim_Id="ngModel" [options]="Animal"
+                            [(ngModel)]="MxA.maan_Id" optionLabel="label" optionValue="value"
+                            [ngClass]="{ 'ng-invalid': MantenimientoXanimalsForm.submitted   }"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="MantenimientoXanimalsForm.submitted  ">El Animal es requerido.</small>
+                    </div>-->
+                    
+
+                </div>
+                <div class="grid p-fluid">
+
+                    <div class="field col-2">
+                        <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
+                            [disabled]="MantenimientoPorAnimalForm.invalid" class="p-button-success"></button>
+
+
+                    </div>
+                    <div class="field col-2">
+
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                            class="p-button-danger" [routerLink]="['/uikit/MantenimientoXanimal']"></button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

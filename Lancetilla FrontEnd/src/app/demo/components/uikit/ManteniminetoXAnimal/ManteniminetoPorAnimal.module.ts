@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PlantasRoutingModule } from './Plantas-routing.module';
-import { PlantasComponent } from './MantenimientoPorAnimal-list/Plantas.component';
+import { MantenimientoPorAnimalRoutingModule } from './ManteniminetoPorAnimal-routing.module';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from "primeng/calendar";
+
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,16 +17,17 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { PlantasNewComponent } from './MantenimientoPorAnimal-new/Plantas.component';
-import { PlantasEditComponent } from './MantenimientoPorAnimal-edit/plantas-edit.component';
-
+import { MantenimientoPorAnimalNewComponent } from './MantenimientoPorAnimal-new/MantenimientoPorAnimal-newcomponent';
+import { MantenimientoPorAnimalEditComponent } from './MantenimientoPorAnimal-edit/ManteniminetoPorAnimal-edit.component';
+import { MantenimientoPorAnimalComponent } from './MantenimientoPorAnimal-list/MantenimientoPorAnimal.component';
 @NgModule({
     imports: [
         CommonModule,
-        PlantasRoutingModule,
+        MantenimientoPorAnimalRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
+        CalendarModule,
         ButtonModule,
         RippleModule,
         ToastModule,
@@ -38,6 +40,6 @@ import { PlantasEditComponent } from './MantenimientoPorAnimal-edit/plantas-edit
         InputNumberModule,
         DialogModule
     ],
-    declarations: [PlantasComponent, PlantasNewComponent,PlantasEditComponent ]
+    declarations: [MantenimientoPorAnimalComponent, MantenimientoPorAnimalNewComponent,MantenimientoPorAnimalEditComponent ]
 })
-export class PlantasModule { }
+export class MantenimientoPorAnimalModule { }

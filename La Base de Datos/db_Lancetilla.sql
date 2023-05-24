@@ -401,8 +401,8 @@ select GETDATE()
 CREATE TABLE mant.tbMantenimientoAnimal(
 maan_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 anim_Id					INT					NOT NULL,
-mant_Id					INT					NOT NULL,
-maan_Fecha				DATE				NOT NULL,
+tima_Id					INT					NOT NULL,
+maan_Fecha				Varchar(100)				NOT NULL,
 
 /**********Campos de auditoria***********/
 maan_UserCreacion		INT,
@@ -413,7 +413,7 @@ maan_Estado				BIT					DEFAULT 1,
 
 CONSTRAINT FK_mant_tbMantenimientoAnimal_maan_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (maan_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_mant_tbMantenimientoAnimal_maan_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (maan_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_mant_tbMantenimientoAnimal_mant_tbMantenimientos_mant_Id						FOREIGN KEY (mant_Id)				REFERENCES mant.tbMantenimientos(mant_Id),
+CONSTRAINT FK_mant_tbMantenimientoAnimal_mant_tbTiposMantenimientos_tima_Id					FOREIGN KEY (tima_Id)				REFERENCES mant.tbTiposMantenimientos(tima_Id),
 CONSTRAINT FK_mant_tbMantenimientoAnimal_anim_tbAnimales_anim_Id							FOREIGN KEY (anim_Id)				REFERENCES zool.tbAnimales(anim_Id));
 --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
@@ -1343,7 +1343,7 @@ VALUES
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
-INSERT INTO mant.tbMantenimientoAnimal(anim_Id, mant_Id, maan_Fecha,maan_UserCreacion)
+INSERT INTO mant.tbMantenimientoAnimal(anim_Id, tima_Id, maan_Fecha,maan_UserCreacion)
 VALUES  (21, 1,GETDATE(), 1),
 		(2, 2,GETDATE(), 1),
 		 (3, 3, GETDATE(),1),

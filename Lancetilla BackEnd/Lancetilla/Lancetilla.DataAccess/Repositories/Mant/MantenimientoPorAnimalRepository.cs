@@ -27,7 +27,10 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         Lancetilla con = new Lancetilla();
         public IEnumerable<VW_MantenimientoAnimales> ListarMantenimientoAnimal()
         {
-            return con.VW_MantenimientoAnimales.AsList();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            return db.Query<VW_MantenimientoAnimales>(ScriptsDataBase.UDP_tbMantenimientosAnimal_SELECT, null, commandType: CommandType.StoredProcedure);
         }
 
       
@@ -48,7 +51,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             var parametros = new DynamicParameters();
 
             parametros.Add("@anim_Id", item.anim_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@mant_Id", item.mant_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@tima_Id", item.tima_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@maan_Fecha", item.maan_Fecha, DbType.Date, ParameterDirection.Input);
             parametros.Add("@maan_UserCreacion", item.maan_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
@@ -63,7 +66,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
 
             parametros.Add("@maan_Id", item.maan_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@anim_Id", item.anim_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@mant_Id", item.mant_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@tima_Id", item.tima_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@maan_Fecha", item.maan_Fecha, DbType.Date, ParameterDirection.Input);
             parametros.Add("@maan_UserModificacion", item.maan_UserModificacion, DbType.Int32, ParameterDirection.Input);
 

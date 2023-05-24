@@ -18,6 +18,11 @@ export class ManteniminetoXAnimalService {
         return this.http.get(this.url + "MantenimientoPorAnimal/ListarMantenimientosAnimal");
     }
 
+    getAnimal(): Observable<any> {
+        return this.http.get(this.url + "Animales/ListarAnimales");
+    }
+
+
     findManteniminetoXAnimal(plan_id:any): Observable<any> {
         return this.http.get(this.url + `MantenimientoPorAnimal/BuscarPlanta/${plan_id}`);
 

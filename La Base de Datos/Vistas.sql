@@ -329,15 +329,12 @@ GO
 GO
 CREATE OR ALTER VIEW mant.VW_MantenimientoAnimales
 AS 
-
 SELECT maan_Id,
 	   T1.anim_Id,
 	   anim_Nombre,
-	   [maan_Fecha],
-	   T3.mant_Id,
-	   T3.mant_Observaciones,
-	   T4.tima_Id,
-	   tima_Descripcion,
+       CONVERT(varchar(10), CONVERT(datetime, maan_Fecha, 106), 105) AS	 maan_Fecha,
+	   T1.tima_Id,
+	   t3.tima_Descripcion,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = maan_UserCreacion)) AS usua_UserCreaNombre,
 	   maan_UserCreacion,
@@ -350,11 +347,10 @@ SELECT maan_Id,
 	   FROM mant.tbMantenimientoAnimal T1
 	   INNER JOIN zool.tbAnimales T2
 	   ON T1.anim_Id = T2.anim_Id
-	   INNER JOIN mant.tbMantenimientos T3
-	   ON T1.mant_Id = T3.mant_Id
-	   INNER JOIN mant.tbTiposMantenimientos T4
-	   ON T3.tima_Id = T4.tima_Id
+	   INNER JOIN mant.tbTiposMantenimientos T3
+	   ON T1.tima_Id = T3.tima_Id
 	   WHERE maan_Estado = 1;
+
 GO
 --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 
