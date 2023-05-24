@@ -3108,10 +3108,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   padding: 1.25rem;
 }
 
-.fc {
-  /* FullCalendar 4 */
-  /* FullCalendar 5 */
-}
+
 .fc.fc-unthemed .fc-view-container th {
   background: #f8f9fa;
   border: 1px solid #dee2e6;
@@ -4342,11 +4339,14 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-toolbar {
-  background: #f8f9fa;
+  background: #9cf7ac;
   border: 1px solid #dee2e6;
   padding: 1.25rem;
   border-radius: 6px;
   gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .p-toolbar .p-toolbar-separator {
   margin: 0 0.5rem;

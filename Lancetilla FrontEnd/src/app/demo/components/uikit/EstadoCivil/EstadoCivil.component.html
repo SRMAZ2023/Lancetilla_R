@@ -1,45 +1,62 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6">
+        <div class="cardEstadosCiviles  px-6 py-6">
             <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                            (click)="openNew()"></button>
-                    </div>
-                </ng-template>
 
-                <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
-                </ng-template>
+
+            <p-toolbar styleClass="mb-3">
+
+                <div class="my-6">
+
+                </div>
+                <div class="my-0">
+                    <img src="https://i.ibb.co/GML6CHB/estados.png" width="350px">
+                    <img src="https://i.ibb.co/hZ20X02/civiles.png" width="350px">
+                </div>
+                <div class="mr-6">
+
+
+                </div>
             </p-toolbar>
 
-            <p-table #dt [value]="EstadoCiviles" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['estc_Descripcion']" [paginator]="true"
-                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedEstadoCiviles"
-                selectionMode="multiple" [rowHover]="true" dataKey="id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">EstadoCiviles</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
-                                class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
+
+            <div class="flex align-items-center justify-content-start">
+                        <div class="mr-4">
+                  <span class="mr-3">Mostrar:</span>
+                  <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}" (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                (click)="openNew()"></button>
+                </div>
+
+
+            
+              
+                <div class="ml-auto">
+                  <span class="p-input-icon-left">
+                    <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." class="p-button-success" />
+                  </span>
+                </div>
+              </div>
+              
+            <br>
+
+            <p-table #dt [value]="EstadoCiviles" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedEstadoCiviles"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
+
                 <ng-template pTemplate="header">
+
                     <tr>
 
                         <th pSortableColumn="estc_Id">Id <p-sortIcon field="estc_Id"></p-sortIcon></th>
-                        <th pSortableColumn="estc_Descripcion">Descripcion <p-sortIcon field="estc_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="estc_Descripcion">Descripcion <p-sortIcon
+                                field="estc_Descripcion"></p-sortIcon></th>
 
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-EstadoCiviles>
@@ -57,7 +74,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="editEstadoCiviles(EstadoCiviles)"></button>
+                                    (click)="editEstadoCiviles(EstadoCiviles)"> </button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                                     (click)="deleteEstadoCiviles(EstadoCiviles)"></button>
                             </div>
@@ -67,38 +84,45 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="EstadoCivilestDialog" [style]="{width: '450px'}" header="EstadoCiviles" [modal]="true"
+        <p-dialog [(visible)]="EstadoCivilestDialog" [style]="{width: '450px'}" header="Estados Civiles" [modal]="true"
             class="p-fluid">
-            
+            <br>
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="name">EstadoCivil</label>
-                    <input type="text" pInputText id="name"   [(ngModel)]="EstadoCivil.estc_Descripcion" required autofocus
+                    <label for="name">Estado Civil</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="EstadoCivil.estc_Descripcion" required
+                        autofocus
                         [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(EstadoCivil.estc_Descripcion)}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(EstadoCivil.estc_Descripcion)">La EstadoCiviles es
-                        requerida.</small>
+                    <small class="ng-dirty ng-invalid" style="color: red;"
+                        *ngIf="submitted && isInputEmptyOrWhitespace(EstadoCivil.estc_Descripcion)">
+                        La descripción del estado civil es requerida.</small>
                 </div>
 
 
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
                     (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                     (click)="saveEstadoCiviles()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteEstadoCivilesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteEstadoCivilesDialog" header="Confirmación" [modal]="true"
+            [style]="{width:'450px'}"> <br>
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="EstadoCivil">Estas seguro de querer eliminar a <b>{{EstadoCivil.estc_Descripcion}}</b>?</span>
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="EstadoCivil">¿Estás seguro de eliminar el estado civil de
+                    <b>{{EstadoCivil.estc_Descripcion}}</b>?</span>
             </div>
+
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
                     (click)="deleteEstadoCivilesDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
                     (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>

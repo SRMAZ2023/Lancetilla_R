@@ -16,12 +16,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
     imports: [
         CommonModule,
         EstadoCivilesRoutingModule,
         TableModule,
+        PaginatorModule,
         FileUploadModule,
         FormsModule,
         ButtonModule,

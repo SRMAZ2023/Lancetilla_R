@@ -1,5 +1,6 @@
 .layout-main-container {
     display: flex;
+
     flex-direction: column;
     min-height: 100vh;
     justify-content: space-between;
@@ -8,5 +9,6 @@
 }
 
 .layout-main {
+
     flex: 1 1 auto;
 }

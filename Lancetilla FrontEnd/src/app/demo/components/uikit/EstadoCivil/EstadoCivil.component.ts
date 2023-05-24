@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';import { MessageService } from 'primeng/api';
+import { Component, OnInit } from '@angular/core'; import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { EstadoCivilesService } from 'src/app/demo/service/EstadoCivil.service';
 import { EstadoCivilViewModel } from 'src/app/demo/Models/EstadoCivilViewModel';
@@ -7,10 +7,18 @@ import { error } from 'console';
 
 @Component({
     templateUrl: './EstadoCivil.component.html',
+    styleUrls: ['./EstadoCivil-design.scss'],
     providers: [MessageService, EstadoCivilesService]
 })
 export class EstadoCivilesComponent implements OnInit {
 
+    
+    onRowsPerPageChange() {
+      this.first = 0; 
+    }
+
+
+    
     //Dialogs
     EstadoCivilestDialog: boolean = false;
 
@@ -20,6 +28,21 @@ export class EstadoCivilesComponent implements OnInit {
     //Dialogs
 
     datos: any = {};
+    currentPage: number = 0;
+
+
+    first: number = 0;
+    rows: number = 10;
+
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+
+
 
 
     public Editar: boolean = false;
@@ -34,7 +57,6 @@ export class EstadoCivilesComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
 
     statuses: any[] = [];
     //validar espacio
@@ -120,18 +142,19 @@ export class EstadoCivilesComponent implements OnInit {
                 console.log(this.datos)
                 if (this.datos.code == 500) {
 
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
 
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                     this.EstadoCivil = {};
                     this.EstadoCivilestDialog = false;
                     this.EstadoCiviles = this.EstadoCiviles.filter(val => val.estc_Id !== this.EstadoCivil.estc_Id);
-                    
+                    this.loadData();
+
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error:', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -157,7 +180,7 @@ export class EstadoCivilesComponent implements OnInit {
 
         var params = {
             "estc_Id": this.EstadoCivil.estc_Id,
-            "estc_Descripcion": this.EstadoCivil.estc_Descripcion!.trim(),
+            "estc_Descripcion": this.EstadoCivil.estc_Descripcion ? this.EstadoCivil.estc_Descripcion.trim() : '',
             "estc_UserCreacion": 1,
             "estc_UserModificacion": 1
         }
@@ -167,70 +190,79 @@ export class EstadoCivilesComponent implements OnInit {
             console.log(this.EstadoCivil.estc_Descripcion?.toString().length);
             this.espacio = true;
         }
-        //Validacion de params
-        if (params.estc_Descripcion !== undefined &&
-            params.estc_Descripcion.trim() !== '' &&
-            params.estc_UserCreacion !== undefined &&
-            params.estc_UserModificacion !== undefined) {
 
-            //Si insertara o editara
-            if (!this.Editar) {
-
-                this.EstadoCivilesService.postEstadoCiviles(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if (this.datos.code == 409) {
-
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-
-                        } else if (this.datos.code == 200) {
-
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.EstadoCivil = {};
-                            this.EstadoCivilestDialog = false;
-                            this.loadData();
-
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                )
-
-            } else {
-                this.EstadoCivilesService.EditEstadoCiviles(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if (this.datos.code == 409) {
-
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-
-                        } else if (this.datos.code == 200) {
-
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.EstadoCivil = {};
-                            this.EstadoCivilestDialog = false;
-                            this.loadData();
-
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                )
-
-            }
-
+        if (params.estc_Descripcion === "") {
+            this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
 
         }
+        else {
+
+            //Validacion de params
+            if (params.estc_Descripcion !== undefined &&
+                params.estc_Descripcion.trim() !== '' &&
+                params.estc_UserCreacion !== undefined &&
+                params.estc_UserModificacion !== undefined) {
+
+                //Si insertara o editara
+                if (!this.Editar) {
+
+                    this.EstadoCivilesService.postEstadoCiviles(params).subscribe(
+                        Response => {
+                            this.datos = Response;
+                            if (this.datos.code == 409) {
+
+                                this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+
+                            } else if (this.datos.code == 200) {
+
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                                this.EstadoCivil = {};
+                                this.EstadoCivilestDialog = false;
+                                this.loadData();
+
+
+                            } else {
+                                this.messageService.add({ severity: 'warm', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                            }
+                        },
+                        error => {
+                            console.log(error);
+                        }
+                    )
+
+                } else {
+                    this.EstadoCivilesService.EditEstadoCiviles(params).subscribe(
+                        Response => {
+                            this.datos = Response;
+                            if (this.datos.code == 409) {
+
+                                this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+
+                            } else if (this.datos.code == 200) {
+
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                                this.EstadoCivil = {};
+                                this.EstadoCivilestDialog = false;
+                                this.loadData();
+
+
+                            } else {
+                                this.messageService.add({ severity: 'warm', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                            }
+                        },
+                        error => {
+                            console.log(error);
+                        }
+                    )
+
+                }
+
+
+            }
+        }
+        //Enviamos y editamos datos
     }
-    //Enviamos y editamos datos
+
 
 
 

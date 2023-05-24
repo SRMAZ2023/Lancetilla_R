@@ -1,6 +1,22 @@
 .card {
-    background: var(--surface-card);
-    border: 1px solid var(--surface-border);
+    background: #ffffff;
+    border: 2px solid var(--surface-border);
+    border-color: #1a9120;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    border-radius: $borderRadius;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.cardEstadosCiviles {
+    
+    background: #ffffff;
+    border: 7px solid var(--surface-border);
+    border-color: #2fbe36;
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: var(--card-shadow);
@@ -18,3 +34,16 @@
         top: 100px;
     }
 }
+
+.toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .image-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
