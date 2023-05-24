@@ -21,7 +21,7 @@ BEGIN
 	   AND t2. empl_Estado  = 1 
 END
 
-
+GO
 
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
 @usua_NombreUsuario			NVARCHAR(200),
