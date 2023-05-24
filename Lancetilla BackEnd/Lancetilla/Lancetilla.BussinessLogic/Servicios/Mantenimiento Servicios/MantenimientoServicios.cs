@@ -550,6 +550,21 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             }
         }
 
+        public IEnumerable<VW_MantenimientoAnimales> BuscarManteniminetoAnimales(int id)
+        {
+            try
+            {
+                var list = _mantenimientoPorAnimalRepository.Find2(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+
+            }
+        }
+
         public ServiceResult InsertMantenimientoAnimal(tbMantenimientoAnimal item)
         {
             var result = new ServiceResult();

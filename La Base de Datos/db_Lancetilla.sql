@@ -396,7 +396,7 @@ CONSTRAINT FK_mant_tbMantenimientos_tima_Id_mant_tbTiposMantenientos_tima_iD			F
 --************************************************************/TABLA DE MANTENIMIENTO*************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+select GETDATE()
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
 CREATE TABLE mant.tbMantenimientoAnimal(
 maan_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,

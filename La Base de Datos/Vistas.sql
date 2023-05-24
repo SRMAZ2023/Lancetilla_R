@@ -204,7 +204,8 @@ CREATE OR ALTER VIEW mant.VW_tbEmpleados
 AS 
 
 SELECT empl_Id,
-       empl_Nombre + ' '+ empl_Apellido AS empl_Nombres, 
+       empl_Nombre,
+	   empl_Apellido,
 	   empl_Identidad,
 	   empl_FechaNacimiento,
 	   empl_Direccion, 
@@ -325,12 +326,14 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+GO
 CREATE OR ALTER VIEW mant.VW_MantenimientoAnimales
 AS 
 
 SELECT maan_Id,
 	   T1.anim_Id,
 	   anim_Nombre,
+	   [maan_Fecha],
 	   T3.mant_Id,
 	   T3.mant_Observaciones,
 	   T4.tima_Id,

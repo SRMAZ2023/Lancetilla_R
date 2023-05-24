@@ -1,0 +1,108 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+                        [routerLink]="['/uikit/Plantas/Create']"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="Plantas" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['plan_Nombre','plan_NombreCientifico','plan_Reino','plan_Reino','arbo_Descripcion','cuid_Frecuencia']" [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedPlantas"
+                selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Plantas</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="plan_Id">Id <p-sortIcon field="plan_Id"></p-sortIcon></th>
+                        <th pSortableColumn="plan_Nombre">Nombre <p-sortIcon field="plan_Nombre"></p-sortIcon></th>
+                        <th pSortableColumn="plan_NombreCientifico">Nombre Cientifico <p-sortIcon field="plan_NombreCientifico"></p-sortIcon></th>
+                        <th pSortableColumn="arbo_Descripcion"> Area Botanica <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="cuid_Descripcion"> Cuidador <p-sortIcon field="cuid_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="cuid_Frecuencia">  Frecuencia de Cuidado  <p-sortIcon field="cuid_Frecuencia"></p-sortIcon></th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Plantas>
+                    <tr>
+
+                        <td style="width:2%; min-width:5rem;"><span class="p-column-title">id</span>
+                            {{Plantas.plan_Id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{Plantas.plan_Nombre}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre Cientifico</span>
+                            {{Plantas.plan_NombreCientifico}}
+                        </td>
+                        
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Area Botanica</span>
+                            {{Plantas.arbo_Descripcion}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Cuidador</span>
+                            {{Plantas.arbo_Descripcion}}
+                        </td>
+                        <td style="width:16%; min-width:14rem;">
+                            <span class="p-column-title">Cuidado Frecuente</span>
+                            {{Plantas.cuid_Frecuencia}}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"  
+                                    [routerLink]="['/uikit/Plantas/Edit',Plantas.plan_Id]"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deletePlantas(Plantas)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+         
+
+        <p-dialog [(visible)]="deletePlantasDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="Planta">Estas seguro de querer eliminar a <b>{{Planta.plan_Nombre}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deletePlantasDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
+</div>
