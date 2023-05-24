@@ -13,6 +13,12 @@ namespace Lancetilla.DataAccess.Repositories.Acce
     public class RolesRepository : IRepository<tbRoles>
     {
 
+        Lancetilla con = new Lancetilla();
+        public IEnumerable<VW_tbRoles> ListarRoles()
+        {
+            return con.VW_tbRoles.AsList();
+        }
+
         public RequestStatus Delete(tbRoles item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);

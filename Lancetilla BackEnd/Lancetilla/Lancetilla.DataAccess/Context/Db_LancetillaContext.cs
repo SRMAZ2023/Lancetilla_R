@@ -658,7 +658,7 @@ namespace Lancetilla.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.usua_Contraseña).IsRequired();
+                entity.Property(e => e.usua_Clave).IsRequired();
 
                 entity.Property(e => e.usua_EsAdmin)
                     .IsRequired()
@@ -1565,7 +1565,7 @@ namespace Lancetilla.DataAccess.Context
                 entity.HasIndex(e => e.usua_NombreUsuario, "UK_acce_tbUsuarios_usua_NombreUsuario")
                     .IsUnique();
 
-                entity.Property(e => e.usua_Contraseña).IsRequired();
+                entity.Property(e => e.usua_Clave).IsRequired();
 
                 entity.Property(e => e.usua_Estado).HasDefaultValueSql("((1))");
 

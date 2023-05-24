@@ -34,11 +34,12 @@ export class UsuarioService {
     }
 
     ListarRoles(): Observable<any> {
-        return this.http.get(this.url + "Usuarios/ListarEmpleadoNoTieneUser");
+        return this.http.get(this.url + "Roles/ListarRoles");
     }
     
     CrearUsuario(UsuarioViewModel: any): Observable<Response> {
 
+        console.log(UsuarioViewModel);
         let params = JSON.stringify(UsuarioViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 

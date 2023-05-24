@@ -6,7 +6,10 @@ import { CargosService } from 'src/app/demo/service/cargo.service';
 import { error } from 'console';
 import { UsuarioViewModel } from 'src/app/demo/Models/UsuarioViewModel';
 import { UsuarioService } from 'src/app/demo/service/Usuario.service';
+import { isUndefined } from 'util';
+import { __values } from 'tslib';
 //import { Cargoss } from 'src/app/demo/api/CargossViewModel';
+
 
 @Component({
     templateUrl: './usuarios.component.html',
@@ -15,11 +18,11 @@ import { UsuarioService } from 'src/app/demo/service/Usuario.service';
 export class UsuariosComponent implements OnInit {
 
     //Dialogs
-    UsuariotDialog: boolean = false;
+    InsertarUsuarioDialog: boolean = false;
 
-    deleteUsuarioDialog: boolean = false;
+    EditarUsuarioDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
+    EliminarUsuariosDialog: boolean = false;
     //Dialogs
 
     datos: any = {};
@@ -43,7 +46,10 @@ export class UsuariosComponent implements OnInit {
     //validar espacio
     espacio: boolean = false;
 
-
+    roles: any[] = []; // Array para almacenar los datos de roles
+    empleados: any[] = []; // Array para almacenar los datos de empleados
+     
+   
     constructor(private usuarioService: UsuarioService, private messageService: MessageService) {
     }
 
@@ -75,7 +81,8 @@ export class UsuariosComponent implements OnInit {
 
     //Metodo que desactiva el dialog
     hideDialog() {
-        this.UsuariotDialog = false;
+        this.InsertarUsuarioDialog = false;
+        this.EditarUsuarioDialog = false;
         this.submitted = false;
     }
     //Metodo que desactiva el dialog
@@ -84,29 +91,128 @@ export class UsuariosComponent implements OnInit {
     openNew() {
         this.Usuario = {};
         this.submitted = false;
-        this.UsuariotDialog = true;
-    }
+        this.InsertarUsuarioDialog = true;
+      
+        this.usuarioService.ListarRoles().subscribe(
+          response => {
+            console.log(response);
+            this.roles = response.map((item: { role_Descripcion: any; role_Id: any; }) => ({
+              value: item.role_Id,
+              label: item.role_Descripcion
+            }));
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      
+        this.usuarioService.ListarEmpleados().subscribe(
+          response => {
+            console.log(response);
+            this.empleados = response.map((item: { empl_Nombre: any; empl_Id: any; }) => ({
+              value: item.empl_Id,
+              label: item.empl_Nombre
+            }));
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+      
+      
     //Metodo que activa el dialog
 
 
     //Toma los datos de ka tabla
-    editAlimentacion(alimentos: UsuarioViewModel) {
-        this.Editar = true;
-        this.Usuario = { ...alimentos };
-        this.UsuariotDialog = true;
+   editUsuario(usuarios: UsuarioViewModel) {
+  console.log(usuarios);
+
+
+  this.Usuario = { ...usuarios };
+
+  this.usuarioService.ListarRoles().subscribe(
+    response => {
+      this.roles = response.map((item: { role_Descripcion: any; role_Id: any; }) => ({
+        value: item.role_Id,
+        label: item.role_Descripcion
+      }));
+  
+
+      // Asignar el rol seleccionado a Usuario.role_Id
+     
+    },
+    error => {
+      console.log(error);
     }
+  );
+  
+     
+
+
+  // Agregar el empleado del objeto usuarios a la lista de empleados
+  /*
+  setTimeout(() => {
+    this.Usuario.role_Id = usuarios.role_Id;
+  }, 0);*/
+
+  const empleadoSeleccionado = {
+    value: usuarios.empl_Id,
+    label: usuarios.empl_Nombre
+  };
+  this.empleados.push(empleadoSeleccionado);
+
+
+  this.usuarioService.ListarEmpleados().subscribe(
+    response => {
+      this.empleados = response.map((item: { empl_Nombre: any; empl_Id: any; }) => ({
+        value: item.empl_Id,
+        label: item.empl_Nombre
+      }));
+  
+      // Obtener el empleado del objeto usuarios
+      const empleadoSeleccionado = {
+        value: usuarios.empl_Id,
+        label: usuarios.empl_Nombre
+      };
+  
+      // Verificar si el empleado ya existe en la lista
+      const empleadoExistente = this.empleados.find((empleado: any) => empleado.value === empleadoSeleccionado.value);
+  
+      if (!empleadoExistente) {
+        // Agregar el empleado del objeto usuarios a la lista de empleados
+        this.empleados.push(empleadoSeleccionado);
+      }
+  
+      // Asignar el empleado seleccionado a Usuario.empl_Id
+      setTimeout(() => {
+        this.Usuario.empl_Id = usuarios.empl_Id;
+      }, 0);
+    },
+    error => {
+      console.log(error);
+    }
+  );
+  
+
+
+  this.EditarUsuarioDialog = true;
+}
+
+      
     //Toma los datos de ka tabla
 
     //Toma el id del item
-    deleteAlimentacion(alimentos: UsuarioViewModel) {
-        this.deleteUsuarioDialog = true;
-        this.Usuario = { ...alimentos };
+    deleteUsuario(usuarios: UsuarioViewModel) {
+        this.EliminarUsuariosDialog = true;
+        this.Usuario = { ...usuarios };
+        console.log(usuarios);
     }
     //Toma el id del item
 
     //Confirma el eliminar
     confirmDelete() {
-        this.deleteUsuarioDialog = false;   
+        this.EliminarUsuariosDialog = false;   
         this.Usuarios = this.Usuarios.filter(val => val.usua_Id !== this.Usuario.usua_Id);
         var params = {
             "usua_Id": this.Usuario.usua_Id                           
@@ -115,7 +221,7 @@ export class UsuariosComponent implements OnInit {
         this.usuarioService.EliminarUsuario(params).subscribe(
             Response => {
                 this.datos = Response;
-                console.log(this.datos)
+             
                 if (this.datos.code == 409) {
 
                     this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
@@ -124,7 +230,7 @@ export class UsuariosComponent implements OnInit {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.Usuario = {};
-                    this.UsuariotDialog = false;
+                    this.InsertarUsuarioDialog = false;
 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -150,57 +256,109 @@ export class UsuariosComponent implements OnInit {
     //Enviamos y editamos datos
     InsertarUsuario() {
         this.submitted = true;
-
+    
+        if (this.Usuario.usua_Admin == undefined) {
+            this.Usuario.usua_Admin = false;
+        }
+        
         var params = {
-            "usua_Id": this.Usuario.usua_Id,
+           
             "usua_NombreUsuario": this.Usuario.usua_NombreUsuario!.trim(),
             "empl_Id": this.Usuario.empl_Id,
             "usua_Clave": this.Usuario.usua_Clave!.trim(),
             "usua_Admin": this.Usuario.usua_Admin,
-            "role_Id": this.Usuario.role_Id,       
-           
+            "role_Id": this.Usuario.role_Id,
             "usua_UserCreacion": 1,
             "usua_UserModificacion": 1
         }
 
-
-        if (this.Usuario.usua_NombreUsuario?.trim() == '') {
+     
+    
+        if (this.Usuario.usua_NombreUsuario?.trim() === '') {
             console.log(this.Usuario.usua_NombreUsuario?.toString().length);
             this.espacio = true;
         }
-        //Validacion de params
-        if (params.usua_NombreUsuario !== undefined) {
-
-            //Si insertara o editara
-           
-
-                this.usuarioService.CrearUsuario(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if (this.datos.code == 409) {
-
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-
-                        } else if (this.datos.code == 200) {
-
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.Usuario = {};
-                            this.UsuariotDialog = false;
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
+        else if (Object.values(params).some(value => value === undefined || value === null || value === 0)) {
+            console.log('Algunos campos están vacíos o son cero.');
+            this.espacio = true;
+        }
+        else {
+            // Si todos los campos están llenos y no son cero, se procede con el envío de datos.
+            this.usuarioService.CrearUsuario(params).subscribe(
+                Response => {
+                    this.datos = Response;
+                    if (this.datos.code == 409) {
+                        this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
                     }
-                )
-
-            
-
-
+                    else if (this.datos.code == 200) {
+                        this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                        this.Usuario = {};
+                        this.InsertarUsuarioDialog = false;
+                    }
+                    else {
+                        this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            )
         }
     }
+    
+
+    EditarUsuario() {
+        this.submitted = true;
+    
+        if (this.Usuario.usua_Admin == undefined) {
+            this.Usuario.usua_Admin = false;
+        }
+        
+        var params = {
+           
+            "usua_NombreUsuario": this.Usuario.usua_NombreUsuario!.trim(),
+            "empl_Id": this.Usuario.empl_Id,
+            "usua_Clave": this.Usuario.usua_Clave!.trim(),
+            "usua_Admin": this.Usuario.usua_Admin,
+            "role_Id": this.Usuario.role_Id,
+            "usua_UserCreacion": 1,
+            "usua_UserModificacion": 1
+        }
+
+     
+    
+        if (this.Usuario.usua_NombreUsuario?.trim() === '') {
+            console.log(this.Usuario.usua_NombreUsuario?.toString().length);
+            this.espacio = true;
+        }
+        else if (Object.values(params).some(value => value === undefined || value === null || value === 0)) {
+            console.log('Algunos campos están vacíos o son cero.');
+            this.espacio = true;
+        }
+        else {
+            // Si todos los campos están llenos y no son cero, se procede con el envío de datos.
+            this.usuarioService.CrearUsuario(params).subscribe(
+                Response => {
+                    this.datos = Response;
+                    if (this.datos.code == 409) {
+                        this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    }
+                    else if (this.datos.code == 200) {
+                        this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                        this.Usuario = {};
+                        this.InsertarUsuarioDialog = false;
+                    }
+                    else {
+                        this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+        }
+    }
+    
     //Enviamos y editamos datos
 
 

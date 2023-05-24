@@ -21,7 +21,7 @@ BEGIN
 	   AND t2. empl_Estado  = 1 
 END
 
-
+GO
 
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
 @usua_NombreUsuario			NVARCHAR(200),
@@ -94,7 +94,18 @@ CREATE OR ALTER PROC acce.UDP_tbUsuarios_DELETE
 @usua_Id INT
 AS BEGIN
 
+	BEGIN TRY
+	BEGIN TRAN
 DELETE FROM acce.tbUsuarios WHERE usua_Id = @usua_Id
+
+SELECT 200 AS codeStatus, 'Usuario eliminado con éxito.' AS messageStatus
+			COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
 
 END
 GO
