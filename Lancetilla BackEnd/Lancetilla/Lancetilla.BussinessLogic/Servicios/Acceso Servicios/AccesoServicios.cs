@@ -207,6 +207,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Acceso_Servicios
 
         #region Roles
 
+        public IEnumerable<VW_tbRoles> ListarRoles()
+        {
+            try
+            {
+                var list = _rolesRepository.ListarRoles();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbRoles>();
+
+            }
+        }
         public ServiceResult InsertarRol(tbRoles item)
         {
             var result = new ServiceResult();
