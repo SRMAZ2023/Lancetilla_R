@@ -326,12 +326,14 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*******************************************************TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--
+GO
 CREATE OR ALTER VIEW mant.VW_MantenimientoAnimales
 AS 
 
 SELECT maan_Id,
 	   T1.anim_Id,
 	   anim_Nombre,
+	   [maan_Fecha],
 	   T3.mant_Id,
 	   T3.mant_Observaciones,
 	   T4.tima_Id,

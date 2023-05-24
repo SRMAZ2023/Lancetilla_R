@@ -30,6 +30,14 @@ namespace Lancetilla.API.Controllers
             return Ok(list);
         }
 
+        [HttpPost("Buscar")]
+        public IActionResult BuscarMantenimientoAnimal(MantenimientoAnimalViewModel item)
+        {
+            var mantenimientos = _mapper.Map<tbMantenimientoAnimal>(item);
+            var List = _mantenimientoServicios.BuscarManteniminetoAnimales(item.anim_Id);
+            return Ok(List);
+        }
+
         [HttpPost("InsertMantenimientoAnimal")]
         public IActionResult InsertMantenimientoAnimal(MantenimientoAnimalViewModel item)
         {

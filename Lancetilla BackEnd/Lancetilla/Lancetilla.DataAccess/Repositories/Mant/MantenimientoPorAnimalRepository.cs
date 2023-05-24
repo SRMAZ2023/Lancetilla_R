@@ -30,12 +30,19 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             return con.VW_MantenimientoAnimales.AsList();
         }
 
-        public tbMantenimientoAnimal Find(int? id)
+      
+
+        public IEnumerable<VW_MantenimientoAnimales> Find2(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@anim_Id", id, DbType.Int32, ParameterDirection.Input);
+            return db.Query<VW_MantenimientoAnimales>(ScriptsDataBase.UDP_tbMantenimientosAnimal_FIND, parametros, commandType: CommandType.StoredProcedure);
+
         }
 
-        public RequestStatus Insert(tbMantenimientoAnimal item)
+            public RequestStatus Insert(tbMantenimientoAnimal item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
@@ -70,6 +77,11 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         }
 
         public RequestStatus Update(tbMantenimientoAnimal item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        tbMantenimientoAnimal IRepository<tbMantenimientoAnimal>.Find(int? id)
         {
             throw new NotImplementedException();
         }

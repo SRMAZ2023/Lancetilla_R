@@ -123,9 +123,9 @@ export class empleadosNewComponent implements OnInit {
     //Enviamos y editamos datos
     saveEmpleados() {
         //Verificar si todos los campos están llenos
-        if (this.empleado.empl_Nombre!.trim() == "" &&
-            this.empleado.empl_Apellido!.trim() == "" &&
-            this.empleado.empl_Sexo!.trim() == "" &&
+        if (this.empleado.empl_Nombre?.trim() != "" &&
+            this.empleado.empl_Apellido?.trim() != "" &&
+            this.empleado.empl_Sexo?.trim() != "" &&
             this.empleado.muni_Id != 0 &&
             this.empleado.dept_Id != 0) {
 
@@ -153,6 +153,8 @@ export class empleadosNewComponent implements OnInit {
 
         }else{
             console.log(this.empleado.empl_Sexo);
+                        console.log(this.empleado)
+
         }
     }
 

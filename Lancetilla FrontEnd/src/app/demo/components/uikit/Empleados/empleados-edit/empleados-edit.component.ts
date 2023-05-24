@@ -139,12 +139,11 @@ export class empleadosEditComponent {
   //Enviamos y editamos datos
   saveEmpleados() {
     // Verificar si todos los campos están llenos
-    // if (this.planta.plan_Nombre &&
-    //   this.planta.plan_NombreCientifico &&
-    //   this.planta.plan_Reino &&
-    //   this.planta.arbo_Id &&
-    //   this.planta.cuid_Id) {
-    // Todos los campos están llenos, realizar acciones adicionales
+    if (this.empleado.empl_Nombre?.trim() != "" &&
+            this.empleado.empl_Apellido?.trim() != "" &&
+            this.empleado.empl_Sexo?.trim() != "" &&
+            this.empleado.muni_Id != 0 &&
+            this.empleado.dept_Id != 0) {
     console.log("Todos los campos están llenos");
 
     this.EmpleadosService.EditEmpleados(this.empleado).subscribe(Response => {
@@ -166,7 +165,7 @@ export class empleadosEditComponent {
       console.log(error)
     })
 
-    //}
+    }
   }
 
   //Enviamos y editamos datos

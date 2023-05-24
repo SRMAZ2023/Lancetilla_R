@@ -1507,7 +1507,7 @@ BEGIN
 END
 
 GO 
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_FIND 29
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_FIND 
 @anim_Id INT
 AS
 BEGIN
@@ -1525,25 +1525,22 @@ BEGIN TRY
 
 	IF @ExisteHoy > 0 
 	BEGIN
-	 SELECT *
+	 SELECT *,@ExisteHoy as hoy
     FROM mant.VW_MantenimientoAnimales
     WHERE maan_Estado = 1
         AND anim_Id = @anim_Id
         AND CONVERT(DATE, maan_FechaCreacion) = @FechaActual
-		UNION ALL
-	SELECT 200 AS codeStatus, @ExisteHoy AS messageStatus
-	END
+  	END
    
    IF @ExisteHoy = 0 
 	BEGIN
-	 SELECT *
+	 SELECT * ,@ExisteHoy as hoy
     FROM mant.VW_MantenimientoAnimales
     WHERE maan_Estado = 1
         AND anim_Id = @anim_Id
-		UNION ALL
-	SELECT 200 AS codeStatus, @ExisteHoy AS messageStatus
-	END
+ 	END
 
+	--SELECT 200 AS codeStatus, @ExisteHoy AS messageStatus
 
 
 			
@@ -1560,7 +1557,7 @@ go
 --select getdate()
 
 GO
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE   
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE 
 @anim_Id INT,
 @mant_Id INT,
 @maan_Fecha DATE,
