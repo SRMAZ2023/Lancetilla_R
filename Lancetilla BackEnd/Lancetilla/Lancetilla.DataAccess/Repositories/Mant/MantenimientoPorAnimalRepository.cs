@@ -31,6 +31,15 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             var parametros = new DynamicParameters();
 
             return db.Query<VW_MantenimientoAnimales>(ScriptsDataBase.UDP_tbMantenimientosAnimal_SELECT, null, commandType: CommandType.StoredProcedure);
+
+        } 
+        public IEnumerable<VW_MantenimientoAnimales> ListarMantenimientoAnimalInsert(int? id)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+            parametros.Add("@maan_UserCreacion", id, DbType.Int32, ParameterDirection.Input);
+
+            return db.Query<VW_MantenimientoAnimales>(ScriptsDataBase.UDP_tbMantenimientosAnimal_SELECTMOMENT, parametros, commandType: CommandType.StoredProcedure);
         }
 
       

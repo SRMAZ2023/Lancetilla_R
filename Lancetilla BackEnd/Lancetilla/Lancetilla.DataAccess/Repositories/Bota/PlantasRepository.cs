@@ -69,7 +69,7 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             parametros.Add("@arbo_Id", item.arbo_Id, DbType.Int32, ParameterDirection.Input);
 
             parametros.Add("@cuid_Id", item.cuid_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@plan_UserModificacion", item.plan_UserModificacion, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@plan_UserModificacion", item.plan_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarPlantas, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;

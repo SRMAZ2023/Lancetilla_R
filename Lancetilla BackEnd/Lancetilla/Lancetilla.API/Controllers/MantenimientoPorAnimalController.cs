@@ -23,10 +23,19 @@ namespace Lancetilla.API.Controllers
             _mantenimientoServicios = mantenimientoServicios;
             _mapper = mapper;
         }
+
         [HttpGet("ListarMantenimientosAnimal")]
         public IActionResult ListarMantenimientos()
         {
             var list = _mantenimientoServicios.ListarMantenimientosAnimal();
+            return Ok(list);
+        }
+        
+        [HttpPost("ListarMantenimientosAnimalInsetar")]
+        public IActionResult ListarMantenimientosInsert(MantenimientoAnimalViewModel item)
+        {
+            int usuario = (int)item.maan_UserCreacion;
+            var list = _mantenimientoServicios.ListarMantenimientosInsert(usuario);
             return Ok(list);
         }
 

@@ -332,7 +332,11 @@ AS
 SELECT maan_Id,
 	   T1.anim_Id,
 	   anim_Nombre,
-       CONVERT(varchar(10), CONVERT(datetime, maan_Fecha, 106), 105) AS	 maan_Fecha,
+       CASE
+           WHEN TRY_CONVERT(datetime, maan_Fecha, 106) IS NOT NULL THEN CONVERT(varchar(10), TRY_CONVERT(datetime, maan_Fecha, 106), 105)
+           WHEN TRY_CONVERT(datetime, maan_Fecha) IS NOT NULL THEN CONVERT(varchar(10), TRY_CONVERT(datetime, maan_Fecha), 105)
+           ELSE 'Fecha inválida'
+       END AS maan_Fecha,
 	   T1.tima_Id,
 	   t3.tima_Descripcion,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
@@ -344,12 +348,12 @@ SELECT maan_Id,
 	   maan_UserModificacion,
 	   maan_Estado,
 	   maan_FechaModificacion
-	   FROM mant.tbMantenimientoAnimal T1
-	   INNER JOIN zool.tbAnimales T2
-	   ON T1.anim_Id = T2.anim_Id
-	   INNER JOIN mant.tbTiposMantenimientos T3
-	   ON T1.tima_Id = T3.tima_Id
-	   WHERE maan_Estado = 1;
+FROM mant.tbMantenimientoAnimal T1
+INNER JOIN zool.tbAnimales T2 ON T1.anim_Id = T2.anim_Id
+INNER JOIN mant.tbTiposMantenimientos T3 ON T1.tima_Id = T3.tima_Id
+WHERE maan_Estado = 1;
+
+
 
 GO
 --******************************************************/TABLA DE MANTENIMIENTO POR ANIMAL********************************************************************--

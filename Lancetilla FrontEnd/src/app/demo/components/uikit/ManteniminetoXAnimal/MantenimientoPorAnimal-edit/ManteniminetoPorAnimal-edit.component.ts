@@ -37,7 +37,7 @@ export class MantenimientoPorAnimalEditComponent {
     private MantenimintoService: MantenimintoService,
     private _route: ActivatedRoute,
     private _rauter: Router) {
-    this.MantenimientoPorAnimalForm = new ManteniminetoXAnimalViewModel(undefined,undefined,"",undefined,undefined,undefined,undefined,"",undefined,undefined,undefined,undefined,undefined,undefined,undefined)
+    this.MantenimientoPorAnimalForm = new ManteniminetoXAnimalViewModel(undefined,undefined,"",undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined)
     this.page_title = "Editar Planta"
 
   }
@@ -67,6 +67,11 @@ export class MantenimientoPorAnimalEditComponent {
 
   //Enviamos y editamos datos
   saveMantenimientoPorAnimal() {
+
+    var params = {
+      
+    }
+
     // Verificar si todos los campos están llenos
     // if (this.planta.plan_Nombre &&
     //   this.planta.plan_NombreCientifico &&

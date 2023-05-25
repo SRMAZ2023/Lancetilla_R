@@ -6,9 +6,13 @@ import { ManteniminetoXAnimalService } from 'src/app/demo/service/ManteniminetoX
 import { error } from 'console';
 import { DatePipe } from '@angular/common';
 
+interface expandedRows {
+    [key: string]: boolean;
+}
+
 @Component({
     templateUrl: './MantenimientoPorAnimal.html',
-    providers: [MessageService, ManteniminetoXAnimalService,DatePipe ]
+    providers: [MessageService, ManteniminetoXAnimalService, DatePipe]
 })
 export class MantenimientoPorAnimalComponent implements OnInit {
 
@@ -41,12 +45,17 @@ export class MantenimientoPorAnimalComponent implements OnInit {
     formattedDate: string | undefined;
     formattedDate3!: Date;
 
+    expandedRows: expandedRows = {};
+    isExpanded: boolean = false;
+
+    Animal: any;
+
+
 
     constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService, private datePipe: DatePipe, private messageService: MessageService) {
     }
 
     ngOnInit() {
-
 
         // Obtén la fecha del API
         this.ManteniminetoXAnimalService.getManteniminetoXAnimal().subscribe(
@@ -55,8 +64,8 @@ export class MantenimientoPorAnimalComponent implements OnInit {
                 this.datos = Response;
                 this.MantenimientoPorAnimal = Response;
 
-                    this.formattedDate = this.datePipe.transform(this.datos.maan_Fecha, 'yyyy-MM-dd')?.toString();
-                
+                this.formattedDate = this.datePipe.transform(this.datos.maan_Fecha, 'yyyy-MM-dd')?.toString();
+
 
                 console.log(this.formattedDate);
                 console.log(this.datos);
@@ -65,7 +74,6 @@ export class MantenimientoPorAnimalComponent implements OnInit {
                 console.log(error);
             }
         );
-
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -94,21 +102,47 @@ export class MantenimientoPorAnimalComponent implements OnInit {
     }
     //Metodo que activa el dialog
 
-
-    //Toma los datos de ka tabla
-    // editMantenimientoPorAnimal(MantenimientoPorAnimal: ManteniminetoXAnimalViewModel) {
-    //     this.Editar = true;
-    //     this.mantenimientoXanimal = { ...MantenimientoPorAnimal };
-    //     this.MantenimientoPorAnimaltDialog = true;
-    // }
-    //Toma los datos de ka tabla
-
     //Toma el id del item
     deleteMantenimientoPorAnimal(MantenimientoPorAnimal: ManteniminetoXAnimalViewModel) {
         this.deleteMantenimientoPorAnimalDialog = true;
         this.mantenimientoXanimal = { ...MantenimientoPorAnimal };
     }
     //Toma el id del item
+
+
+
+    tomarAnimal(anim_Id: number) {
+        if (anim_Id !== undefined) {
+          console.log('anim_Id:', anim_Id);
+          this.expandedRows = {}; // Reinicia el objeto expandedRows
+      
+          const elemento = this.MantenimientoPorAnimal.find(item => item.anim_Id === anim_Id);
+          
+          if (elemento) {
+            console.log('Elemento encontrado:', elemento);
+            
+            var params = {
+              anim_Id: anim_Id,
+            };
+            
+            this.ManteniminetoXAnimalService.GetAnimalesXMantenimineto(params).subscribe(
+              (response) => {
+                console.log('Datos obtenidos:', response);
+                this.Animal = response;
+                this.expandedRows[elemento.maan_Id as any] = true; // Expande el elemento encontrado
+              },
+              (error) => {
+                console.log('Error al obtener los datos:', error);
+              }
+            );
+          }
+        }
+      }
+      
+      
+      
+      
+
 
     //Confirma el eliminar
     confirmDelete() {
@@ -145,77 +179,6 @@ export class MantenimientoPorAnimalComponent implements OnInit {
 
     }
     //Confirma el eliminar
-
-
-    //Enviamos y editamos datos
-    // saveMantenimientoPorAnimal() {
-    //     this.submitted = true;
-
-    //     var params = {
-    //         "maan_Id": this.mantenimientoXanimal.maan_Id,
-    //         "espe_Descripcion": this.mantenimientoXanimal.anim_Nombre,
-    //         "espe_UserCreacion": 1,
-    //         "espe_UserModificacion": 1
-    //     }
-
-
-    //     console.log(params)
-
-    //     //Validacion de params
-    //     if (params.espe_Descripcion !== undefined &&
-    //         params.espe_Descripcion.trim() !== '' &&
-    //         params.espe_UserCreacion !== undefined &&
-    //         params.espe_UserModificacion !== undefined) {
-
-    //         //Si insertara o editara
-    //         if (!this.Editar) {
-
-    //             this.ManteniminetoXAnimalService.postManteniminetoXAnimal(params).subscribe(
-    //                 Response => {
-    //                     console.log(Response);
-    //                     if (Response) {
-    //                         this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva mantenimientoXanimal', life: 3000 });
-    //                         console.log("esta dentrando")
-    //                         this.mantenimientoXanimal = {};
-    //                         this.MantenimientoPorAnimaltDialog = false;
-
-    //                     } else {
-    //                         this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
-    //                     }
-    //                 },
-    //                 error => {
-    //                     console.log(error);
-    //                 }
-    //             )
-
-    //         } else {
-    //             this.ManteniminetoXAnimalService.EditManteniminetoXAnimal(params).subscribe(
-    //                 Response => {
-    //                     console.log(Response);
-    //                     if (Response) {
-    //                         this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva mantenimientoXanimal', life: 3000 });
-    //                         console.log("esta dentrando")
-    //                         this.mantenimientoXanimal = {};
-    //                         this.MantenimientoPorAnimaltDialog = false;
-
-
-    //                     } else {
-    //                         this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
-    //                     }
-    //                 },
-    //                 error => {
-    //                     console.log(error);
-    //                 }
-    //             )
-
-    //         }
-
-
-    //     }
-    // }
-    //Enviamos y editamos datos
-
-
 
     //Buscador
     onGlobalFilter(table: Table, event: Event) {

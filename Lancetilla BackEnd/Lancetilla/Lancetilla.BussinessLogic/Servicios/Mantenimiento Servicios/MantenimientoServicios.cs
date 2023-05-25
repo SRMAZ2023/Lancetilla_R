@@ -548,6 +548,19 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
                 return Enumerable.Empty<VW_MantenimientoAnimales>();
 
             }
+        } public IEnumerable<VW_MantenimientoAnimales> ListarMantenimientosInsert(int id)
+        {
+            try
+            {
+                var list = _mantenimientoPorAnimalRepository.ListarMantenimientoAnimalInsert(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_MantenimientoAnimales>();
+
+            }
         }
 
         public IEnumerable<VW_MantenimientoAnimales> BuscarManteniminetoAnimales(int id)

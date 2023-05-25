@@ -155,6 +155,7 @@ namespace Lancetilla.DataAccess
         #region Mantenimientos Animal
 
         public static string UDP_tbMantenimientosAnimal_SELECT = "mant.UDP_tbMantenimientosAnimal_SELECT";
+        public static string UDP_tbMantenimientosAnimal_SELECTMOMENT = "mant.UDP_tbMantenimientosAnimal_SELECTMOMENT";
         public static string UDP_tbMantenimientosAnimal_FIND = "mant.UDP_tbMantenimientosAnimal_FIND";
 
         public static string InsertarMantenimientoAnimal = "mant.UDP_tbMantenimientosAnimal_CREATE";

@@ -5,8 +5,6 @@ export class ManteniminetoXAnimalViewModel {
     public anim_Id?: number,
     public anim_Nombre?: string,
     public maan_Fecha?: string,
-    public mant_Id?: number,
-    public mant_Observaciones?: string,
     public tima_Id?: number,
     public tima_Descripcion?: string,
     public usua_UserCreaNombre?: string,
@@ -18,5 +16,6 @@ export class ManteniminetoXAnimalViewModel {
     public maan_FechaModificacion?: string,
     public hoy?: number
     ){}
+
 
 }
