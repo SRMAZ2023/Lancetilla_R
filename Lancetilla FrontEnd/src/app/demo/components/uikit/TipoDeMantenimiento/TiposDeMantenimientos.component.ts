@@ -21,6 +21,20 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
     datos:any = {};
 
+    first: number = 0;
+    rows: number = 10;
+
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
+
 
     public Editar: boolean = false;
     TiposDeMantenimientos: TipoDeMatenimientoViewModel[] = [];
@@ -34,7 +48,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
+  
 
     statuses: any[] = [];
 
@@ -125,7 +139,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
                     
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.TiposDeMantenimientos = this.TiposDeMantenimientos.filter(val => val.tima_Id !== this.TiposDeMantenimiento.tima_Id);
-                 
+                 this.loadData();
 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -154,7 +168,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
         var params = {
             "tima_Id": this.TiposDeMantenimiento.tima_Id,
-            "tima_Descripcion": this.TiposDeMantenimiento.tima_Descripcion!.trim(),
+            "tima_Descripcion": this.TiposDeMantenimiento.tima_Descripcion ? this.TiposDeMantenimiento.tima_Descripcion.trim() : '',
             "tima_UserCreacion": 1,
             "tima_UserModificacion": 1
         }
@@ -162,70 +176,77 @@ export class TiposDeMantenimientosComponent implements OnInit {
 
         console.log(params)
 
-        //Validacion de params
-        if (params.tima_Descripcion !== undefined &&
-            params.tima_Descripcion.trim() !== '' &&
-            params.tima_UserCreacion !== undefined &&
-            params.tima_UserModificacion !== undefined) {
-            
-            //Si insertara o editara
-            if (!this.Editar) {
-
-                this.TiposDeMantenimientosService.postTiposDeMantenimientos(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if(this.datos.code == 409){
-                            
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-
-                        }else  if (this.datos.code  == 200) {
-
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.TiposDeMantenimiento = {};
-                            this.TiposDeMantenimientostDialog = false;
-                            this.loadData();
-
-                            
-                        } else  {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                )
-
-            } else {
-                this.TiposDeMantenimientosService.EditTiposDeMantenimientos(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if(this.datos.code == 409){
-                            
-                            this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
-
-                        }else  if (this.datos.code  == 200) {
-
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.TiposDeMantenimiento = {};
-                            this.TiposDeMantenimientostDialog = false;
-                            this.loadData();
-
-                            
-                        } else  {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                )
-
-            }
-
+        if(params.tima_Descripcion === ""){
+            this.messageService.add({ severity: 'warn', summary: 'Atenión:', detail: 'El campo es requerido.', life: 3000 });
 
         }
+        else{
+ //Validacion de params
+ if (params.tima_Descripcion !== undefined &&
+    params.tima_Descripcion.trim() !== '' &&
+    params.tima_UserCreacion !== undefined &&
+    params.tima_UserModificacion !== undefined) {
+    
+    //Si insertara o editara
+    if (!this.Editar) {
+
+        this.TiposDeMantenimientosService.postTiposDeMantenimientos(params).subscribe(
+            Response => {
+                this.datos = Response;
+                if(this.datos.code == 409){
+                    
+                    this.messageService.add({ severity: 'warn', summary: 'Atenión:', detail: this.datos.message, life: 3000 });
+
+                }else  if (this.datos.code  == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                    this.TiposDeMantenimiento = {};
+                    this.TiposDeMantenimientostDialog = false;
+                    this.loadData();
+
+                    
+                } else  {
+                    this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                }
+            },
+            error => {
+                console.log(error);
+            }
+        )
+
+    } else {
+        this.TiposDeMantenimientosService.EditTiposDeMantenimientos(params).subscribe(
+            Response => {
+                this.datos = Response;
+                if(this.datos.code == 409){
+                    
+                    this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+
+                }else  if (this.datos.code  == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                    this.TiposDeMantenimiento = {};
+                    this.TiposDeMantenimientostDialog = false;
+                    this.loadData();
+
+                    
+                } else  {
+                    this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                }
+            },
+            error => {
+                console.log(error);
+            }
+        )
+
     }
-    //Enviamos y editamos datos
+
+
+}
+}
+//Enviamos y editamos datos
+        }
+       
 
 
 

@@ -4339,8 +4339,12 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-toolbar {
-  background: #9cf7ac;
-  border: 1px solid #dee2e6;
+   background: #9cf7ac;
+ /*border-image: url('https://cdn.pixabay.com/photo/2012/04/24/21/48/strip-of-wood-41011_960_720.png');
+ border: 10px solid #dee2e6;*/
+ border-width: 10px; /* Ancho del borde */
+ border-style: solid; /* Estilo del borde */
+ border-image: url('https://static.vecteezy.com/system/resources/previews/018/748/168/non_2x/painting-frame-with-golden-engraved-and-carved-thai-wooden-borders-decorative-retro-ornamental-detailed-picture-frame-old-classic-baroque-golden-frame-png.png') 10 round; 
   padding: 1.25rem;
   border-radius: 6px;
   gap: 0.5rem;

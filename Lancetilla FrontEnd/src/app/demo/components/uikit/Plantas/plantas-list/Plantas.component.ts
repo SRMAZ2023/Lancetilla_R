@@ -21,7 +21,19 @@ export class PlantasComponent implements OnInit {
 
     datos:any = {};
 
+    first: number = 0;
+    rows: number = 10;
 
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
     public Editar: boolean = false;
     Plantas: PlantasViewModel[] = [];
     Planta: PlantasViewModel = {};
@@ -34,7 +46,7 @@ export class PlantasComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
+  
 
     statuses: any[] = [];
 
