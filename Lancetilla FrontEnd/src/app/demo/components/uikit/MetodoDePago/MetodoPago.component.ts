@@ -18,10 +18,23 @@ export class MetodoPagoComponent implements OnInit {
     deleteMetodoPagoDialog: boolean = false;
 
     deleteMetodoPagosDialog: boolean = false;
+    first: number = 0;
+    rows: number = 10;
+
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
     //Dialogs
 
     //datos
-    datos:any = {};
+    datos: any = {};
 
     public Editar: boolean = false;
     MetodoPago: pagoViewModel[] = [];
@@ -38,7 +51,7 @@ export class MetodoPagoComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
+ 
 
     statuses: any[] = [];
 
@@ -47,7 +60,16 @@ export class MetodoPagoComponent implements OnInit {
     }
 
     ngOnInit() {
+            this.loadData();
+        this.cols = [
+            { field: 'meto_Id', header: 'meto_Id' },
+            { field: 'meto_Descripcion', header: 'meto_Descripcion' }
 
+        ];
+        //Modelo de los datos de la tabla
+
+    }
+    private loadData() {
         this.MetodosPagoService.getMetodosDePago().subscribe(
             Response => {
                 console.log(Response);
@@ -57,15 +79,6 @@ export class MetodoPagoComponent implements OnInit {
                 console.log(error)
             )
         );
-
-        //Modelo de los datos de la tabla
-        this.cols = [
-            { field: 'meto_Id', header: 'meto_Id' },
-            { field: 'meto_Descripcion', header: 'meto_Descripcion' }
-
-        ];
-        //Modelo de los datos de la tabla
-
     }
 
     //Metodo que desactiva el dialog
@@ -102,26 +115,32 @@ export class MetodoPagoComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteMetodoPagoDialog = false;
-        this.MetodoPago = this.MetodoPago.filter(val => val.meto_Id !== this.Pago.meto_Id);
         var params = {
             "meto_Id": this.Pago.meto_Id,
-            "meto_Descripcion": this.Pago.meto_Descripcion!.trim(),
+            "meto_Descripcion": "",
             "meto_UserCreacion": 1,
             "meto_UserModificacion": 1
         }
 
-
-
-        console.log(params)
         this.MetodosPagoService.DeleteMetodosDePago(params).subscribe(
             Response => {
-                if (Response) {
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
-                    console.log("esta dentrando")
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 500) {
+
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                     this.Pago = {};
+                    this.MetodoPagotDialog = false;
+                    this.MetodoPago = this.MetodoPago.filter(val => val.meto_Id !== this.Pago.meto_Id);
+                    this.loadData();
+
 
                 } else {
-                    this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
+                    this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -134,12 +153,12 @@ export class MetodoPagoComponent implements OnInit {
 
     isInputEmptyOrWhitespace(value: string | undefined): boolean {
         if (value === undefined) {
-          return true; // Tratar 'undefined' como un valor vacío
+            return true; // Tratar 'undefined' como un valor vacío
         }
-        
+
         return value.trim() === '';
-      }
-      
+    }
+
 
     //Enviamos y editamos datos
     saveMetodoPago() {
@@ -147,7 +166,7 @@ export class MetodoPagoComponent implements OnInit {
 
         var params = {
             "meto_Id": this.Pago.meto_Id,
-            "meto_Descripcion": this.Pago.meto_Descripcion!.trim(),
+            "meto_Descripcion": this.Pago.meto_Descripcion ? this.Pago.meto_Descripcion.trim() : '',
             "meto_UserCreacion": 1,
             "meto_UserModificacion": 1
         }
@@ -158,62 +177,75 @@ export class MetodoPagoComponent implements OnInit {
             this.espacio = true;
         }
 
-        //Validacion de params
-        if (params.meto_Descripcion !== undefined &&
-            params.meto_Descripcion.trim() !== '' &&
-            params.meto_UserCreacion !== undefined &&
-            params.meto_UserModificacion !== undefined) {
-
-            //Si insertara o editara
-            if (!this.Editar) {
-
-                this.MetodosPagoService.postMetodosDePago(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if(this.datos = 409){
-                            this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
-
-                        }else  if (this.datos = 200) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
-                            console.log("esta dentrando")
-                            this.Pago = {};
-                            this.MetodoPagotDialog = false;
-
-                        } else  {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                )
-
-            } else {
-                this.MetodosPagoService.EditMetodosDePago(params).subscribe(
-                    Response => {
-                        console.log(Response);
-                        if (Response) {
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Has ingresado una nueva Pago', life: 3000 });
-                            console.log("esta dentrando")
-                            this.Pago = {};
-                            this.MetodoPagotDialog = false;
-
-
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: 'Intenta mas tarde', life: 3000 });
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                )
-
-            }
-
+        if (params.meto_Descripcion === "") {
+            this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
 
         }
+        else {
+            //Validacion de params
+            if (params.meto_Descripcion !== undefined &&
+                params.meto_Descripcion.trim() !== '' &&
+                params.meto_UserCreacion !== undefined &&
+                params.meto_UserModificacion !== undefined) {
+
+                //Si insertara o editara
+                if (!this.Editar) {
+
+                    this.MetodosPagoService.postMetodosDePago(params).subscribe(
+                        Response => {
+                            this.datos = Response;
+                            if (this.datos.code == 409) {
+
+                                this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+
+                            } else if (this.datos.code == 200) {
+
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                                this.Pago = {};
+                                this.MetodoPagotDialog = false;
+                                this.loadData();
+
+
+                            } else {
+                                this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                            }
+                        },
+                        error => {
+                            console.log(error);
+                        }
+                    )
+
+                } else {
+                    this.MetodosPagoService.EditMetodosDePago(params).subscribe(
+                        Response => {
+                            this.datos = Response;
+                            if (this.datos.code == 409) {
+
+                                this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+
+                            } else if (this.datos.code == 200) {
+
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                                this.Pago = {};
+                                this.MetodoPagotDialog = false;
+                                this.loadData();
+
+
+                            } else {
+                                this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                            }
+                        },
+                        error => {
+                            console.log(error);
+                        }
+                    )
+
+                }
+            }
+        }
+        //Enviamos y editamos datos
+
     }
-    //Enviamos y editamos datos
 
 
 
