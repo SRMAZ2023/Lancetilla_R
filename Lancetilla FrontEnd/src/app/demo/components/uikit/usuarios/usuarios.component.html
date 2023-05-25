@@ -114,7 +114,7 @@
               <div class="field" style="width: 50%; padding-right: 1rem;">
                 <div class="field">
                   <label for="roleId">Rol</label>
-                  <p-dropdown id="roleId" [(ngModel)]="Usuario.role_Id" [options]="roles" optionLabel="label" optionValue="value"
+                  <p-dropdown id="roleId" [appendTo]="'body'" [(ngModel)]="Usuario.role_Id" [options]="roles" optionLabel="label" optionValue="value"
                   [placeholder]="'Seleccione un rol'" [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.role_Id }"></p-dropdown>              
                   <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.role_Id">
                     Debe seleccionar un rol.
@@ -125,7 +125,7 @@
               <div class="field" style="width: 50%; padding-right: 1rem;">
                 <div class="field">
                   <label for="emplId">Empleado</label>
-                  <p-dropdown id="emplId" [(ngModel)]="Usuario.empl_Id" [options]="empleados" optionValue="value" 
+                  <p-dropdown id="emplId" [appendTo]="'body'" [(ngModel)]="Usuario.empl_Id" [options]="empleados" optionValue="value" 
                     [placeholder]="'Seleccione un empleado'" [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.empl_Id }"></p-dropdown>
                   <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.empl_Id">
                     Debe seleccionar un empleado.
@@ -176,7 +176,7 @@
               <div class="field" style="width: 50%; padding-right: 1rem;">
                 <div class="field">
                   <label for="emplId">Empleado</label>
-                  <p-dropdown id="emplId" [(ngModel)]="Usuario.empl_Id" [options]="empleados" optionLabel="label"
+                  <p-dropdown id="emplId" [appendTo]="'body'" [(ngModel)]="Usuario.empl_Id" [options]="empleados" optionLabel="label"
                     [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.empl_Id }"></p-dropdown>
                   <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.empl_Id">
                     Debe seleccionar un empleado.
@@ -191,7 +191,7 @@
                   <div class="field">
                     <label for="roleId">Rol</label>
                   
-                    <p-dropdown id="roleId" [(ngModel)]="Usuario.role_Id" [options]="roles" optionLabel="label"
+                    <p-dropdown id="roleId" [appendTo]="'body'" [(ngModel)]="Usuario.role_Id" [options]="roles" optionLabel="label"
                        [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.role_Id }"></p-dropdown>
                     <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.role_Id">
                       Debe seleccionar un rol.
