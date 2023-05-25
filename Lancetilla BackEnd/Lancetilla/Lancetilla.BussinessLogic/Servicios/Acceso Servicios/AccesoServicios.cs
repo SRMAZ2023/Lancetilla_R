@@ -203,6 +203,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Acceso_Servicios
             }
         }
 
+        public IEnumerable<tbRolesPantallas> PantallasPorRol(tbRolesPantallas items)
+        {
+            try
+            {
+                var list = _rolesPorPantallaRepository.PantallasPorRol(items);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<tbRolesPantallas>();
+            }
+        }
+
         #endregion
 
         #region Roles

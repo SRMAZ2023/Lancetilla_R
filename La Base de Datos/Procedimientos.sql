@@ -301,11 +301,12 @@ END CATCH
 END
 GO
 
-CREATE OR ALTER PROC acce.UDP_tbRolesPantallas_PANTALLAROL
+CREATE OR ALTER PROC acce.UDP_tbRolesPantallas_PANTALLAROL 
 @role_Id INT
 AS BEGIN
 
-SELECT * FROM acce.tbRolesPantallas
+SELECT T1.pant_Id, T2.pant_Descripcion FROM acce.tbRolesPantallas T1
+INNER JOIN ACCE.tbPantallas T2 ON T1.pant_Id = T2.pant_Id
 WHERE role_Id = @role_Id
 
 END
