@@ -6,103 +6,106 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                        [routerLink]="['/uikit/Plantas/Create']"></button>
+                        [routerLink]="['/uikit/ManteniminetoXAnimal/Create']"></button>
                     </div>
                 </ng-template>
 
+                <!--
                 <ng-template pTemplate="right">
                     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
                         chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
                     <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
                         (click)="dt.exportCSV()"></button>
-                </ng-template>
+                </ng-template>-->
             </p-toolbar>
 
-            <p-table #dt [value]="Plantas" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['plan_Nombre','plan_NombreCientifico','plan_Reino','plan_Reino','arbo_Descripcion','cuid_Frecuencia']" [paginator]="true"
-                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedPlantas"
-                selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table [value]="MantenimientoPorAnimal" dataKey="maan_Id" [expandedRowKeys]="expandedRows" responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Plantas</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
-                                class="w-full sm:w-auto" />
-                        </span>
+                    <div class="flex table-header">
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-
-                        <th pSortableColumn="plan_Id">Id <p-sortIcon field="plan_Id"></p-sortIcon></th>
-                        <th pSortableColumn="plan_Nombre">Nombre <p-sortIcon field="plan_Nombre"></p-sortIcon></th>
-                        <th pSortableColumn="plan_NombreCientifico">Nombre Cientifico <p-sortIcon field="plan_NombreCientifico"></p-sortIcon></th>
-                        <th pSortableColumn="arbo_Descripcion"> Area Botanica <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="cuid_Descripcion"> Cuidador <p-sortIcon field="cuid_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="cuid_Frecuencia">  Frecuencia de Cuidado  <p-sortIcon field="cuid_Frecuencia"></p-sortIcon></th>
-
+                        <th style="width: 3rem"></th>
+                        <th pSortableColumn="maan_Id">Id <p-sortIcon field="maan_Id"></p-sortIcon></th>
+                        <th pSortableColumn="anim_Nombre">Nombre <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
+                        <th pSortableColumn="maan_Fecha">Fecha de Mantenimineto <p-sortIcon field="maan_Fecha"></p-sortIcon></th>
+                        <th pSortableColumn="tima_Descripcion">Cuidado <p-sortIcon field="tima_Descripcion"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-Plantas>
+                <ng-template pTemplate="body" let-MantenimientoPorAnimal let-expanded="expanded">
                     <tr>
-
-                        <td style="width:2%; min-width:5rem;"><span class="p-column-title">id</span>
-                            {{Plantas.plan_Id}}
+                        <td>
+                            <button type="button" (click)="tomarAnimal(MantenimientoPorAnimal.anim_Id)" pButton pRipple [pRowToggler]="MantenimientoPorAnimal"
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Nombre</span>
-                            {{Plantas.plan_Nombre}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Nombre Cientifico</span>
-                            {{Plantas.plan_NombreCientifico}}
-                        </td>
-                        
-                        <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Area Botanica</span>
-                            {{Plantas.arbo_Descripcion}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Cuidador</span>
-                            {{Plantas.arbo_Descripcion}}
-                        </td>
-                        <td style="width:16%; min-width:14rem;">
-                            <span class="p-column-title">Cuidado Frecuente</span>
-                            {{Plantas.cuid_Frecuencia}}
-                        </td>
-
+                        <td style="min-width: 5rem;">{{MantenimientoPorAnimal.anim_Id}}</td>
+                        <td style="min-width: 10rem;">{{MantenimientoPorAnimal.anim_Nombre}}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"  
-                                    [routerLink]="['/uikit/Plantas/Edit',Plantas.plan_Id]"></button>
+                                    class="p-button-rounded p-button-success mr-2"
+                                    [routerLink]="['/uikit/MantenimientoPorAnimal/Edit',MantenimientoPorAnimal.maan_Id]"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                    (click)="deletePlantas(Plantas)"></button>
+                                    (click)="deleteMantenimientoPorAnimal(MantenimientoPorAnimal)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-MantenimientoPorAnimal>
+                    <tr>
+                        <td colspan="6">
+                            <div class="p-3">
+                                <!-- Aquí puedes mostrar los datos adicionales del mantenimiento del animal seleccionado -->
+                                <p-table [value]="Animal" dataKey="id" responsiveLayout="scroll">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th pSortableColumn="id">Id <p-sortIcon field="price"></p-sortIcon></th>
+                                            <th pSortableColumn="customer">Nombre <p-sortIcon field="customer"></p-sortIcon></th>
+                                            <th pSortableColumn="date">Fecha de Mantenimineto  <p-sortIcon field="date"></p-sortIcon></th>
+                                            <th pSortableColumn="amount">Cuidado <p-sortIcon field="amount"></p-sortIcon></th>
+                                            <th style="width: 4rem"></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-Animal>
+                                        <tr>
+                                            <td>{{Animal.maan_Id}}</td>
+                                            <td>{{Animal.anim_Nombre}}</td>
+                                            <td>{{Animal.maan_Fecha}}</td>
+                                            <td>{{Animal.tima_Descripcion}}</td>
+                                            <td><p-button type="button" icon="pi pi-search"></p-button></td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="6">No hay datos de mantenimiento para este animal.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
+            
         </div>
 
          
 
-        <p-dialog [(visible)]="deletePlantasDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteMantenimientoPorAnimalDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Planta">Estas seguro de querer eliminar a <b>{{Planta.plan_Nombre}}</b>?</span>
+                <span *ngIf="mantenimientoXanimal">Estas seguro de querer eliminar a <b>{{mantenimientoXanimal.anim_Nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="deletePlantasDialog = false"></button>
+                    (click)="deleteMantenimientoPorAnimalDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
                     (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
-
 
     </div>
 </div>

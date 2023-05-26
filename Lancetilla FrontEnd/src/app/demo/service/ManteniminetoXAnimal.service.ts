@@ -18,6 +18,25 @@ export class ManteniminetoXAnimalService {
         return this.http.get(this.url + "MantenimientoPorAnimal/ListarMantenimientosAnimal");
     }
 
+    getAnimal(): Observable<any> {
+        return this.http.get(this.url + "Animales/ListarAnimales");
+    }
+
+    
+    GetMantenimientoInsert(ManteniminetoXAnimalViewModel: any): Observable<Response> {
+        let params = JSON.stringify(ManteniminetoXAnimalViewModel);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        return this.http.post<Response>(this.url + `MantenimientoPorAnimal/ListarMantenimientosAnimalInsetar`, params, { headers: headers });
+    }
+
+    GetAnimalesXMantenimineto(ManteniminetoXAnimalViewModel: any): Observable<Response> {
+        let params = JSON.stringify(ManteniminetoXAnimalViewModel);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        return this.http.post<Response>(this.url + `MantenimientoPorAnimal/Buscar`, params, { headers: headers });
+    }
+
     findManteniminetoXAnimal(plan_id:any): Observable<any> {
         return this.http.get(this.url + `MantenimientoPorAnimal/BuscarPlanta/${plan_id}`);
 
@@ -28,7 +47,7 @@ export class ManteniminetoXAnimalService {
         let params = JSON.stringify(ManteniminetoXAnimalViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + 'MantenimientoPorAnimal/InsertarPlanta', params, { headers: headers });
+        return this.http.post<Response>(this.url + 'MantenimientoPorAnimal/InsertMantenimientoAnimal', params, { headers: headers });
 
     }
 
@@ -43,7 +62,7 @@ export class ManteniminetoXAnimalService {
         let params = JSON.stringify(ManteniminetoXAnimalViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + `MantenimientoPorAnimal/EliminarPlanta`, params, { headers: headers });
+        return this.http.post<Response>(this.url + `MantenimientoPorAnimal/EliminarMantenimientoAnimal`, params, { headers: headers });
     }
 
    

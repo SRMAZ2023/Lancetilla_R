@@ -10,8 +10,8 @@ namespace Lancetilla.Entities.Entities
     {
         public int maan_Id { get; set; }
         public int anim_Id { get; set; }
-        public int mant_Id { get; set; }
-        public DateTime maan_Fecha { get; set; }
+        public int tima_Id { get; set; }
+        public string maan_Fecha { get; set; }
         public int? maan_UserCreacion { get; set; }
         public DateTime? maan_FechaCreacion { get; set; }
         public int? maan_UserModificacion { get; set; }
@@ -21,6 +21,6 @@ namespace Lancetilla.Entities.Entities
         public virtual tbAnimales anim { get; set; }
         public virtual tbUsuarios maan_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios maan_UserModificacionNavigation { get; set; }
-        public virtual tbMantenimientos mant { get; set; }
+        public virtual tbTiposMantenimientos tima { get; set; }
     }
 }

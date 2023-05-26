@@ -1344,8 +1344,10 @@ AS BEGIN
   	BEGIN TRY
 	BEGIN TRAN
 			DECLARE @tiposmants INT = (SELECT COUNT(*) FROM mant.tbMantenimientos WHERE tima_Id = @tima_Id)
+			DECLARE @mantes INT = (SELECT COUNT(*) FROM mant.tbMantenimientoAnimal WHERE tima_Id = @tima_Id)
+
 			
-			IF @tiposmants > 0
+			IF @tiposmants > 0 or @mantes > 0
 			BEGIN
 			SELECT 202 AS codeStatus, 'El tipo de mantenimiento está en uso.' AS messageStatus
 			END
@@ -1495,9 +1497,9 @@ AS BEGIN
 
 	BEGIN TRY
 	BEGIN TRAN
-			DECLARE @mantes INT = (SELECT COUNT(*) FROM mant.tbMantenimientoAnimal WHERE mant_Id = @mant_Id)
+			--DECLARE @mantes INT = (SELECT COUNT(*) FROM mant.tbMantenimientoAnimal WHERE mant_Id = @mant_Id)
 			
-			IF @mantes > 0
+			IF 0 > 1
 			BEGIN
 			SELECT 202 AS codeStatus, 'El mantenimiento todavía se usa.' AS messageStatus
 			END
@@ -1528,10 +1530,36 @@ GO
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_SELECT
 AS
 BEGIN
-	
-	SELECT * FROM mant.VW_MantenimientoAnimales where maan_Estado = 1
+
+	--SELECT TOP (1000) *
+	--FROM [db_Lancetilla].[mant].[VW_MantenimientoAnimales]
+	--where maan_Estado = 1
+ 	
+	SELECT TOP (1000) [anim_Id], [anim_Nombre]
+	FROM [db_Lancetilla].[mant].[VW_MantenimientoAnimales]
+	where maan_Estado = 1
+	GROUP BY [anim_Id], [anim_Nombre]
 
 END
+
+
+GO 
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_SELECTMOMENT 
+@maan_UserCreacion INT 
+AS
+BEGIN
+	
+	    DECLARE @FechaActual DATE = CONVERT(DATE, GETDATE())
+
+
+	 SELECT *
+    FROM mant.VW_MantenimientoAnimales
+    WHERE maan_Estado = 1
+        AND CONVERT(DATE, maan_FechaCreacion) = @FechaActual 
+		and maan_UserCreacion = @maan_UserCreacion
+
+END
+
 
 GO 
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_FIND 
@@ -1584,24 +1612,23 @@ go
 --select getdate()
 
 GO
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE 
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE  
 @anim_Id INT,
-@mant_Id INT,
+@tima_Id INT,
 @maan_Fecha DATE,
 @maan_UserCreacion INT
 AS BEGIN
 
 BEGIN TRY
 
-			INSERT INTO mant.tbMantenimientoAnimal(anim_Id, mant_Id, maan_Fecha,maan_UserCreacion)
-			VALUES  (@anim_Id, @mant_Id,@maan_Fecha, @maan_UserCreacion)
+			INSERT INTO mant.tbMantenimientoAnimal(anim_Id, tima_Id, maan_Fecha,maan_UserCreacion)
+			VALUES  (@anim_Id, @tima_Id,@maan_Fecha, @maan_UserCreacion)
 
 			SELECT 200 AS codeStatus, 'El mantenimiento por animal ha sido creado con éxito.' AS messageStatus
 END TRY
 
 BEGIN CATCH
-ROLLBACK
-END CATCH
+ END CATCH
 
 END
 GO
@@ -1610,7 +1637,7 @@ GO
 CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_UPDATE
 @maan_Id INT,
 @anim_Id INT,
-@mant_Id INT,
+@tima_Id INT,
 @maan_Fecha DATE,
 @maan_UserModificacion INT
 AS BEGIN
@@ -1621,7 +1648,7 @@ BEGIN TRAN
 UPDATE mant.tbMantenimientoAnimal
 
 SET anim_Id = @anim_Id,
-mant_Id = @mant_Id,
+tima_Id = @tima_Id,
 maan_Fecha = @maan_Fecha,
 maan_UserModificacion = @maan_UserModificacion,
 maan_FechaModificacion = GETDATE()
@@ -2872,7 +2899,7 @@ GO
 
 
 
-CREATE OR ALTER PROC bota.UDP_tbPlantas_UPDATE
+CREATE OR ALTER PROC bota.UDP_tbPlantas_UPDATE 
 @plan_Id INT,
 @plan_Nombre NVARCHAR(100),
 @plan_NombreCientifico NVARCHAR(100),
@@ -2901,7 +2928,7 @@ END
 		 IF EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR  plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado = 0 )
 		BEGIN
 			DECLARE @Id INT = (SELECT cuid_Id FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre OR plan_NombreCientifico = @plan_NombreCientifico) 
-
+			select  @Id
 				UPDATE bota.tbPlantas
 				SET
 						plan_Nombre = @plan_Nombre,
@@ -2927,7 +2954,7 @@ END
 						cuid_Id = @cuid_Id,
 					  plan_FechaModificacion = GETDATE(),
 					  plan_UserModificacion = @plan_UserModificacion
-				WHERE plan_Id = @cuid_Id
+				WHERE plan_Id = @plan_Id
 
 				SELECT 200 AS codeStatus, 'La planta ha sido actualizado con éxito.' AS messageStatus
 			END

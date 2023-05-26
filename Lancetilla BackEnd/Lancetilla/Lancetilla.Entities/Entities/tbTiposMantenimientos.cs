@@ -10,6 +10,7 @@ namespace Lancetilla.Entities.Entities
     {
         public tbTiposMantenimientos()
         {
+            tbMantenimientoAnimal = new HashSet<tbMantenimientoAnimal>();
             tbMantenimientos = new HashSet<tbMantenimientos>();
         }
 
@@ -23,6 +24,7 @@ namespace Lancetilla.Entities.Entities
 
         public virtual tbUsuarios tima_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios tima_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbMantenimientoAnimal> tbMantenimientoAnimal { get; set; }
         public virtual ICollection<tbMantenimientos> tbMantenimientos { get; set; }
     }
 }

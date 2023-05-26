@@ -148,6 +148,10 @@
                         inputId="dropdown"
                         optionLabel="label"
                         optionValue="value"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !Mantenimient.tima_Id
+                        }"
                     ></p-dropdown>
                     <small
                         *ngIf="submitted && !Mantenimient.tima_Id"

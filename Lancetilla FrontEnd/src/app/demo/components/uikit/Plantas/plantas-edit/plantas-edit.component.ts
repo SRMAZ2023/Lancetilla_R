@@ -38,7 +38,7 @@ export class PlantasEditComponent {
     private CuidadosDePlantasService: CuidadosDePlantasService,
     private _route: ActivatedRoute,
     private _rauter: Router) {
-    this.planta = new PlantasCrud(undefined, "", "", "", undefined, "", undefined, "", "", 1, 1)
+    this.planta = new PlantasCrud(undefined, "", "", "", undefined, "", undefined, "", "", 1,1)
     this.page_title = "Editar Planta"
 
   }

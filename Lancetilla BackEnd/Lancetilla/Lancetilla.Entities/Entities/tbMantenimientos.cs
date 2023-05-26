@@ -8,11 +8,6 @@ namespace Lancetilla.Entities.Entities
 {
     public partial class tbMantenimientos
     {
-        public tbMantenimientos()
-        {
-            tbMantenimientoAnimal = new HashSet<tbMantenimientoAnimal>();
-        }
-
         public int mant_Id { get; set; }
         public string mant_Observaciones { get; set; }
         public int tima_Id { get; set; }
@@ -25,6 +20,5 @@ namespace Lancetilla.Entities.Entities
         public virtual tbUsuarios mant_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios mant_UserModificacionNavigation { get; set; }
         public virtual tbTiposMantenimientos tima { get; set; }
-        public virtual ICollection<tbMantenimientoAnimal> tbMantenimientoAnimal { get; set; }
     }
 }

@@ -12,8 +12,7 @@ namespace Lancetilla.Entities.Entities
         public int maan_Id { get; set; }
         public int anim_Id { get; set; }
         public string anim_Nombre { get; set; }
-        public int mant_Id { get; set; }
-        public string mant_Observaciones { get; set; }
+        public string maan_Fecha { get; set; }
         public int tima_Id { get; set; }
         public string tima_Descripcion { get; set; }
         public string usua_UserCreaNombre { get; set; }
