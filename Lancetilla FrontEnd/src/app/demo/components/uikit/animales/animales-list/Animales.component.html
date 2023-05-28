@@ -3,7 +3,7 @@
         <div class="card px-6 py-6">
             <p-toast></p-toast>
             <div class="card-img-top">
-                <img src="https://i.ibb.co/NFQQkY8/plantas.png" width="100%">
+                <img src="https://i.ibb.co/mcWpwP2/animales.png" width="100%">
             </div>
 <br>
             
@@ -15,7 +15,7 @@
                 </div>
                 <div class="my-2">
                     <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                    [routerLink]="['/uikit/Plantas/Create']"></button>
+                    [routerLink]="['/uikit/animales/Create']"></button>
                 </div>
 
 
@@ -31,9 +31,9 @@
             <br>
 
 
-            <p-table #dt [value]="Plantas" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
-            [globalFilterFields]="['plan_Nombre','plan_NombreCientifico','plan_Reino','plan_Reino','arbo_Descripcion','cuid_Frecuencia']" 
-            [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedPlantas"
+            <p-table #dt [value]="Animales" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+            [globalFilterFields]="['anim_Nombre','anim_NombreCientifico','anim_Reino','habi_Descripcion','arzo_Descripcion','alim_Descripcion', 'espe_Descripcion']" 
+            [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedAnimal"
             selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
 
 
@@ -44,51 +44,56 @@
                 <ng-template pTemplate="header">
                     <tr>
 
-                        <th pSortableColumn="plan_Id">Id <p-sortIcon field="plan_Id"></p-sortIcon></th>
-                        <th pSortableColumn="plan_Nombre">Nombre <p-sortIcon field="plan_Nombre"></p-sortIcon></th>
-                        <th pSortableColumn="plan_NombreCientifico">Nombre Cientifico <p-sortIcon field="plan_NombreCientifico"></p-sortIcon></th>
-                        <th pSortableColumn="arbo_Descripcion"> Area Botanica <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="cuid_Descripcion"> Cuidado <p-sortIcon field="cuid_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="cuid_Frecuencia">  Frecuencia de Cuidado  <p-sortIcon field="cuid_Frecuencia"></p-sortIcon></th>
+                        <th pSortableColumn="anim_Id">Id <p-sortIcon field="plan_Id"></p-sortIcon></th>
+                        <th pSortableColumn="anim_Nombre">Nombre <p-sortIcon field="plan_Nombre"></p-sortIcon></th>
+                        <th pSortableColumn="anim_NombreCientifico">Nombre Cientifico <p-sortIcon field="plan_NombreCientifico"></p-sortIcon></th>
+                        <th pSortableColumn="arzo_Descripcion"> Area Zoológica <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="habi_Descripcion"> Hábitat <p-sortIcon field="cuid_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="alim_Descripcion">  Alimentación  <p-sortIcon field="cuid_Frecuencia"></p-sortIcon></th>
+                        <th pSortableColumn="espe_Descripcion">  Especie  <p-sortIcon field="cuid_Frecuencia"></p-sortIcon></th>
 
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-Plantas>
+                <ng-template pTemplate="body" let-Animales>
                     <tr>
 
                         <td style="width:2%; min-width:5rem;"><span class="p-column-title">id</span>
-                            {{Plantas.plan_Id}}
+                            {{Animales.anim_Id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Nombre</span>
-                            {{Plantas.plan_Nombre}}
+                            {{Animales.anim_Nombre}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Nombre Cientifico</span>
-                            {{Plantas.plan_NombreCientifico}}
+                            {{Animales.anim_NombreCientifico}}
                         </td>
                         
                         <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Area Botanica</span>
-                            {{Plantas.arbo_Descripcion}}
+                            <span class="p-column-title">Area Zoológica</span>
+                            {{Animales.arzo_Descripcion}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Cuidador</span>
-                            {{Plantas.cuid_Descripcion}}
+                            <span class="p-column-title">Hábitat</span>
+                            {{Animales.habi_Descripcion}}
                         </td>
                         <td style="width:16%; min-width:14rem;">
-                            <span class="p-column-title">Cuidado Frecuente</span>
-                            {{Plantas.cuid_Frecuencia}}
+                            <span class="p-column-title">Alimentación</span>
+                            {{Animales.alim_Descripcion}}
+                        </td>
+                        <td style="width:16%; min-width:14rem;">
+                            <span class="p-column-title">Especie</span>
+                            {{Animales.espe_Descripcion}}
                         </td>
 
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"  
-                                    [routerLink]="['/uikit/Plantas/Edit',Plantas.plan_Id]"></button>
+                                    [routerLink]="['/uikit/Plantas/Edit',Animales.anim_Id]"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                    (click)="deletePlantas(Plantas)"></button>
+                                    (click)="deleteAnimales(Animales)"></button>
                             </div>
                         </td>
                     </tr>
@@ -96,16 +101,16 @@
             </p-table>
         </div>
 
-         
+  
 
-        <p-dialog [(visible)]="deletePlantasDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteAnimalesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Planta">Estas seguro de querer eliminar a <b>{{Planta.plan_Nombre}}</b>?</span>
+                <span *ngIf="Animal">Estas seguro de querer eliminar a <b>{{Animal.anim_Nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="deletePlantasDialog = false"></button>
+                    (click)="deleteAnimalesDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
                     (click)="confirmDelete()"></button>
             </ng-template>

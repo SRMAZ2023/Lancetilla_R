@@ -1,0 +1,116 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/mcWpwP2/animales.png" width="100%">
+            </div>
+            <br>
+            <p-toast></p-toast>
+            <div class="card">
+                <form class="mid-from" #AnimalForm="ngForm" (ngSubmit)="saveAnimal()">
+                    <div class="grid p-fluid">
+
+                        <div class="field col-6">
+                            <label for="anim_Nombre">Nombre </label>
+                            <input type="text" pInputText id="anim_Nombre" name="anim_Nombre" #anim_Nombre="ngModel"
+                                [(ngModel)]="animal.anim_Nombre" required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && anim_Nombre.invalid}"
+                                pattern="^(?!\s*$).+" />
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="anim_Nombre.invalid && (anim_Nombre.touched || submitted)">
+                                El nombre del animal es requerido.
+                            </small>
+                        </div>
+
+
+                        <div class="field col-6">
+                            <label for="anim_NombreCientifico">Nombre cientifíco</label>
+                            <input type="text" pInputText id="anim_NombreCientifico" name="anim_NombreCientifico"
+                                #anim_NombreCientifico="ngModel" [(ngModel)]="animal.anim_NombreCientifico" required
+                                autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !animal.anim_NombreCientifico}"
+                                pattern="^(?!\s*$).+" />
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="!anim_NombreCientifico.valid && anim_NombreCientifico.touched">
+                                El nombre científico del animal es requerido.</small>
+                        </div>
+
+                        <div class="field col-6">
+                            <label for="anim_Reino">Reino</label>
+                            <input type="text" pInputText id="anim_Reino" name="anim_Reino" #anim_Reino="ngModel"
+                                [(ngModel)]="animal.anim_Reino" required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !animal.anim_Reino}"
+                                pattern="^(?!\s*$).+" />
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="!anim_Reino.valid && anim_Reino.touched">El
+                                reino del animal es requerido.</small>
+                        </div>
+                        <div class="field col-6">
+                            <label for="habi_Id">Habitat</label>
+                            <p-dropdown placeholder="Seleccione el hábitat" inputId="dropdown"
+                                [autoDisplayFirst]="false" name="habi_Id" #habi_Id="ngModel" [options]="habitat"
+                                [(ngModel)]="animal.habi_Id" optionLabel="label" optionValue="value"
+                                [ngClass]="{ 'ng-invalid ng-dirty': AnimalForm.submitted && !animal.habi_Id }"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="AnimalForm.submitted && !animal.habi_Id">El cuidado de la planta es
+                                requerido.</small>
+                        </div>
+
+                        <div class="field col-6">
+                            <label for="arzo_Id">Área Zoológica</label>
+                            <p-dropdown placeholder="Seleccione un área zoológica" inputId="dropdown"
+                                [autoDisplayFirst]="false" name="arzo_Id" #arzo_Id="ngModel" [options]="areazoo"
+                                [(ngModel)]="animal.arzo_Id" optionLabel="label" optionValue="value"
+                                [ngClass]="{ 'ng-invalid ng-dirty': AnimalForm.submitted && !animal.arzo_Id }"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="AnimalForm.submitted && !animal.arzo_Id">El área zoológica es requerida.</small>
+                        </div>
+
+                        <div class="field col-6">
+                            <label for="alim_Id">Alimentación</label>
+                            <p-dropdown placeholder="Seleccione una alimentación" inputId="dropdown"
+                                [autoDisplayFirst]="false" name="alim_Id" #alim_Id="ngModel" [options]="alimentacion"
+                                [(ngModel)]="animal.alim_Id" optionLabel="label" optionValue="value"
+                                [ngClass]="{ 'ng-invalid ng-dirty': AnimalForm.submitted && !animal.alim_Id }"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="AnimalForm.submitted && !animal.alim_Id">La alimentación del animal es requerida.</small>
+                        </div>
+                        <div class="field col-6">
+                            <label for="espe_Id">Especie</label>
+                            <p-dropdown placeholder="Seleccione un área zoológica" inputId="dropdown"
+                                [autoDisplayFirst]="false" name="espe_Id" #espe_Id="ngModel" [options]="especies"
+                                [(ngModel)]="animal.espe_Id" optionLabel="label" optionValue="value"
+                                [ngClass]="{ 'ng-invalid ng-dirty': AnimalForm.submitted && !animal.espe_Id }"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="AnimalForm.submitted && !animal.espe_Id">La especie del animal es requerida.</small>
+                        </div>
+
+
+
+
+
+
+                    </div>
+                    <br>
+                    <div class="grid p-fluid  align-items-center justify-content-center">
+
+                        <div class="field col-2">
+                            <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
+                                [disabled]="AnimalForm.invalid" class="p-button-success"></button>
+
+
+                        </div>
+                        <div class="field col-2">
+
+                            <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                                class="p-button-danger" [routerLink]="['/uikit/animales']"></button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
