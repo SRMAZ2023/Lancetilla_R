@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -27,6 +28,12 @@ namespace Lancetilla.DataAccess.Repositories.Bota
            
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarPlantas, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
+        }
+
+        public IEnumerable PlantasPorArea()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.PlantasPorArea, null, commandType: System.Data.CommandType.StoredProcedure);
         }
 
         public VW_tbPlantas Find(int? id)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -131,6 +132,21 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
         #endregion
 
         #region Animales
+        public VW_tbAnimales BuscarAnimales(int id)
+        {
+            try
+            {
+                var list = _animalesRepository.Find(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+
+            }
+        }
+
 
         public IEnumerable<VW_tbAnimales> ListarAnimales()
         {
@@ -144,6 +160,33 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
 
                 return Enumerable.Empty<VW_tbAnimales>();
 
+            }
+        }
+        public IEnumerable AnimalesPorArea()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _animalesRepository.AnimalesPorArea();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbAnimales>();
+            }
+        }
+
+        public IEnumerable AnimalesPorHabitat()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _animalesRepository.AnimalesPorHabitat();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbAnimales>();
             }
         }
 

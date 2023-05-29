@@ -1,6 +1,7 @@
 ﻿using Lancetilla.DataAccess.Repositories.Bota;
 using Lancetilla.Entities.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -230,6 +231,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
 
                 return Enumerable.Empty<VW_tbPlantas>();
 
+            }
+        }
+
+        public IEnumerable PlantasPorArea()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _plantasRepository.PlantasPorArea();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbPlantas>();
             }
         }
 

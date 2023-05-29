@@ -1,0 +1,20 @@
+        public static string PlantasPorArea = "bota.UDP_tbPlantas_Grafica";
+        public static string AnimalesPorArea = "zool.UDP_tbAnimales_Grafica";
+        public static string Visitantes = "mant.UDP_tbVisitantes_Grafica";
+        public static string AnimalesPorHabitat = "zool.UDP_tbAnimales_AnimalesHabitatGrafica";
+        public static string AnimalesFind = "zool.UDP_tbAnimales_FIND";
+
+
+
+
+     { path: 'animales', data: { breadcrumb: 'animales' }, loadChildren: () => import('./animales/Animales.module').then(m => m.AnimalesModule) },
+        { path: 'charts', data: { breadcrumb: 'charts' }, loadChildren: () => import('./charts/chartsdemo.module').then(m => m.ChartsDemoModule) },      { path: 'ManteniminetoXAnimal', data: { breadcrumb: 'ManteniminetoXAnimal' }, loadChildren: () => import('./ManteniminetoXAnimal/ManteniminetoPorAnimal.module').then(m => m.MantenimientoPorAnimalModule) },
+
+
+
+
+
+
+
+                   { label: 'Animales', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/animales'] },
+                    { label: 'Manteniminto por animal', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/ManteniminetoXAnimal'] },

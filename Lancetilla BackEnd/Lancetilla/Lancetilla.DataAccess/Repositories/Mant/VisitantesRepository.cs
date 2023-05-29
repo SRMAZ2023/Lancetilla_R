@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -21,6 +22,12 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         public RequestStatus Delete(tbVisitantes item)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable VisitantesSexo()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.Visitantes, null, commandType: System.Data.CommandType.StoredProcedure);
         }
 
         public RequestStatus Insert(tbVisitantes item)

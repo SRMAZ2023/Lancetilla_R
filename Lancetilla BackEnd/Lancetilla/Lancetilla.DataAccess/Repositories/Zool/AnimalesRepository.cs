@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -29,10 +30,29 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             return result;
         }
 
-        public tbAnimales Find(int? id)
+        public VW_tbAnimales Find(int? id)
         {
-            throw new NotImplementedException();
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@anim_Id", id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.QueryFirst<VW_tbAnimales>(ScriptsDataBase.AnimalesFind, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
         }
+
+        public IEnumerable AnimalesPorArea()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.AnimalesPorArea, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        public IEnumerable AnimalesPorHabitat()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.AnimalesPorHabitat, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
 
         public RequestStatus Insert(tbAnimales item)
         {
@@ -84,6 +104,11 @@ namespace Lancetilla.DataAccess.Repositories.Zool
         }
 
         public RequestStatus Update(tbAnimales item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        tbAnimales IRepository<tbAnimales>.Find(int? id)
         {
             throw new NotImplementedException();
         }

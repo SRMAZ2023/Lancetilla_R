@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -878,6 +879,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
 
                 return Enumerable.Empty<VW_tbVisitantes>();
 
+            }
+        }
+
+        public IEnumerable VisitantesSexo()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _visitantesRepository.VisitantesSexo();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbVisitantes>();
             }
         }
 

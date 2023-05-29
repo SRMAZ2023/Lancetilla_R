@@ -18,7 +18,7 @@ export class AnimalService {
     }
 
     findAnimales(anim_Id:any): Observable<any> {
-        return this.http.get(this.url + `Animales/BuscarAnimales/${anim_Id}`);
+        return this.http.get(this.url + `Animales/BuscarAnimal/${anim_Id}`);
 
     }
 

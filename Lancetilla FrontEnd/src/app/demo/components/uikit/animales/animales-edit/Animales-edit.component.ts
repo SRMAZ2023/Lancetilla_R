@@ -58,7 +58,7 @@ export class AnimalesEditComponent {
   }
 
   ngOnInit() {
-
+this.getAnimal()
     this.HabitatService.getHabitat().subscribe(
         response => {
             this.habitat = response.map((item: { habi_Descripcion: any; habi_Id: any; }) => ({ label: item.habi_Descripcion, value: item.habi_Id }));
@@ -104,6 +104,7 @@ checkFormValidity() {
 
   //Enviamos y editamos datos
   saveAnimal() {
+    
     
     // Verificar si todos los campos están llenos
         if (this.animal.anim_Nombre &&

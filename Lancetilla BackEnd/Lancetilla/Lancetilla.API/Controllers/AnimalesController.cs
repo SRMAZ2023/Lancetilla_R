@@ -24,6 +24,13 @@ namespace Lancetilla.API.Controllers
             _zoologicoServicios = zoologicoServicios;
             _mapper = mapper;
         }
+
+        [HttpGet("BuscarAnimal/{id}")]
+        public IActionResult BuscarPlanta(int id)
+        {
+            var list = _zoologicoServicios.BuscarAnimales(id);
+            return Ok(list);
+        }
         [HttpGet("ListarAnimales")]
         public IActionResult ListarAnimales()
         {
@@ -53,6 +60,21 @@ namespace Lancetilla.API.Controllers
             var animales = _mapper.Map<tbAnimales>(item);
             var List = _zoologicoServicios.EliminarAnimales(animales);
             return Ok(List);
+        }
+
+        [HttpGet("AnimalesPorArea")]
+        public IActionResult AnimalesPorArea()
+        {
+            var list = _zoologicoServicios.AnimalesPorArea();
+
+            return Ok(list);
+        }
+        [HttpGet("AnimalesPorHabitat")]
+        public IActionResult AnimalesPorHabitat()
+        {
+            var list = _zoologicoServicios.AnimalesPorHabitat();
+
+            return Ok(list);
         }
     }
 }

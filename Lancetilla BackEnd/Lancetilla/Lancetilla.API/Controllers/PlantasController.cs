@@ -61,5 +61,13 @@ namespace Lancetilla.API.Controllers
             var List = _botanicaServicios.EliminarPlanta(plantas);
             return Ok(List);
         }
+
+        [HttpGet("PlantasPorArea")]
+        public IActionResult Grafica()
+        {
+            var list = _botanicaServicios.PlantasPorArea();
+
+            return Ok(list);
+        }
     }
 }
