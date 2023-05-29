@@ -21,9 +21,9 @@ namespace Lancetilla.Entities.Entities
         public string estc_Descripcion { get; set; }
         public int carg_Id { get; set; }
         public string carg_Descripcion { get; set; }
-        public int muni_Id { get; set; }
+        public string muni_Id { get; set; }
         public string muni_Descripcion { get; set; }
-        public int dept_Id { get; set; }
+        public string dept_Id { get; set; }
         public string dept_Descripcion { get; set; }
         public string usua_UserCreaNombre { get; set; }
         public int? empl_UserCreacion { get; set; }

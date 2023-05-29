@@ -77,7 +77,7 @@
                     <div class="field" style="width: 50%; padding-right: 1rem;">
                         <div class="field">
                             <label for="name">Codigo</label>
-                            <input type="number" pInputText id="id" [(ngModel)]="Departamento.dept_Id" required autofocus
+                            <input type="text" pInputText id="id" [(ngModel)]="Departamento.dept_Id" required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString() || '')}"
                                 pattern=".{2}" title="Por favor ingrese exactamente 2 caracteres" />
                             <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString() || '')">

@@ -287,7 +287,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Inicio',
                 items: [
-                    { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] }
+                    { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
+                    { label: 'Graficas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/charts'] },  
                 ]
             },
           
@@ -308,7 +309,7 @@ export class AppMenuComponent implements OnInit {
                                 { label: 'Tipos De Mantenimiento', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/TiposDeMantenimiento'] },           
                                 { label: 'Metodo De Pago', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/MetodoDePago'] },
                                 { label: 'Estado Civil', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/EstadoCivil'] },
-                           
+                                { label: 'Mantenimiento Animal', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/ManteniminetoXAnimal'] },
                         ]
                     },
                    
