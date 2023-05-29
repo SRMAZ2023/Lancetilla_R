@@ -19,78 +19,69 @@
                 </ng-template>-->
             </p-toolbar>
 
-            <p-table [value]="MantenimientoPorAnimal" dataKey="maan_Id" [expandedRowKeys]="expandedRows" responsiveLayout="scroll">
-                <ng-template pTemplate="caption">
-                    <div class="flex table-header">
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 3rem"></th>
-                        <th pSortableColumn="maan_Id">Id <p-sortIcon field="maan_Id"></p-sortIcon></th>
-                        <th pSortableColumn="anim_Nombre">Nombre <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
-                        <th pSortableColumn="maan_Fecha">Fecha de Mantenimineto <p-sortIcon field="maan_Fecha"></p-sortIcon></th>
-                        <th pSortableColumn="tima_Descripcion">Cuidado <p-sortIcon field="tima_Descripcion"></p-sortIcon></th>
+            <p-table [value]="MantenimientoPorAnimal" dataKey="anim_Nombre"  responsiveLayout="scroll">
+				<ng-template pTemplate="caption">
+                    					<div class="flex table-header">
+					</div>
+				</ng-template>
+				<ng-template pTemplate="header">
+					<tr>
+						<th style="width: 3rem"></th>
+						<th pSortableColumn="anim_Id"> ID <p-sortIcon field="anim_Id"></p-sortIcon></th>
+						<th pSortableColumn="anim_Nombre"> Nombre <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
                         <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-MantenimientoPorAnimal let-expanded="expanded">
-                    <tr>
-                        <td>
-                            <button type="button" (click)="tomarAnimal(MantenimientoPorAnimal.anim_Id)" pButton pRipple [pRowToggler]="MantenimientoPorAnimal"
-                                class="p-button-text p-button-rounded p-button-plain"
-                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                        </td>
-                        <td style="min-width: 5rem;">{{MantenimientoPorAnimal.anim_Id}}</td>
-                        <td style="min-width: 10rem;">{{MantenimientoPorAnimal.anim_Nombre}}</td>
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
-                                    [routerLink]="['/uikit/MantenimientoPorAnimal/Edit',MantenimientoPorAnimal.maan_Id]"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                    (click)="deleteMantenimientoPorAnimal(MantenimientoPorAnimal)"></button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="rowexpansion" let-MantenimientoPorAnimal>
-                    <tr>
-                        <td colspan="6">
-                            <div class="p-3">
-                                <!-- Aquí puedes mostrar los datos adicionales del mantenimiento del animal seleccionado -->
-                                <p-table [value]="Animal" dataKey="id" responsiveLayout="scroll">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th pSortableColumn="id">Id <p-sortIcon field="price"></p-sortIcon></th>
-                                            <th pSortableColumn="customer">Nombre <p-sortIcon field="customer"></p-sortIcon></th>
-                                            <th pSortableColumn="date">Fecha de Mantenimineto  <p-sortIcon field="date"></p-sortIcon></th>
-                                            <th pSortableColumn="amount">Cuidado <p-sortIcon field="amount"></p-sortIcon></th>
-                                            <th style="width: 4rem"></th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-Animal>
-                                        <tr>
-                                            <td>{{Animal.maan_Id}}</td>
-                                            <td>{{Animal.anim_Nombre}}</td>
-                                            <td>{{Animal.maan_Fecha}}</td>
-                                            <td>{{Animal.tima_Descripcion}}</td>
-                                            <td><p-button type="button" icon="pi pi-search"></p-button></td>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="emptymessage">
-                                        <tr>
-                                            <td colspan="6">No hay datos de mantenimiento para este animal.</td>
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+						 
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="body" let-mantenimientoXanimal let-expanded="expanded">
+					<tr>
+						<td>
+							<button type="button" pButton pRipple   [pRowToggler]="mantenimientoXanimal" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+						</td>
+						<td style="min-width: 12rem;">{{mantenimientoXanimal.anim_Id}}</td>
+						<td style="min-width: 10rem;">{{mantenimientoXanimal.anim_Nombre}}</td>
+
+                        <td><button
+                            [routerLink]="['/uikit/ManteniminetoXAnimal/Edit',mantenimientoXanimal.anim_Id]"
+
+                                pButton
+                                pRipple
+                                icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success mr-2"
+                            ></button></td>
+                        
+					 </tr>
+				</ng-template>
+				<ng-template pTemplate="rowexpansion" let-mantenimientoXanimal>
+					<tr>
+						<td colspan="7">
+							<div class="p-3">
+                                <p-table [value]="mantenimientoXanimal.Animales" dataKey="anim_Nombre" responsiveLayout="scroll">
+									<ng-template pTemplate="header">
+					<tr>
+						<th pSortableColumn="maan_Id">id <p-sortIcon field="maan_Id"></p-sortIcon></th>
+						<th pSortableColumn="anim_Nombre"> Animal <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
+						<th pSortableColumn="maan_Fecha"> Fecha De Mantenimiento <p-sortIcon field="maan_Fecha"></p-sortIcon></th>
+						<th pSortableColumn="tima_Descripcion">Tipo de Mantenimineto <p-sortIcon field="tima_Descripcion"></p-sortIcon></th>
+ 						<th style="width: 4rem"></th>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="body" let-Animales>
+					<tr>
+						<td>{{Animales.maan_Id}}</td>
+						<td>{{Animales.anim_Nombre}}</td>
+						<td>{{Animales.maan_Fecha}}</td>
+						<td>{{Animales.tima_Descripcion}}</td>
+ 						<td><p-button type="button" icon="pi pi-search"></p-button></td>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="emptymessage">
+					<tr>
+						<td colspan="6">El Animal no tiene ningun tipo de mantenimineto.</td>
+					</tr>
+				</ng-template>
+			</p-table>
             
-        </div>
 
          
 
@@ -108,4 +99,5 @@
         </p-dialog>
 
     </div>
-</div>
+
+ 
