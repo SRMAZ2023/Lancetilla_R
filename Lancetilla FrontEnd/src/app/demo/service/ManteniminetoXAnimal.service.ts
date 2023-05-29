@@ -55,7 +55,7 @@ export class ManteniminetoXAnimalService {
         let params = JSON.stringify(ManteniminetoXAnimalViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.put<Response>(this.url + "MantenimientoPorAnimal/ActualizarMantenimientoAnimal", params, { headers: headers });
+        return this.http.post<Response>(this.url + "MantenimientoPorAnimal/ActualizarPlanta", params, { headers: headers });
     }
 
     DeleteManteniminetoXAnimal(ManteniminetoXAnimalViewModel: any): Observable<Response> {

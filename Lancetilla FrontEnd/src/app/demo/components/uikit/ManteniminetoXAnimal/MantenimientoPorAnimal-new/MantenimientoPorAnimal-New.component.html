@@ -2,15 +2,20 @@
     <div class="col-12">
         <div class="card">
             <p-toast></p-toast>
-            <h1>Mantenimiento a Animal</h1>
+            <h1>{{ page_title }}</h1>
             <div class="grid p-fluid">
                 <div class="field col-6">
-                    <p-dropdown [options]="Animal"
-            [(ngModel)]="mantenimientoXanimalp.anim_Id"
-            placeholder="Seleccione un animal"
-            [ngClass]="{'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.anim_Id}"
-            (onChange)="onAnimalChange($event)">
-</p-dropdown>
+                    <p-dropdown
+                        [options]="Animal"
+                        name="anim_Id"
+                        [(ngModel)]="mantenimientoXanimalp.anim_Id"
+                        placeholder="Seleccione un animal"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !mantenimientoXanimalp.anim_Id
+                        }"
+                    ></p-dropdown>
+
                     <small
                         *ngIf="submitted && !mantenimientoXanimalp.anim_Id"
                         class="ng-dirty ng-invalid"
@@ -41,13 +46,16 @@
                 
 
                 <div class="field col-6">
-                    <!-- Dropdown para el Tipo de Mantenimiento -->
-<p-dropdown [options]="tipoMantenimiento"
-[(ngModel)]="mantenimientoXanimalp.tima_Id"
-placeholder="Seleccione un tipo de Mantenimiento"
-[ngClass]="{'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.tima_Id}"
-(onChange)="onTipoMantenimientoChange($event)">
-</p-dropdown>
+                    <p-dropdown
+                        [options]="tipoMantenimiento"
+                        name="tima_Id"
+                        [(ngModel)]="mantenimientoXanimalp.tima_Id"
+                        placeholder="Seleccione un tipo e Mantenimiento"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !mantenimientoXanimalp.tima_Id
+                        }"
+                    ></p-dropdown>
                     <small
                         *ngIf="submitted && !mantenimientoXanimalp.tima_Id"
                         class="ng-dirty ng-invalid"
@@ -179,43 +187,5 @@ placeholder="Seleccione un tipo de Mantenimiento"
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog
-        [(visible)]="deleteMantenimientoXanimalDialog"
-        [modal]="true"
-        [style]="{ width: '450px' }"
-        header="Confirm"
-    >
-        <div class="flex align-items-center justify-content-center">
-            <i
-                class="pi pi-exclamation-triangle mr-3"
-                style="font-size: 2rem"
-            ></i>
-            <span *ngIf="DataAnimal">
-                Estas seguro de querer eliminar a
-                <b>
-                    {{ DataAnimal.anim_Nombre }}
-                </b>
-                ?
-            </span>
-        </div>
-        <ng-template pTemplate="footer">
-            <button
-                (click)="deleteMantenimientoXanimalDialog = false"
-                pButton
-                pRipple
-                icon="pi pi-times"
-                class="p-button-text"
-                label="No"
-            ></button>
-            <button
-                (click)="confirmDelete()"
-                pButton
-                pRipple
-                icon="pi pi-check"
-                class="p-button-text"
-                label="Yes"
-            ></button>
-        </ng-template>
-    </p-dialog>
     </div>
 </div>

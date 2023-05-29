@@ -177,7 +177,7 @@ export class empleadosEditComponent {
       this.EmpleadosService.findEmpleados(plan_Id).subscribe(Response => {
         this.empleado = Response;
 
-        console.log(this.empleado)
+
 
        var fecha = new Date(this.empleado.empl_FechaNacimiento!);
        console.log("Fecha = " + fecha)
