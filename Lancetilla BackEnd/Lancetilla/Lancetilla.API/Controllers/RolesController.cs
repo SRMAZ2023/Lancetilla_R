@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Acceso_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,7 +31,33 @@ namespace Lancetilla.API.Controllers
             return Ok(list);
         }
 
+      
+        [HttpPost("InsertarRol")]
+        public IActionResult InsertarRol(RolViewModel item)
+        {
+            var usuarios = _mapper.Map<tbRoles>(item);
+            var respuesta = _AccesoServicios.InsertarRol(usuarios);
+        
+            respuesta.Data = _mapper.Map<RolViewModel>(respuesta.Data);
 
+            return Ok(respuesta);
+        }
+
+        [HttpPost("ActualizarRol")]
+        public IActionResult ActualizarRol(RolViewModel item)
+        {
+            var usuarios = _mapper.Map<tbRoles>(item);
+            var List = _AccesoServicios.ActualizarRol(usuarios);
+            return Ok(List);
+        }
+
+        [HttpPost("EliminarRol")]
+        public IActionResult EliminarRol(RolViewModel item)
+        {
+            var usuarios = _mapper.Map<tbRoles>(item);
+            var List = _AccesoServicios.EliminarRol(usuarios);
+            return Ok(List);
+        }
 
 
     }

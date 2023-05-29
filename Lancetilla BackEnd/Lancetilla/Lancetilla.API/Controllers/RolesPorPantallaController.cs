@@ -38,6 +38,17 @@ namespace Lancetilla.API.Controllers
             return Ok(respuesta);
         }
 
+        [HttpPost("PantallasSinRol")]
+        public IActionResult PantallasSinRol(RolesPorPantallaViewModel item)
+        {
+            var resultMapeado = _mapper.Map<tbRolesPantallas>(item);
+
+            var respuesta = _AccesoServicios.PantallasSinRol(resultMapeado);
+
+
+            return Ok(respuesta);
+        }
+
 
         [HttpPost("InsertarRolPorPantalla")]
         public IActionResult InsertarRolPorPantalla(RolesPorPantallaViewModel item)
