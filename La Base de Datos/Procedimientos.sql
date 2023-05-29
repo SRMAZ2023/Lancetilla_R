@@ -1612,7 +1612,7 @@ go
 --select getdate()
 
 GO
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE  2,2,'2023-05-25',1
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE   
 @anim_Id INT,
 @tima_Id INT,
 @maan_Fecha DATE,

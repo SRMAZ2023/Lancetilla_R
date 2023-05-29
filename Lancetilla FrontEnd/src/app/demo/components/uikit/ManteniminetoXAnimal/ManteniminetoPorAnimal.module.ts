@@ -9,6 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from "primeng/calendar";
 import { PanelModule } from 'primeng/panel';
+import { AccordionModule } from 'primeng/accordion';
 
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
@@ -30,6 +31,7 @@ import { MantenimientoPorAnimalComponent } from './MantenimientoPorAnimal-list/M
         FormsModule,
         CalendarModule,
         ButtonModule,
+        AccordionModule,
         RippleModule,
         PanelModule,
         ToastModule,
