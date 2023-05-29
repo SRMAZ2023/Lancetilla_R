@@ -354,7 +354,7 @@ GO
 
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_CREATE
-@dept_Id  INT,
+@dept_Id  CHAR(2),
 @dept_Descripcion  NVARCHAR(100),
 @dept_UserCreacion INT
 AS BEGIN
@@ -366,6 +366,10 @@ AS BEGIN
 		IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion OR dept_Id = @dept_Id AND dept_Estado = 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El departamento ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE  dept_Id = @dept_Id AND dept_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'Codigo de departamento no disponible.' AS messageStatus
 		END
 		
 		ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 0)
@@ -415,7 +419,7 @@ GO
 
 
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_UPDATE
-@dept_Id INT,
+@dept_Id CHAR(2),
 @dept_Descripcion NVARCHAR(100),
 @dept_UserModificacion INT
 AS BEGIN
@@ -465,7 +469,7 @@ GO
 
 
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_DELETE
-@dept_Id INT
+@dept_Id CHAR(2)
 AS BEGIN
 
   	BEGIN TRY
@@ -501,9 +505,9 @@ GO
 
 --*************************************************************TABLA DE MUNICIPIOS****************************************************************************--
 CREATE OR ALTER PROC mant.UDP_tbMunicipios_CREATE
-	@muni_Id INT,
+	@muni_Id CHAR(4),
 	@muni_Descripcion NVARCHAR(100),
-	@dept_Id INT,
+	@dept_Id CHAR(2),
 	@muni_UserCreacion INT
 AS
 BEGIN
@@ -574,9 +578,9 @@ GO
 
 
 CREATE OR ALTER PROC mant.UDP_tbMunicipios_UPDATE
-@muni_Id INT,
+@muni_Id CHAR(4),
 @muni_Descripcion NVARCHAR(100),
-@dept_Id INT,
+@dept_Id CHAR(2),
 @muni_UserModificacion INT
 AS BEGIN
 
@@ -660,7 +664,7 @@ GO
 
 
 CREATE OR ALTER PROC mant.UDP_tbMunicipios_MUNISPORDEPTO
-@dept_Id INT
+@dept_Id CHAR(2)
 AS BEGIN
 
 SELECT * FROM mant.tbMunicipios
@@ -990,7 +994,7 @@ CREATE OR ALTER PROC mant.UDP_tbEmpleados_CREATE
 @empl_Telefono NVARCHAR(100),
 @estc_Id INT,
 @carg_Id INT,
-@muni_Id INT,
+@muni_Id CHAR(4),
 @empl_UserCreacion INT
 AS BEGIN
 
@@ -1075,7 +1079,7 @@ CREATE OR ALTER PROC mant.UDP_tbEmpleados_UPDATE
 @empl_Telefono NVARCHAR(100),
 @estc_Id INT,
 @carg_Id INT,
-@muni_Id INT,
+@muni_Id CHAR(4),
 @empl_UserModificacion INT
 AS BEGIN
 

@@ -34,7 +34,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             parametros.Add("@empl_Telefono", item.empl_Telefono, DbType.String, ParameterDirection.Input);
             parametros.Add("@estc_Id", item.estc_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@carg_Id", item.carg_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@muni_Id", item.muni_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@muni_Id", item.muni_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_UserCreacion", item.empl_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarEmpleados, parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -56,7 +56,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             parametros.Add("@empl_Telefono", item.empl_Telefono, DbType.String, ParameterDirection.Input);
             parametros.Add("@estc_Id", item.estc_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@carg_Id", item.carg_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@muni_Id", item.muni_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@muni_Id", item.muni_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@empl_UserModificacion", item.empl_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarEmpleados, parametros, commandType: System.Data.CommandType.StoredProcedure);

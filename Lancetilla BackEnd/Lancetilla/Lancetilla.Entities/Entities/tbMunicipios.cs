@@ -13,9 +13,9 @@ namespace Lancetilla.Entities.Entities
             tbEmpleados = new HashSet<tbEmpleados>();
         }
 
-        public int muni_Id { get; set; }
+        public string muni_Id { get; set; }
         public string muni_Descripcion { get; set; }
-        public int dept_Id { get; set; }
+        public string dept_Id { get; set; }
         public int? muni_UserCreacion { get; set; }
         public DateTime? muni_FechaCreacion { get; set; }
         public int? muni_UserModificacion { get; set; }

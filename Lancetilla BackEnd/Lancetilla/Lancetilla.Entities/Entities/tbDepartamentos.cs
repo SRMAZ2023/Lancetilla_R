@@ -13,7 +13,7 @@ namespace Lancetilla.Entities.Entities
             tbMunicipios = new HashSet<tbMunicipios>();
         }
 
-        public int dept_Id { get; set; }
+        public string dept_Id { get; set; }
         public string dept_Descripcion { get; set; }
         public int? dept_UserCreacion { get; set; }
         public DateTime? dept_FechaCreacion { get; set; }
