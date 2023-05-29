@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
 import { Table } from 'primeng/table';
@@ -22,21 +22,22 @@ import { timeout } from 'rxjs';
 @Component({
   selector: 'app-MantenimientoPorAnimal-edit',
   templateUrl: './ManteniminetoPorAnimal-edit.component.html',
-  //templateUrl: './MantenimientoPorAnimal-new/MantenimientoPorAnimal-New.component.html',
+  styleUrls: ['./ManteniminetoPorAnimal-edit.component.scss'],
   providers: [MessageService, ManteniminetoXAnimalService, AreaBotanicaService, TiposDeMantenimientoService]
 
 })
+
 export class MantenimientoPorAnimalEditComponent {
   minDate: Date;
 
+  panelDisabled: boolean = false;
 
   //Dialogs
   MantenimientoXanimalDialog: boolean = false;
   deleteMantenimientoXanimalDialog: boolean = false;
-
   //Dialogs
 
-  Sube:boolean = false;
+  Sube: boolean = false;
 
   public page_title!: string;
   submitted: boolean = false;
@@ -50,24 +51,30 @@ export class MantenimientoPorAnimalEditComponent {
   Animal: AnimalViewModel[] = [];
 
   newParametros: ManteniminetoXAnimalViewModel = {};
-  
+
   @ViewChild('animalDropdown', { static: false }) animalDropdown: ElementRef;
-  panelCollapsed: boolean = true;
+  panelCollapsed: boolean = false;
   abrirPanel() {
     this.panelCollapsed = false;
     this.togglePanel();
   }
 
   togglePanel() {
+
     if (this.animalDropdown && this.animalDropdown.nativeElement) {
       this.animalDropdown.nativeElement.focus();
     }
+     this.panelCollapsed = true
   }
 
   scrollIntoViewIfNeeded() {
     const panelElement = document.getElementById('hasta_Arriba');
+
     if (panelElement) {
       panelElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (this.panelCollapsed) {
+         this.panelCollapsed = true
+      } 
     }
   }
 
@@ -81,7 +88,10 @@ export class MantenimientoPorAnimalEditComponent {
   rowsPerPageOptions = [5, 10, 20];
   //Paginacion de el datatable
 
-  fechaSola!:Date;
+  fechaSola!: Date;
+
+  ocultarBoton: any = document.getElementById('p-panel-0-label');
+
 
   cols: any[] = [];
 
@@ -91,7 +101,10 @@ export class MantenimientoPorAnimalEditComponent {
 
   filtrar: [] = [];
 
+  count: number = 0;
+
   constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
+    private renderer: Renderer2,
     private messageService: MessageService,
     private TiposDeMantenimientoService: TiposDeMantenimientoService,
     private _route: ActivatedRoute,
@@ -102,7 +115,11 @@ export class MantenimientoPorAnimalEditComponent {
 
   }
 
+
+
   ngOnInit() {
+
+
     this.getMantenimientoPorAnimal();
 
     this.TiposDeMantenimientoService.getTiposDeMantenimientos().subscribe(
@@ -125,9 +142,11 @@ export class MantenimientoPorAnimalEditComponent {
       error => {
         // Manejo del error
       }
-    );
 
-    
+    )
+
+
+
 
     //Modelo de los datos de la tabla
     this.cols = [
@@ -141,7 +160,20 @@ export class MantenimientoPorAnimalEditComponent {
 
   }
 
+  toco(){
 
+
+    if(!this.panelCollapsed){
+      console.log("True")
+      this.panelCollapsed = true
+    }else if(this.panelCollapsed){
+      console.log("False")
+
+      this.panelCollapsed = false
+
+    }
+  }
+   
   checkFormValidity() {
     this.formValid = this.MantenimientoPorAnimalForm.valid && this.mantenimientoXanimalp.anim_Id || this.mantenimientoXanimalp.maan_Id;
   }
@@ -186,27 +218,27 @@ export class MantenimientoPorAnimalEditComponent {
 
   }
 
-  
+   
 
   getInputsValues(id: any) {
 
     this.datos = this.DataAnimal;
-     const mantenimiento = this.datos.find((item: any) => item.maan_Id === id);
-     
-     try {
-       
-       
-       var cambio = mantenimiento.maan_Fecha;
-       
-       if (mantenimiento) {
-        
+    const mantenimiento = this.datos.find((item: any) => item.maan_Id === id);
+
+    try {
+
+
+      var cambio = mantenimiento.maan_Fecha;
+
+      if (mantenimiento) {
+
 
         if (mantenimiento.maan_Fecha) {
 
           var fechaFormateada = format(parse(cambio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd\'T\'HH:mm:ss.SSS');
-          
+
           fechaFormateada = new Date(fechaFormateada!).toDateString();
-           
+
 
           this.fechaSola = new Date(fechaFormateada);
           this.newParametros.maan_Id = mantenimiento.maan_Id;
@@ -214,8 +246,9 @@ export class MantenimientoPorAnimalEditComponent {
           this.newParametros.tima_Id = mantenimiento.tima_Id;
           this.scrollIntoViewIfNeeded();
           this.abrirPanel();
-           
-          
+
+
+
 
         } else {
           console.log('El valor de maan_Fecha es nulo o indefinido');
@@ -248,6 +281,7 @@ export class MantenimientoPorAnimalEditComponent {
       "maan_UserModificacion": 1
 
     }
+
     console.log(params);
 
     if (params.anim_Id != 0 && params.anim_Id != undefined && params.tima_Id != 0 && params.tima_Id != undefined && this.fechaSola.toDateString() != "" && params.maan_Fecha != undefined) {
@@ -267,8 +301,8 @@ export class MantenimientoPorAnimalEditComponent {
         console.log(error)
       })
 
-
     }
+
   }
 
   //Enviamos y editamos datos
@@ -296,3 +330,7 @@ export class MantenimientoPorAnimalEditComponent {
   }
   //Buscador
 }
+function ngDoCheck() {
+  throw new Error('Function not implemented.');
+}
+

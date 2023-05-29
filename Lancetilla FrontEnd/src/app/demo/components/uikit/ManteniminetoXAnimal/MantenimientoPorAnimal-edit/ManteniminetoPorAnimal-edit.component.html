@@ -1,73 +1,77 @@
+ 
 <div class="grid">
     <div class="col-12">
         <div class="card">
             <p-toast></p-toast>
             <h1 id="hasta_Arriba">{{ page_title }}</h1>
-            
-            <p-panel header="Editar Mantenimineto de Animal" id="panel" [toggleable]="true" [collapsed]="panelCollapsed" class="line-height-3 m-0">
 
-                <div class="grid p-fluid">
-                    <div class="field col-6">
-                         <p-dropdown
-                        #animalDropdown
-                        [options]="Animal"
-                        name="anim_Id"
-                        [(ngModel)]="newParametros.anim_Id"
-                        placeholder="Seleccione un animal"
-                        [ngClass]="{
-                          'ng-invalid ng-dirty': submitted && !newParametros.anim_Id
-                        }"
-                      ></p-dropdown>
-                      
+            <p-accordion (click)="toco()"  aria-disabled="false">
 
-                        <small *ngIf="submitted && !newParametros.anim_Id" class="ng-dirty ng-invalid"
-                            style="color: red">
-                            El animal es requerido.
-                        </small>
+                <p-accordionTab   header=" Editar el mantenimineto de un Animal" [selected]="panelCollapsed" class="line-height-3 m-0">
+                    <div class="grid p-fluid">
+                        <div class="field col-6">
+                             <p-dropdown
+                            #animalDropdown
+                            [options]="Animal"
+                            name="anim_Id"
+                            [(ngModel)]="newParametros.anim_Id"
+                            placeholder="Seleccione un animal"
+                            [ngClass]="{
+                              'ng-invalid ng-dirty': submitted && !newParametros.anim_Id
+                            }"
+                          ></p-dropdown>
+                          
+    
+                            <small *ngIf="submitted && !newParametros.anim_Id" class="ng-dirty ng-invalid"
+                                style="color: red">
+                                El animal es requerido.
+                            </small>
+                        </div>
+    
+                        <div class="field col-6">
+                            <p-calendar name="maan_Fecha" aria-placeholder="Seleccione una fecha." [(ngModel)]="fechaSola"
+                                [showIcon]="true" inputId="icon" [ngClass]="{
+                                'ng-invalid ng-dirty': submitted && !fechaSola
+                            }" [minDate]="minDate"></p-calendar>
+                            <small class="ng-dirty ng-invalid" style="color: red" *ngIf="submitted && !fechaSola">La fecha
+                                de
+                                mantenimiento es requerida.</small>
+                        </div>
+    
+    
+                        <div class="field col-6">
+                            <p-dropdown [options]="tipoMantenimiento" name="tima_Id" [(ngModel)]="newParametros.tima_Id"
+                                placeholder="Seleccione un tipo e Mantenimiento" [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    submitted && !newParametros.tima_Id
+                            }"></p-dropdown>
+                            <small *ngIf="submitted && !newParametros.tima_Id" class="ng-dirty ng-invalid"
+                                style="color: red">
+                                El tipo de mantenimineto es requerido.
+                            </small>
+                        </div>
                     </div>
-
-                    <div class="field col-6">
-                        <p-calendar name="maan_Fecha" aria-placeholder="Seleccione una fecha." [(ngModel)]="fechaSola"
-                            [showIcon]="true" inputId="icon" [ngClass]="{
-                            'ng-invalid ng-dirty': submitted && !fechaSola
-                        }" [minDate]="minDate"></p-calendar>
-                        <small class="ng-dirty ng-invalid" style="color: red" *ngIf="submitted && !fechaSola">La fecha
-                            de
-                            mantenimiento es requerida.</small>
+                    <div class="grid p-fluid">
+                        <div class="field col-2">
+                            <button (click)="saveMantenimientoPorAnimal()" pButton pRipple label="Guardar"
+                                icon="pi pi-check" class="p-button-text"></button>
+                        </div>
+          
                     </div>
+                </p-accordionTab>
+                  
+            </p-accordion>
+             
+            <div class="field col-2">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                    class="p-button-danger" [routerLink]="['/uikit/ManteniminetoXAnimal']"></button>
+            </div>
+ 
 
+ 
 
-                    <div class="field col-6">
-                        <p-dropdown [options]="tipoMantenimiento" name="tima_Id" [(ngModel)]="newParametros.tima_Id"
-                            placeholder="Seleccione un tipo e Mantenimiento" [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                submitted && !newParametros.tima_Id
-                        }"></p-dropdown>
-                        <small *ngIf="submitted && !newParametros.tima_Id" class="ng-dirty ng-invalid"
-                            style="color: red">
-                            El tipo de mantenimineto es requerido.
-                        </small>
-                    </div>
-                </div>
-                <div class="grid p-fluid">
-                    <div class="field col-2">
-                        <button (click)="saveMantenimientoPorAnimal()" pButton pRipple label="Guardar"
-                            icon="pi pi-check" class="p-button-text"></button>
-                    </div>
-
-                    <div class="field col-2">
-                        <button pButton pRipple label="Finalizar" icon="pi pi-times" type="button"
-                            class="p-button-warning" [routerLink]="['/uikit/ManteniminetoXAnimal']"></button>
-                    </div>
-
-                    <div class="field col-2">
-                        <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
-                            class="p-button-danger" [routerLink]="['/uikit/ManteniminetoXAnimal']"></button>
-                    </div>
-
-                </div>
-            </p-panel>
         </div>
+        
         <div class="card">
             <h2>Tabla de datos</h2>
             <p-table #dt [value]="DataAnimal" [columns]="cols" responsiveLayout="scroll" [rows]="10"
@@ -182,3 +186,5 @@
     </p-dialog>
     </div>
 </div>
+
+ 

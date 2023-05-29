@@ -168,9 +168,10 @@ export class MantenimientoPorAnimalNewComponent implements OnInit {
           this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
 
         } else if (this.datos.code == 200) {
-          this.MantenimientoXanimal = this.MantenimientoXanimal.filter(val => val.maan_Id !== this.mantenimientoXanimalp.maan_Id);
+          this.DataAnimal = this.DataAnimal.filter((val:any) => val.maan_Id !== this.mantenimientoXanimalp.maan_Id);
           this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
           this.mantenimientoXanimalp = {};
+
 
         } else {
           this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
