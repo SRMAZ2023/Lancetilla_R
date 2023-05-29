@@ -1531,14 +1531,14 @@ CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_SELECT
 AS
 BEGIN
 
-	--SELECT TOP (1000) *
-	--FROM [db_Lancetilla].[mant].[VW_MantenimientoAnimales]
-	--where maan_Estado = 1
- 	
-	SELECT TOP (1000) [anim_Id], [anim_Nombre]
+	SELECT TOP (1000) *
 	FROM [db_Lancetilla].[mant].[VW_MantenimientoAnimales]
 	where maan_Estado = 1
-	GROUP BY [anim_Id], [anim_Nombre]
+ 	
+	--SELECT TOP (1000) [anim_Id], [anim_Nombre]
+	--FROM [db_Lancetilla].[mant].[VW_MantenimientoAnimales]
+	--where maan_Estado = 1
+	--GROUP BY [anim_Id], [anim_Nombre]
 
 END
 
@@ -1612,7 +1612,7 @@ go
 --select getdate()
 
 GO
-CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE  
+CREATE OR ALTER PROC mant.UDP_tbMantenimientosAnimal_CREATE  2,2,'2023-05-25',1
 @anim_Id INT,
 @tima_Id INT,
 @maan_Fecha DATE,
@@ -1624,7 +1624,7 @@ BEGIN TRY
 			INSERT INTO mant.tbMantenimientoAnimal(anim_Id, tima_Id, maan_Fecha,maan_UserCreacion)
 			VALUES  (@anim_Id, @tima_Id,@maan_Fecha, @maan_UserCreacion)
 
-			SELECT 200 AS codeStatus, 'El mantenimiento por animal ha sido creado con éxito.' AS messageStatus
+			SELECT 200 AS codeStatus, SCOPE_IDENTITY() AS messageStatus
 END TRY
 
 BEGIN CATCH

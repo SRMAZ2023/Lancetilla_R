@@ -62,11 +62,16 @@ export class MantenimientoPorAnimalComponent implements OnInit {
             Response => {
                 console.log(Response);
                 this.datos = Response;
-                this.MantenimientoPorAnimal = Response;
-
+        
+                // Filtrar los elementos duplicados por anim_Id
+                const uniqueAnimals = this.datos.filter((valorActual: { anim_Id: any; }, indiceActual: any, arreglo: { anim_Id: any; }[]) => {
+                    return arreglo.findIndex((elemento: { anim_Id: any; }) => elemento.anim_Id === valorActual.anim_Id) === indiceActual;
+                });
+        
+                this.MantenimientoPorAnimal = uniqueAnimals;
+        
                 this.formattedDate = this.datePipe.transform(this.datos.maan_Fecha, 'yyyy-MM-dd')?.toString();
-
-
+        
                 console.log(this.formattedDate);
                 console.log(this.datos);
             },
@@ -74,6 +79,7 @@ export class MantenimientoPorAnimalComponent implements OnInit {
                 console.log(error);
             }
         );
+        
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -127,7 +133,9 @@ export class MantenimientoPorAnimalComponent implements OnInit {
             
             this.ManteniminetoXAnimalService.GetAnimalesXMantenimineto(params).subscribe(
               (response) => {
+
                 console.log('Datos obtenidos:', response);
+                this.mantenimientoXanimal.Animales = response;
                 this.Animal = response;
                 this.expandedRows[elemento.maan_Id as any] = true; // Expande el elemento encontrado
               },

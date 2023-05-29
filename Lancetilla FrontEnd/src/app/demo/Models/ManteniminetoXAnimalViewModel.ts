@@ -14,7 +14,8 @@ export class ManteniminetoXAnimalViewModel {
     public maan_UserModificacion?: number,
     public maan_Estado?: true,
     public maan_FechaModificacion?: string,
-    public hoy?: number
+    public hoy?: number,
+    public Animales?: any
     ){}
 
 

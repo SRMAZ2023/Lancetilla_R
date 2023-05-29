@@ -1,120 +1,298 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
-import { error } from 'console';
-import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
+import { Table } from 'primeng/table';
 //XAnimal
 import { ManteniminetoXAnimalService } from 'src/app/demo/service/ManteniminetoXAnimal.service';
 import { ManteniminetoXAnimalViewModel } from 'src/app/demo/Models/ManteniminetoXAnimalViewModel';
 //Mantenimiento
-import { MantenimintoService } from 'src/app/demo/service/Manteniminto.service copy';
+import { TiposDeMantenimientoService } from 'src/app/demo/service/TipoDeMantenimiento.service';
+import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeManteniminetoViewModel';
+//Animal
+import { AnimalViewModel } from 'src/app/demo/Models/AnimalViewModel';
 import { MantenimintoViewModel } from 'src/app/demo/Models/MantenimintoViewModel';
+import { format, parse } from 'date-fns';
+
+
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { AnyARecord } from 'dns';
+import { error, timeEnd } from 'console';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-MantenimientoPorAnimal-edit',
-   templateUrl: './ManteniminetoPorAnimal-edit.component.html',
+  templateUrl: './ManteniminetoPorAnimal-edit.component.html',
   //templateUrl: './MantenimientoPorAnimal-new/MantenimientoPorAnimal-New.component.html',
-  providers: [MessageService, ManteniminetoXAnimalService, AreaBotanicaService, MantenimintoService]
+  providers: [MessageService, ManteniminetoXAnimalService, AreaBotanicaService, TiposDeMantenimientoService]
 
 })
 export class MantenimientoPorAnimalEditComponent {
-  public MantenimientoXanimal!: ManteniminetoXAnimalViewModel;
+  minDate: Date;
+
+
+  //Dialogs
+  MantenimientoXanimalDialog: boolean = false;
+  deleteMantenimientoXanimalDialog: boolean = false;
+
+  //Dialogs
+
+  Sube:boolean = false;
 
   public page_title!: string;
   submitted: boolean = false;
 
-  Mantenimiento: MantenimintoViewModel[] = [];
+  DataAnimal: any = [];
+
+  MantenimientoXanimal: ManteniminetoXAnimalViewModel[] = [];
+  mantenimientoXanimalp: ManteniminetoXAnimalViewModel = {};
+
+  tipoMantenimiento: TipoDeMatenimientoViewModel[] = [];
+  Animal: AnimalViewModel[] = [];
+
+  newParametros: ManteniminetoXAnimalViewModel = {};
+  
+  @ViewChild('animalDropdown', { static: false }) animalDropdown: ElementRef;
+  panelCollapsed: boolean = true;
+  abrirPanel() {
+    this.panelCollapsed = false;
+    this.togglePanel();
+  }
+
+  togglePanel() {
+    if (this.animalDropdown && this.animalDropdown.nativeElement) {
+      this.animalDropdown.nativeElement.focus();
+    }
+  }
+
+  scrollIntoViewIfNeeded() {
+    const panelElement = document.getElementById('hasta_Arriba');
+    if (panelElement) {
+      panelElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 
   public formValid = false;
   MantenimientoPorAnimalForm: any;
 
-  datos:any = {};
+  datos: any = {};
 
+  //Paginacion de el datatable
+  selectedMantenimiento: MantenimintoViewModel[] = [];
+  rowsPerPageOptions = [5, 10, 20];
+  //Paginacion de el datatable
+
+  fechaSola!:Date;
+
+  cols: any[] = [];
+
+  statuses: any[] = [];
+  //validar espacio
+  espacio: boolean = false;
+
+  filtrar: [] = [];
 
   constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private messageService: MessageService,
-    private MantenimintoService: MantenimintoService,
+    private TiposDeMantenimientoService: TiposDeMantenimientoService,
     private _route: ActivatedRoute,
     private _rauter: Router) {
-    this.MantenimientoPorAnimalForm = new ManteniminetoXAnimalViewModel(undefined,undefined,"",undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined)
-    this.page_title = "Editar Planta"
+    this.page_title = "Editar Mantenimiento A Animal";
+    this.minDate = new Date();
+    this.animalDropdown = new ElementRef(null);
 
   }
 
   ngOnInit() {
+    this.getMantenimientoPorAnimal();
 
-    //this.getPlanta();
-
-    this.MantenimintoService.getCatgos().subscribe(
+    this.TiposDeMantenimientoService.getTiposDeMantenimientos().subscribe(
       response => {
-        this.Mantenimiento = response.map((item: { arbo_Descripcion: any; arbo_Id: any; }) => ({ label: item.arbo_Descripcion, value: item.arbo_Id }));
+        // console.log(response)
+
+        this.tipoMantenimiento = response.map((item: { tima_Descripcion: any; tima_Id: any; }) => ({ label: item.tima_Descripcion, value: item.tima_Id }));
       },
       error => {
         // Manejo del error
       }
     );
 
- 
+    this.ManteniminetoXAnimalService.getAnimal().subscribe(
+      response => {
+        // console.log(response)
 
+        this.Animal = response.map((item: { anim_Nombre: any; anim_Id: any; }) => ({ label: item.anim_Nombre, value: item.anim_Id }));
+      },
+      error => {
+        // Manejo del error
+      }
+    );
+
+    
+
+    //Modelo de los datos de la tabla
+    this.cols = [
+      { field: 'maan_Id', header: 'mant_Id' },
+      { field: 'anim_Nombre', header: 'anim_Nombre' },
+      { field: 'maan_Fecha', header: 'maan_Fecha' },
+      { field: 'tima_Descripcion', header: 'tima_Descripcion' }
+
+    ];
+    //Modelo de los datos de la tabla
 
   }
+
 
   checkFormValidity() {
-    this.formValid = this.MantenimientoPorAnimalForm.valid && this.MantenimientoXanimal.anim_Id || this.MantenimientoXanimal.maan_Id ;
+    this.formValid = this.MantenimientoPorAnimalForm.valid && this.mantenimientoXanimalp.anim_Id || this.mantenimientoXanimalp.maan_Id;
   }
+
+  //Toma el id del item
+  deleteMantenimiento(Mantenimiento: MantenimintoViewModel) {
+    this.deleteMantenimientoXanimalDialog = true;
+    this.mantenimientoXanimalp = { ...Mantenimiento };
+  }
+  //Toma el id del item
+
+  //Enviamos y editamos datos
+  //Confirma el eliminar
+  confirmDelete() {
+    this.deleteMantenimientoXanimalDialog = false;
+    var params = {
+      "maan_Id": this.mantenimientoXanimalp.maan_Id,
+    }
+
+    this.ManteniminetoXAnimalService.DeleteManteniminetoXAnimal(params).subscribe(
+      Response => {
+        this.datos = Response;
+        console.log(this.datos)
+        if (this.datos.code == 409) {
+
+          this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+
+        } else if (this.datos.code == 200) {
+          this.MantenimientoXanimal = this.MantenimientoXanimal.filter(val => val.maan_Id !== this.mantenimientoXanimalp.maan_Id);
+          this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+          this.mantenimientoXanimalp = {};
+          this.getMantenimientoPorAnimal();
+
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+        }
+      },
+      error => {
+        console.log("manzana")
+      }
+    );
+
+  }
+
+  
+
+  getInputsValues(id: any) {
+
+    this.datos = this.DataAnimal;
+     const mantenimiento = this.datos.find((item: any) => item.maan_Id === id);
+     
+     try {
+       
+       
+       var cambio = mantenimiento.maan_Fecha;
+       
+       if (mantenimiento) {
+        
+
+        if (mantenimiento.maan_Fecha) {
+
+          var fechaFormateada = format(parse(cambio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd\'T\'HH:mm:ss.SSS');
+          
+          fechaFormateada = new Date(fechaFormateada!).toDateString();
+           
+
+          this.fechaSola = new Date(fechaFormateada);
+          this.newParametros.maan_Id = mantenimiento.maan_Id;
+          this.newParametros.anim_Id = mantenimiento.anim_Id;
+          this.newParametros.tima_Id = mantenimiento.tima_Id;
+          this.scrollIntoViewIfNeeded();
+          this.abrirPanel();
+           
+          
+
+        } else {
+          console.log('El valor de maan_Fecha es nulo o indefinido');
+        }
+      } else {
+        console.log('No se encontró el ID de mantenimiento');
+      }
+
+    } catch (error) {
+
+    }
+
+
+  }
+
 
 
   //Enviamos y editamos datos
   saveMantenimientoPorAnimal() {
 
+    this.submitted = true;
+
+
     var params = {
-      
+      "maan_Id": this.newParametros.maan_Id,
+      "anim_Id": this.newParametros.anim_Id,
+      "maan_Fecha": this.fechaSola,
+      "tima_Id": this.newParametros.tima_Id,
+      "maan_UserCreacion": 1,
+      "maan_UserModificacion": 1
+
     }
+    console.log(params);
 
-    // Verificar si todos los campos están llenos
-    // if (this.planta.plan_Nombre &&
-    //   this.planta.plan_NombreCientifico &&
-    //   this.planta.plan_Reino &&
-    //   this.planta.arbo_Id &&
-    //   this.planta.cuid_Id) {
-      // Todos los campos están llenos, realizar acciones adicionales
-      console.log("Todos los campos están llenos");
+    if (params.anim_Id != 0 && params.anim_Id != undefined && params.tima_Id != 0 && params.tima_Id != undefined && this.fechaSola.toDateString() != "" && params.maan_Fecha != undefined) {
 
-      this.ManteniminetoXAnimalService.postManteniminetoXAnimal(this.MantenimientoXanimal).subscribe(Response => {
+      this.ManteniminetoXAnimalService.EditManteniminetoXAnimal(params).subscribe(Response => {
         this.datos = Response;
-        if(this.datos.code == 409){
+        if (this.datos.code == 409) {
 
           this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
 
-        }else if(this.datos.code = 200){
+        } else if (this.datos.code = 200) {
           this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
-          setTimeout(() => {
-            this._rauter.navigate(['/uikit/MantenimientoPorAnimal']);
-          }, 1500);
+          this.getMantenimientoPorAnimal();
         }
-
-      
 
       }, error => {
         console.log(error)
       })
 
-    // }
+
+    }
   }
 
   //Enviamos y editamos datos
 
   getMantenimientoPorAnimal() {
     this._route.params.subscribe(Params => {
-      let plan_Id = Params['id'];
+      let maan_Id = Params['id'];
 
-      this.ManteniminetoXAnimalService.findManteniminetoXAnimal(plan_Id).subscribe(Response => {
-        this.ManteniminetoXAnimalService = Response;
-        console.log(Response);
+      var params = {
+        "anim_Id": maan_Id,
+
+      }
+      this.ManteniminetoXAnimalService.GetAnimalesXMantenimineto(params).subscribe(Response => {
+        this.DataAnimal = Response;
       }, error => {
         console.log(error);
       })
     });
   }
+
+
+  //Buscador
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+  //Buscador
 }
