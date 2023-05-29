@@ -40,7 +40,22 @@ export class MantenimientoComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
+      
+    first: number = 0;
+    rows: number = 10;
+
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
+
 
     statuses: any[] = [];
     //validar espacio
@@ -138,16 +153,16 @@ export class MantenimientoComponent implements OnInit {
                 console.log(this.datos)
                 if (this.datos.code == 409) {
 
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
                     this.Mantenimiento = this.Mantenimiento.filter(val => val.mant_Id !== this.Mantenimient.mant_Id);
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                     this.Mantenimient = {};
                     this.MantenimientotDialog = false;
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error:', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -173,8 +188,8 @@ export class MantenimientoComponent implements OnInit {
 
         var params = {
             "mant_Id": this.Mantenimient.mant_Id,
-            "mant_Observaciones": this.Mantenimient.mant_Observaciones?.trim(),
-            "tima_Id": this.Mantenimient.tima_Id,
+            "mant_Observaciones": this.Mantenimient.mant_Observaciones ? this.Mantenimient.mant_Observaciones.trim() : '',
+            "tima_Id": this.Mantenimient.tima_Id ? this.Mantenimient.tima_Id : 0,
             "tima_Descripcion": "",
             "mant_UserCreacion": 1,
             "mant_UserModificacion": 1
@@ -187,7 +202,12 @@ export class MantenimientoComponent implements OnInit {
             this.espacio = true;
         }
 
-        //Validacion de params
+        if(params.mant_Observaciones == "" || params.tima_Id == 0 || params.tima_Id == undefined){
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'Los campos son requeridos.', life: 3000 });
+
+        }
+        else{
+       //Validacion de params
         if (params.mant_Observaciones !== undefined &&
             params.mant_Observaciones.trim() !== '' ) {
 
@@ -199,18 +219,18 @@ export class MantenimientoComponent implements OnInit {
                         this.datos = Response;
                         if (this.datos.code == 409) {
 
-                            this.messageService.add({ severity: 'info', summary: 'Advertencia', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                         } else if (this.datos.code == 200) {
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                             this.Mantenimient = {};
                             this.MantenimientotDialog = false;
                             this.loadData();
 
 
                         } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
@@ -224,18 +244,18 @@ export class MantenimientoComponent implements OnInit {
                         this.datos = Response;
                         if (this.datos.code == 409) {
 
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                         } else if (this.datos.code == 200) {
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                             this.Mantenimient = {};
                             this.MantenimientotDialog = false;
                             this.loadData();
 
 
                         } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
@@ -250,6 +270,8 @@ export class MantenimientoComponent implements OnInit {
 
     }
     //Enviamos y editamos datos
+        }
+ 
 
 
 

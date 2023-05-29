@@ -2,19 +2,16 @@
     <div class="col-12">
       <div class="card">
         <div class="card-img-top">
-          <img src="https://i.ibb.co/nc0jqdZ/ESTADOS-CIVILES-7.png" width="100%">
+          <img src="https://i.ibb.co/HpTjZMn/roles.png" width="100%">
         </div>
         <br>
         <p-toast></p-toast>
         <div class="card">
           <form class="mid-from" #RolForm="ngForm" (ngSubmit)="CrearRol()">
-            <div class="grid p-fluid align-items-center justify-content-start"> <!-- Cambio de 'end' a 'start' -->
-                <div class="field col-2"> <!-- Se quita la clase 'align-self-start' -->
-                  <button pButton pRipple label="Regresar" icon="pi pi-times" type="button" class="p-button-danger"
-                    [routerLink]="['/app/uikit/RolesPorPantalla']"></button>
-                </div>
-              </div>
-                              
+<br>
+<br>      
+<br>
+
             <div class="grid p-fluid align-items-center justify-content-center">
               <div class="field col-8">
                 <label for="role_Descripcion">Nombre del rol</label>
@@ -33,6 +30,10 @@
               <div class="field col-2">
                 <button pButton pRipple label="Confirmar Nombre" icon="pi pi-check" type="submit" class="p-button-success"
                 [disabled]="isDisabled"></button>
+              </div>
+              <div class="field col-2"> <!-- Se quita la clase 'align-self-start' -->
+                <button pButton pRipple label="Regresar" icon="pi pi-times" type="button" class="p-button-danger"
+                  [routerLink]="['/app/uikit/RolesPorPantalla']"></button>
               </div>
             </div>
           </form>

@@ -35,7 +35,23 @@ export class cargosComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
+    
+    first: number = 0;
+    rows: number = 10;
+
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
+
+
 
     statuses: any[] = [];
     //validar espacio
@@ -120,9 +136,9 @@ export class cargosComponent implements OnInit {
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
-                if (this.datos.code == 409) {
+                if (this.datos.code == 500) {
 
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
                     this.Cargos = this.Cargos.filter(val => val.carg_Id !== this.Cargo.carg_Id);
@@ -131,7 +147,7 @@ export class cargosComponent implements OnInit {
                     this.CargostDialog = false;
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -157,7 +173,7 @@ export class cargosComponent implements OnInit {
 
         var params = {
             "carg_Id": this.Cargo.carg_Id,
-            "carg_Descripcion": this.Cargo.carg_Descripcion!.trim(),
+            "carg_Descripcion": this.Cargo.carg_Descripcion ? this.Cargo.carg_Descripcion.trim() : '',
             "carg_UserCreacion": 1,
             "carg_UserModificacion": 1
         }
@@ -167,7 +183,14 @@ export class cargosComponent implements OnInit {
             console.log(this.Cargo.carg_Descripcion?.toString().length);
             this.espacio = true;
         }
-        //Validacion de params
+
+        if(params.carg_Descripcion === "")
+        {
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'El campo es requerido.', life: 3000 });
+
+        }
+        else{
+                    //Validacion de params
         if (params.carg_Descripcion !== undefined &&
             params.carg_Descripcion.trim() !== '' &&
             params.carg_UserCreacion !== undefined &&
@@ -181,18 +204,18 @@ export class cargosComponent implements OnInit {
                         this.datos = Response;
                         if (this.datos.code == 409) {
 
-                            this.messageService.add({ severity: 'info', summary: 'Advertencia', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                         } else if (this.datos.code == 200) {
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                             this.Cargo = {};
                             this.CargostDialog = false;
                             this.loadData();
 
 
                         } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
@@ -206,18 +229,18 @@ export class cargosComponent implements OnInit {
                         this.datos = Response;
                         if (this.datos.code == 409) {
 
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                         } else if (this.datos.code == 200) {
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                             this.Cargo = {};
                             this.CargostDialog = false;
                             this.loadData();
 
 
                         } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            this.messageService.add({ severity: 'error:', summary: 'Error:', detail: this.datos.message, life: 3000 });
                         }
                     },
                     error => {
@@ -231,6 +254,8 @@ export class cargosComponent implements OnInit {
         }
 
     }
+        }
+
     //Enviamos y editamos datos
 
 

@@ -46,8 +46,23 @@ export class RolesPorPantallaComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
     isExpanded: boolean = false;
+    first: number = 0;
+    rows: number = 10;
 
-    cols: any[] = [];
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
+
+
+
     products: Product[] = [];
 
     expandedRow: any = null;
@@ -167,16 +182,16 @@ export class RolesPorPantallaComponent implements OnInit {
            
               if (this.datos.code == 409) {
                   
-                  this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                  this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
                   
               } else if (this.datos.code == 200) {
                   
-                  this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                  this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                  
                   this.CargarRoles()
 
               } else {
-                  this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                  this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
               }
           },
           error => {
@@ -211,7 +226,7 @@ export class RolesPorPantallaComponent implements OnInit {
                   
               } else if (this.datos.code == 200) {
                   
-                  this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                  this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                  
                
                   this.Pantallas(this.Rol);

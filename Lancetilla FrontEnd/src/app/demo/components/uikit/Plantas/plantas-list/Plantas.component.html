@@ -15,7 +15,7 @@
                 </div>
                 <div class="my-2">
                     <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                    [routerLink]="['/uikit/Plantas/Create']"></button>
+                    [routerLink]="['/app/uikit/Plantas/Create']"></button>
                 </div>
 
 
@@ -86,7 +86,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"  
-                                    [routerLink]="['/uikit/Plantas/Edit',Plantas.plan_Id]"></button>
+                                    [routerLink]="['/app/uikit/Plantas/Edit',Plantas.plan_Id]"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                                     (click)="deletePlantas(Plantas)"></button>
                             </div>
@@ -98,10 +98,14 @@
 
          
 
-        <p-dialog [(visible)]="deletePlantasDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deletePlantasDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+            <br>
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Planta">Estas seguro de querer eliminar a <b>{{Planta.plan_Nombre}}</b>?</span>
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="Planta">¿Estás seguro de eliminar la planta
+                    <b>{{Planta.plan_Nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"

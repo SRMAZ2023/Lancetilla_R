@@ -188,12 +188,17 @@ export class RolesPorPantallaInsertComponent implements OnInit {
    
       var params = {
         "role_Id": 0       ,
-        "role_Descripcion": this.Rol.role_Descripcion?.trim(),      
+        "role_Descripcion": this.Rol.role_Descripcion ? this.Rol.role_Descripcion.trim() : '',    
         "role_UserCreacion": 1,
         "role_UserModificacion": 1
       }
       
-          if (this.Rol.role_Descripcion != undefined && this.Rol.role_Descripcion != "") {
+      if(params.role_Descripcion == ""){
+        this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: "El campo es requerido.", life: 3000 });
+
+      }
+      else{
+        if (this.Rol.role_Descripcion != undefined && this.Rol.role_Descripcion != "") {
             this.rolesPorPantallaService.CrearRoles(params).subscribe(
               Response => {
                   this.datos = Response;
@@ -201,7 +206,7 @@ export class RolesPorPantallaInsertComponent implements OnInit {
                 
                   if (this.datos.data.role_Descripcion == "El rol ya existe.") {
                       
-                      this.messageService.add({ severity: 'info', summary: 'Atencion', detail: "El rol ya existe.", life: 3000 });
+                      this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: "El rol ya existe.", life: 3000 });
                       
                   } else if (this.datos.data.role_Descripcion == "Rol creado con éxito.") {
                       
@@ -225,6 +230,8 @@ export class RolesPorPantallaInsertComponent implements OnInit {
               }
           );
           }
+      }
+          
       
      
 

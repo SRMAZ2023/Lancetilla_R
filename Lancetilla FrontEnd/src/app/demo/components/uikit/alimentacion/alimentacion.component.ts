@@ -33,8 +33,22 @@ export class AlimentacionComponent implements OnInit {
 
     //Validacion
     submitted: boolean = false;
+    
+    first: number = 0;
+    rows: number = 10;
 
-    cols: any[] = [];
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
+
 
     statuses: any[] = [];
     //validar espacio
@@ -118,18 +132,18 @@ this.CargarDatos();
                 console.log(this.datos)
                 if (this.datos.code == 409) {
 
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
 
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                     this.Alimento = {};
                     this.AlimentaciontDialog = false;
                     this.Alimentacion = this.Alimentacion.filter(val => val.alim_Id !== this.Alimento.alim_Id);
                     this.CargarDatos();
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -184,17 +198,17 @@ this.CargarDatos();
                             this.datos = Response;
                             if (this.datos.code == 409) {
     
-                                this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
     
                             } else if (this.datos.code == 200) {
     
-                                this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.Alimento = {};
                                 this.AlimentaciontDialog = false
                                 this.CargarDatos();
     
                             } else {
-                                this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                             }
                         },
                         error => {
@@ -208,17 +222,17 @@ this.CargarDatos();
                             this.datos = Response;
                             if (this.datos.code == 409) {
     
-                                this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
     
                             } else if (this.datos.code == 200) {
     
-                                this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.Alimento = {};
                                 this.AlimentaciontDialog = false;
                                 this.CargarDatos();
     
                             } else {
-                                this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                             }
                         },
                         error => {

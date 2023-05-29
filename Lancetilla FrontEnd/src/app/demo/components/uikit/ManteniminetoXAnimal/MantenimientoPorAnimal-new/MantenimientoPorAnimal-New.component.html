@@ -5,122 +5,73 @@
             <h1>Mantenimiento a Animal</h1>
             <div class="grid p-fluid">
                 <div class="field col-6">
-                    <p-dropdown [options]="Animal"
-            [(ngModel)]="mantenimientoXanimalp.anim_Id"
-            placeholder="Seleccione un animal"
-            [ngClass]="{'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.anim_Id}"
-            (onChange)="onAnimalChange($event)">
-</p-dropdown>
-                    <small
-                        *ngIf="submitted && !mantenimientoXanimalp.anim_Id"
-                        class="ng-dirty ng-invalid"
-                        style="color: red"
-                    >
+                    <p-dropdown [options]="Animal" [(ngModel)]="mantenimientoXanimalp.anim_Id"
+                        placeholder="Seleccione un animal"
+                        [ngClass]="{'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.anim_Id}"
+                        (onChange)="onAnimalChange($event)">
+                    </p-dropdown>
+                    <small *ngIf="submitted && !mantenimientoXanimalp.anim_Id" class="ng-dirty ng-invalid"
+                        style="color: red">
                         El animal es requerido.
                     </small>
                 </div>
 
                 <div class="field col-6">
-                    <p-calendar
-                        name="maan_Fecha"
-                        aria-placeholder="Seleccione una fecha."
-                        [(ngModel)]="mantenimientoXanimalp.maan_Fecha"
-                        [showIcon]="true"
-                        inputId="icon"
-                        [ngClass]="{
+                    <p-calendar name="maan_Fecha" aria-placeholder="Seleccione una fecha."
+                        [(ngModel)]="mantenimientoXanimalp.maan_Fecha" [showIcon]="true" inputId="icon" [ngClass]="{
                             'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.maan_Fecha
-                        }"
-                        [minDate]="minDate"
-                    ></p-calendar>
-                    <small
-                        class="ng-dirty ng-invalid"
-                        style="color: red"
-                        *ngIf="submitted && !mantenimientoXanimalp.maan_Fecha"
-                    >La fecha de mantenimiento es requerida.</small>
+                        }" [minDate]="minDate"></p-calendar>
+                    <small class="ng-dirty ng-invalid" style="color: red"
+                        *ngIf="submitted && !mantenimientoXanimalp.maan_Fecha">La fecha de mantenimiento es
+                        requerida.</small>
                 </div>
-                
+
 
                 <div class="field col-6">
                     <!-- Dropdown para el Tipo de Mantenimiento -->
-<p-dropdown [options]="tipoMantenimiento"
-[(ngModel)]="mantenimientoXanimalp.tima_Id"
-placeholder="Seleccione un tipo de Mantenimiento"
-[ngClass]="{'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.tima_Id}"
-(onChange)="onTipoMantenimientoChange($event)">
-</p-dropdown>
-                    <small
-                        *ngIf="submitted && !mantenimientoXanimalp.tima_Id"
-                        class="ng-dirty ng-invalid"
-                        style="color: red"
-                    >
+                    <p-dropdown [options]="tipoMantenimiento" [(ngModel)]="mantenimientoXanimalp.tima_Id"
+                        placeholder="Seleccione un tipo de Mantenimiento"
+                        [ngClass]="{'ng-invalid ng-dirty': submitted && !mantenimientoXanimalp.tima_Id}"
+                        (onChange)="onTipoMantenimientoChange($event)">
+                    </p-dropdown>
+                    <small *ngIf="submitted && !mantenimientoXanimalp.tima_Id" class="ng-dirty ng-invalid"
+                        style="color: red">
                         El tipo de mantenimineto es requerido.
                     </small>
                 </div>
             </div>
             <div class="grid p-fluid">
                 <div class="field col-2">
-                    <button
-                        (click)="saveMantenimientoPorAnimal()"
-                        pButton
-                        pRipple
-                        label="Guardar"
-                        icon="pi pi-check"
-                        class="p-button-text"
-                    ></button>
+                    <button (click)="saveMantenimientoPorAnimal()" pButton pRipple label="Guardar" icon="pi pi-check"
+                        class="p-button-text"></button>
                 </div>
                 <div class="field col-2">
-                    <button pButton pRipple label="Finalizar" icon="pi pi-times" type="button"
-                        class="p-button-warning" [routerLink]="['/uikit/ManteniminetoXAnimal']"></button>
+                    <button pButton pRipple label="Finalizar" icon="pi pi-times" type="button" class="p-button-warning"
+                        [routerLink]="['/app/uikit/ManteniminetoXAnimal']"></button>
                 </div>
                 <div class="field col-2">
-                    <button
-                        pButton
-                        pRipple
-                        label="Cancelar"
-                        icon="pi pi-times"
-                        type="button"
-                        class="p-button-danger"
-                        [routerLink]="['/uikit/ManteniminetoXAnimal']"
-                    ></button>
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button" class="p-button-danger"
+                        [routerLink]="['/app/uikit/ManteniminetoXAnimal']"></button>
                 </div>
             </div>
         </div>
         <div class="card">
             <h2>Tabla de datos</h2>
-            <p-table
-                #dt
-                [value]="DataAnimal"
-                [columns]="cols"
-                responsiveLayout="scroll"
-                [rows]="10"
+            <p-table #dt [value]="DataAnimal" [columns]="cols" responsiveLayout="scroll" [rows]="10"
                 [globalFilterFields]="[
                     'anim_Nombre',
                     'maan_Fecha',
                     'tima_Descripcion'
-                ]"
-                [paginator]="true"
-                [rowsPerPageOptions]="[10, 20, 30]"
-                [showCurrentPageReport]="true"
+                ]" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} "
-                [(selection)]="selectedMantenimiento"
-                selectionMode="multiple"
-                [rowHover]="true"
-                dataKey="id"
-            >
+                [(selection)]="selectedMantenimiento" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">DataAnimal</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Buscar..."
-                                class="w-full sm:w-auto"
-                            />
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -155,9 +106,7 @@ placeholder="Seleccione un tipo de Mantenimiento"
                             {{ DataAnimal.anim_Nombre }}
                         </td>
                         <td style="width: 15%; min-width: 15rem">
-                            <span class="p-column-title"
-                                >Nombre Cientifico</span
-                            >
+                            <span class="p-column-title">Nombre Cientifico</span>
                             {{ DataAnimal.maan_Fecha }}
                         </td>
 
@@ -168,57 +117,33 @@ placeholder="Seleccione un tipo de Mantenimiento"
 
                         <td>
                             <div class="flex">
-                                
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-trash"
-                                    class="p-button-rounded p-button-warning"
-                                    (click)="deleteMantenimiento(DataAnimal)"
-                                ></button>
+
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteMantenimiento(DataAnimal)"></button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog
-        [(visible)]="deleteMantenimientoXanimalDialog"
-        [modal]="true"
-        [style]="{ width: '450px' }"
-        header="Confirm"
-    >
-        <div class="flex align-items-center justify-content-center">
-            <i
-                class="pi pi-exclamation-triangle mr-3"
-                style="font-size: 2rem"
-            ></i>
-            <span *ngIf="DataAnimal">
-                Estas seguro de querer eliminar a
-                <b>
-                    {{ DataAnimal.anim_Nombre }}
-                </b>
-                ?
-            </span>
-        </div>
-        <ng-template pTemplate="footer">
-            <button
-                (click)="deleteMantenimientoXanimalDialog = false"
-                pButton
-                pRipple
-                icon="pi pi-times"
-                class="p-button-text"
-                label="No"
-            ></button>
-            <button
-                (click)="confirmDelete()"
-                pButton
-                pRipple
-                icon="pi pi-check"
-                class="p-button-text"
-                label="Yes"
-            ></button>
-        </ng-template>
-    </p-dialog>
+        <p-dialog [(visible)]="deleteMantenimientoXanimalDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirm">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="DataAnimal">
+                    Estas seguro de querer eliminar a
+                    <b>
+                        {{ DataAnimal.anim_Nombre }}
+                    </b>
+                    ?
+                </span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button (click)="deleteMantenimientoXanimalDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-text" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check" class="p-button-text"
+                    label="Yes"></button>
+            </ng-template>
+        </p-dialog>
     </div>
 </div>

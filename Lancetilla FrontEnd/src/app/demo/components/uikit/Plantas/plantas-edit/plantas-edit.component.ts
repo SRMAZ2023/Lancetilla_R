@@ -88,10 +88,10 @@ export class PlantasEditComponent {
         this.datos = Response;
         if(this.datos.code == 409){
 
-          this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+          this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
         }else if(this.datos.code = 200){
-          this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
+          this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 1500 });
           setTimeout(() => {
             this._rauter.navigate(['/uikit/Plantas']);
           }, 1500);

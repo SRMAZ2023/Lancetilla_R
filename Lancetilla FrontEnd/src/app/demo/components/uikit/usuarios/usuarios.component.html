@@ -1,246 +1,275 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card px-6 py-6">
-            <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                            (click)="openNew()"></button>
-                    </div>
-                </ng-template>
+  <div class="col-12">
+    <div class="card px-6 py-6">
+      <p-toast></p-toast>
+      <div class="card-img-top">
+        <img src="https://i.ibb.co/Gdm6gqz/usuarios.png" width="100%" height="40%">
+      </div>
+      <br>
 
-                <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
-                </ng-template>
-            </p-toolbar>
-
-            <p-table #dt [value]="Usuarios" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['usua_NombreUsuario']" [paginator]="true"
-                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedUsuario"
-                selectionMode="multiple" [rowHover]="true" dataKey="id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Usuarios</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
-                                class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-
-                        <th pSortableColumn="usua_Id">Id <p-sortIcon field="usua_Id"></p-sortIcon></th>
-                        <th pSortableColumn="usua_NombreUsuario">Descripcion <p-sortIcon field="usua_NombreUsuario"></p-sortIcon></th>
-                        <th pSortableColumn="empl_Nombre">Empleado <p-sortIcon field="empl_Nombre"></p-sortIcon></th>
-                        <th pSortableColumn="role_Descripcion">Rol <p-sortIcon field="role_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="usua_EsAdmin">Es Admin? <p-sortIcon field="usua_EsAdmin"></p-sortIcon></th>
-              
-                              
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-Usuarios>
-                    <tr>
-
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
-                            {{Usuarios.usua_Id}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{Usuarios.usua_NombreUsuario}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{Usuarios.empl_Nombre}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{Usuarios.role_Descripcion}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{Usuarios.usua_EsAdmin}}
-                        </td>
-
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" (click)="editUsuario(Usuarios)"
-                                    class="p-button-rounded p-button-success mr-2"
-                                    ></button>
-                                <button pButton pRipple icon="pi pi-trash" (click)="deleteUsuario(Usuarios)" class="p-button-rounded p-button-warning"
-                                    ></button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+      <div class="flex align-items-center justify-content-start">
+        <div class="mr-4">
+          <span class="mr-3">Mostrar:</span>
+          <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+            (onChange)="onRowsPerPageChange()"></p-dropdown>
+        </div>
+        <div class="mr-3">
+          <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+            (click)="openNew()"></button>
         </div>
 
-        <p-dialog [(visible)]="InsertarUsuarioDialog" [style]="{ width: '600px', overflow: 'hidden' }" header="Usuarios" [modal]="true" class="p-fluid">
-          <ng-template pTemplate="content">
-            <div class="flex flex-wrap">
-             
-              <div class="field" style="width: 50%; padding-right: 1rem;">
-                <label for="username">Nombre de Usuario</label>
-                <input type="text" pInputText id="username" [(ngModel)]="Usuario.usua_NombreUsuario" required autofocus
-                  [ngClass]="{ 'ng-invalid ng-dirty': submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario) }" />
-                <small class="ng-dirty ng-invalid" style="color: red;"
-                  *ngIf="submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario)">
-                  El nombre de Usuario es requerido.
-                </small>
-              </div>
-             
-             
-              <div class="field" style="width: 50%; padding-right: 1rem;">
-                <label for="username">Clave</label>
-                <input type="text" pInputText id="username" [(ngModel)]="Usuario.usua_Clave" required autofocus
-                  [ngClass]="{ 'ng-invalid ng-dirty': submitted && isInputEmptyOrWhitespace(Usuario.usua_Clave) }" />
-                <small class="ng-dirty ng-invalid" style="color: red;"
-                  *ngIf="submitted && isInputEmptyOrWhitespace(Usuario.usua_Clave)">
-                  La clave es requerido.
-                </small>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap">
+        <div class="ml-auto">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+              class="p-button-success" />
+          </span>
+        </div>
+      </div>
 
-              <div class="field" style="width: 50%; padding-right: 1rem;">
-                <div class="field">
-                  <label for="roleId">Rol</label>
-                  <p-dropdown id="roleId" [appendTo]="'body'" [(ngModel)]="Usuario.role_Id" [options]="roles" optionLabel="label" optionValue="value"
-                  [placeholder]="'Seleccione un rol'" [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.role_Id }"></p-dropdown>              
-                  <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.role_Id">
-                    Debe seleccionar un rol.
-                  </small>
-                </div>
-              </div>
-              
-              <div class="field" style="width: 50%; padding-right: 1rem;">
-                <div class="field">
-                  <label for="emplId">Empleado</label>
-                  <p-dropdown id="emplId" [appendTo]="'body'" [(ngModel)]="Usuario.empl_Id" [options]="empleados" optionValue="value" 
-                    [placeholder]="'Seleccione un empleado'" [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.empl_Id }"></p-dropdown>
-                  <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.empl_Id">
-                    Debe seleccionar un empleado.
-                  </small>
-                </div>
-              </div>
-              
-  
-          </div>
+      <br>
 
-          <div class="field">
-            <div class="flex align-items-center justify-content-between mb-3 gap-4">
-              <div class="p-checkbox-vertical">
-                <p-checkbox id="adminCheckbox"  [binary]="true" styleClass="mr-2" [(ngModel)]="Usuario.usua_Admin"></p-checkbox>
-                <label for="adminCheckbox">Es Admin?</label>
-              </div>
-            </div>
-          </div>
-          
-      
-        
-        
+      <p-table #dt [value]="Usuarios" [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
+        [showCurrentPageReport]="true" [(selection)]="selectedUsuario" selectionMode="multiple" [rowHover]="true"
+        dataKey="id" [first]="first" [rows]="rows">
+
+        <ng-template pTemplate="header">
+          <tr>
+
+            <th pSortableColumn="usua_Id">Id <p-sortIcon field="usua_Id"></p-sortIcon></th>
+            <th pSortableColumn="usua_NombreUsuario">Descripcion <p-sortIcon field="usua_NombreUsuario"></p-sortIcon>
+            </th>
+            <th pSortableColumn="empl_Nombre">Empleado <p-sortIcon field="empl_Nombre"></p-sortIcon></th>
+            <th pSortableColumn="role_Descripcion">Rol <p-sortIcon field="role_Descripcion"></p-sortIcon></th>
+            <th pSortableColumn="usua_EsAdmin">Es Admin? <p-sortIcon field="usua_EsAdmin"></p-sortIcon></th>
+
+
+            <th></th>
+          </tr>
         </ng-template>
-  
-          <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="InsertarUsuario()"></button>
-          </ng-template>
-  
-        </p-dialog>
-          
+        <ng-template pTemplate="body" let-Usuarios>
+          <tr>
 
-        <p-dialog [(visible)]="EditarUsuarioDialog" [style]="{ width: '600px' }" header="Usuarios" [modal]="true" class="p-fluid">
-          <ng-template pTemplate="content">
-            <div class="flex flex-wrap">
-             
-              <div class="field" style="width: 50%; padding-right: 1rem;">
-                <label for="username">Nombre de Usuario</label>
-                <input type="text" pInputText id="username" [(ngModel)]="Usuario.usua_NombreUsuario" required autofocus
-                  [ngClass]="{ 'ng-invalid ng-dirty': submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario) }" />
-                <small class="ng-dirty ng-invalid" style="color: red;"
-                  *ngIf="submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario)">
-                  El nombre de Usuario es requerido.
+            <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+              {{Usuarios.usua_Id}}
+            </td>
+            <td style="width:14%; min-width:10rem;">
+              <span class="p-column-title">Name</span>
+              {{Usuarios.usua_NombreUsuario}}
+            </td>
+            <td style="width:14%; min-width:10rem;">
+              <span class="p-column-title">Name</span>
+              {{Usuarios.empl_Nombre}}
+            </td>
+            <td style="width:14%; min-width:10rem;">
+              <span class="p-column-title">Name</span>
+              {{Usuarios.role_Descripcion}}
+            </td>
+            <td style="width:14%; min-width:10rem;">
+              <span class="p-column-title">Name</span>
+              {{Usuarios.usua_EsAdmin}}
+            </td>
+
+            <td>
+              <div class="flex">
+                <button pButton pRipple icon="pi pi-pencil" (click)="editUsuario(Usuarios)"
+                  class="p-button-rounded p-button-success mr-2"></button>
+                <button pButton pRipple icon="pi pi-trash" (click)="deleteUsuario(Usuarios)"
+                  class="p-button-rounded p-button-warning"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog [(visible)]="InsertarUsuarioDialog" [style]="{ width: '600px', overflow: 'hidden' }" header="Usuarios"
+      [modal]="true" class="p-fluid">
+      <br>
+      <ng-template pTemplate="content">
+        <div class="flex flex-wrap">
+
+          <div class="field" style="width: 50%; padding-right: 1rem;">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" pInputText id="username" [(ngModel)]="Usuario.usua_NombreUsuario" required autofocus
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario) }" />
+            <small class="ng-dirty ng-invalid" style="color: red;"
+              *ngIf="submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario)">
+              El nombre de usuario es requerido.
+            </small>
+          </div>
+
+
+          <div class="field" style="width: 50%; padding-right: 1rem;">
+            <label for="username">Clave</label>
+            <input type="text" pInputText id="username" [(ngModel)]="Usuario.usua_Clave" required autofocus
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && isInputEmptyOrWhitespace(Usuario.usua_Clave) }" />
+            <small class="ng-dirty ng-invalid" style="color: red;"
+              *ngIf="submitted && isInputEmptyOrWhitespace(Usuario.usua_Clave)">
+              La clave es requerida.
+            </small>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap">
+
+          <div class="field" style="width: 50%; padding-right: 1rem;">
+            <div class="field">
+              <label for="roleId">Rol</label>
+              <p-dropdown id="roleId" [appendTo]="'body'" [(ngModel)]="Usuario.role_Id" [options]="roles"
+                optionLabel="label" optionValue="value" [placeholder]="'Seleccione un rol'"
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.role_Id }"></p-dropdown>
+              <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.role_Id">
+                El rol del usuario es requerido.
+              </small>
+            </div>
+          </div>
+
+          <div class="field" style="width: 50%; padding-right: 1rem;">
+            <div class="field">
+              <label for="emplId">Empleado</label>
+              <p-dropdown id="emplId" [appendTo]="'body'" [(ngModel)]="Usuario.empl_Id" [options]="empleados"
+                optionValue="value" [placeholder]="'Seleccione un empleado'"
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.empl_Id }"></p-dropdown>
+              <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.empl_Id">
+                El nombre del empleado es requerido.
+              </small>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="field">
+          <div class="flex align-items-center justify-content-between mb-3 gap-4">
+            <div class="p-checkbox-vertical">
+              <p-checkbox id="adminCheckbox" [binary]="true" styleClass="mr-2"
+                [(ngModel)]="Usuario.usua_Admin"></p-checkbox>
+              <label for="adminCheckbox">Es Admin?</label>
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+          (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+          (click)="InsertarUsuario()"></button>
+      </ng-template>
+
+    </p-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <p-dialog [(visible)]="EditarUsuarioDialog" [style]="{ width: '600px' }" header="Usuarios" [modal]="true"
+      class="p-fluid">
+      <br>
+      <ng-template pTemplate="content">
+        <div class="flex flex-wrap">
+
+          <div class="field" style="width: 50%; padding-right: 1rem;">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" pInputText id="username" [(ngModel)]="Usuario.usua_NombreUsuario" required autofocus
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario) }" />
+            <small class="ng-dirty ng-invalid" style="color: red;"
+              *ngIf="submitted && isInputEmptyOrWhitespace(Usuario.usua_NombreUsuario)">
+              El nombre de usuario es requerido.
+            </small>
+          </div>
+
+
+          <div class="field" style="width: 50%; padding-right: 1rem;">
+            <div class="field">
+              <label for="emplId">Empleado</label>
+              <p-dropdown id="emplId" [appendTo]="'body'" [(ngModel)]="Usuario.empl_Id" [options]="empleados"
+                optionValue="value" [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.empl_Id }"></p-dropdown>
+              <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.empl_Id">
+                El nombre del empleado es requerido.
+              </small>
+
+
+            </div>
+          </div>
+
+          <div class="flex flex-wrap">
+            <div class="field" style="width: 50%; padding-right: 1rem;">
+              <div class="field">
+                <label for="roleId">Rol</label>
+
+                <p-dropdown id="roleId" [appendTo]="'body'" [(ngModel)]="Usuario.role_Id" [options]="roles"
+                  optionValue="value" [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.role_Id }"></p-dropdown>
+                <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.role_Id">
+                  El rol es requerido.
                 </small>
               </div>
-               
+            </div>
 
-              <div class="field" style="width: 50%; padding-right: 1rem;">
-                <div class="field">
-                  <label for="emplId">Empleado</label>
-                  <p-dropdown id="emplId" [appendTo]="'body'" [(ngModel)]="Usuario.empl_Id" [options]="empleados"optionValue="value" 
-                    [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.empl_Id }"></p-dropdown>
-                  <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.empl_Id">
-                    Debe seleccionar un empleado.
-                  </small>
-                  
-                            
+            <div class="field" style="width: 50%; padding-right: 1rem;">
+              <br>
+              <br>
+              <div class="flex align-items-center justify-content-between">
+
+                <div class="p-checkbox-vertical" style="display: flex; align-items: center;">
+
+                  <p-checkbox id="adminCheckbox" [binary]="true" styleClass="mr-2"
+                    [(ngModel)]="Usuario.usua_Admin"></p-checkbox>
+                  <label for="adminCheckbox" style="margin-bottom: 0;">Es_Admin?</label>
                 </div>
               </div>
-              
-              <div class="flex flex-wrap">
-                <div class="field" style="width: 80%; padding-right: 1rem;">
-                  <div class="field">
-                    <label for="roleId">Rol</label>
-                  
-                    <p-dropdown id="roleId" [appendTo]="'body'" [(ngModel)]="Usuario.role_Id" [options]="roles"optionValue="value" 
-                       [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Usuario.role_Id }"></p-dropdown>
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Usuario.role_Id">
-                      Debe seleccionar un rol.
-                    </small>
-                  </div>
-                </div>
-              
-                <div class="field" style="width: 20%; padding-right: 1rem;">
-                  <br>
-                      <br>
-                  <div class="flex align-items-center justify-content-between">
-                    
-                    <div class="p-checkbox-vertical" style="display: flex; align-items: center;">
-                      
-                      <p-checkbox id="adminCheckbox" [binary]="true" styleClass="mr-2" [(ngModel)]="Usuario.usua_Admin"></p-checkbox>
-                      <label for="adminCheckbox" style="margin-bottom: 0;">Es_Admin?</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-     
+            </div>
+          </div>
+
+
         </div>
       </ng-template>
-  
-          <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)=" EditarUsuario()"></button>
-          </ng-template>
-  
-          
-        </p-dialog>
-       
-       
-        <p-dialog [(visible)]="EliminarUsuariosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Usuarios">Estas seguro de querer eliminar a <b>{{Usuario.usua_NombreUsuario}}</b>?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="EliminarUsuariosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-                    (click)="confirmDelete()"></button>
-            </ng-template>
-        </p-dialog>
 
-      
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+          (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+          (click)=" EditarUsuario()"></button>
+      </ng-template>
 
 
-    </div>
+    </p-dialog>
+
+
+    <p-dialog [(visible)]="EliminarUsuariosDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+      <br>
+      <div class="flex align-items-center justify-content-center">
+
+        <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+          style="margin-right: 15px;">
+        <span *ngIf="Usuario">¿Estás seguro de eliminar el usuario de
+          <b>{{Usuario.usua_NombreUsuario}}</b>?</span>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
+          (click)="EliminarUsuariosDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
+          (click)="confirmDelete()"></button>
+      </ng-template>
+    </p-dialog>
+
+
+
+
+  </div>
 </div>

@@ -3,6 +3,9 @@
         <div class="card">
             <p-toast></p-toast>
             <h1>{{page_title}}</h1>
+
+            <br>
+            <br>
             <form class="mid-from" #empleadosForm="ngForm" (ngSubmit)="saveEmpleados()">
                 <div class="grid p-fluid">
 
@@ -14,7 +17,7 @@
                             pattern="^(?!\s*$).+" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empl_Nombre.invalid && (empl_Nombre.touched || submitted)">
-                            La Nombre es requerida.
+                            La nombre del empleado es requerido.
                         </small>
                     </div>
 
@@ -26,7 +29,8 @@
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Apellido}"
                             pattern="^(?!\s*$).+" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="!empl_Apellido.valid && empl_Apellido.touched">El Apellido es requerido.</small>
+                            *ngIf="!empl_Apellido.valid && empl_Apellido.touched">
+                            El apellido del empleado es requerido.</small>
                     </div>
 
 
@@ -37,8 +41,8 @@
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Identidad}"
                             pattern="^(?!\s*$).+" [required]="true"></p-inputMask>
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="!empl_Identidad.valid && empl_Identidad.touched">El DNI es
-                            requerido.</small>
+                            *ngIf="!empl_Identidad.valid && empl_Identidad.touched">
+                            El número de identidad del empleado es requerido.</small>
                     </div>
 
                     <div class="field col-6">
@@ -48,8 +52,8 @@
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Telefono}"
                             pattern="^(?!\s*$).+" [required]="true"></p-inputMask>
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="!empl_Telefono.valid && empl_Telefono.touched">El Telefono es
-                            requerido.</small>
+                            *ngIf="!empl_Telefono.valid && empl_Telefono.touched">
+                            El teléfono del empleado es requerido.</small>
                     </div>
 
 
@@ -59,8 +63,8 @@
                             #empl_FechaNacimiento="ngModel" [(ngModel)]="empleado.empl_FechaNacimiento"
                             inputId="icon"></p-calendar>
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="!empl_FechaNacimiento.valid && empl_FechaNacimiento.touched">La Fecha de Nacimiento
-                            es requerida.</small>
+                            *ngIf="!empl_FechaNacimiento.valid && empl_FechaNacimiento.touched">
+                        La fecha de nacimiento del empleado es requerida.</small>
                     </div>
 
                     <div class="field col-6">
@@ -70,8 +74,8 @@
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !empleado.empl_Direccion}"
                             pattern="^(?!\s*$).+" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="!empl_Direccion.valid && empl_Direccion.touched">La DIreccion es
-                            requerida.</small>
+                            *ngIf="!empl_Direccion.valid && empl_Direccion.touched">
+                            La dirección del empleado es requerida.</small>
                     </div>
 
                     <div class="field col-6">
@@ -94,7 +98,7 @@
 
                         </div>
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="empleadosForm.submitted && !empleado.empl_Sexo">El Sexo es requerido.</small>
+                            *ngIf="empleadosForm.submitted && !empleado.empl_Sexo">El género del empleado es requerido.</small>
                     </div>
 
 
@@ -106,7 +110,7 @@
                             [(ngModel)]="empleado.estc_Id" optionLabel="label" optionValue="value"
                             [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.estc_Id }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="empleadosForm.submitted && !empleado.estc_Id">El Estado Civil es requerido.</small>
+                            *ngIf="empleadosForm.submitted && !empleado.estc_Id">El estado civil del empleado es requerido.</small>
                     </div>
 
 
@@ -117,7 +121,7 @@
                             optionLabel="label" optionValue="value"
                             [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.carg_Id }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="empleadosForm.submitted && !empleado.carg_Id">El Cargo es requerido.</small>
+                            *ngIf="empleadosForm.submitted && !empleado.carg_Id">El cargo del empleado es requerido.</small>
                     </div>
 
                     <div class="field col-6">
@@ -129,7 +133,7 @@
                             (onChange)="onDepartamentoChange($event)"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empleadosForm.submitted && !empleado.dept_Id">
-                            El Departamento es requerido.
+                            El departamento de residencia del empleado es requerido.
                         </small>
                     </div>
 
@@ -142,7 +146,7 @@
                             [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.muni_Id }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empleadosForm.submitted && !empleado.muni_Id">
-                            El Municipio es requerido.
+                            El municipios de residencia del empleado es requerido.
                         </small>
                     </div>
 
@@ -152,7 +156,8 @@
 
 
                 </div>
-                <div class="grid p-fluid">
+                <br>
+                <div class="grid p-fluid  align-items-center justify-content-center">
 
                     <div class="field col-2">
                         <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
@@ -163,7 +168,7 @@
                     <div class="field col-2">
 
                         <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
-                            class="p-button-danger" [routerLink]="['/uikit/Empleados']"></button>
+                            class="p-button-danger" [routerLink]="['/app/uikit/Empleados']"></button>
 
                     </div>
                 </div>

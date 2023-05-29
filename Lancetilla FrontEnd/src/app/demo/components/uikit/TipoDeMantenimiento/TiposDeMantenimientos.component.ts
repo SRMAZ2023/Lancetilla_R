@@ -133,16 +133,16 @@ export class TiposDeMantenimientosComponent implements OnInit {
                 console.log(this.datos)
                 if (this.datos.code == 500) {
                     
-                    this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
                     
                 } else if (this.datos.code == 200) {
                     
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                     this.TiposDeMantenimientos = this.TiposDeMantenimientos.filter(val => val.tima_Id !== this.TiposDeMantenimiento.tima_Id);
                  this.loadData();
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Error:', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -177,7 +177,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
         console.log(params)
 
         if(params.tima_Descripcion === ""){
-            this.messageService.add({ severity: 'warn', summary: 'Atenión:', detail: 'El campo es requerido.', life: 3000 });
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'El campo es requerido.', life: 3000 });
 
         }
         else{
@@ -195,7 +195,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
                 this.datos = Response;
                 if(this.datos.code == 409){
                     
-                    this.messageService.add({ severity: 'warn', summary: 'Atenión:', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                 }else  if (this.datos.code  == 200) {
 
@@ -220,7 +220,7 @@ export class TiposDeMantenimientosComponent implements OnInit {
                 this.datos = Response;
                 if(this.datos.code == 409){
                     
-                    this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                 }else  if (this.datos.code  == 200) {
 
