@@ -26,7 +26,7 @@ GO
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_INSERT
 @usua_NombreUsuario			NVARCHAR(200),
 @empl_Id					INT,
-@usua_Clave			NVARCHAR(150),
+@usua_Clave			VARCHAR(150),
 @usua_Admin					BIT,
 @role_Id					INT,
 @usua_UserCreacion			INT
@@ -42,13 +42,14 @@ BEGIN
 		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario)
 		 BEGIN
 			
-			DECLARE @Encrypt NVARCHAR(MAX) = (HASHBYTES('SHA2_512',@usua_Clave))
+			DECLARE @Pass AS VARCHAR(MAX);
+	        SET @Pass = CONVERT(VARCHAR(MAX), HASHBYTES('sha2_512', @usua_Clave), 2);
 		
 
 			INSERT INTO acce.tbUsuarios
 			(usua_NombreUsuario,empl_Id, usua_Clave, usua_Admin,role_Id,usua_UserCreacion)
 			VALUES
-			(@usua_NombreUsuario,@empl_Id,@Encrypt,@usua_Admin,@role_Id,@usua_UserCreacion)
+			(@usua_NombreUsuario,@empl_Id,@Pass,@usua_Admin,@role_Id,@usua_UserCreacion)
 
 			SELECT 200 AS codeStatus, 'Usuario creado con éxito.' AS messageStatus
 		END
