@@ -112,6 +112,25 @@ CONSTRAINT FK_acce_tbRolesPantallas_ropa_UserModificacion_acce_tbUsuarios_usua_I
 
 --***************************************************************MÓDULO DE ZOOLOGICO**************************************************************************--
 
+--*****************************************************************TABLA DE REINOS****************************************************************************--
+CREATE TABLE zool.tbReinos(
+rein_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+rein_Descripcion			NVARCHAR(100)			NOT NULL,
+
+/**********Campos de auditoria***********/
+rein_UserCreacion			INT,
+rein_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+rein_UserModificacion		INT,
+rein_FechaModificacion		DATETIME,
+rein_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_zool_tbReinos_rein_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (rein_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbReinos_rein_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (rein_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 --**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
 CREATE TABLE zool.tbAreasZoologico(
 arzo_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
@@ -188,9 +207,10 @@ CONSTRAINT FK_zool_tbAlimentacion_alim_UserModificacion_acce_tbUsuarios_usua_Id	
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
 CREATE TABLE zool.tbAnimales(
 anim_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+anim_Codigo						NVARCHAR(100)		NOT NULL UNIQUE,
 anim_Nombre						NVARCHAR(200)		NOT NULL,
 anim_NombreCientifico			NVARCHAR(200)		NOT NULL,
-anim_Reino						NVARCHAR(100)		NOT NULL,
+rein_Id							INT					NOT NULL,
 habi_Id							INT					NOT NULL,
 arzo_Id							INT					NOT NULL,
 alim_Id							INT					NOT NULL,
@@ -206,6 +226,7 @@ anim_Estado						BIT					DEFAULT 1,
 CONSTRAINT FK_zool_tbAnimales_anim_UserCreacion_acce_tbUsuarios_usua_Id				FOREIGN KEY (anim_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbAnimales_anim_UserModificacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (anim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN KEY (arzo_Id)					REFERENCES zool.tbAreasZoologico(arzo_Id),
+CONSTRAINT FK_zool_tbAnimales_rein_Id_zool_tbReinos_rein_Id							FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
 CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
 CONSTRAINT FK_zool_tbAnimales_habi_Id_zool_tbHabitat_habi_Id						FOREIGN KEY (habi_Id)					REFERENCES zool.tbHabitat(habi_Id),
 CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
@@ -228,7 +249,7 @@ CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCi
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
 
 CREATE TABLE mant.tbDepartamentos(
-dept_Id					CHAR(2)             		NOT NULL PRIMARY KEY,
+dept_Id					INT             		NOT NULL PRIMARY KEY,
 dept_Descripcion		NVARCHAR(100)			NOT NULL,
 
 /**********Campos de auditoria***********/
@@ -247,9 +268,9 @@ CONSTRAINT FK_mant_tbDepartamento_dept_UserModificacion_acce_tbUsuarios_usua_Id	
 
 --*************************************************************TABLA DE MUNICIPIOS****************************************************************************--
 CREATE TABLE mant.tbMunicipios(
-muni_Id							CHAR(4) NOT NULL PRIMARY KEY,
+muni_Id							INT NOT NULL PRIMARY KEY,
 muni_Descripcion				NVARCHAR(100)		NOT NULL,
-dept_Id CHAR(2) NOT NULL,
+dept_Id INT NOT NULL,
 
 /**********Campos de auditoria***********/
 muni_UserCreacion				INT,
@@ -316,7 +337,7 @@ empl_Sexo				CHAR(1)				NOT NULL,
 empl_Telefono			NVARCHAR(100)		NOT NULL,
 estc_Id					INT					NOT NULL,
 carg_Id					INT					NOT NULL,
-muni_Id					CHAR(4)					NOT NULL,
+muni_Id					INT					NOT NULL,
 
 /**********Campos de auditoria***********/
 empl_UserCreacion		INT,
@@ -449,6 +470,31 @@ CONSTRAINT FK_bota_tbAreasBotanicas_arbo_UserModificacion_acce_tbUsuarios_usua_I
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--*****************************************************************TABLA DE PLANTAS****************************************************************************--
+CREATE TABLE bota.tbPlantas (
+plan_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+plan_Codigo				NVARCHAR(100)		NOT NULL UNIQUE,
+plan_Nombre				NVARCHAR(100)		NOT NULL,
+plan_NombreCientifico	NVARCHAR(200)		NOT NULL,
+rein_Id					INT					NOT NULL,
+arbo_Id					INT					NOT NULL,
+
+/**********Campos de auditoria***********/
+plan_UserCreacion		INT,
+plan_FechaCreacion		DATETIME			DEFAULT GETDATE(),
+plan_UserModificacion	INT,
+plan_FechaModificacion	DATETIME,
+plan_Estado				BIT					DEFAULT 1,
+
+CONSTRAINT FK_bota_tbPlantas_plan_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (plan_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_tbPlantas_plan_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (plan_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_tbPlantas_arbo_Id_bota_tbAreasBotanicas_arbo_Id				FOREIGN KEY (arbo_Id)					REFERENCES bota.tbAreasBotanicas(arbo_Id),
+CONSTRAINT FK_bota_tbPlantas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
+CONSTRAINT UK_bota_tbPlantas_plan_NombreCientifico								UNIQUE(plan_NombreCientifico));
+--****************************************************************/TABLA DE PLANTAS***************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --*****************************************************************TABLA DE CUIDADOS***************************************************************************--
 CREATE TABLE bota.tbCuidados(
 cuid_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
@@ -466,30 +512,7 @@ CONSTRAINT FK_bota_tbCuidad_cuid_UserCreacion_acce_tbUsuarios_usua_Id		FOREIGN K
 CONSTRAINT FK_bota_tbCuidad_cuid_UserModificacion_acce_tbUsuarios_usua_Id	FOREIGN KEY (cuid_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
 --****************************************************************/TABLA DE CUIDADOS***************************************************************************--
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE PLANTAS****************************************************************************--
-CREATE TABLE bota.tbPlantas (
-plan_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
-plan_Nombre				NVARCHAR(100)		NOT NULL,
-plan_NombreCientifico	NVARCHAR(200)		NOT NULL,
-plan_Reino				NVARCHAR(100)		NOT NULL,
-arbo_Id					INT					NOT NULL,
-cuid_Id					INT					NOT NULL,
-
-/**********Campos de auditoria***********/
-plan_UserCreacion		INT,
-plan_FechaCreacion		DATETIME			DEFAULT GETDATE(),
-plan_UserModificacion	INT,
-plan_FechaModificacion	DATETIME,
-plan_Estado				BIT					DEFAULT 1,
-
-CONSTRAINT FK_bota_tbPlantas_plan_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (plan_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_bota_tbPlantas_plan_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (plan_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_bota_tbPlantas_arbo_Id_bota_tbAreasBotanicas_arbo_Id				FOREIGN KEY (arbo_Id)					REFERENCES bota.tbAreasBotanicas(arbo_Id),
-CONSTRAINT FK_bota_tbPlantas_cuid_Id_bota_tbCuidado_cuid_Id						FOREIGN KEY (cuid_Id)					REFERENCES bota.tbCuidados(cuid_Id),
-CONSTRAINT UK_bota_tbPlantas_plan_NombreCientifico								UNIQUE(plan_NombreCientifico));
---****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
 --***************************************************************/MÓDULO DE BOTÁNICA**************************************************************************--
 
@@ -725,10 +748,6 @@ VALUES ('AreasZoologico', NULL, GETDATE(), NULL, NULL), --16
 INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
 VALUES ('Usuarios', NULL, GETDATE(), NULL, NULL), --21
        ('Roles', NULL, GETDATE(), NULL, NULL) --22
-
-INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
-VALUES ('Graficos', NULL, GETDATE(), NULL, NULL) --23
-     
 --***********************************************************/TABLA DE PANTALLAS******************************************************************************--
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -755,7 +774,6 @@ INSERT INTO ACCE.tbRolesPantallas (role_Id, pant_Id, ropa_UserCreacion, ropa_Fec
 		(1,20,1,GETDATE()),
 		(1,21,1,GETDATE()),
 		(1,22,1,GETDATE()),
-		(1,23,1,GETDATE()),
 		
 		(2,10,1,GETDATE()),
 		(2,11,1,GETDATE()),
@@ -784,6 +802,18 @@ INSERT INTO ACCE.tbRolesPantallas (role_Id, pant_Id, ropa_UserCreacion, ropa_Fec
 
 
 --***************************************************************INSERT DE ZOOLOGICO**************************************************************************--
+
+--*****************************************************************TABLA DE REINOS****************************************************************************--
+INSERT INTO zool.tbReinos (rein_Descripcion, rein_UserCreacion)
+VALUES 
+   ('Animal', 1),
+   ('Vegetal', 1),
+   ('Fungi', 1),
+   ('Protoctista ', 1),
+   ('Monera', 1);
+--*********************************************************/TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
 INSERT INTO zool.tbAreasZoologico (arzo_Descripcion, arzo_UserCreacion)
@@ -910,102 +940,102 @@ VALUES
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
-INSERT INTO zool.tbAnimales (anim_Nombre, anim_NombreCientifico, anim_Reino, habi_Id, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
+INSERT INTO zool.tbAnimales (anim_Codigo, anim_Nombre, anim_NombreCientifico, rein_Id, habi_Id, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
 VALUES 
   -- Aves
-  ('Águila Real', 'Aquila chrysaetos', 'Animalia', 8,7, 1, 1, 1),
-  ('Colibrí', 'Trochilidae', 'Animalia',12, 7, 1, 1, 1),
-  ('Avestruz', 'Struthio camelus', 'Animalia', 15, 2, 1, 1, 1),
+  ('#AVES0001', 'Águila Real', 'Aquila chrysaetos', 1, 8,7, 1, 1, 1),
+  ('#AVES0002','Colibrí', 'Trochilidae', 1,12, 7, 1, 1, 1),
+  ('#AVES0003','Avestruz', 'Struthio camelus', 1, 15, 2, 1, 1, 1),
 
   -- Mamíferos
-  ('Tigre', 'Panthera tigris', 'Animalia', 13, 2, 2, 2, 1),
-  ('León', 'Panthera leo', 'Animalia', 12, 2, 2, 2, 1),
-  ('Elefante', 'Loxodonta africana', 'Animalia', 2, 2, 2, 6, 1),
+  ('#MAMS0001','Tigre', 'Panthera tigris', 1, 13, 2, 2, 2, 1),
+  ('#MAMS0002','León', 'Panthera leo', 1, 12, 2, 2, 2, 1),
+  ('#MAMS0003','Elefante', 'Loxodonta africana', 1, 2, 2, 2, 6, 1),
 
   -- Reptiles
-  ('Tortuga Marina', 'Cheloniidae', 'Animalia', 4, 1, 3, 3, 1),
-  ('Cocodrilo', 'Crocodylidae', 'Animalia', 14, 1, 3, 3, 1),
+  ('#REPS0001','Tortuga Marina', 'Cheloniidae', 1, 4, 1, 3, 3, 1),
+  ('#REPS0002','Cocodrilo', 'Crocodylidae', 1, 14, 1, 3, 3, 1),
 
   -- Anfibios
-  ('Rana Arborícola', 'Hyla versicolor', 'Animalia', 1, 9, 4, 4, 1),
-  ('Salamandra', 'Salamandridae', 'Animalia',3, 9, 4, 4, 1),
-  ('Sapo Común', 'Bufo bufo', 'Animalia', 12, 9, 4, 4, 1),
+  ('#ANFI0001','Rana Arborícola', 'Hyla versicolor', 1, 1, 9, 4, 4, 1),
+  ('#ANFI0002','Salamandra', 'Salamandridae', 1,3, 9, 4, 4, 1),
+  ('#ANFI0003','Sapo Común', 'Bufo bufo', 1, 12, 9, 4, 4, 1),
 
   -- Peces
-  ('Salmón', 'Salmo salar', 'Animalia', 14, 1, 5, 5, 1),
-  ('Tiburón Blanco', 'Carcharodon carcharias', 'Animalia', 4, 1, 5, 5, 1),
-  ('Pez Payaso', 'Amphiprioninae', 'Animalia', 9, 1, 5, 5, 1),
+  ('#PECS0001','Salmón', 'Salmo salar', 1, 14, 1, 5, 5, 1),
+  ('#PECS0002','Tiburón Blanco', 'Carcharodon carcharias', 1, 4, 1, 5, 5, 1),
+  ('#PECS0003','Pez Payaso', 'Amphiprioninae', 1, 9, 1, 5, 5, 1),
 
   -- Insectos
-  ('Mariposa Monarca', 'Danaus plexippus', 'Animalia', 12, 10, 6, 6, 1),
-  ('Abeja de Miel', 'Apis mellifera', 'Animalia', 12, 4, 6, 6, 1),
-  ('Escarabajo Rinoceronte', 'Dynastinae', 'Animalia', 13, 4, 6, 6, 1),
+  ('#INSE0001','Mariposa Monarca', 'Danaus plexippus', 1, 12, 10, 6, 6, 1),
+  ('#INSE0002','Abeja de Miel', 'Apis mellifera', 1, 12, 4, 6, 6, 1),
+  ('#INSE0003','Escarabajo Rinoceronte', 'Dynastinae', 1, 13, 4, 6, 6, 1),
 
   -- Arácnidos
-  ('Tarántula', 'Theraphosidae', 'Animalia', 13, 4, 7, 7, 1),
-  ('Escorpión', 'Scorpiones', 'Animalia', 15, 4, 7, 7, 1),
-  ('Viuda Negra', 'Latrodectus', 'Animalia', 5, 4, 7, 7, 1),
+  ('#ARAC0001','Tarántula', 'Theraphosidae', 1, 13, 4, 7, 7, 1),
+  ('#ARAC0002','Escorpión', 'Scorpiones', 1, 15, 4, 7, 7, 1),
+  ('#ARAC0003','Viuda Negra', 'Latrodectus', 1, 5, 4, 7, 7, 1),
 
   -- Crustáceos
-  ('Cangrejo Rojo', 'Callinectes sapidus', 'Animalia', 4, 1, 8, 8, 1),
-  ('Langosta', 'Palinuridae', 'Animalia', 9, 1, 8, 8, 1),
-  ('Camaron', 'Pandalidae', 'Animalia', 9, 1, 8, 8, 1),
+  ('#CRUS0001','Cangrejo Rojo', 'Callinectes sapidus', 1, 4, 1, 8, 8, 1),
+  ('#CRUS0002','Langosta', 'Palinuridae', 1, 9, 1, 8, 8, 1),
+  ('#CRUS0003','Camaron', 'Pandalidae', 1, 9, 1, 8, 8, 1),
 
   -- Moluscos
-  ('Caracol de Jardín', 'Helix aspersa', 'Animalia', 2, 1, 9, 9, 1),
-  ('Pulpo', 'Octopoda', 'Animalia', 4, 1, 9, 9, 1),
-  ('Almeja', 'Bivalvia', 'Animalia', 9, 1, 9, 9, 1),
+  ('#MOLU0001','Caracol de Jardín', 'Helix aspersa', 1, 2, 1, 9, 9, 1),
+  ('#MOLU0002','Pulpo', 'Octopoda', 1, 4, 1, 9, 9, 1),
+  ('#MOLU0003','Almeja', 'Bivalvia', 1, 9, 1, 9, 9, 1),
 
   -- Marsupiales
-  ('Canguro Rojo', 'Macropus rufus', 'Animalia', 2, 2, 10, 10, 1),
-  ('Koala', 'Phascolarctos cinereus', 'Animalia',2, 2, 10, 10, 1),
-  ('Wombat', 'Vombatidae', 'Animalia', 2, 2, 10, 10, 1),
+  ('#MARS0001','Canguro Rojo', 'Macropus rufus', 1, 2, 2, 10, 10, 1),
+  ('#MARS0002','Koala', 'Phascolarctos cinereus', 1,2, 2, 10, 10, 1),
+  ('#MARS0003','Wombat', 'Vombatidae', 1, 2, 2, 10, 10, 1),
 
   -- Primates
-  ('Gorila', 'Gorilla gorilla', 'Animalia', 8, 5, 11, 11, 1),
-  ('Chimpancé', 'Pan troglodytes', 'Animalia', 2, 5, 11, 11, 1),
-  ('Orangután', 'Pongo abelii', 'Animalia', 1, 5, 11, 11, 1),
+  ('#PRIM0001','Gorila', 'Gorilla gorilla', 1, 8, 5, 11, 11, 1),
+  ('#PRIM0002','Chimpancé', 'Pan troglodytes', 1, 2, 5, 11, 11, 1),
+  ('#PRIM0003','Orangután', 'Pongo abelii', 1, 1, 5, 11, 11, 1),
 
   -- Cetáceos
-  ('Ballena Azul', 'Balaenoptera musculus', 'Animalia', 4, 1, 12, 12, 1),
-  ('Delfín Nariz de Botella', 'Tursiops truncatus', 'Animalia', 4, 1, 12, 12, 1),
-  ('Orca', 'Orcinus orca', 'Animalia', 4, 1, 12, 12, 1),
+  ('#CETS0001','Ballena Azul', 'Balaenoptera musculus', 1, 4, 1, 12, 12, 1),
+  ('#CETS0002','Delfín Nariz de Botella', 'Tursiops truncatus', 1, 4, 1, 12, 12, 1),
+  ('#CETS0003','Orca', 'Orcinus orca', 1, 4, 1, 12, 12, 1),
 
   -- Carnívoros
-  ('Oso Polar', 'Ursus maritimus', 'Animalia', 3, 1, 13, 13, 1),
-  ('Lobo', 'Canis lupus', 'Animalia', 5, 2, 13, 13, 1),
+  ('#CARN0001','Oso Polar', 'Ursus maritimus', 1, 3, 1, 13, 13, 1),
+  ('#CARN0002','Lobo', 'Canis lupus', 1, 5, 2, 13, 13, 1),
 
   -- Hervíboros
-  ('Jirafa', 'Giraffa camelopardalis', 'Animalia', 5, 2, 14, 14, 1),
-  ('Cebra', 'Equus quagga', 'Animalia', 5, 2, 14, 14, 1),
+  ('#HERV0001','Jirafa', 'Giraffa camelopardalis', 1, 5, 2, 14, 14, 1),
+  ('#HERV0002','Cebra', 'Equus quagga', 1, 5, 2, 14, 14, 1),
 
   -- Roedores
-  ('Ratón', 'Mus musculus', 'Animalia', 2, 4, 15, 15, 1),
-  ('Ardilla', 'Sciurus vulgaris', 'Animalia', 2, 4, 15, 15, 1),
-  ('Conejo', 'Oryctolagus cuniculus', 'Animalia', 5, 4, 15, 15, 1),
+  ('#ROED0001','Ratón', 'Mus musculus', 1, 2, 4, 15, 15, 1),
+  ('#ROED0002','Ardilla', 'Sciurus vulgaris', 1, 2, 4, 15, 15, 1),
+  ('#ROED0003','Conejo', 'Oryctolagus cuniculus', 1, 5, 4, 15, 15, 1),
 
   -- Equinos
-  ('Caballo', 'Equus ferus caballus', 'Animalia', 5, 4, 16, 16, 1),
-  ('Cebra de Montaña', 'Equus zebra', 'Animalia', 4, 4, 16, 16, 1),
-  ('Asno', 'Equus africanus asinus', 'Animalia', 10, 4, 16, 16, 1),
+  ('#EQUI0001','Caballo', 'Equus ferus caballus', 1, 5, 4, 16, 16, 1),
+  ('#EQUI0002','Cebra de Montaña', 'Equus zebra', 1, 4, 4, 16, 16, 1),
+  ('#EQUI0003','Asno', 'Equus africanus asinus', 1, 10, 4, 16, 16, 1),
     -- Caninos
-  ('Perro', 'Canis lupas familiaris', 'Animalia',10, 4, 17, 17, 1),
-  ('Coyote', 'Canis latrans', 'Animalia', 5, 4, 17, 17, 1),
+  ('#CANI0001','Perro', 'Canis lupas familiaris', 1,10, 4, 17, 17, 1),
+  ('#CANI0002','Coyote', 'Canis latrans', 1, 5, 4, 17, 17, 1),
 
     -- Felinos
-  ('Pantera', 'Panthera pardus', 'Animalia', 8, 6, 18, 18, 1),
-  ('Guepardo', 'Acinonyx jubatus', 'Animalia', 5, 6, 18, 18, 1),
-  ('Jaguar', 'Panthera onca', 'Animalia', 13, 6, 18, 18, 1),
+  ('#FELI0001','Pantera', 'Panthera pardus', 1, 8, 6, 18, 18, 1),
+  ('#FELI0002','Guepardo', 'Acinonyx jubatus', 1, 5, 6, 18, 18, 1),
+  ('#FELI0003','Jaguar', 'Panthera onca', 1, 13, 6, 18, 18, 1),
 
   -- Reptiles acuáticos
-  ('Tortuga de Galápagos', 'Chelonoidis nigra', 'Animalia', 8, 1, 19, 19, 1),
-  ('Caimán', 'Caimaninae', 'Animalia', 14, 1, 19, 19, 1),
-  ('Serpiente Marina', 'Hydrophiinae', 'Animalia',4, 1, 19, 19, 1),
+  ('#REAC0001','Tortuga de Galápagos', 'Chelonoidis nigra', 1, 8, 1, 19, 19, 1),
+  ('#REAC0002','Caimán', 'Caimaninae', 1, 14, 1, 19, 19, 1),
+  ('#REAC0003','Serpiente Marina', 'Hydrophiinae', 1,4, 1, 19, 19, 1),
 
   -- Reptiles terrestres
-  ('Dragón de Komodo', 'Varanus komodoensis', 'Animalia', 13, 4, 20, 20, 1),
-  ('Tortuga del Desierto', 'Gopherus agassizii', 'Animalia', 11, 4, 20, 20, 1),
-  ('Camaleón', 'Chamaeleonidae', 'Animalia', 11, 9, 20, 20, 1);
+  ('#RETE0001','Dragón de Komodo', 'Varanus komodoensis', 1, 13, 4, 20, 20, 1),
+  ('#RETE0002','Tortuga del Desierto', 'Gopherus agassizii', 1, 11, 4, 20, 20, 1),
+  ('#RETE0003','Camaleón', 'Chamaeleonidae', 1, 11, 9, 20, 20, 1);
 
 --***************************************************************/TABLA DE ANIMALES***************************************************************************--
 
@@ -1025,24 +1055,24 @@ VALUES
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
 INSERT INTO mant.tbDepartamentos(dept_Id, dept_Descripcion, dept_UserCreacion)
 VALUES 
-  ('01','Atlántida', 1),
-  ('02','Colón', 1),
-  ('03','Comayagua', 1),
-  ('04','Copán', 1),
-  ('05','Cortés', 1),
-  ('06','Choluteca', 1),
-  ('07','El Paraíso', 1),
-  ('08','Francisco Morazán', 1),
-  ('09','Gracias a Dios', 1),
-  ('10','Intibucá', 1),
-  ('11','Islas de la Bahía', 1),
-  ('12','La Paz', 1),
-  ('13','Lempira', 1),
-  ('14','Ocotepeque', 1),
-  ('15','Olancho', 1),
-  ('16','Santa Bárbara', 1),
-  ('17','Valle', 1),
-  ('18','Yoro', 1);
+  (01,'Atlántida', 1),
+  (02,'Colón', 1),
+  (03,'Comayagua', 1),
+  (04,'Copán', 1),
+  (05,'Cortés', 1),
+  (06,'Choluteca', 1),
+  (07,'El Paraíso', 1),
+  (08,'Francisco Morazán', 1),
+  (09,'Gracias a Dios', 1),
+  (10,'Intibucá', 1),
+  (11,'Islas de la Bahía', 1),
+  (12,'La Paz', 1),
+  (13,'Lempira', 1),
+  (14,'Ocotepeque', 1),
+  (15,'Olancho', 1),
+  (16,'Santa Bárbara', 1),
+  (17,'Valle', 1),
+  (18,'Yoro', 1);
 
 --**********************************************************/TABLA DE DEPARTAMENTOS***************************************************************************--
 
@@ -1050,301 +1080,301 @@ VALUES
 
 --*************************************************************TABLA DE MUNICIPIOS****************************************************************************--
 INSERT INTO mant.tbMunicipios(muni_Id, dept_Id, muni_Descripcion, muni_UserCreacion)
-VALUES   ('0101','01', 'La Ceiba',				   1),
-		 ('0102','01', 'Tela',					   1),
-	     ('0103','01', 'La Masica',				   1),
-		 ('0104','01', 'Arizona',				   1),
-		 ('0105','01', 'Jutiapa',				   1),
-		 ('0106','01', 'El Porvenir',			   1),
-		 ('0107','01', 'Esparta',				   1),
-	     ('0108','01', 'San Francisco',			   1),
-		 ('0201','02', 'Trujillo',				   1),
-		 ('0202','02', 'Balfate',				   1),
-		 ('0203','02', 'Iriona',					   1),
-		 ('0204','02', 'Limón',					   1),
-		 ('0205','02', 'Sabá',					   1),
-		 ('0206','02', 'Santa Fé',				   1),
-		 ('0207','02', 'Santa Rosa de Aguán',	   1),
-		 ('0208','02', 'Sonaguera',				   1),
-		 ('0209','02', 'Tocoa',					   1),
-		 ('0210','02', 'Bonito Oriental',		   1),
-		 ('0301','03', 'Comayagua',				   1),
-		 ('0302','03', 'Ajuterique',				   1),
-		 ('0303','03', 'El Rosario',				   1),
-		 ('0304','03', 'Esquías',				   1),
-		 ('0305','03', 'Humuya',					   1),
-		 ('0306','03', 'La Libertad',			   1),
-		 ('0307','03', 'Lamaní',					   1),
-		 ('0308','03', 'La Trinidad',			   1),
-		 ('0309','03', 'Lejamaní',				   1),
-		 ('0310','03', 'Meambár',				   1),
-		 ('0311','03', 'Minas de Oro',			   1),
-		 ('0312','03', 'Ojos de Agua',			   1),
-		 ('0313','03', 'San Jerónimo',			   1),
-		 ('0314','03', 'San José de Comayagua',	   1),
-		 ('0315','03', 'San José del Potrero',	   1),
-		 ('0316','03', 'San Luis',				   1),
-		 ('0317','03', 'San Sebastián',			   1),
-		 ('0318','03', 'Siguatepeque',			   1),
-		 ('0319','03', 'Villas de San Antonio',	   1),
-		 ('0320','03', 'Las Lajas',				   1),
-		 ('0321','03', 'Taulabé',				   1),
-		 ('0401','04', 'Santa Rosa de Copán',	   1),
-		 ('0402','04', 'Cabañas',				   1),
-		 ('0403','04', 'Concepción',				   1),
-		 ('0404','04', 'Copán Ruinas',			   1),
-		 ('0405','04', 'Corquín',				   1),
-		 ('0406','04', 'Cucuyagua',				   1),
-		 ('0407','04', 'Dolores',				   1),
-		 ('0408','04', 'Dulce Nombre',			   1),
-		 ('0409','04', 'El Paraíso',				   1),
-		 ('0410','04', 'Florida',				   1),
-		 ('0411','04', 'Lajigua',				   1),
-		 ('0412','04', 'La Unión',				   1),
-		 ('0413','04', 'Nueva Arcadia',			   1),
-		 ('0414','04', 'San Agustín',			   1),
-		 ('0415','04', 'San Antonio',			   1),
-		 ('0416','04', 'San Jerónimo',			   1),
-		 ('0417','04', 'San José',				   1),
-		 ('0418','04', 'San Juan de Ocoa',		   1),
-		 ('0419','04', 'San Nicolás',			   1),
-		 ('0420','04', 'San Pedro',				   1),
-		 ('0421','04', 'Santa Rita',				   1),
-		 ('0422','04', 'Trinidad de Copán',		   1),
-		 ('0423','04', 'Veracrúz',				   1),
-		 ('0501','05', 'San Pedro Sula',			   1),
-		 ('0502','05', 'Choloma',				   1),
-		 ('0503','05', 'Omoa',					   1),
-		 ('0504','05', 'Pimienta',				   1),
-		 ('0505','05', 'Potrerillos',			   1),
-		 ('0506','05', 'Puerto Cortés',			   1),
-		 ('0507','05', 'San Antonio de Cortés',	   1),
-	     ('0508','05', 'San Francisco de Yojoa',    1),
-		 ('0509','05', 'San Manuel',				   1),
-		 ('0510','05', 'Santa Cruz de Yoja',		   1),
-		 ('0511','05', 'La Lima',				   1),
-		 ('0601','06', 'Pascilagua',				   1),
-		 ('0602','06', 'Comcepción de María',	   1),
-		 ('0603','06', 'Duyure',					   1),
-		 ('0604','06', 'El Corpues',				   1),
-		 ('0605','06', 'El Triunfo',				   1),
-		 ('0606','06', 'Marcovia',				   1),
-		 ('0607','06', 'Morolica',				   1),
-		 ('0608','06', 'Namasigue',				   1),
-		 ('0609','06', 'Orocuina',				   1),
-		 ('0610','06', 'Pespire',				   1),
-		 ('0611','06', 'San Antonio de Flores',	   1),
-		 ('0612','06', 'San Isidrio',			   1),
-		 ('0613','06', 'San José',				   1),
-		 ('0614','06', 'San Marcos de Colón',	   1),
-		 ('0615','06', 'Santa Ana de Yuscuare',	   1),
-		 ('0701','07', 'Yuscarán',				   1),
-		 ('0702','07', 'Alauca',					   1),
-		 ('0703','07', 'Danlí',					   1),
-		 ('0704','07', 'El Paraíso',				   1),
-		 ('0705','07', 'Guinope',				   1),
-		 ('0706','07', 'Jacaleapa',				   1),
-		 ('0707','07', 'Liure',					   1),
-		 ('0708','07', 'Morocelí',				   1),
-		 ('0709','07', 'Oropolí',				   1),
-		 ('0710','07', 'Potrerillos',			   1),
-		 ('0711','07', 'San Antonio de Flores',	   1),
-		 ('0712','07', 'San Lucas',				   1),		 
-		 ('0713','07', 'San Matías',				   1),
-		 ('0714','07', 'Soledad',				   1),
-		 ('0715','07', 'Teupasenti',				   1),
-		 ('0716','07', 'Texiguat',				   1),
-		 ('0717','07', 'Vado Ancho',				   1),		
-		 ('0718','07', 'Yauyupe',				   1),
-		 ('0719','07', 'Trojes',					   1),
-		 ('0801','08', 'Distrito Central',		   1),
-		 ('0802','08', 'Alubarén',				   1),
-		 ('0803','08', 'Cedros',					   1),
-		 ('0804','08', 'Cucarén',				   1),
-		 ('0805','08', 'El Porvenir',			   1),
-		 ('0806','08', 'Guaimaca',				   1),
-		 ('0807','08', 'La Libertad',			   1),
-		 ('0808','08', 'La Venta',				   1),
-		 ('0809','08', 'Lepaterique',			   1),
-		 ('0810','08', 'Maraita',				   1),
-		 ('0811','08', 'Maralé',					   1),
-		 ('0812','08', 'Nueva Armedia',			   1),
-		 ('0813','08', 'Ojojona',				   1),
-		 ('0814','08', 'Orica',					   1),
-		 ('0815','08', 'Reitoca',				   1),
-		 ('0816','08', 'Sabana Grande',			   1),
-		 ('0817','08', 'San Antonio de Oriente',    1),
-		 ('0818','08', 'San Buenaventura',		   1),
-		 ('0819','08', 'San Ignacio',			   1),
-		 ('0820','08', 'San Juan de Flores',		   1),
-		 ('0821','08', 'San Miguelito',			   1),
-		 ('0822','08', 'Santa Ana',				   1),
-		 ('0823','08', 'Santa Lucía',			   1),
-		 ('0824','08', 'Talanga',				   1),
-		 ('0825','08', 'Tatumbla',				   1),
-		 ('0826','08', 'Valle de Ángeles',		   1),
-		 ('0827','08', 'Villas de San Fernando',    1),
-		 ('0828','08', 'Vallecillo',				   1),
-		 ('0901','09', 'Puerto Lempira',			   1),
-		 ('0902','09', 'Brus Laguna',			   1),
-		 ('0903','09', 'Hauas',					   1),
-		 ('0904','09', 'Juan Francisco Bulnes',	   1),
-		 ('0905','09', 'Villeda Morales',		   1),
-		 ('0906','09', 'Wanpucirpe',				   1),
-		 ('1001','10', 'La Esperanza',			   1),
-		 ('1002','10', 'Camasca',				   1),
-		 ('1003','10', 'Colomcagua',				   1),
-		 ('1004','10', 'Concepción',				   1),
-		 ('1005','10', 'Dolores',				   1),
-		 ('1006','10', 'Intibuca',				   1),
-		 ('1007','10', 'Jesus de Otoro',			   1),
-		 ('1008','10', 'Magadalena',				   1),
-		 ('1009','10', 'Masaguara',				   1),
-		 ('1010','10', 'San Antonio',			   1),
-		 ('1011','10', 'San Isidro',				   1),
-		 ('1012','10', 'San Juan',				   1),
-		 ('1013','10', 'San Marcos de la Sierra',   1),
-		 ('1014','10', 'San Miguelito',			   1),
-		 ('1015','10', 'Santa Lucía',			   1),
-		 ('1016','10', 'Yamaranguila',			   1),
-		 ('1017','10', 'San Francisco de Opalaca',  1),
-		 ('1101','11', 'Roatán',					   1),
-		 ('1102','11', 'Guanaja',				   1),
-		 ('1103','11', 'José Santos Guardiola',	   1),
-		 ('1104','11', 'Utila',					   1),
-		 ('1201','12', 'Aguanqueterique',		   1),
-		 ('1202','12', 'Cabañas',				   1),
-		 ('1203','12', 'Cane',					   1),
-		 ('1204','12', 'Chinacla',				   1),
-		 ('1205','12', 'Guagiquiro',				   1),
-		 ('1206','12', 'Lauterique',				   1),
-		 ('1207','12', 'Marcala',				   1),
-		 ('1208','12', 'Mercedes de Oriente',	   1),
-		 ('1209','12', 'Opatoro',				   1),
-		 ('1210','12', 'San Antonio del Norte',	   1),
-		 ('1211','12', 'San José',				   1),
-		 ('1212','12', 'San Juan',				   1),
-		 ('1213','12', 'San Pedro de Tutule',	   1),
-		 ('1214','12', 'Santa Ana',				   1),
-		 ('1215','12', 'San Elena',				   1),
-		 ('1216','12', 'Santa María',			   1),
-		 ('1217','12', 'Santiago de Puringla',	   1),
-		 ('1218','12', 'Yarula',					   1),
-		 ('1301','13', 'Gracias',				   1),
-		 ('1302','13', 'Belén',					   1),
-		 ('1303','13', 'Candelaria',				   1),
-		 ('1304','13', 'Cololaca',				   1),
-		 ('1305','13', 'Erandique',				   1),
-		 ('1306','13', 'Guascinse',				   1),
-		 ('1307','13', 'Guarita',				   1),
-		 ('1308','13', 'La Campa',				   1),
-		 ('1309','13', 'La Iguala',				   1),
-		 ('1310','13', 'Las Flores',				   1),
-		 ('1311','13', 'La Unión',				   1),
-		 ('1312','13', 'La Virtud',				   1),
-		 ('1313','13', 'Lepaera',				   1),
-		 ('1314','13', 'Mapulaca',				   1),
-		 ('1315','13', 'Piraera',				   1),
-		 ('1316','13', 'San Andrés',				   1),
-		 ('1317','13', 'San Francisco',			   1),
-		 ('1318','13', 'San Juan Guarita',		   1),
-		 ('1319','13', 'San Manuel Colohete',	   1),
-		 ('1320','13', 'San Rafael',				   1),
-		 ('1321','13', 'San Sebastián',			   1),
-		 ('1322','13', 'Santa Crúz',				   1),
-		 ('1323','13', 'Talgua',					   1),
-		 ('1324','13', 'Tambla',					   1),
-		 ('1325','13', 'Tomalá',					   1),
-		 ('1326','13', 'Valladolid',				   1),
-		 ('1327','13', 'Virginia',				   1),
-		 ('1328','13', 'San Marcos de Caiquin',	   1),
-		 ('1401','14', 'Ocotepeque',				   1),
-		 ('1402','14', 'Belén Gualcho',			   1),
-		 ('1403','14', 'Concepción',				   1),
-		 ('1404','14', 'Dolores Merendón',		   1),
-		 ('1405','14', 'Fraternidad',			   1),
-		 ('1406','14', 'La Encarnación',			   1),
-		 ('1407','14', 'La Labor',				   1),
-		 ('1408','14', 'Lucerna',				   1),
-		 ('1409','14', 'Mercedes',				   1),
-		 ('1410','14', 'San Fernando',			   1),
-		 ('1411','14', 'San Francisco del Valle',   1),
-		 ('1412','14', 'San Jorge',				   1),
-		 ('1413','14', 'San Marcos',				   1),
-		 ('1414','14', 'Santa Fé',				   1),
-		 ('1415','14', 'Sesenti',				   1),
-		 ('1416','14', 'Sinuapa',				   1),
-		 ('1501','15', 'Juticalpa',				   1),
-		 ('1502','15', 'Campamento',				   1),
-		 ('1503','15', 'Catacamas',				   1),
-		 ('1504','15', 'Concordia',				   1),
-		 ('1505','15', 'Dulce Nombre de Culmí',	   1),
-		 ('1506','15', 'El Rosario',				   1),
-		 ('1507','15', 'Esquípulas del Norte',	   1),
-		 ('1508','15', 'Gualaco',				   1),
-		 ('1509','15', 'Guarizama',				   1),
-		 ('1510','15', 'Guata',					   1),
-		 ('1511','15', 'Guayape',				   1),
-		 ('1512','15', 'Jano',					   1),
-		 ('1513','15', 'La Unión',				   1),
-		 ('1514','15', 'Mangulile',				   1),
-		 ('1515','15', 'Manto',					   1),
-		 ('1516','15', 'Salamá',					   1),
-		 ('1517','15', 'San Esteban',			   1),
-		 ('1518','15', 'San Francisco de Becerra',  1),
-		 ('1519','15', 'San Francisco de La Paz',   1),
-		 ('1520','15', 'San María del Real',		   1),
-		 ('1521','15', 'Silca',					   1),
-		 ('1522','15', 'Yocon',					   1),
-		 ('1523','15', 'Patuca',					   1),
-		 ('1601','16', 'Santa Bárbara',			   1),
-		 ('1602','16', 'Arada',					   1),
-		 ('1603','16', 'Atima',					   1),
-		 ('1604','16', 'Azacualpa',				   1),
-		 ('1605','16', 'Ceguaca',				   1),
-		 ('1606','16', 'Concepción del Norte',	   1),
-		 ('1607','16', 'Concepción del Sur',		   1),
-		 ('1608','16', 'Chinda',					   1),
-		 ('1609','16', 'El Níspero',				   1),
-		 ('1610','16', 'Gualala',				   1),
-		 ('1611','16', 'Ilama',					   1),
-		 ('1612','16', 'Las Vegas',				   1),
-		 ('1613','16', 'Macuelizo',				   1),
-		 ('1614','16', 'Naranjito',				   1),
-		 ('1615','16', 'Nuevo Celilac',			   1),
-		 ('1616','16', 'Nueva Frontera',			   1),
-		 ('1617','16', 'Petoa',					   1),
-		 ('1618','16', 'Protección',				   1),
-		 ('1619','16', 'Quimistán',				   1),
-		 ('1620','16', 'San Francisco de Ojuera',   1),
-		 ('1621','16', 'San José de Colinas',	   1),
-		 ('1622','16', 'San Luis',				   1),
-		 ('1623','16', 'San Marcos',				   1),
-		 ('1624','16', 'San Nicolás',			   1),
-		 ('1625','16', 'San Pedro Zacapa',		   1),
-		 ('1626','16', 'San Vicente Centenario',    1),
-		 ('1627','16', 'Santa Rita',				   1),
-		 ('1628','16', 'Trinidad',				   1),
-		 ('1702','17', 'Nacome',					   1),
-		 ('1703','17', 'Alianza',				   1),
-		 ('1704','17', 'Amapala',				   1),
-		 ('1705','17', 'Aramecina',				   1),
-		 ('1706','17', 'Caridad',				   1),
-		 ('1707','17', 'Goascorán',				   1),
-		 ('1701','17', 'Langue',					   1),
-		 ('1708','17', 'San Francisco de Coray',    1),
-		 ('1709','17', 'San Lorenzo',			   1),
-		 ('1801','18', 'Yoro',					   1),
-		 ('1802','18', 'Arenal',					   1),
-		 ('1803','18', 'El Negrito',				   1),
-		 ('1804','18', 'El Progreso',			   1),
-		 ('1805','18', 'Jocón',					   1),
-		 ('1806','18', 'Morazán',				   1),
-		 ('1807','18', 'Olanchito',				   1),
-		 ('1808','18', 'Santa Rita',				   1),
-		 ('1809','18', 'Sulaco',					   1),
-		 ('1810','18', 'Victoria',				   1),
-		 ('1811','18', 'Yorito',					   1);
+VALUES   ( 0101,1, 'La Ceiba',				   1),
+		 ( 0102,1, 'Tela',					   1),
+	     ( 0103,1, 'La Masica',				   1),
+		 ( 0104,1, 'Arizona',				   1),
+		 ( 0105,1, 'Jutiapa',				   1),
+		 ( 0106,1, 'El Porvenir',			   1),
+		 ( 0107,1, 'Esparta',				   1),
+	     ( 0108,1, 'San Francisco',			   1),
+		 ( 0201,2, 'Trujillo',				   1),
+		 ( 0202,2, 'Balfate',				   1),
+		 ( 0203,2, 'Iriona',					   1),
+		 ( 0204,2, 'Limón',					   1),
+		 ( 0205,2, 'Sabá',					   1),
+		 ( 0206,2, 'Santa Fé',				   1),
+		 ( 0207,2, 'Santa Rosa de Aguán',	   1),
+		 ( 0208,2, 'Sonaguera',				   1),
+		 ( 0209,2, 'Tocoa',					   1),
+		 ( 0210,2, 'Bonito Oriental',		   1),
+		 (0301, 3, 'Comayagua',				   1),
+		 (0302, 3, 'Ajuterique',				   1),
+		 (0303, 3, 'El Rosario',				   1),
+		 (0304, 3, 'Esquías',				   1),
+		 (0305, 3, 'Humuya',					   1),
+		 (0306, 3, 'La Libertad',			   1),
+		 (0307, 3, 'Lamaní',					   1),
+		 (0308, 3, 'La Trinidad',			   1),
+		 (0309, 3, 'Lejamaní',				   1),
+		 (0310, 3, 'Meambár',				   1),
+		 (0311, 3, 'Minas de Oro',			   1),
+		 (0312, 3, 'Ojos de Agua',			   1),
+		 (0313, 3, 'San Jerónimo',			   1),
+		 (0314, 3, 'San José de Comayagua',	   1),
+		 (0315, 3, 'San José del Potrero',	   1),
+		 (0316, 3, 'San Luis',				   1),
+		 (0317, 3, 'San Sebastián',			   1),
+		 (0318, 3, 'Siguatepeque',			   1),
+		 (0319, 3, 'Villas de San Antonio',	   1),
+		 (0320, 3, 'Las Lajas',				   1),
+		 (0321, 3, 'Taulabé',				   1),
+		 (0401, 4, 'Santa Rosa de Copán',	   1),
+		 (0402, 4, 'Cabañas',				   1),
+		 (0403, 4, 'Concepción',				   1),
+		 (0404, 4, 'Copán Ruinas',			   1),
+		 (0405, 4, 'Corquín',				   1),
+		 (0406, 4, 'Cucuyagua',				   1),
+		 (0407, 4, 'Dolores',				   1),
+		 (0408, 4, 'Dulce Nombre',			   1),
+		 (0409, 4, 'El Paraíso',				   1),
+		 (0410, 4, 'Florida',				   1),
+		 (0411, 4, 'Lajigua',				   1),
+		 (0412, 4, 'La Unión',				   1),
+		 (0413, 4, 'Nueva Arcadia',			   1),
+		 (0414, 4, 'San Agustín',			   1),
+		 (0415, 4, 'San Antonio',			   1),
+		 (0416, 4, 'San Jerónimo',			   1),
+		 (0417, 4, 'San José',				   1),
+		 (0418, 4, 'San Juan de Ocoa',		   1),
+		 (0419, 4, 'San Nicolás',			   1),
+		 (0420, 4, 'San Pedro',				   1),
+		 (0421, 4, 'Santa Rita',				   1),
+		 (0422, 4, 'Trinidad de Copán',		   1),
+		 (0423, 4, 'Veracrúz',				   1),
+		 ( 0501,5, 'San Pedro Sula',			   1),
+		 ( 0502,5, 'Choloma',				   1),
+		 ( 0503,5, 'Omoa',					   1),
+		 ( 0504,5, 'Pimienta',				   1),
+		 ( 0505,5, 'Potrerillos',			   1),
+		 ( 0506,5, 'Puerto Cortés',			   1),
+		 ( 0507,5, 'San Antonio de Cortés',	   1),
+	     ( 0508,5, 'San Francisco de Yojoa',    1),
+		 ( 0509,5, 'San Manuel',				   1),
+		 ( 0510,5, 'Santa Cruz de Yoja',		   1),
+		 ( 0511,5, 'La Lima',				   1),
+		 ( 0601,6, 'Pascilagua',				   1),
+		 ( 0602,6, 'Comcepción de María',	   1),
+		 ( 0603,6, 'Duyure',					   1),
+		 ( 0604,6, 'El Corpues',				   1),
+		 ( 0605,6, 'El Triunfo',				   1),
+		 ( 0606,6, 'Marcovia',				   1),
+		 ( 0607,6, 'Morolica',				   1),
+		 ( 0608,6, 'Namasigue',				   1),
+		 ( 0609,6, 'Orocuina',				   1),
+		 ( 0610,6, 'Pespire',				   1),
+		 ( 0611,6, 'San Antonio de Flores',	   1),
+		 ( 0612,6, 'San Isidrio',			   1),
+		 ( 0613,6, 'San José',				   1),
+		 ( 0614,6, 'San Marcos de Colón',	   1),
+		 ( 0615,6, 'Santa Ana de Yuscuare',	   1),
+		 ( 0701,7, 'Yuscarán',				   1),
+		 ( 0702,7, 'Alauca',					   1),
+		 ( 0703,7, 'Danlí',					   1),
+		 ( 0704,7, 'El Paraíso',				   1),
+		 ( 0705,7, 'Guinope',				   1),
+		 ( 0706,7, 'Jacaleapa',				   1),
+		 ( 0707,7, 'Liure',					   1),
+		 ( 0708,7, 'Morocelí',				   1),
+		 ( 0709,7, 'Oropolí',				   1),
+		 ( 0710,7, 'Potrerillos',			   1),
+		 ( 0711,7, 'San Antonio de Flores',	   1),
+		 ( 0712,7, 'San Lucas',				   1),		 
+		 ( 0713,7, 'San Matías',				   1),
+		 ( 0714,7, 'Soledad',				   1),
+		 ( 0715,7, 'Teupasenti',				   1),
+		 ( 0716,7, 'Texiguat',				   1),
+		 ( 0717,7, 'Vado Ancho',				   1),		
+		 ( 0718,7, 'Yauyupe',				   1),
+		 ( 0719,7, 'Trojes',					   1),
+		 ( 0801,8, 'Distrito Central',		   1),
+		 ( 0802,8, 'Alubarén',				   1),
+		 ( 0803,8, 'Cedros',					   1),
+		 ( 0804,8, 'Cucarén',				   1),
+		 ( 0805,8, 'El Porvenir',			   1),
+		 ( 0806,8, 'Guaimaca',				   1),
+		 ( 0807,8, 'La Libertad',			   1),
+		 ( 0808,8, 'La Venta',				   1),
+		 ( 0809,8, 'Lepaterique',			   1),
+		 ( 0810,8, 'Maraita',				   1),
+		 ( 0811,8, 'Maralé',					   1),
+		 ( 0812,8, 'Nueva Armedia',			   1),
+		 ( 0813,8, 'Ojojona',				   1),
+		 ( 0814,8, 'Orica',					   1),
+		 ( 0815,8, 'Reitoca',				   1),
+		 ( 0816,8, 'Sabana Grande',			   1),
+		 ( 0817,8, 'San Antonio de Oriente',    1),
+		 ( 0818,8, 'San Buenaventura',		   1),
+		 ( 0819,8, 'San Ignacio',			   1),
+		 ( 0820,8, 'San Juan de Flores',		   1),
+		 ( 0821,8, 'San Miguelito',			   1),
+		 ( 0822,8, 'Santa Ana',				   1),
+		 ( 0823,8, 'Santa Lucía',			   1),
+		 ( 0824,8, 'Talanga',				   1),
+		 ( 0825,8, 'Tatumbla',				   1),
+		 ( 0826,8, 'Valle de Ángeles',		   1),
+		 ( 0827,8, 'Villas de San Fernando',    1),
+		 ( 0828,8, 'Vallecillo',				   1),
+		 ( 0901,9, 'Puerto Lempira',			   1),
+		 ( 0902,9, 'Brus Laguna',			   1),
+		 ( 0903,9, 'Hauas',					   1),
+		 ( 0904,9, 'Juan Francisco Bulnes',	   1),
+		 ( 0905,9, 'Villeda Morales',		   1),
+		 ( 0906,9, 'Wanpucirpe',				   1),
+		 (1001,10, 'La Esperanza',			   1),
+		 (1002,10, 'Camasca',				   1),
+		 (1003,10, 'Colomcagua',				   1),
+		 (1004,10, 'Concepción',				   1),
+		 (1005,10, 'Dolores',				   1),
+		 (1006,10, 'Intibuca',				   1),
+		 (1007,10, 'Jesus de Otoro',			   1),
+		 (1008,10, 'Magadalena',				   1),
+		 (1009,10, 'Masaguara',				   1),
+		 (1010,10, 'San Antonio',			   1),
+		 (1011,10, 'San Isidro',				   1),
+		 (1012,10, 'San Juan',				   1),
+		 (1013,10, 'San Marcos de la Sierra',   1),
+		 (1014,10, 'San Miguelito',			   1),
+		 (1015,10, 'Santa Lucía',			   1),
+		 (1016,10, 'Yamaranguila',			   1),
+		 (1017,10, 'San Francisco de Opalaca',  1),
+		 (1101,11, 'Roatán',					   1),
+		 (1102,11, 'Guanaja',				   1),
+		 (1103,11, 'José Santos Guardiola',	   1),
+		 (1104,11, 'Utila',					   1),
+		 (1201,12, 'Aguanqueterique',		   1),
+		 (1202,12, 'Cabañas',				   1),
+		 (1203,12, 'Cane',					   1),
+		 (1204,12, 'Chinacla',				   1),
+		 (1205,12, 'Guagiquiro',				   1),
+		 (1206,12, 'Lauterique',				   1),
+		 (1207,12, 'Marcala',				   1),
+		 (1208,12, 'Mercedes de Oriente',	   1),
+		 (1209,12, 'Opatoro',				   1),
+		 (1210,12, 'San Antonio del Norte',	   1),
+		 (1211,12, 'San José',				   1),
+		 (1212,12, 'San Juan',				   1),
+		 (1213,12, 'San Pedro de Tutule',	   1),
+		 (1214,12, 'Santa Ana',				   1),
+		 (1215,12, 'San Elena',				   1),
+		 (1216,12, 'Santa María',			   1),
+		 (1217,12, 'Santiago de Puringla',	   1),
+		 (1218,12, 'Yarula',					   1),
+		 (1301,13, 'Gracias',				   1),
+		 (1302,13, 'Belén',					   1),
+		 (1303,13, 'Candelaria',				   1),
+		 (1304,13, 'Cololaca',				   1),
+		 (1305,13, 'Erandique',				   1),
+		 (1306,13, 'Guascinse',				   1),
+		 (1307,13, 'Guarita',				   1),
+		 (1308,13, 'La Campa',				   1),
+		 (1309,13, 'La Iguala',				   1),
+		 (1310,13, 'Las Flores',				   1),
+		 (1311,13, 'La Unión',				   1),
+		 (1312,13, 'La Virtud',				   1),
+		 (1313,13, 'Lepaera',				   1),
+		 (1314,13, 'Mapulaca',				   1),
+		 (1315,13, 'Piraera',				   1),
+		 (1316,13, 'San Andrés',				   1),
+		 (1317,13, 'San Francisco',			   1),
+		 (1318,13, 'San Juan Guarita',		   1),
+		 (1319,13, 'San Manuel Colohete',	   1),
+		 (1320,13, 'San Rafael',				   1),
+		 (1321,13, 'San Sebastián',			   1),
+		 (1322,13, 'Santa Crúz',				   1),
+		 (1323,13, 'Talgua',					   1),
+		 (1324,13, 'Tambla',					   1),
+		 (1325,13, 'Tomalá',					   1),
+		 (1326,13, 'Valladolid',				   1),
+		 (1327,13, 'Virginia',				   1),
+		 (1328,13, 'San Marcos de Caiquin',	   1),
+		 (1401,14, 'Ocotepeque',				   1),
+		 (1402,14, 'Belén Gualcho',			   1),
+		 (1403,14, 'Concepción',				   1),
+		 (1404,14, 'Dolores Merendón',		   1),
+		 (1405,14, 'Fraternidad',			   1),
+		 (1406,14, 'La Encarnación',			   1),
+		 (1407,14, 'La Labor',				   1),
+		 (1408,14, 'Lucerna',				   1),
+		 (1409,14, 'Mercedes',				   1),
+		 (1410,14, 'San Fernando',			   1),
+		 (1411,14, 'San Francisco del Valle',   1),
+		 (1412,14, 'San Jorge',				   1),
+		 (1413,14, 'San Marcos',				   1),
+		 (1414,14, 'Santa Fé',				   1),
+		 (1415,14, 'Sesenti',				   1),
+		 (1416,14, 'Sinuapa',				   1),
+		 (1501,15, 'Juticalpa',				   1),
+		 (1502,15, 'Campamento',				   1),
+		 (1503,15, 'Catacamas',				   1),
+		 (1504,15, 'Concordia',				   1),
+		 (1505,15, 'Dulce Nombre de Culmí',	   1),
+		 (1506,15, 'El Rosario',				   1),
+		 (1507,15, 'Esquípulas del Norte',	   1),
+		 (1508,15, 'Gualaco',				   1),
+		 (1509,15, 'Guarizama',				   1),
+		 (1510,15, 'Guata',					   1),
+		 (1511,15, 'Guayape',				   1),
+		 (1512,15, 'Jano',					   1),
+		 (1513,15, 'La Unión',				   1),
+		 (1514,15, 'Mangulile',				   1),
+		 (1515,15, 'Manto',					   1),
+		 (1516,15, 'Salamá',					   1),
+		 (1517,15, 'San Esteban',			   1),
+		 (1518,15, 'San Francisco de Becerra',  1),
+		 (1519,15, 'San Francisco de La Paz',   1),
+		 (1520,15, 'San María del Real',		   1),
+		 (1521,15, 'Silca',					   1),
+		 (1522,15, 'Yocon',					   1),
+		 (1523,15, 'Patuca',					   1),
+		 (1601,16, 'Santa Bárbara',			   1),
+		 (1602,16, 'Arada',					   1),
+		 (1603,16, 'Atima',					   1),
+		 (1604,16, 'Azacualpa',				   1),
+		 (1605,16, 'Ceguaca',				   1),
+		 (1606,16, 'Concepción del Norte',	   1),
+		 (1607,16, 'Concepción del Sur',		   1),
+		 (1608,16, 'Chinda',					   1),
+		 (1609,16, 'El Níspero',				   1),
+		 (1610,16, 'Gualala',				   1),
+		 (1611,16, 'Ilama',					   1),
+		 (1612,16, 'Las Vegas',				   1),
+		 (1613,16, 'Macuelizo',				   1),
+		 (1614,16, 'Naranjito',				   1),
+		 (1615,16, 'Nuevo Celilac',			   1),
+		 (1616,16, 'Nueva Frontera',			   1),
+		 (1617,16, 'Petoa',					   1),
+		 (1618,16, 'Protección',				   1),
+		 (1619,16, 'Quimistán',				   1),
+		 (1620,16, 'San Francisco de Ojuera',   1),
+		 (1621,16, 'San José de Colinas',	   1),
+		 (1622,16, 'San Luis',				   1),
+		 (1623,16, 'San Marcos',				   1),
+		 (1624,16, 'San Nicolás',			   1),
+		 (1625,16, 'San Pedro Zacapa',		   1),
+		 (1626,16, 'San Vicente Centenario',    1),
+		 (1627,16, 'Santa Rita',				   1),
+		 (1628,16, 'Trinidad',				   1),
+		 (1702,17, 'Nacome',					   1),
+		 (1703,17, 'Alianza',				   1),
+		 (1704,17, 'Amapala',				   1),
+		 (1705,17, 'Aramecina',				   1),
+		 (1706,17, 'Caridad',				   1),
+		 (1707,17, 'Goascorán',				   1),
+		 (1701,17, 'Langue',					   1),
+		 (1708,17, 'San Francisco de Coray',    1),
+		 (1709,17, 'San Lorenzo',			   1),
+		 (1801,18, 'Yoro',					   1),
+		 (1802,18, 'Arenal',					   1),
+		 (1803,18, 'El Negrito',				   1),
+		 (1804,18, 'El Progreso',			   1),
+		 (1805,18, 'Jocón',					   1),
+		 (1806,18, 'Morazán',				   1),
+		 (1807,18, 'Olanchito',				   1),
+		 (1808,18, 'Santa Rita',				   1),
+		 (1809,18, 'Sulaco',					   1),
+		 (1810,18, 'Victoria',				   1),
+		 (1811,18, 'Yorito',					   1);
 --*************************************************************/TABLA DE MUNICIPIOS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1377,16 +1407,16 @@ VALUES
 --**************************************************************TABLA DE EMPLEADOS****************************************************************************--
 INSERT INTO mant.tbEmpleados(empl_Nombre, empl_Apellido, empl_Identidad, empl_FechaNacimiento, empl_Direccion, empl_Sexo, empl_Telefono, estc_Id, carg_Id, muni_Id, empl_UserCreacion)
 VALUES
-('Juan', 'Pérez', '0801-1980-12345', '1980-01-08', 'Calle Principal 123', 'M', '9999-1234', 1, 1, '0201', 1),
-('María', 'Gómez', '0502-1990-67890', '1990-02-05', 'Avenida Central 456', 'F', '8888-5678', 2, 2, '0202', 1),
-('Carlos', 'López', '0303-1985-45678', '1985-03-03', 'Colonia Los Pinos 789', 'M', '7777-9876', 1, 3, '0203', 2),
-('Laura', 'Hernández', '1004-1995-23456', '1995-04-10', 'Barrio El Bosque 567', 'F', '6666-2345', 3, 1, '0204', 2),
-('Pedro', 'Rodríguez', '0705-1982-34567', '1982-05-07', 'Residencial Las Flores 890', 'M', '5555-3456', 2, 2, '0205', 3),
-('Ana', 'Torres', '2006-1993-45678', '1993-06-20', 'Colonia San Miguel 123', 'F', '4444-4567', 1, 3, '0206', 3),
-('Luis', 'Martínez', '1507-1988-56789', '1988-07-15', 'Barrio La Esperanza 456', 'M', '3333-5678', 2, 1, '0207', 1),
-('Sofía', 'García', '1208-1998-67890', '1998-08-12', 'Residencial Los Ángeles 789', 'F', '2222-6789', 3, 2, '0208', 1),
-('Jorge', 'Díaz', '0909-1987-78901', '1987-09-09', 'Avenida Central Sur 234', 'M', '1111-7890', 1, 3, '0209', 1),
-('Carolina', 'Ramírez', '0410-1997-89012', '1997-10-04', 'Calle Los Alamos 567', 'F', '0000-8901', 2, 1, '0210', 1);
+('Juan', 'Pérez', '0801-1980-12345', '1980-01-08', 'Calle Principal 123', 'M', '9999-1234', 1, 1, 0201, 1),
+('María', 'Gómez', '0502-1990-67890', '1990-02-05', 'Avenida Central 456', 'F', '8888-5678', 2, 2, 0202, 1),
+('Carlos', 'López', '0303-1985-45678', '1985-03-03', 'Colonia Los Pinos 789', 'M', '7777-9876', 1, 3, 0203, 2),
+('Laura', 'Hernández', '1004-1995-23456', '1995-04-10', 'Barrio El Bosque 567', 'F', '6666-2345', 3, 1, 0204, 2),
+('Pedro', 'Rodríguez', '0705-1982-34567', '1982-05-07', 'Residencial Las Flores 890', 'M', '5555-3456', 2, 2, 0205, 3),
+('Ana', 'Torres', '2006-1993-45678', '1993-06-20', 'Colonia San Miguel 123', 'F', '4444-4567', 1, 3, 0206, 3),
+('Luis', 'Martínez', '1507-1988-56789', '1988-07-15', 'Barrio La Esperanza 456', 'M', '3333-5678', 2, 1, 0207, 1),
+('Sofía', 'García', '1208-1998-67890', '1998-08-12', 'Residencial Los Ángeles 789', 'F', '2222-6789', 3, 2, 0208, 1),
+('Jorge', 'Díaz', '0909-1987-78901', '1987-09-09', 'Avenida Central Sur 234', 'M', '1111-7890', 1, 3, 0209, 1),
+('Carolina', 'Ramírez', '0410-1997-89012', '1997-10-04', 'Calle Los Alamos 567', 'F', '0000-8901', 2, 1, 0210, 1);
 --*************************************************************/TABLA DE EMPLEADOS****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1484,6 +1514,53 @@ VALUES
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--*****************************************************************TABLA DE PLANTAS***************************************************************************--
+INSERT INTO bota.tbPlantas (plan_Codigo, plan_Nombre, plan_NombreCientifico, rein_Id, arbo_Id, plan_UserCreacion)
+VALUES
+    -- Jardín de Cactus
+    ('#CACT0001', 'Cactus de Navidad', 'Schlumbergera truncata', 2,  1, 1),
+    ('#CACT0002','Cactus de Pascua', 'Hatiora gaertneri', 2,		 1, 1),
+
+    -- Orquideario
+    ('#ORQU0001','Orquídea Mariposa', 'Phalaenopsis spp.', 2,  2, 1),
+    ('#ORQU0002','Orquídea Cattleya', 'Cattleya spp.', 2,  2, 1),
+
+    -- Sendero de Plantas Tropicales
+    ('#PLTR0001','Begonia Rex', 'Begonia rex-cultorum', 2,  3, 1),
+    ('#PLTR0002','Bananero', 'Musa spp.', 2,  3, 1),
+
+    -- Bosque de Coníferas
+    ('#CONI0001','Pino de Monterrey', 'Pinus radiata', 2,  4, 1),
+    ('#CONI0002','Cedro del Atlas', 'Cedrus atlantica', 2,  4, 1),
+
+    -- Rosaleda
+    ('#ROSA0001','Rosa del té', 'Camellia sinensis', 2,  5, 1),
+    ('#ROSA0002','Rosa de Damasco', 'Rosa damascena', 2,  5, 1),
+
+    -- Jardín de Hierbas Aromáticas
+    ('#HIAR0001','Menta', 'Mentha spp.', 2, 6, 1),
+    ('#HIAR0002','Albahaca', 'Ocimum basilicum', 2,  6, 1),
+
+    -- Invernadero de Plantas Tropicales
+    ('#INTR0001','Planta de Serpiente', 'Sansevieria trifasciata', 2,  7, 1),
+    ('#INTR0002','Cala', 'Zantedeschia spp.', 2,  7, 1),
+
+    -- Huerto de Frutales
+    ('#HUFR0001','Manzano', 'Malus domestica', 2,  8, 1),
+    ('#HUFR0002','Naranjo', 'Citrus sinensis', 2,  8, 1),
+
+    -- Laberinto de Arbustos
+    ('#LAAR0001','Boj', 'Buxus spp.', 2,  9, 1),
+    ('#LAAR0002','Ligustro', 'Ligustrum spp.', 2,  9, 1),
+
+    -- Estanque de Plantas Acuáticas
+    ('#PLAC0001','Lirio de Agua', 'Nymphaea spp.', 2,  10, 1),
+    ('#PLAC0002','Papiro', 'Cyperus papyrus', 2,  10, 1);
+
+--****************************************************************/TABLA DE PLANTAS***************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --*****************************************************************TABLA DE CUIDADOS***************************************************************************--
 INSERT INTO bota.tbCuidados (cuid_Descripcion, cuid_Frecuencia, cuid_UserCreacion)
 VALUES
@@ -1529,52 +1606,6 @@ VALUES
 
 --****************************************************************/TABLA DE CUIDADOS***************************************************************************--
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
---*****************************************************************TABLA DE PLANTAS***************************************************************************--
-INSERT INTO bota.tbPlantas (plan_Nombre, plan_NombreCientifico, plan_Reino, arbo_Id, cuid_Id, plan_UserCreacion)
-VALUES
-    -- Jardín de Cactus
-    ('Cactus de Navidad', 'Schlumbergera truncata', 'Plantae', 1, 1, 1),
-    ('Cactus de Pascua', 'Hatiora gaertneri', 'Plantae', 1, 1, 1),
-
-    -- Orquideario
-    ('Orquídea Mariposa', 'Phalaenopsis spp.', 'Plantae', 2, 2, 1),
-    ('Orquídea Cattleya', 'Cattleya spp.', 'Plantae', 2, 2, 1),
-
-    -- Sendero de Plantas Tropicales
-    ('Begonia Rex', 'Begonia rex-cultorum', 'Plantae', 3, 3, 1),
-    ('Bananero', 'Musa spp.', 'Plantae', 3, 3, 1),
-
-    -- Bosque de Coníferas
-    ('Pino de Monterrey', 'Pinus radiata', 'Plantae', 4, 4, 1),
-    ('Cedro del Atlas', 'Cedrus atlantica', 'Plantae', 4, 4, 1),
-
-    -- Rosaleda
-    ('Rosa del té', 'Camellia sinensis', 'Plantae', 5, 5, 1),
-    ('Rosa de Damasco', 'Rosa damascena', 'Plantae', 5, 5, 1),
-
-    -- Jardín de Hierbas Aromáticas
-    ('Menta', 'Mentha spp.', 'Plantae', 6, 6, 1),
-    ('Albahaca', 'Ocimum basilicum', 'Plantae', 6, 6, 1),
-
-    -- Invernadero de Plantas Tropicales
-    ('Planta de Serpiente', 'Sansevieria trifasciata', 'Plantae', 7, 7, 1),
-    ('Cala', 'Zantedeschia spp.', 'Plantae', 7, 7, 1),
-
-    -- Huerto de Frutales
-    ('Manzano', 'Malus domestica', 'Plantae', 8, 8, 1),
-    ('Naranjo', 'Citrus sinensis', 'Plantae', 8, 8, 1),
-
-    -- Laberinto de Arbustos
-    ('Boj', 'Buxus spp.', 'Plantae', 9, 9, 1),
-    ('Ligustro', 'Ligustrum spp.', 'Plantae', 9, 9, 1),
-
-    -- Estanque de Plantas Acuáticas
-    ('Lirio de Agua', 'Nymphaea spp.', 'Plantae', 10, 10, 1),
-    ('Papiro', 'Cyperus papyrus', 'Plantae', 10, 10, 1);
-
---****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
 --***************************************************************/MÓDULO DE BOTÁNICA**************************************************************************--
 
