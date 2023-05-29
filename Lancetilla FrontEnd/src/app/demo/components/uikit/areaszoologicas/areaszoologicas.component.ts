@@ -35,7 +35,23 @@ export class AreasZoologicasComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-    cols: any[] = [];
+    first: number = 0;
+    rows: number = 10;
+
+    cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
+  
+
+
+
 
     statuses: any[] = [];
     //validar espacio
@@ -118,11 +134,11 @@ private CargarDatos(){
                 console.log(this.datos)
                 if (this.datos.code == 500) {
 
-                    this.messageService.add({ severity: 'warn', summary: 'Atención', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
 
                 } else if (this.datos.code == 200) {
 
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                     this.Area = {};
                     this.AreasZoologicastDialog = false;
                     this.AreasZoo = this.AreasZoo.filter(val => val.arzo_Id !== this.Area.arzo_Id);
@@ -130,7 +146,7 @@ private CargarDatos(){
 
 
                 } else {
-                    this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                 }
             },
             error => {
@@ -168,7 +184,7 @@ private CargarDatos(){
         }
 
         if(params.arzo_Descripcion === ""){
-            this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'El campo es requerido.', life: 3000 });
 
         }
         else{
@@ -185,17 +201,17 @@ private CargarDatos(){
                             this.datos = Response;
                             if (this.datos.code == 409) {
     
-                                this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
     
                             } else if (this.datos.code == 200) {
     
-                                this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.Area = {};
                                 this.AreasZoologicastDialog = false;
                                 this.CargarDatos()
     
                             } else {
-                                this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                             }
                         },
                         error => {
@@ -209,17 +225,17 @@ private CargarDatos(){
                             this.datos = Response;
                             if (this.datos.code == 409) {
     
-                                this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
     
                             } else if (this.datos.code == 200) {
     
-                                this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.Area = {};
                                 this.AreasZoologicastDialog = false;
                                 this.CargarDatos();
     
                             } else {
-                                this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                             }
                         },
                         error => {

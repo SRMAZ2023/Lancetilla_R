@@ -192,7 +192,7 @@ export class EstadoCivilesComponent implements OnInit {
         }
 
         if (params.estc_Descripcion === "") {
-            this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: 'El campo es requerido.', life: 3000 });
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'El campo es requerido.', life: 3000 });
 
         }
         else {
@@ -211,7 +211,7 @@ export class EstadoCivilesComponent implements OnInit {
                             this.datos = Response;
                             if (this.datos.code == 409) {
 
-                                this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                             } else if (this.datos.code == 200) {
 
@@ -236,7 +236,7 @@ export class EstadoCivilesComponent implements OnInit {
                             this.datos = Response;
                             if (this.datos.code == 409) {
 
-                                this.messageService.add({ severity: 'warn', summary: 'Atención:', detail: this.datos.message, life: 3000 });
+                                this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
                             } else if (this.datos.code == 200) {
 

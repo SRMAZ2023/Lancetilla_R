@@ -19,6 +19,7 @@ import { AnyARecord } from 'dns';
 import { error, timeEnd } from 'console';
 import { timeout } from 'rxjs';
 
+
 @Component({
   selector: 'app-MantenimientoPorAnimal-edit',
   templateUrl: './ManteniminetoPorAnimal-edit.component.html',

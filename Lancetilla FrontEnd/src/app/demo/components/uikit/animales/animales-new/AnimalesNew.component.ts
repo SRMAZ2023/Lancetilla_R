@@ -118,7 +118,7 @@ export class AnimalNewComponent implements OnInit {
                 } else if (this.datos.code = 200) {
                     this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 1500 });
                     setTimeout(() => {
-                        this._rauter.navigate(['/uikit/animales']);
+                        this._rauter.navigate(['/app/uikit/animales']);
                     }, 1500);
                 }
 

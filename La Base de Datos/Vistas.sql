@@ -61,6 +61,7 @@ SELECT role_Id,
 	   WHERE role_Estado = 1;
 
 
+
 GO
 --*************************************************************/TABLA DE ROLES********************************************************************************--
 
@@ -223,11 +224,11 @@ SELECT empl_Id,
 	   muni_Descripcion,
 	   T5.dept_Id,
 	   dept_Descripcion,
-	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   (SELECT MAX(empl_Nombre+' '+empl_ApellIdo) FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = empl_UserCreacion)) AS usua_UserCreaNombre,
 	   empl_UserCreacion,
 	   empl_FechaCreacion, 
-	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   (SELECT MAX(empl_Nombre+' '+empl_ApellIdo) FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = empl_UserModificacion)) AS usua_UserModiNombre,
 	   empl_UserModificacion, 
 	   empl_FechaModificacion, 

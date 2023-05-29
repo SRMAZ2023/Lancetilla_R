@@ -2,37 +2,38 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                            (click)="openNew()"></button>
-                    </div>
-                </ng-template>
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/xS0766y/especies.png" width="100%" height="40%">
+            </div>
+            <br>
 
-                <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
-                </ng-template>
-            </p-toolbar>
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
 
-            <p-table #dt [value]="Especies" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['espe_Descripcion','country.name','representative.name','status']" [paginator]="true"
-                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedEspecies"
-                selectionMode="multiple" [rowHover]="true" dataKey="id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Especies</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
-                                class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+
+            <br>
+
+
+            <p-table #dt [value]="Especies" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedEspecies"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
                 <ng-template pTemplate="header">
                     <tr>
 
@@ -69,14 +70,13 @@
 
         <p-dialog [(visible)]="EspeciestDialog" [style]="{width: '450px'}" header="Especies" [modal]="true"
             class="p-fluid">
-            
+            <br>
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="name">Especie</label>
+                    <label for="name">Descripción</label>
                     <input type="text" pInputText id="name"   [(ngModel)]="Especie.espe_Descripcion" required autofocus
                         [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Especie.espe_Descripcion)}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Especie.espe_Descripcion)">La especies es
-                        requerida.</small>
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Especie.espe_Descripcion)">La descripción de la especie es requerida.</small>
                 </div>
 
 
@@ -90,15 +90,19 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteEspeciesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteEspeciesDialog" header="Confirmacón" [modal]="true" [style]="{width:'450px'}">
+   
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Especie">Estas seguro de querer eliminar a <b>{{Especie.espe_Descripcion}}</b>?</span>
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="Especie">¿Estás seguro de eliminar la especie
+                    <b>{{Especie.espe_Descripcion}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
                     (click)="deleteEspeciesDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
                     (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
