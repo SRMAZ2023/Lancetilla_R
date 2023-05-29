@@ -76,13 +76,17 @@
              
                     <div class="field" style="width: 50%; padding-right: 1rem;">
                         <div class="field">
-                            <label for="name">Codigo</label>
+                            <label for="name">Código</label>
                             <input type="text" pInputText id="id" [(ngModel)]="Departamento.dept_Id" required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString() || '')}"
-                                pattern=".{2}" title="Por favor ingrese exactamente 2 caracteres" />
+                                pattern="[0-9]*" title="Por favor ingrese solo números"
+                                (input)="formatInputAsText($event)" />
                             <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString() || '')">
                                 El código es requerido.</small>
                         </div>
+                        
+                        
+                        
                         
                         
                           
