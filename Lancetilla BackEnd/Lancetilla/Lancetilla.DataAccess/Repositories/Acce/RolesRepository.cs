@@ -37,18 +37,17 @@ namespace Lancetilla.DataAccess.Repositories.Acce
 
        
 
-        public RequestStatus Insert(tbRoles item)
-        {
+        public tbRoles Insert(tbRoles item)
+        { 
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
 
             parametros.Add("@role_Descripcion", item.role_Descripcion, DbType.String, ParameterDirection.Input);
             parametros.Add("@role_UserCreacion", item.role_UserCreacion, DbType.Int32, ParameterDirection.Input);
-           
 
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarRol, parametros, commandType: System.Data.CommandType.StoredProcedure);
-            return result;
+            return db.QueryFirst<tbRoles>(ScriptsDataBase.InsertarRol, parametros, commandType: CommandType.StoredProcedure);
+           
         }
 
         public RequestStatus Update(tbRoles item)
@@ -72,6 +71,11 @@ namespace Lancetilla.DataAccess.Repositories.Acce
         }
 
         public RequestStatus Update(tbRoles item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        RequestStatus IRepository<tbRoles>.Insert(tbRoles item)
         {
             throw new NotImplementedException();
         }

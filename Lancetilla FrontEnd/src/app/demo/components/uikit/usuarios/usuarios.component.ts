@@ -8,6 +8,7 @@ import { UsuarioViewModel } from 'src/app/demo/Models/UsuarioViewModel';
 import { UsuarioService } from 'src/app/demo/service/Usuario.service';
 import { isUndefined } from 'util';
 import { __values } from 'tslib';
+import { ChangeDetectorRef } from '@angular/core';
 //import { Cargoss } from 'src/app/demo/api/CargossViewModel';
 
 
@@ -50,20 +51,12 @@ export class UsuariosComponent implements OnInit {
     empleados: any[] = []; // Array para almacenar los datos de empleados
      
    
-    constructor(private usuarioService: UsuarioService, private messageService: MessageService) {
+    constructor(private changeDetectorRef: ChangeDetectorRef, private usuarioService: UsuarioService, private messageService: MessageService) {
     }
 
     ngOnInit() {
 
-        this.usuarioService.ListarUsuario().subscribe(
-            Response => {
-                console.log(Response);
-                this.Usuarios = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
+        this.CargarUsuarios()
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -77,6 +70,18 @@ export class UsuariosComponent implements OnInit {
         ];
         //Modelo de los datos de la tabla
 
+    }
+
+    CargarUsuarios() {
+        this.usuarioService.ListarUsuario().subscribe(
+            Response => {
+                console.log(Response);
+                this.Usuarios = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
     }
 
     //Metodo que desactiva el dialog
@@ -128,7 +133,6 @@ export class UsuariosComponent implements OnInit {
    editUsuario(usuarios: UsuarioViewModel) {
   console.log(usuarios);
 
-
   this.Usuario = { ...usuarios };
 
   this.usuarioService.ListarRoles().subscribe(
@@ -137,32 +141,15 @@ export class UsuariosComponent implements OnInit {
         value: item.role_Id,
         label: item.role_Descripcion
       }));
-  
-
-      // Asignar el rol seleccionado a Usuario.role_Id
-     
+    
     },
     error => {
       console.log(error);
     }
   );
+
+
   
-     
-
-
-  // Agregar el empleado del objeto usuarios a la lista de empleados
-  /*
-  setTimeout(() => {
-    this.Usuario.role_Id = usuarios.role_Id;
-  }, 0);*/
-
-  const empleadoSeleccionado = {
-    value: usuarios.empl_Id,
-    label: usuarios.empl_Nombre
-  };
-  this.empleados.push(empleadoSeleccionado);
-
-
   this.usuarioService.ListarEmpleados().subscribe(
     response => {
       this.empleados = response.map((item: { empl_Nombre: any; empl_Id: any; }) => ({
@@ -170,31 +157,23 @@ export class UsuariosComponent implements OnInit {
         label: item.empl_Nombre
       }));
   
-      // Obtener el empleado del objeto usuarios
-      const empleadoSeleccionado = {
+      // Agregar el empleado que viene en la respuesta al principio de la lista de empleados
+      this.empleados.unshift({
         value: usuarios.empl_Id,
         label: usuarios.empl_Nombre
-      };
+      });
   
-      // Verificar si el empleado ya existe en la lista
-      const empleadoExistente = this.empleados.find((empleado: any) => empleado.value === empleadoSeleccionado.value);
+      // Establecer el empleado seleccionado en el select
+      this.Usuario.empl_Id = usuarios.empl_Id;
   
-      if (!empleadoExistente) {
-        // Agregar el empleado del objeto usuarios a la lista de empleados
-        this.empleados.push(empleadoSeleccionado);
-      }
-  
-      // Asignar el empleado seleccionado a Usuario.empl_Id
-      setTimeout(() => {
-        this.Usuario.empl_Id = usuarios.empl_Id;
-      }, 0);
+      // Forzar una nueva detección de cambios
+      this.changeDetectorRef.detectChanges();
     },
     error => {
       console.log(error);
     }
   );
   
-
 
   this.EditarUsuarioDialog = true;
 }
@@ -231,6 +210,7 @@ export class UsuariosComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.Usuario = {};
                     this.InsertarUsuarioDialog = false;
+                    this.CargarUsuarios()
 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -294,6 +274,7 @@ export class UsuariosComponent implements OnInit {
                         this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                         this.Usuario = {};
                         this.InsertarUsuarioDialog = false;
+                        this.CargarUsuarios()
                     }
                     else {
                         this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -316,6 +297,7 @@ export class UsuariosComponent implements OnInit {
         
         var params = {
            
+            "usua_Id": this.Usuario.usua_Id,
             "usua_NombreUsuario": this.Usuario.usua_NombreUsuario!.trim(),
             "empl_Id": this.Usuario.empl_Id,
             "usua_Clave": this.Usuario.usua_Clave!.trim(),
@@ -324,8 +306,8 @@ export class UsuariosComponent implements OnInit {
             "usua_UserCreacion": 1,
             "usua_UserModificacion": 1
         }
-
-     
+      
+        console.log(params);
     
         if (this.Usuario.usua_NombreUsuario?.trim() === '') {
             console.log(this.Usuario.usua_NombreUsuario?.toString().length);
@@ -337,7 +319,7 @@ export class UsuariosComponent implements OnInit {
         }
         else {
             // Si todos los campos están llenos y no son cero, se procede con el envío de datos.
-            this.usuarioService.CrearUsuario(params).subscribe(
+            this.usuarioService.EditarUsuario(params).subscribe(
                 Response => {
                     this.datos = Response;
                     if (this.datos.code == 409) {
@@ -346,7 +328,8 @@ export class UsuariosComponent implements OnInit {
                     else if (this.datos.code == 200) {
                         this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                         this.Usuario = {};
-                        this.InsertarUsuarioDialog = false;
+                        this.EditarUsuarioDialog = false;
+                        this.CargarUsuarios()
                     }
                     else {
                         this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });

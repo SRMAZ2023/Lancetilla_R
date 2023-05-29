@@ -67,17 +67,39 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="DepartamentostDialog" [style]="{width: '450px'}" header="departamentos" [modal]="true"
+        <p-dialog [(visible)]="InsertDepartamentostDialog" [style]="{width: '450px'}" header="departamentos" [modal]="true"
             class="p-fluid">
             
             <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="name">Departamento</label>
-                    <input type="text" pInputText id="name"   [(ngModel)]="Departamento.dept_Descripcion" required autofocus
-                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Descripcion)}" />
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Descripcion)">La departamentos es
-                        requerida.</small>
-                </div>
+
+                <div class="flex flex-wrap">
+             
+                    <div class="field" style="width: 50%; padding-right: 1rem;">
+                        <div class="field">
+                            <label for="name">Codigo</label>
+                            <input type="number" pInputText id="id"   [(ngModel)]="Departamento.dept_Id" required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString())}" />
+                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString())">El codigo
+                                requerida.</small>
+                        </div>
+                    </div>
+                     
+      
+                    <div class="field" style="width: 50%; padding-right: 1rem;">
+                    
+                        <div class="field">
+                            <label for="name">Departamento</label>
+                            <input type="text" pInputText id="name"   [(ngModel)]="Departamento.dept_Descripcion" required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Descripcion)}" />
+                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Descripcion)">La departamentos es
+                                requerida.</small>
+                        </div>                             
+                      </div>
+                    </div>
+                 
+           
+
+                
 
 
             </ng-template>
@@ -90,7 +112,34 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteDepartamentosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        
+        <p-dialog [(visible)]="EditarDepartamentostDialog" [style]="{width: '450px'}" header="departamentos" [modal]="true"
+        class="p-fluid">
+        
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="name">Departamento</label>
+                <input type="text" pInputText id="name"   [(ngModel)]="Departamento.dept_Descripcion" required autofocus
+                    [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Descripcion)}" />
+                <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Descripcion)">La departamentos es
+                    requerida.</small>
+            </div>
+
+
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                (click)="saveDepartamentos()"></button>
+        </ng-template>
+    </p-dialog>
+
+        
+    
+    
+    <p-dialog [(visible)]="deleteDepartamentosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="Departamento">Estas seguro de querer eliminar a <b>{{Departamento.dept_Descripcion}}</b>?</span>

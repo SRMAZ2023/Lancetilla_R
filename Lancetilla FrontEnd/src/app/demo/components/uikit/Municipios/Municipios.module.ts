@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RolesPorPantallaRoutingModule } from './RolesPorPantallas-routing.module';
-import { RolesPorPantallaComponent } from './RolesPorPantallaLISTA/RolesPorPantallas.component';
-import { RolesPorPantallaInsertComponent } from './RolesPorPantalla-Insert/RolesPorPantallas-Insert.component';
-import { RolesPorPantallaUpdateComponent } from './RolesPorPantalla-Editar/RolesPorPantallas-Update.component';
+import { MunicipiosRoutingModule } from './Municipios-routing.module';
+import { MunicipiosComponent } from './Municipios.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -19,31 +17,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 
-
-
-
-
-
-import { ToggleButtonModule } from 'primeng/togglebutton';
-
-import { MultiSelectModule } from 'primeng/multiselect';
-
-import { ProgressBarModule } from 'primeng/progressbar';
-
-import { SliderModule } from 'primeng/slider';
-
-
-
 @NgModule({
     imports: [
-      
-        MultiSelectModule,
-        
-        SliderModule,
-        ToggleButtonModule,
         CommonModule,
-        ProgressBarModule,
-        RolesPorPantallaRoutingModule,
+        MunicipiosRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -59,6 +36,6 @@ import { SliderModule } from 'primeng/slider';
         InputNumberModule,
         DialogModule
     ],
-    declarations: [RolesPorPantallaComponent,RolesPorPantallaInsertComponent,RolesPorPantallaUpdateComponent]
+    declarations: [MunicipiosComponent]
 })
-export class RolesPorPantallaModule { }
+export class MunicipiosModule { }

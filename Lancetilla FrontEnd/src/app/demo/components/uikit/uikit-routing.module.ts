@@ -5,7 +5,10 @@ import { RouterModule } from '@angular/router';
     imports: [RouterModule.forChild([
         { path: 'Empleados', data: { breadcrumb: 'Empleados' }, loadChildren: () => import('./Empleados/empleados.module').then(m => m.EmpleadosModule) },
         { path: 'Usuarios', data: { breadcrumb: 'Usuarios' }, loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule) },
+        { path: 'animales', data: { breadcrumb: 'animales' }, loadChildren: () => import('./animales/Animales.module').then(m => m.AnimalesModule) },
+        { path: 'ManteniminetoXAnimal', data: { breadcrumb: 'ManteniminetoXAnimal' }, loadChildren: () => import('./ManteniminetoXAnimal/ManteniminetoPorAnimal.module').then(m => m.MantenimientoPorAnimalModule) },
         { path: 'RolesPorPantalla', data: { breadcrumb: 'RolesPorPantalla' }, loadChildren: () => import('./RolesPorPantallas/RolesPorPantallas.module').then(m => m.RolesPorPantallaModule) },
+        { path: 'Municipios', data: { breadcrumb: 'Municipios' }, loadChildren: () => import('./Municipios/Municipios.module').then(m => m.MunicipiosModule) },
         { path: 'Mantenimineto', data: { breadcrumb: 'RolesPorPantalla' }, loadChildren: () => import('./Mantenimineto/Mantenimiento.module').then(m => m.MantenimientoModule) },
         { path: 'Especies', data: { breadcrumb: 'especies' }, loadChildren: () => import('./Especies/especies.module').then(m => m.especiesModule) },
         { path: 'cuidadosplantas', data: { breadcrumb: 'cuidadosplantas' }, loadChildren: () => import('./cuidadosplantas/cuidadosplantas.module').then(m => m.CuidadosPlantasModule) },

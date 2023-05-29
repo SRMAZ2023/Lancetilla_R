@@ -6,6 +6,9 @@ import { UsuarioViewModel } from 'src/app/demo/Models/UsuarioViewModel';
 import { UsuarioCrud } from 'src/app/demo/Models/UsuarioViewModel';
 import { UsuarioService } from 'src/app/demo/service/Usuario.service';
 import { AppLayoutComponent } from "../../../../layout/app.layout.component";
+import { Injectable, Inject } from '@angular/core';
+import { LocalStorageService } from '../../../../local-storage.service';
+
 
 
 @Component({
@@ -32,11 +35,13 @@ export class LoginComponent {
   usua_Contrasena!: string;
 
   constructor(
+   
     private layoutService: LayoutService,
     private UsuarioService: UsuarioService,
     public messageService: MessageService,
     private _route: ActivatedRoute,
-    private _router: Router 
+    private _router: Router ,
+    private localStorage: LocalStorageService
    
   ) {  this.Usuario = new UsuarioViewModel(undefined, "", undefined, "", "", undefined, "", "", undefined, 1, true)}
 
@@ -71,11 +76,23 @@ export class LoginComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Felicidades',
-            detail: "Bienvenido "+ this.datos.data.usua_NombreUsuario ,
+            detail: "Bienvenido "+ this.datos.data.usua_NombreUsuario ,                     
+           
+         
+           
             life: 1500
           });
+
+          console.log(this.datos.data.usua_NombreUsuario);
+         this.localStorage.setItem('NombreUsuario', this.datos.data.usua_NombreUsuario);
+         this.localStorage.setItem('UsuarioID', this.datos.data.usua_Id);
+         this.localStorage.setItem('RolID', this.datos.data.role_Id);
+         this.localStorage.setItem('EmpleadoNombre', this.datos.data.empl_Nombre);
+         this.localStorage.setItem('EsAdmin', this.datos.data.usua_Admin);
+
+    
           setTimeout(() => {
-           this._router.navigate(['']);
+           this._router.navigate(['/app']);
           }, 1500);
         }
       }, error => {

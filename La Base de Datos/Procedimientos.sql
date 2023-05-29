@@ -62,6 +62,7 @@ GO
 
 
 CREATE OR ALTER PROCEDURE acce.UDP_tbUsuarios_UPDATE
+@usua_NombreUsuario			NVARCHAR(200),
 @usua_Id					INT,
 @empl_Id					INT,
 @usua_Admin					BIT,
@@ -71,8 +72,17 @@ AS
 BEGIN
 	BEGIN TRY
 	BEGIN TRAN
-			UPDATE acce.tbUsuarios
+			
+			
+			IF EXISTS (SELECT * FROM acce.tbUsuarios WHERE usua_NombreUsuario = @usua_NombreUsuario AND  usua_Id <> @usua_Id)
+			BEGIN
+			  SELECT 409 AS codeStatus, 'El nombre de usuario no esta disponible.' AS messageStatus
+			END
+			ELSE
+			BEGIN 
+			  UPDATE acce.tbUsuarios
 			SET
+			    usua_NombreUsuario  =   @usua_NombreUsuario,
 				empl_Id				=	@empl_Id,
 				usua_Admin			=	@usua_Admin,
 				role_Id				=	@role_Id,
@@ -81,6 +91,9 @@ BEGIN
 
 			SELECT 200 AS codeStatus, 'Usuario modificado con éxito.' AS messageStatus
 			COMMIT
+			END
+			
+			
 	END TRY
 	BEGIN CATCH
 	ROLLBACK
@@ -112,7 +125,7 @@ GO
 
 
 
-  CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN  
+  CREATE OR ALTER PROC acce.UDP_tbUsuarios_LOGIN 
 @usua_NombreUsuario NVARCHAR(100),
 @usua_Clave VARCHAR(100)
 AS BEGIN
@@ -143,38 +156,43 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --**************************************************************TABLA DE ROLES********************************************************************************--
-CREATE OR ALTER PROC acce.UDP_tbRoles_CREATE
-@role_DEscripcion NVARCHAR(100),
+
+CREATE OR ALTER PROC acce.UDP_tbRoles_CREATE 
+@role_Descripcion NVARCHAR(100),
 @role_UserCreacion INT
-AS BEGIN
+AS 
+BEGIN
 BEGIN TRY
-	--si existe
-		IF EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
-	     BEGIN
-            SELECT 409 AS codeStatus, 'El rol ya existe.' AS messageStatus
-         END
-	--si no existe
-		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
-		 BEGIN
-			
-			INSERT INTO acce.tbRoles
-			(role_Descripcion, role_UserCreacion)
-			VALUES
-			(@role_Descripcion, @role_UserCreacion)
-
-			SELECT 200 AS codeStatus, 'Rol creado con éxito.' AS messageStatus
-
-		END
-
-COMMIT
+	BEGIN TRANSACTION
+	
+	-- Verificar si el rol ya existe
+	IF EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+	BEGIN
+		SELECT 200 AS role_UserCreacion, 'El rol ya existe.' AS role_Descripcion 
+	END
+	ELSE
+	BEGIN
+		-- Insertar el nuevo rol
+		INSERT INTO acce.tbRoles (role_Descripcion, role_UserCreacion)
+		VALUES (@role_Descripcion, @role_UserCreacion)
+		
+		-- Obtener el último ID de rol insertado
+		DECLARE @role_Id INT
+		SET @role_Id = SCOPE_IDENTITY()
+		
+		SELECT @role_Id AS role_Id, 200 AS role_UserCreacion, 'Rol creado con éxito.' AS role_Descripcion
+	END
+	
+	COMMIT
 END TRY
 BEGIN CATCH
-ROLLBACK
-		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
-
+	ROLLBACK
+	
+	SELECT 500 AS role_UserCreacion, ERROR_MESSAGE() AS role_Descripcion
 END CATCH
 END
 GO
+
 
 CREATE OR ALTER PROC acce.UDP_tbRoles_UPDATE
 @role_Id INT,
@@ -185,16 +203,14 @@ AS BEGIN
 	BEGIN TRY
 	BEGIN TRAN
 	--si existe
-		IF EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+		IF EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion AND role_Id <> @role_Id)
 	     BEGIN
             SELECT 409 AS codeStatus, 'El Rol ya existe.' AS messageStatus
          END
 	--si no existe
-		 ELSE IF NOT EXISTS (SELECT * FROM acce.tbRoles WHERE role_Descripcion = @role_Descripcion)
+		 ELSE
 		 BEGIN
 			
-
-
 	UPDATE acce.tbRoles
 	SET role_Descripcion	= @role_Descripcion,
 		role_UserModificacion	= @role_UserModificacion
@@ -228,6 +244,8 @@ BEGIN TRAN
 			ELSE
 			BEGIN
 
+			DELETE FROM acce.tbRolesPantallas WHERE role_Id = @role_Id
+			
 			DELETE FROM acce.tbRoles WHERE role_Id = @role_Id
 			SELECT 200 AS codeStatus, 'El rol ha sido eliminado con éxito.' AS messageStatus
 			END
@@ -267,28 +285,22 @@ END TRY
 BEGIN CATCH
 ROLLBACK
 		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
-
 END CATCH
 END
 GO
 
-CREATE OR ALTER PROC acce.UDP_tbRolesPantalla_UPDATE
-@ropa_Id INT,
+
+CREATE OR ALTER PROC acce.UDP_tbRolesPantalla_Eliminar
 @role_Id INT,
-@pant_Id INT,
-@ropa_UserModificacion INT
+@pant_Id INT
+
 AS BEGIN
 BEGIN TRY
 BEGIN TRAN
 
-UPDATE acce.tbRolesPantallas 
-SET role_Id = @role_Id,
-	pant_Id = @pant_Id,
-	ropa_UserModificacion = @ropa_UserModificacion,
-	ropa_FechaModificacion = GETDATE()
-	WHERE ropa_Id = @ropa_Id
+DELETE FROM acce.tbRolesPantallas WHERE role_Id = @role_Id AND pant_Id = @pant_Id
 
-	SELECT 200 AS codeStatus, 'Rol por pantalla modificado con éxito.' AS messageStatus
+	SELECT 200 AS codeStatus, 'Pantalla eliminada.' AS messageStatus
 
 COMMIT
 END TRY
@@ -301,6 +313,17 @@ END CATCH
 END
 GO
 
+CREATE OR ALTER PROC acce.UDP_tbRolesPantallas_PantallasNoTiene 
+@role_Id INT
+AS 
+BEGIN
+    SELECT T2.pant_Id, T2.pant_Descripcion
+    FROM acce.tbPantallas T2
+    LEFT JOIN acce.tbRolesPantallas T1 ON T1.pant_Id = T2.pant_Id AND T1.role_Id = @role_Id
+    WHERE T1.role_Id IS NULL
+END
+
+GO
 CREATE OR ALTER PROC acce.UDP_tbRolesPantallas_PANTALLAROL 
 @role_Id INT
 AS BEGIN
@@ -330,7 +353,8 @@ GO
 
 --***********************************************************TABLA DE DEPARTAMENTOS***************************************************************************--
 CREATE OR ALTER PROC mant.UDP_tbDepartamentos_CREATE
-@dept_Descripcion NVARCHAR(100),
+@dept_Id  INT,
+@dept_Descripcion  NVARCHAR(100),
 @dept_UserCreacion INT
 AS BEGIN
 
@@ -338,12 +362,11 @@ AS BEGIN
 		BEGIN TRAN
 
 		-- Si existe
-		IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
+		IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion OR dept_Id = @dept_Id AND dept_Estado = 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El departamento ya existe.' AS messageStatus
 		END
-
-
+		
 		ELSE IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 0)
 		BEGIN
 			DECLARE @Id INT = (SELECT dept_Id FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion) 
@@ -352,6 +375,7 @@ AS BEGIN
 
 			UPDATE mant.tbDepartamentos
 			SET
+				dept_Id          = @dept_Id,
 				dept_Descripcion = @dept_Descripcion,
 				dept_UserCreacion = @dept_UserCreacion,
 				dept_UserModificacion = NULL,
@@ -366,8 +390,8 @@ AS BEGIN
 
 		ELSE IF NOT EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
 		BEGIN
-			INSERT INTO mant.tbDepartamentos (dept_Descripcion, dept_UserCreacion)
-			VALUES (@dept_Descripcion, @dept_UserCreacion)
+			INSERT INTO mant.tbDepartamentos (dept_Id,dept_Descripcion, dept_UserCreacion)
+			VALUES (@dept_Id, @dept_Descripcion, @dept_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
@@ -397,7 +421,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Estado = 1)
+			IF EXISTS (SELECT * FROM mant.tbDepartamentos WHERE dept_Descripcion = @dept_Descripcion AND dept_Id <> @dept_Id AND dept_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El departamento ya existe.' AS messageStatus
 			END
@@ -476,23 +500,25 @@ GO
 
 --*************************************************************TABLA DE MUNICIPIOS****************************************************************************--
 CREATE OR ALTER PROC mant.UDP_tbMunicipios_CREATE
-@muni_Descripcion NVARCHAR(100),
-@dept_Id INT,
-@muni_UserCreacion INT
-AS BEGIN
-
-BEGIN TRY
-
-	BEGIN TRAN
+	@muni_Id INT,
+	@muni_Descripcion NVARCHAR(100),
+	@dept_Id INT,
+	@muni_UserCreacion INT
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRAN
 
 		-- Si existe
-		IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 1)
+		IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion  AND muni_Estado = 1 AND dept_Id = @dept_Id)
 		BEGIN
-			SELECT 409 AS codeStatus, 'El municipio ya existe.' AS messageStatus
+			SELECT 409 AS codeStatus, 'El municipio ya existe en ese departamento.' AS messageStatus
 		END
-
-
-		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 0)
+		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Id = @muni_Id AND muni_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'Codigo de municipio no disponible.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Id = @muni_Id AND dept_Id = @dept_Id AND muni_Estado = 0)
 		BEGIN
 			DECLARE @Id INT = (SELECT muni_Id FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion) 
 
@@ -500,23 +526,33 @@ BEGIN TRY
 
 			UPDATE mant.tbMunicipios
 			SET
+				muni_Id = @muni_Id,
 				muni_Descripcion = @muni_Descripcion,
-				dept_Id			= @dept_Id,
+				dept_Id = @dept_Id,
 				muni_UserCreacion = @muni_UserCreacion,
 				muni_UserModificacion = NULL,
 				muni_Estado = 1
-			WHERE muni_Id = @Id
+			WHERE muni_Id = @muni_Id
 
-		    SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
+			SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
 
 			COMMIT -- Agregado COMMIT
 		END
-
-
-		ELSE IF NOT EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND dept_Id <> @dept_Id  AND muni_Estado = 1)
 		BEGIN
-			INSERT INTO mant.tbMunicipios(muni_Descripcion, dept_Id, muni_UserCreacion)
-			VALUES (@muni_Descripcion, @dept_Id, @muni_UserCreacion)
+			INSERT INTO mant.tbMunicipios (muni_Id, muni_Descripcion, dept_Id, muni_UserCreacion)
+			VALUES (@muni_Id, @muni_Descripcion, @dept_Id, @muni_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El municipio ha sido creado con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+		ELSE IF NOT EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND dept_Id <> @dept_Id  AND muni_Estado = 1)
+		BEGIN
+			INSERT INTO mant.tbMunicipios (muni_Id, muni_Descripcion, dept_Id, muni_UserCreacion)
+			VALUES (@muni_Id, @muni_Descripcion, @dept_Id, @muni_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
@@ -525,18 +561,12 @@ BEGIN TRY
 			COMMIT -- Agregado COMMIT
 		END
 
-
-
 		COMMIT
-
-END TRY
-
-
-BEGIN CATCH 
-ROLLBACK
-			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
-
-END CATCH
+	END TRY
+	BEGIN CATCH 
+		ROLLBACK
+		SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+	END CATCH
 END
 GO
 
@@ -551,9 +581,13 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 1)
+			IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND dept_Id = @dept_Id AND muni_Id <> @muni_Id AND muni_Estado = 1)
 			BEGIN
-				SELECT 409 AS codeStatus, 'El municipio ya existe.' AS messageStatus
+				SELECT 409 AS codeStatus, 'El municipio ya existe en este departamento .' AS messageStatus
+			END
+			ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE  muni_Descripcion = @muni_Descripcion AND muni_Id = @muni_Id  AND muni_Estado = 1)
+			BEGIN
+				SELECT 200 AS codeStatus, 'El muniçipio ha sido actualizado con éxito.' AS messageStatus
 			END
 			ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Estado = 0)
 			BEGIN
@@ -573,6 +607,7 @@ AS BEGIN
 			BEGIN
 				UPDATE mant.tbMunicipios
 				SET
+				    dept_Id = @dept_Id,
 					muni_Descripcion = @muni_Descripcion,
 					muni_UserModificacion = @muni_UserModificacion
 				WHERE muni_Id = @muni_Id
@@ -632,6 +667,7 @@ WHERE dept_Id = @dept_Id;
 
 END
 GO
+
 --*************************************************************/TABLA DE MUNICIPIOS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------

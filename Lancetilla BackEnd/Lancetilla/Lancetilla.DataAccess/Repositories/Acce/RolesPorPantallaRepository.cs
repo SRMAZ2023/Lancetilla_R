@@ -47,6 +47,18 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             return result;
         }
 
+        public IEnumerable<tbRolesPantallas> PantallasSinRol(tbRolesPantallas item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+
+            parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.Query<tbRolesPantallas>(ScriptsDataBase.PantallasRolSinPantalla, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
         public RequestStatus Delete(tbRolesPantallas item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
@@ -55,7 +67,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             parametros.Add("@pant_Id", item.pant_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@role_Id", item.role_Id, DbType.Int32, ParameterDirection.Input);
           
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarUsuarios, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarRolPorPantalla, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
 

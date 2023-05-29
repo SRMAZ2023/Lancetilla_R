@@ -13,7 +13,9 @@ import { error } from 'console';
 export class DepartamentosComponent implements OnInit {
 
     //Dialogs
-    DepartamentostDialog: boolean = false;
+    InsertDepartamentostDialog: boolean = false;
+     //Dialogs
+     EditarDepartamentostDialog: boolean = false;
 
     deleteDepartamentosDialog: boolean = false;
 
@@ -47,15 +49,7 @@ export class DepartamentosComponent implements OnInit {
 
     ngOnInit() {
 
-        this.DepartamentosService.getCatgos().subscribe(
-            Response => {
-                console.log(Response);
-                this.Departamentos = Response
-            },
-            error => (
-                console.log(error)
-            )
-        );
+       this.CargarDepartamentos()
 
         //Modelo de los datos de la tabla
         this.cols = [
@@ -68,8 +62,21 @@ export class DepartamentosComponent implements OnInit {
     }
 
     //Metodo que desactiva el dialog
+    CargarDepartamentos() {
+        this.DepartamentosService.getCatgos().subscribe(
+            Response => {
+                console.log(Response);
+                this.Departamentos = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+    }
+   
     hideDialog() {
-        this.DepartamentostDialog = false;
+        this.InsertDepartamentostDialog = false;
+        this.EditarDepartamentostDialog = false;
         this.submitted = false;
     }
     //Metodo que desactiva el dialog
@@ -78,7 +85,7 @@ export class DepartamentosComponent implements OnInit {
     openNew() {
         this.Departamento = {};
         this.submitted = false;
-        this.DepartamentostDialog = true;
+        this.InsertDepartamentostDialog = true;
     }
     //Metodo que activa el dialog
 
@@ -87,7 +94,7 @@ export class DepartamentosComponent implements OnInit {
     editDepartamentos(Departamentos: DepartamentoViewModel) {
         this.Editar = true;
         this.Departamento = { ...Departamentos };
-        this.DepartamentostDialog = true;
+        this.EditarDepartamentostDialog = true;
     }
     //Toma los datos de ka tabla
 
@@ -117,12 +124,13 @@ export class DepartamentosComponent implements OnInit {
 
                     this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
 
+                    this.CargarDepartamentos()
                 } else if (this.datos.code == 200) {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.Departamento = {};
-                    this.DepartamentostDialog = false;
-
+                    this.InsertDepartamentostDialog = false;
+                    this.CargarDepartamentos()
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
                 }
@@ -160,8 +168,10 @@ export class DepartamentosComponent implements OnInit {
             console.log(this.Departamento.dept_Descripcion?.toString().length);
             this.espacio = true;
         }
+       
         //Validacion de params
-        if (params.dept_Descripcion !== undefined &&
+        if (params.dept_Id !== undefined &&
+            params.dept_Descripcion !== undefined &&
             params.dept_Descripcion.trim() !== '' &&
             params.dept_UserCreacion !== undefined &&
             params.dept_UserModificacion !== undefined) {
@@ -180,8 +190,8 @@ export class DepartamentosComponent implements OnInit {
 
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Departamento = {};
-                            this.DepartamentostDialog = false;
-
+                            this.InsertDepartamentostDialog = false;
+                            this.CargarDepartamentos()
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                         }
@@ -198,13 +208,15 @@ export class DepartamentosComponent implements OnInit {
                         if (this.datos.code == 409) {
 
                             this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-
+                           
                         } else if (this.datos.code == 200) {
 
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Departamento = {};
-                            this.DepartamentostDialog = false;
-
+                            this.EditarDepartamentostDialog = false;
+                            
+                            this.CargarDepartamentos()
+                        
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
                         }

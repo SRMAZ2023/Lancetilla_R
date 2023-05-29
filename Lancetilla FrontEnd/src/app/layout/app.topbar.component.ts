@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
+import { LocalStorageService } from '../local-storage.service';
 
 @Component({
     selector: 'app-topbar',
@@ -16,5 +17,15 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(private localStorage: LocalStorageService, public layoutService: LayoutService) { }
+
+
+    Salir()
+{
+
+    localStorage.clear()
+
 }
+}
+
+

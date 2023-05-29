@@ -48,7 +48,7 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-
+            parametros.Add("@usua_NombreUsuario", item.usua_NombreUsuario, DbType.String, ParameterDirection.Input);
             parametros.Add("@usua_Id", item.usua_Id, DbType.Int32, ParameterDirection.Input);        
             parametros.Add("@empl_Id", item.empl_Id, DbType.Int32, ParameterDirection.Input);       
             parametros.Add("@usua_Admin", item.usua_Admin, DbType.Int32, ParameterDirection.Input);
@@ -78,8 +78,8 @@ namespace Lancetilla.DataAccess.Repositories.Acce
             var parametros = new DynamicParameters();
 
 
-            //parametros.Add("@usua_NombreUsuario", item.usua_NombreUsuario, DbType.String, ParameterDirection.Input);
-            //parametros.Add("@usua_Clave", item.usua_Clave, DbType.String, ParameterDirection.Input);
+            parametros.Add("@usua_NombreUsuario", item.usua_NombreUsuario, DbType.String, ParameterDirection.Input);
+            parametros.Add("@usua_Clave", item.usua_Clave, DbType.String, ParameterDirection.Input);
 
 
             return db.QueryFirst<tbUsuarios>(ScriptsDataBase.IniciarSesion, parametros, commandType: CommandType.StoredProcedure);

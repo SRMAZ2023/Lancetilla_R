@@ -32,8 +32,12 @@ namespace Lancetilla.DataAccess
 
         public static string InsertarRolPorPantalla = "acce.UDP_tbRolesPantalla_CREATE";
 
+        public static string EliminarRolPorPantalla = "acce.UDP_tbRolesPantalla_Eliminar";
 
-        public static string EliminarRolPorPantalla = "acce.UDP_tbRoles_DELETE";
+
+
+
+        public static string PantallasRolSinPantalla = "acce.UDP_tbRolesPantallas_PantallasNoTiene";
 
 
         public static string PantallasRolPorPantalla = "acce.UDP_tbRolesPantallas_PANTALLAROL";

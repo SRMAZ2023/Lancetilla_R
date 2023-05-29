@@ -16,5 +16,9 @@ namespace Lancetilla.API.Models
         public string dept_Descripcion { get; set; }
         public int dept_Id { get; set; }
         public int? muni_UserCreacion { get; set; }
+
+        public int? muni_UserModificacion { get; set; }
+
+
     }
 }

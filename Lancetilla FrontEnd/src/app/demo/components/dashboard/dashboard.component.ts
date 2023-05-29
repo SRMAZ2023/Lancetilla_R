@@ -4,6 +4,8 @@ import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { LocalStorageService } from '../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -20,13 +22,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    usuarioID: any;
+
+    constructor( private _router: Router ,private localStorage: LocalStorageService,private productService: ProductService, public layoutService: LayoutService) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
     }
 
     ngOnInit() {
+
+        this.usuarioID = this.localStorage.getItem('UsuarioID')
+        
+        if (  this.usuarioID  == null || this.usuarioID  == undefined  ) {
+
+            this._router.navigate(['login']);
+            
+        }
+
+
         this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
 
