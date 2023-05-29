@@ -170,7 +170,16 @@ export class DepartamentosComponent implements OnInit {
         }
        
         //Validacion de params
+        if (params.dept_Id?.toString() !== undefined && params.dept_Id?.toString().length > 2 || params.dept_Id?.toString() !== undefined && params.dept_Id?.toString().length > 0 && parseInt(params.dept_Id?.toString()) < 1) {
+            
+            this.messageService.add({ severity: 'info', summary: 'info', detail: "Ingrese un código válido.", life: 3000 });
+
+        }
+        
+        
         if (params.dept_Id?.toString() !== undefined &&
+            params.dept_Id?.toString().length < 3  &&
+            parseInt(params.dept_Id?.toString()) > 0 &&
             params.dept_Descripcion !== undefined &&
             params.dept_Descripcion.trim() !== '' &&
             params.dept_UserCreacion !== undefined &&

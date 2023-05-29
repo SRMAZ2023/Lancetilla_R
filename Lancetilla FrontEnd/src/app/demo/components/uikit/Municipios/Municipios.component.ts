@@ -209,10 +209,16 @@ export class MunicipiosComponent implements OnInit {
  
        
 
-        
+         if (params.muni_Id?.toString() !== undefined && params.muni_Id?.toString().length > 4 || params.muni_Id?.toString() !== undefined && params.muni_Id?.toString().length > 0 && parseInt(params.muni_Id?.toString()) < 1) {
+            
+            this.messageService.add({ severity: 'info', summary: 'info', detail: "Ingrese un código válido.", life: 3000 });
+
+        }
        
         //Validacion de params
-        if ( params.muni_Id?.toString() !== undefined &&
+        if (params.muni_Id?.toString() !== undefined &&
+            params.muni_Id?.toString().length < 5  &&
+            parseInt(params.muni_Id?.toString()) > 0 &&
             params.muni_Descripcion !== undefined &&
             params.dept_Id?.toString() !== undefined &&
             params.dept_Descripcion.trim() !== '' &&
