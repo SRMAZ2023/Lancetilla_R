@@ -23,7 +23,7 @@ namespace Lancetilla.Entities.Entities
         public string empl_Telefono { get; set; }
         public int estc_Id { get; set; }
         public int carg_Id { get; set; }
-        public int muni_Id { get; set; }
+        public string muni_Id { get; set; }
         public int? empl_UserCreacion { get; set; }
         public DateTime? empl_FechaCreacion { get; set; }
         public int? empl_UserModificacion { get; set; }

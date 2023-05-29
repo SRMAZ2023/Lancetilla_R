@@ -157,7 +157,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             }
         }
 
-        public ServiceResult InsertDepartamento (tbDepartamentos item)
+        public ServiceResult InsertDepartamento(tbDepartamentos item)
         {
             var result = new ServiceResult();
             try

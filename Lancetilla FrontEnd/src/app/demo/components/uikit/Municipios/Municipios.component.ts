@@ -144,9 +144,9 @@ export class MunicipiosComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteMunicipiosDialog = false;
-        this.Municipios = this.Municipios.filter(val => val.muni_Id !== this.Municipio.muni_Id);
+        this.Municipios = this.Municipios.filter(val => val.muni_Id?.toString() !== this.Municipio.muni_Id?.toString());
         var params = {
-            "muni_Id": this.Municipio.muni_Id,
+            "muni_Id": this.Municipio.muni_Id?.toString(),
             "muni_Descripcion": "",
             "dept_Id": 0,
             "dept_Descripcion": "",
@@ -197,9 +197,9 @@ export class MunicipiosComponent implements OnInit {
     }
        
       var params = {
-            "muni_Id": this.Municipio.muni_Id,
+            "muni_Id": this.Municipio.muni_Id?.toString(),
             "muni_Descripcion": this.Municipio.muni_Descripcion?.trim(),
-            "dept_Id": this.Municipio.dept_Id,
+            "dept_Id": this.Municipio.dept_Id?.toString(),
             "dept_Descripcion": "d",
             "muni_UserCreacion": 1,
             "muni_UserModificacion": 1
@@ -212,9 +212,9 @@ export class MunicipiosComponent implements OnInit {
         
        
         //Validacion de params
-        if (
+        if ( params.muni_Id?.toString() !== undefined &&
             params.muni_Descripcion !== undefined &&
-            params.dept_Id !== undefined &&
+            params.dept_Id?.toString() !== undefined &&
             params.dept_Descripcion.trim() !== '' &&
             params.muni_UserCreacion !== undefined &&
             params.muni_UserModificacion !== undefined) {

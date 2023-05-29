@@ -108,9 +108,9 @@ export class DepartamentosComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteDepartamentosDialog = false;
-        this.Departamentos = this.Departamentos.filter(val => val.dept_Id !== this.Departamento.dept_Id);
+        this.Departamentos = this.Departamentos.filter(val => val.dept_Id?.toString() !== this.Departamento.dept_Id?.toString());
         var params = {
-            "dept_Id": this.Departamento.dept_Id,
+            "dept_Id": this.Departamento.dept_Id?.toString(),
             "dept_Descripcion": "",
             "dept_UserCreacion": 1,
             "dept_UserModificacion": 1
@@ -157,7 +157,7 @@ export class DepartamentosComponent implements OnInit {
         this.submitted = true;
 
         var params = {
-            "dept_Id": this.Departamento.dept_Id,
+            "dept_Id": this.Departamento.dept_Id?.toString(),
             "dept_Descripcion": this.Departamento.dept_Descripcion!.trim(),
             "dept_UserCreacion": 1,
             "dept_UserModificacion": 1
@@ -170,7 +170,7 @@ export class DepartamentosComponent implements OnInit {
         }
        
         //Validacion de params
-        if (params.dept_Id !== undefined &&
+        if (params.dept_Id?.toString() !== undefined &&
             params.dept_Descripcion !== undefined &&
             params.dept_Descripcion.trim() !== '' &&
             params.dept_UserCreacion !== undefined &&

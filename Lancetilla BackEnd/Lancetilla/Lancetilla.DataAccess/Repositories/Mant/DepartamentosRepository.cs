@@ -25,7 +25,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
-            parametros.Add("@dept_Id", item.dept_Id, DbType.Int32, ParameterDirection.Input);         
+            parametros.Add("@dept_Id", item.dept_Id, DbType.String, ParameterDirection.Input);         
     
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarDepartamentos, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
@@ -41,7 +41,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-
+            parametros.Add("@dept_Id", item.dept_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@dept_Descripcion", item.dept_Descripcion, DbType.String, ParameterDirection.Input);
             parametros.Add("@dept_UserCreacion", item.dept_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
@@ -59,7 +59,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@dept_Id", item.dept_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@dept_Id", item.dept_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@dept_Descripcion", item.dept_Descripcion, DbType.String, ParameterDirection.Input);
             parametros.Add("@dept_UserModificacion", item.dept_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
