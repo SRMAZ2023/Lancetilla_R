@@ -151,6 +151,12 @@ export class DepartamentosComponent implements OnInit {
         return value.trim() === '';
     }
 
+    formatInputAsText(event: any) {
+        const inputValue = event.target.value;
+        const numericValue = inputValue.replace(/\D/g, ''); // Eliminar todos los caracteres que no sean dígitos
+        this.Departamento.dept_Id = numericValue.toString();
+    }
+    
 
     //Enviamos y editamos datos
     saveDepartamentos() {
