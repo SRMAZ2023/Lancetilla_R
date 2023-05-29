@@ -319,5 +319,17 @@ namespace Lancetilla.DataAccess
 
         ////////////////////////////////////////////////////////////////////////////////////////////// 
 
+        #region Gráficas
+
+        public static string PlantasPorArea = "bota.UDP_tbPlantas_Grafica";
+        public static string AnimalesPorArea = "zool.UDP_tbAnimales_Grafica";
+        public static string Visitantes = "mant.UDP_tbVisitantes_Grafica";
+        public static string AnimalesPorHabitat = "zool.UDP_tbAnimales_AnimalesHabitatGrafica";
+        public static string AnimalesFind = "zool.UDP_tbAnimales_FIND";
+
+
+        #endregion
+
+
     }
 }
