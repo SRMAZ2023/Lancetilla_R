@@ -465,9 +465,11 @@ CREATE OR ALTER VIEW zool.VW_tbAnimales
 AS 
 
 SELECT  anim_Id, 
+		anim_Codigo,
 		anim_Nombre, 
 		anim_NombreCientifico, 
-		anim_Reino,
+		T1.rein_Id,
+		rein_Descripcion,
 		T1.habi_Id, 
 		habi_Descripcion,
 		T1.arzo_Id, 
@@ -494,6 +496,8 @@ SELECT  anim_Id,
 		ON T1.espe_Id = T4.espe_Id
 		INNER JOIN zool.tbHabitat T5
 		ON T1.habi_Id = T5.habi_Id
+		INNER JOIN zool.tbReinos T6
+		ON T1.rein_Id = T6.rein_Id
 	    WHERE anim_Estado = 1;
 
 GO
@@ -564,12 +568,11 @@ AS
 SELECT plan_Id, 
 	   plan_Nombre,
 	   plan_NombreCientifico,
-	   plan_Reino,
+	   T1.rein_Id,
+	   rein_Descripcion,
 	   T1.arbo_Id, 
 	   arbo_Descripcion,
-	   T1.cuid_Id,
-	   cuid_Descripcion,
-	   cuid_Frecuencia,
+
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = plan_UserCreacion)) AS usua_UserCreaNombre,
 	   plan_UserCreacion,
@@ -582,8 +585,8 @@ SELECT plan_Id,
 	   FROM bota.tbPlantas T1
 	   INNER JOIN bota.tbAreasBotanicas T2
 	   ON T1.arbo_Id = T2.arbo_Id
-	   INNER JOIN bota.tbCuidados T3
-	   ON T1.cuid_Id = T3.cuid_Id	   
+	   INNER JOIN zool.tbReinos T3
+	   ON T1.rein_Id = T3.rein_Id
 	   WHERE plan_Estado = 1;
 GO
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
