@@ -299,7 +299,7 @@ export class AppMenuComponent implements OnInit {
                         label: 'Paginas de Mantenimeinto',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                                { label: 'Empleados', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/app/uikit/Empleados'] },  
+                                { label: 'Empleados', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Empleados'] },  
                                 { label: 'Manteniminto', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Mantenimineto'] },             
                                 { label: 'Visitantes', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/visitantes'] },                              
                                 { label: 'Cargos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/cargos'] },
