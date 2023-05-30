@@ -438,6 +438,44 @@ GO
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--*****************************************************************TABLA DE RAZAS*****************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbRazas
+AS 
+
+SELECT raza_Id,
+	   raza_Descripcion,
+	   raza_NombreCientifico,
+	   T1.habi_Id,
+	   habi_Descripcion,
+	   T1.espe_Id,
+	   espe_Descripcion,
+	   T1.rein_Id,
+	   rein_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = raza_UserCreacion)) AS usua_UserCreaNombre,
+	   raza_UserCreacion,
+	   raza_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = raza_UserModificacion)) AS usua_UserModiNombre,
+	   raza_UserModificacion,
+	   raza_FechaModificacion,
+	   raza_Estado
+	   FROM zool.tbRazas T1
+	   INNER JOIN zool.tbHabitat T2
+	   ON T1.habi_Id = T2.habi_Id
+	   INNER JOIN zool.tbEspecies T3
+	   ON T1.espe_Id = T3.espe_Id
+	   INNER JOIN zool.tbReinos T4
+	   ON T1.rein_Id = T4.rein_Id
+	   WHERE raza_Estado = 1;
+	    
+
+	   
+GO
+--****************************************************************/TABLA DE RAZAS*****************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --**************************************************************TABLA DE ALIMENTACIÓN************************************************************************--
 CREATE OR ALTER VIEW zool.VW_tbALimentacion
 AS 
@@ -467,17 +505,16 @@ AS
 SELECT  anim_Id, 
 		anim_Codigo,
 		anim_Nombre, 
-		anim_NombreCientifico, 
-		T1.rein_Id,
-		rein_Descripcion,
-		T1.habi_Id, 
+		T1.raza_Id,
+		raza_Descripcion,
+		T4.habi_Id,
 		habi_Descripcion,
+		T4.rein_Id,
+		rein_Descripcion,
 		T1.arzo_Id, 
 		arzo_Descripcion,
 		T1.alim_Id, 
 		alim_Descripcion,
-		T1.espe_Id, 
-		espe_Descripcion,
 	    (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	    WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = anim_UserCreacion)) AS usua_UserCreaNombre,
 		anim_UserCreacion,
@@ -492,12 +529,12 @@ SELECT  anim_Id,
 		ON T1.arzo_Id = T2.arzo_Id
 		INNER JOIN zool.tbAlimentacion T3
 		ON T1.alim_Id = T3.alim_Id
-		INNER JOIN zool.tbEspecies T4
-		ON T1.espe_Id = T4.espe_Id
+		INNER JOIN zool.tbRazas T4
+		ON T1.raza_Id = T4.raza_Id
 		INNER JOIN zool.tbHabitat T5
-		ON T1.habi_Id = T5.habi_Id
+		ON T4.habi_Id = T5.habi_Id
 		INNER JOIN zool.tbReinos T6
-		ON T1.rein_Id = T6.rein_Id
+		ON T4.rein_Id = T6.rein_Id
 	    WHERE anim_Estado = 1;
 
 GO
@@ -559,7 +596,56 @@ GO
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE CUIDADOS**************************************************************************--
+--************************************************************TABLA DE TIPOS DE PLANTAS************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbTiposPlantas
+AS 
+
+SELECT tipl_Id,
+       tipl_NombreComun,
+       tipl_NombreCientifico,
+       T1.rein_Id,
+       rein_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tipl_UserCreacion)) AS usua_UserCreaNombre,
+	   tipl_UserCreacion,
+	   tipl_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = tipl_UserModificacion)) AS usua_UserModiNombre,
+	   tipl_UserModificacion, 
+	   tipl_FechaModificacion, 
+	   tipl_Estado
+	   FROM bota.tbTiposPlantas T1
+	   INNER JOIN zool.tbReinos T2
+	   ON T1.rein_Id = T2.rein_Id
+	   WHERE tipl_Estado = 1;
+GO
+--***********************************************************/TABLA DE TIPOS DE PLANTAS***********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*****************************************************************TABLA DE REINOS****************************************************************************--
+CREATE OR ALTER VIEW zool.VW_tbReinos
+AS 
+
+SELECT rein_Id, 
+	   rein_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = rein_UserCreacion)) AS usua_UserCreaNombre,
+	   rein_UserCreacion,
+	   rein_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = rein_UserModificacion)) AS usua_UserModiNombre,
+	   rein_UserModificacion, 
+	   rein_FechaModificacion, 
+	   rein_Estado
+	   FROM zool.tbReinos  
+	   WHERE rein_Estado = 1;
+GO
+--*****************************************************************TABLA DE REINOS****************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*****************************************************************TABLA DE CUIDADOS***************************************************************************--
 CREATE OR ALTER VIEW bota.VW_tbCuidados
 AS
 
@@ -613,7 +699,10 @@ AS
 
 SELECT cupl_Id, 
 	   T1.plan_Id,
-	   plan_Nombre,
+	   plan_Codigo,
+	   T4.tipl_Id,
+	   T4.tipl_NombreComun,
+	   T4.tipl_NombreCientifico,
 	   T1.ticu_Id, 
 	   ticu_Descripcion,
 	   cupl_Fecha,
@@ -631,6 +720,8 @@ SELECT cupl_Id,
 	   ON T1.plan_Id = T2.plan_Id
 	   INNER JOIN bota.tbTiposCuidados T3
 	   ON T1.ticu_Id = T3.ticu_Id
+	   INNER JOIN bota.tbTiposPlantas T4
+	   ON T2.tipl_Id = T4.tipl_Id
 	   WHERE ticu_Estado = 1;
 GO
 --**********************************************************/TABLA DE CUIDADOS POR PLANTA**********************************************************************--
@@ -642,11 +733,10 @@ CREATE OR ALTER VIEW bota.VW_tbPlantas
 AS
 
 SELECT plan_Id, 
-plan_Codigo,
-	   plan_Nombre,
-	   plan_NombreCientifico,
-	   T1.rein_Id,
-	   rein_Descripcion,
+	   plan_Codigo,
+	   T1.tipl_Id,
+	   tipl_NombreComun,
+	   tipl_NombreCientifico,
 	   T1.arbo_Id, 
 	   arbo_Descripcion,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
@@ -661,8 +751,8 @@ plan_Codigo,
 	   FROM bota.tbPlantas T1
 	   INNER JOIN bota.tbAreasBotanicas T2
 	   ON T1.arbo_Id = T2.arbo_Id
-	   INNER JOIN zool.tbReinos T3
-	   ON T1.rein_Id = T3.rein_Id
+	   INNER JOIN bota.tbTiposPlantas T3
+	   ON T1.tipl_Id = T3.tipl_Id
 	   WHERE plan_Estado = 1;
 GO
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--

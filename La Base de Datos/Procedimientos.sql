@@ -2015,7 +2015,7 @@ AS BEGIN
 
   	BEGIN TRY
 	BEGIN TRAN
-			DECLARE @habis INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE habi_Id = @habi_Id)
+			DECLARE @habis INT = (SELECT COUNT(*) FROM zool.tbRazas WHERE habi_Id = @habi_Id)
 			
 			IF @habis > 0
 			BEGIN
@@ -2163,7 +2163,7 @@ AS BEGIN
 
   	BEGIN TRY
 	BEGIN TRAN
-			DECLARE @especies INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE espe_Id = @espe_Id)
+			DECLARE @especies INT = (SELECT COUNT(*) FROM zool.tbRazas WHERE espe_Id = @espe_Id)
 			
 			IF @especies > 0
 			BEGIN
@@ -2191,6 +2191,201 @@ GO
 
 
 --***************************************************************/TABLA DE ESPECIES**************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*****************************************************************TABLA DE RAZAS*****************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbRazas_CREATE
+@raza_Descripcion NVARCHAR(100),
+@raza_NombreCientifico NVARCHAR(100),
+@rein_Id INT,
+@habi_Id INT,
+@espe_Id INT,
+@raza_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_Descripcion = @raza_Descripcion AND raza_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La raza ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico  AND raza_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico de la raza ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La raza y el nombre científico ya existe.' AS messageStatus
+		END
+
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE  raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT raza_Id FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE zool.tbRazas
+			SET
+				  raza_Descripcion =  @raza_Descripcion,
+				  raza_NombreCientifico = @raza_NombreCientifico,
+				  rein_Id = @rein_Id,
+				  habi_Id = @habi_Id,
+				  espe_Id = @espe_Id,
+				  raza_UserCreacion = @raza_UserCreacion,
+				  raza_UserModificacion = NULL,
+				  raza_Estado = 1
+			WHERE raza_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'La raza ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado= 1)
+		BEGIN
+			INSERT INTO zool.tbRazas(raza_Descripcion, raza_NombreCientifico, habi_Id, rein_Id, espe_Id)
+			VALUES (@raza_Descripcion, @raza_NombreCientifico, @habi_Id, @rein_Id, @espe_Id)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'La raza ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+CREATE OR ALTER PROC zool.UDP_tbRazas_UPDATE
+@raza_Id INT,
+@raza_Descripcion NVARCHAR(100),
+@raza_NombreCientifico NVARCHAR(100),
+@rein_Id INT,
+@habi_Id INT,
+@espe_Id INT,
+@raza_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		-- Si existe
+		IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_Descripcion = @raza_Descripcion AND raza_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La raza ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico  AND raza_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico de la raza ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'La raza y el nombre científico ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE  raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado= 0)
+		BEGIN
+			DECLARE @Id INT = (SELECT raza_Id FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE zool.tbRazas
+			SET
+				  raza_Descripcion =  @raza_Descripcion,
+				  raza_NombreCientifico = @raza_NombreCientifico,
+				  rein_Id = @rein_Id,
+				  habi_Id = @habi_Id,
+				  espe_Id = @espe_Id,
+				  raza_UserCreacion = @raza_UserModificacion,
+				  raza_UserModificacion = NULL,
+				  raza_Estado = 1
+			WHERE raza_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'La raza ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+			ELSE --Especie no existe, se realiza la actualización
+			BEGIN
+				UPDATE zool.tbRazas
+				SET
+					  raza_Descripcion =  @raza_Descripcion,
+					  raza_NombreCientifico = @raza_NombreCientifico,
+					  rein_Id = @rein_Id,
+					  habi_Id = @habi_Id,
+					  espe_Id = @espe_Id,
+					  raza_FechaModificacion = GETDATE(),
+					  raza_UserModificacion = @raza_UserModificacion
+				WHERE raza_Id = @espe_Id
+
+				SELECT 200 AS codeStatus, 'La raza ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
+
+END
+GO
+
+
+CREATE OR ALTER PROC zool.UDP_tbRazas_DELETE
+@raza_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+			DECLARE @razas INT = (SELECT COUNT(*) FROM zool.tbAnimales WHERE raza_Id = @raza_Id)
+			
+			IF @razas > 0
+			BEGIN
+			SELECT 202 AS codeStatus, 'La raza que desea eliminar está en uso.' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE zool.tbRazas
+			SET
+				raza_Estado	=	0
+				WHERE raza_Id	=	@raza_Id
+
+			SELECT 200 AS codeStatus, 'La raza ha sido eliminado con éxito.' AS messageStatus
+			END
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+
+--****************************************************************/TABLA DE RAZAS*****************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2346,12 +2541,9 @@ GO
 CREATE OR ALTER PROC zool.UDP_tbAnimales_CREATE
 @anim_Codigo NVARCHAR(100),
 @anim_Nombre NVARCHAR(100),
-@anim_NombreCientifico NVARCHAR(100),
-@rein_Id INT,
-@habi_Id INT,
+@raza_Id INT,
 @arzo_Id INT,
 @alim_Id INT,
-@espe_Id INT,
 @anim_UserCreacion INT
 AS BEGIN
 
@@ -2374,12 +2566,8 @@ BEGIN TRY
 			SET
 				  anim_Codigo = @anim_Codigo,
 				  anim_Nombre = @anim_Nombre,
-				  anim_NombreCientifico = @anim_NombreCientifico,
-				  rein_Id = @rein_Id,
-				  habi_Id = @habi_Id,
 				  arzo_Id = @arzo_Id,
 				  alim_Id = @alim_Id,
-				  espe_Id = @espe_Id,
 				  anim_UserModificacion = NULL,
 				  anim_Estado = 1
 			WHERE anim_Id = @Id
@@ -2392,8 +2580,8 @@ BEGIN TRY
 
 		ELSE IF NOT EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Codigo = @anim_Codigo AND anim_Estado= 1)
 		BEGIN
-			INSERT INTO zool.tbAnimales(anim_Codigo, anim_Nombre, anim_NombreCientifico, rein_Id, habi_Id, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
-			VALUES (@anim_Codigo, @anim_Nombre, @anim_NombreCientifico, @rein_Id, @habi_Id, @arzo_Id, @alim_Id, @espe_Id, @anim_UserCreacion)
+			INSERT INTO zool.tbAnimales(anim_Codigo, anim_Nombre, arzo_Id, alim_Id, anim_UserCreacion)
+			VALUES (@anim_Codigo, @anim_Nombre, @arzo_Id, @alim_Id, @anim_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
@@ -2422,12 +2610,9 @@ CREATE OR ALTER PROC zool.UDP_tbAnimales_UPDATE
 @anim_Id INT,
 @anim_Codigo NVARCHAR(100),
 @anim_Nombre NVARCHAR(100),
-@anim_NombreCientifico NVARCHAR(100),
-@rein_Id INT,
-@habi_Id INT,
+@raza_Id INT,
 @arzo_Id INT,
 @alim_Id INT,
-@espe_Id INT,
 @anim_UserModificacion INT
 AS BEGIN
 
@@ -2443,14 +2628,10 @@ AS BEGIN
 
 				UPDATE zool.tbAnimales
 				SET
-					anim_Codigo = @anim_Codigo,
+				  anim_Codigo = @anim_Codigo,
 				  anim_Nombre = @anim_Nombre,
-				  anim_NombreCientifico = @anim_NombreCientifico,
-				  rein_Id = @rein_Id,
-				  habi_Id = @habi_Id,
 				  arzo_Id = @arzo_Id,
 				  alim_Id = @alim_Id,
-				  espe_Id = @espe_Id,
 				  anim_UserModificacion = @anim_UserModificacion,
 				  anim_Estado = 1
 				WHERE   anim_Id = @Id
@@ -2462,15 +2643,10 @@ AS BEGIN
 			BEGIN
 				UPDATE zool.tbAnimales
 				SET
-							anim_Codigo = @anim_Codigo,
-
+				  anim_Codigo = @anim_Codigo,
 				  anim_Nombre = @anim_Nombre,
-				  anim_NombreCientifico = @anim_NombreCientifico,
-				  rein_Id = @rein_Id,
-				  habi_Id = @habi_Id,
 				  arzo_Id = @arzo_Id,
 				  alim_Id = @alim_Id,
-				  espe_Id = @espe_Id,
 				  anim_UserModificacion = @anim_UserModificacion,
 				  anim_FechaModificacion = GETDATE()
 				WHERE anim_Id = @anim_Id
@@ -2824,41 +3000,182 @@ GO
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE PLANTAS****************************************************************************--
+--*************************************************************TABLA DE TIPOS DE PLANTAS************************************************************************--
 GO
-CREATE OR ALTER PROCEDURE bota.UDP_tbPlantas_FIND
-@plan_Id	 int
-AS
-BEGIN
 
-	/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT TOP (1000) [plan_Id],
-		plan_Codigo
-      ,[plan_Nombre]
-      ,[plan_NombreCientifico]
-      ,rein_Id
-	  ,rein_Descripcion
-      ,[arbo_Id]
-      ,[arbo_Descripcion]
-      ,[usua_UserCreaNombre]
-      ,[plan_UserCreacion]
-      ,[plan_FechaCreacion]
-      ,[usua_UserModiNombre]
-      ,[plan_UserModificacion]
-      ,[plan_FechaModificacion]
-      ,[plan_Estado]
-  FROM [db_Lancetilla].[bota].[VW_tbPlantas]
-WHERE [plan_Id] = @plan_Id
+CREATE OR ALTER PROC bota.UDP_tbTiposPlantas_CREATE 
+@tipl_NombreComun NVARCHAR(100),
+@tipl_NombreCientifico NVARCHAR(100),
+@rein_Id INT,
+@tipl_UserCreacion INT
+AS BEGIN
+
+BEGIN TRY
+
+	BEGIN TRAN
+		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun)  AND tipl_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El ´nombre común de la planta ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre y el nombre científico de la planta ya existe.' AS messageStatus
+		END
+
+		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 0 )
+		BEGIN
+			DECLARE @Id INT = (SELECT tipl_Id FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)) 
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			UPDATE bota.tbTiposPlantas
+			SET
+				  tipl_NombreComun = @tipl_NombreComun,
+				  tipl_NombreCientifico = @tipl_NombreCientifico,
+				  rein_Id = @rein_Id,
+				  tipl_UserCreacion = @tipl_UserCreacion,
+				  tipl_UserModificacion = NULL,
+				  tipl_Estado = 1
+			WHERE tipl_Id = @Id
+
+		    SELECT 200 AS codeStatus, 'El tipo de planta ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+
+		ELSE IF NOT EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico) AND tipl_Estado= 1)
+		BEGIN
+			INSERT INTO bota.tbTiposPlantas(tipl_NombreComun, tipl_NombreCientifico, rein_Id, tipl_UserCreacion)
+			VALUES (@tipl_NombreComun, @tipl_NombreCientifico, @rein_Id, @tipl_UserCreacion)
+
+			BEGIN TRAN -- Agregado BEGIN TRAN
+
+			SELECT 200 AS codeStatus, 'El tipo de planta ha sido creada con éxito.' AS messageStatus
+
+			COMMIT -- Agregado COMMIT
+		END
+
+		COMMIT
+
+END TRY
+
+
+BEGIN CATCH 
+ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+
+END CATCH
+END
+GO
+
+
+
+CREATE OR ALTER PROC bota.UDP_tbTiposPlantas_UPDATE 
+@tipl_Id INT,
+@tipl_NombreComun NVARCHAR(100),
+@tipl_NombreCientifico NVARCHAR(100),
+@rein_Id INT,
+@tipl_UserModificacion INT
+AS BEGIN
+
+  	BEGIN TRY
+		BEGIN TRAN
+		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun)  AND tipl_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El ´nombre común de la planta ya existe.' AS messageStatus
+		END
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
+		END
+
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		BEGIN
+			SELECT 409 AS codeStatus, 'El nombre y el nombre científico de la planta ya existe.' AS messageStatus
+		END
+
+		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 0 )
+		BEGIN
+			DECLARE @Id INT = (SELECT tipl_Id FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)) 
+			select  @Id
+				UPDATE bota.tbTiposPlantas
+				SET
+						tipl_NombreComun = @tipl_NombreComun,
+						tipl_NombreCientifico = @tipl_NombreCientifico,
+						rein_Id = @rein_Id,
+						tipl_UserModificacion = @tipl_UserModificacion,
+						tipl_Estado = 1
+				WHERE   tipl_Id = @Id
+
+				SELECT 200 AS codeStatus, 'La planta ha sido actualizada con éxito.' AS messageStatus
+			END
+
+			ELSE --Planta no existe, se realiza la actualización
+			BEGIN
+				UPDATE bota.tbTiposPlantas
+				SET
+						tipl_NombreComun = @tipl_NombreComun,
+						tipl_NombreCientifico = @tipl_NombreCientifico,
+						rein_Id = @rein_Id,
+						tipl_FechaModificacion = GETDATE(),
+						tipl_UserModificacion = @tipl_UserModificacion
+				WHERE	tipl_Id = @tipl_Id
+
+				SELECT 200 AS codeStatus, 'La planta ha sido actualizado con éxito.' AS messageStatus
+			END
+
+			COMMIT
+		END TRY
+		BEGIN CATCH
+			ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+		END CATCH
 
 END
+GO
 
-go
+CREATE OR ALTER PROC bota.UDP_tbTiposPlantas_DELETE
+@tipl_Id INT
+AS BEGIN
+
+  	BEGIN TRY
+	BEGIN TRAN
+	
+			UPDATE bota.tbTiposPlantas
+			SET
+				tipl_Estado	=	0
+				WHERE tipl_Id	=	@tipl_Id
+
+			SELECT 200 AS codeStatus, 'El tipo de plantas ha sido eliminada con éxito.' AS messageStatus
+			
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+
+END
+GO
+
+--************************************************************/TABLA DE TIPOS DE PLANTAS***********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*****************************************************************TABLA DE PLANTAS****************************************************************************--
+GO
+
 CREATE OR ALTER PROC bota.UDP_tbPlantas_CREATE 
 @plan_Codigo NVARCHAR(100),
-@plan_Nombre NVARCHAR(100),
-@plan_NombreCientifico NVARCHAR(100),
-@rein_Id INT,
 @arbo_Id INT,
+@tipl_Id INT,
 @plan_UserCreacion INT
 AS BEGIN
 
@@ -2877,10 +3194,8 @@ BEGIN TRY
 
 			UPDATE bota.tbPlantas
 			SET
-			plan_Codigo = @plan_Codigo,
-				  plan_Nombre = @plan_Nombre,
-				  plan_NombreCientifico = @plan_NombreCientifico,
-				  rein_Id = @rein_Id,
+				  plan_Codigo = @plan_Codigo,
+				  tipl_Id = @tipl_Id,
 				  arbo_Id = @arbo_Id,
 				  plan_UserCreacion = @plan_UserCreacion,
 				  plan_UserModificacion = NULL,
@@ -2893,10 +3208,10 @@ BEGIN TRY
 		END
 
 
-		ELSE IF NOT EXISTS (SELECT * FROM bota.tbPlantas WHERE plan_Nombre = @plan_Nombre  OR plan_NombreCientifico = @plan_NombreCientifico AND plan_Estado= 1)
+		ELSE IF NOT EXISTS (SELECT * FROM bota.tbPlantas WHERE  RTRIM(plan_Codigo) = RTRIM(@plan_Codigo) AND plan_Estado= 1)
 		BEGIN
-			INSERT INTO bota.tbPlantas(plan_Codigo, plan_Nombre, plan_NombreCientifico, rein_Id, arbo_Id, plan_UserCreacion)
-			VALUES (@plan_Codigo, @plan_Nombre, @plan_NombreCientifico, @rein_Id, @arbo_Id, @plan_UserCreacion)
+			INSERT INTO bota.tbPlantas(plan_Codigo, tipl_Id, arbo_Id, plan_UserCreacion)
+			VALUES (@plan_Codigo, @tipl_Id, @arbo_Id, @plan_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
@@ -2923,10 +3238,8 @@ GO
 CREATE OR ALTER PROC bota.UDP_tbPlantas_UPDATE 
 @plan_Id INT,
 @plan_Codigo NVARCHAR(100),
-@plan_Nombre NVARCHAR(100),
-@plan_NombreCientifico NVARCHAR(100),
-@rein_Id INT,
 @arbo_Id INT,
+@tipl_Id INT,
 @plan_UserModificacion INT
 AS BEGIN
 
@@ -2946,9 +3259,7 @@ END
 				UPDATE bota.tbPlantas
 				SET
 						plan_Codigo = @plan_Codigo,
-						plan_Nombre = @plan_Nombre,
-						plan_NombreCientifico = @plan_NombreCientifico,
-						rein_Id = @rein_Id,
+						tipl_Id = @tipl_Id,
 						arbo_Id = @arbo_Id,
 						plan_UserModificacion = @plan_UserModificacion,
 						plan_Estado = 1
@@ -2962,9 +3273,7 @@ END
 				UPDATE bota.tbPlantas
 				SET
 						plan_Codigo = @plan_Codigo,
-						plan_Nombre = @plan_Nombre,
-						plan_NombreCientifico = @plan_NombreCientifico,
-						rein_Id = @rein_Id,
+						tipl_Id = @tipl_Id,
 						arbo_Id = @arbo_Id,
 					  plan_FechaModificacion = GETDATE(),
 					  plan_UserModificacion = @plan_UserModificacion

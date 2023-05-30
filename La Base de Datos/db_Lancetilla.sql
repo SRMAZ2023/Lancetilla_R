@@ -130,7 +130,6 @@ CONSTRAINT FK_zool_tbReinos_rein_UserModificacion_acce_tbUsuarios_usua_Id		FOREI
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 --**********************************************************TABLA DE ÁREA DEL ZOOLOGICOS**********************************************************************--
 CREATE TABLE zool.tbAreasZoologico(
 arzo_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
@@ -164,7 +163,6 @@ habi_Estado					BIT						DEFAULT 1,
 CONSTRAINT FK_zool_tbHabitat_habi_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (habi_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbHabitat_habi_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (habi_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
 --*************************************************************/TABLA DE HABITAT************************************************************************--
-
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -204,17 +202,39 @@ CONSTRAINT FK_zool_tbAlimentacion_alim_UserModificacion_acce_tbUsuarios_usua_Id	
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--*****************************************************************TABLA DE RAZAS*****************************************************************************--
+CREATE TABLE zool.tbRazas(
+raza_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+raza_Descripcion			NVARCHAR(100)			NOT NULL,
+raza_NombreCientifico		NVARCHAR(100)			NOT NULL UNIQUE,
+rein_Id						INT						NOT NULL,
+habi_Id						INT						NOT NULL,
+espe_Id						INT						NOT NULL,
+
+/**********Campos de auditoria***********/
+raza_UserCreacion			INT,
+raza_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+raza_UserModificacion		INT,
+raza_FechaModificacion		DATETIME,
+raza_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_zool_tbRazas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
+CONSTRAINT FK_zool_tbRazas_habi_Id_zool_tbHabitat_habi_Id						FOREIGN KEY (habi_Id)					REFERENCES zool.tbHabitat(habi_Id),
+CONSTRAINT FK_zool_tbRazas_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
+CONSTRAINT FK_zool_tbRazas_raza_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (raza_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_zool_tbRazas_raza_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (raza_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--****************************************************************/TABLA DE RAZAS*****************************************************************************--
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
 CREATE TABLE zool.tbAnimales(
 anim_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 anim_Codigo						NVARCHAR(100)		NOT NULL UNIQUE,
 anim_Nombre						NVARCHAR(200)		NOT NULL,
-anim_NombreCientifico			NVARCHAR(200)		NOT NULL,
-rein_Id							INT					NOT NULL,
-habi_Id							INT					NOT NULL,
+raza_Id							INT					NOT NULL,
 arzo_Id							INT					NOT NULL,
 alim_Id							INT					NOT NULL,
-espe_Id							INT					NOT NULL,
 
 /**********Campos de auditoria***********/
 anim_UserCreacion				INT,
@@ -226,10 +246,8 @@ anim_Estado						BIT					DEFAULT 1,
 CONSTRAINT FK_zool_tbAnimales_anim_UserCreacion_acce_tbUsuarios_usua_Id				FOREIGN KEY (anim_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbAnimales_anim_UserModificacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (anim_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN KEY (arzo_Id)					REFERENCES zool.tbAreasZoologico(arzo_Id),
-CONSTRAINT FK_zool_tbAnimales_rein_Id_zool_tbReinos_rein_Id							FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
-CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
-CONSTRAINT FK_zool_tbAnimales_habi_Id_zool_tbHabitat_habi_Id						FOREIGN KEY (habi_Id)					REFERENCES zool.tbHabitat(habi_Id),
-CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id));
+CONSTRAINT FK_zool_tbAnimales_raza_Id_zool_tbRazas_raza_Id							FOREIGN KEY (raza_Id)					REFERENCES zool.tbRazas(raza_Id),
+CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id));
 --***************************************************************/TABLA DE ANIMALES*************************************************************************--
 
 --**************************************************************/MÓDULO DE ZOOLOGICO**************************************************************************--
@@ -470,15 +488,33 @@ CONSTRAINT FK_bota_tbAreasBotanicas_arbo_UserModificacion_acce_tbUsuarios_usua_I
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--************************************************************TABLA DE TIPOS DE PLANTAS************************************************************************--
+CREATE TABLE bota.tbTiposPlantas(
+tipl_Id						INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
+tipl_NombreComun			NVARCHAR(100)			NOT NULL,
+tipl_NombreCientifico		NVARCHAR(100)			NOT NULL UNIQUE,
+rein_Id						INT						NOT NULL,
+
+/**********Campos de auditoria***********/
+tipl_UserCreacion			INT,
+tipl_FechaCreacion			DATETIME				DEFAULT GETDATE(),
+tipl_UserModificacion		INT,
+tipl_FechaModificacion		DATETIME,
+tipl_Estado					BIT						DEFAULT 1,
+
+CONSTRAINT FK_bota_tbTiposPlantas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
+CONSTRAINT FK_bota_tbTiposPlantas_tipl_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (tipl_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_tbTiposPlantas_tipl_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (tipl_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id));
+--***********************************************************/TABLA DE TIPOS DE PLANTAS************************************************************************--
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --*****************************************************************TABLA DE PLANTAS***************************************************************************--
 CREATE TABLE bota.tbPlantas (
 plan_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 plan_Codigo				NVARCHAR(100)		NOT NULL UNIQUE,
-plan_Nombre				NVARCHAR(100)		NOT NULL,
-plan_NombreCientifico	NVARCHAR(200)		NOT NULL,
-rein_Id					INT					NOT NULL,
 arbo_Id					INT					NOT NULL,
+tipl_Id					INT					NOT NULL,
 
 /**********Campos de auditoria***********/
 plan_UserCreacion		INT,
@@ -489,8 +525,8 @@ plan_Estado				BIT					DEFAULT 1,
 
 CONSTRAINT FK_bota_tbPlantas_plan_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (plan_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_bota_tbPlantas_plan_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (plan_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_bota_tbPlantas_arbo_Id_bota_tbAreasBotanicas_arbo_Id				FOREIGN KEY (arbo_Id)					REFERENCES bota.tbAreasBotanicas(arbo_Id),
-CONSTRAINT FK_bota_tbPlantas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id));
+CONSTRAINT FK_bota_tbPlantas_tipl_Id_bota_tbTiposPlantas_tipl_Id				FOREIGN KEY (tipl_Id)					REFERENCES bota.tbTiposPlantas(tipl_Id),
+CONSTRAINT FK_bota_tbPlantas_arbo_Id_bota_tbAreasBotanicas_arbo_Id				FOREIGN KEY (arbo_Id)					REFERENCES bota.tbAreasBotanicas(arbo_Id));
 
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
@@ -981,103 +1017,189 @@ VALUES
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---****************************************************************TABLA DE ANIMALES**************************************************************************--
-INSERT INTO zool.tbAnimales (anim_Codigo, anim_Nombre, anim_NombreCientifico, rein_Id, habi_Id, arzo_Id, alim_Id, espe_Id, anim_UserCreacion)
+--****************************************************************TABLA DE RAZAS*****************************************************************************--
+INSERT INTO zool.tbRazas(raza_Descripcion, raza_NombreCientifico, rein_Id, habi_Id, espe_Id, raza_UserCreacion)
 VALUES 
-  -- Aves
-  ('#AVES0001', 'Águila Real', 'Aquila chrysaetos', 1, 8,7, 1, 1, 1),
-  ('#AVES0002','Colibrí', 'Trochilidae', 1,12, 7, 1, 1, 1),
-  ('#AVES0003','Avestruz', 'Struthio camelus', 1, 15, 2, 1, 1, 1),
+	   ('Águila Real', 'Aquila chrysaetos', 1, 2, 1, 1),
+	   ('Colbrí', 'Trochilidae', 1, 12, 1, 1),
+	   ('Avestruz Negra Africana', 'Struthio camelus', 1, 5, 1, 1),
 
+	   ('Tigre', 'Panthera tigris', 1, 13, 2, 2),
+	   ('León', 'Panthera Leo', 1, 5, 2, 2),
+	   ('Elefante Africano', 'Loxodonta Africana', 5, 1, 2, 2),
+
+	   ('Tortuga Marina', 'Cheloniidae', 1, 4, 3, 3),
+	   ('Cocodrilo', 'Crocodylidae', 1, 1, 4, 3),
+
+	   ('Rana Arborícola', 'Litoria caerulea',1, 12, 4, 1),
+	   ('Salamandras Terrestres', 'Salamandridae', 1, 12, 4, 1),
+	   ('Sapo Común', 'Bufo bufo', 1, 12, 4, 1),
+
+	   ('Salmón Keta ', 'Oncorhynchus Keta', 1, 4, 5, 1),
+	   ('Tiburón Blanco', 'Carcharodon carcharias', 1, 4, 5, 1),
+	   ('Pez Payaso', 'Amphiprioninae', 1, 4, 5, 1),
+
+	   ('Mariposa Monarca', 'Danaus plexippus', 1, 12, 6, 1),
+	   ('Abeja de Miel', 'Apis mellifera', 1, 12, 6, 1),
+	   ('Escarabajo Rinoceronte', 'Dynastinae', 1, 5, 6, 1),
+
+	   ('Tarántula', 'Theraphosidae', 1, 10, 7, 1),
+	   ('Escorpión', 'Scorpiones', 1, 10, 7, 1),
+	   ('Viuda Negra', 'Latrodectus', 1, 10, 7, 1),
+
+	   ('Cangrejo Rojo', 'Callinectes sapidu', 1, 4, 8, 1),
+	   ('Langosta', 'Palinuridae', 1, 4, 8, 1),
+	   ('Camaron', 'Pandalidae', 1, 4, 8, 1),
+
+	   ('Caracol de Jardín', 'Helix aspersa', 1, 12, 9, 1),
+	   ('Pulpo pigmeo ', 'Octopus joubini', 1, 7, 9, 1),
+	   ('Almeja rubia', 'Ruditapes decussatus', 1, 4, 9, 1),
+	   
+	   ('Canguro Rojo', 'Macropus rufus', 1, 6, 1, 1),
+	   ('Koala de Queensland', 'Phascolarctos cinereus', 1, 3, 10, 1),
+	   ('Wombat Común', 'Vombatidae', 1, 3, 10, 1),
+	   
+	   ('Gorila de montaña', 'Gorilla beringei beringei', 1, 1, 11, 1),
+	   ('Chimpancé Común', 'Pan troglodytes', 1, 1, 11, 1),
+	   ('Orangután Borneo', 'Pongo pygmaeus', 1, 1, 11, 1),
+
+	   ('Ballena Azul', 'Balaenoptera musculus', 1, 4, 12, 1),
+	   ('Delfín Nariz de Botella', 'Tursiops truncatus', 1, 4, 12, 1),
+	   ('Orca', 'Orcinus orca', 1, 4, 12, 1),
+	   
+	   ('Oso Polar', 'Ursus maritimus', 1, 4, 13, 1),
+	   ('Lobo', 'Canis lupus', 1, 6, 13, 1),
+	   
+	   ('Jirafa', 'Giraffa camelopardalis', 1, 13, 14, 1),
+	   ('Cebra', 'Equus quagga', 1, 13, 14, 1),
+	   
+	   ('Ratón ciervo', 'Peromyscus maniculatus', 1, 11, 15, 1),
+	   ('Ardilla roja americana', 'Tamiasciurus hudsonicus', 1, 15, 15, 1),
+	   ('Conejo blanco de Hotot', 'Oryctolagus cuniculus', 1, 15, 15, 1),
+
+	   ('Caballo Andaluz', 'Equus caballus', 1, 10, 16, 1),
+	   ('Cebra de Montaña', 'Equus zebra', 1, 2, 16, 1),
+	   ('Asno', 'Equus africanus asinus', 1, 2, 16, 1),
+
+	   ('Perro', 'Canis lupas familiaris', 1, 12, 17, 1),
+	   ('Coyote', 'Canis latrans', 1, 12, 17, 1),
+
+	   ('Pantera', 'Panthera pardus', 1, 2, 18, 1),
+	   ('Guepardo Sudafricano', 'Acinonyx jubatus jubatus', 1, 2, 18, 1),
+	   ('Jaguar', 'Panthera onca', 1, 2, 18, 1),
+
+	   ('Tortuga de Galápagos', 'Chelonoidis nigra', 1, 14, 19, 1),
+	   ('Caimán', 'Caimaninae', 1, 14, 19, 1),
+	   ('Serpiente Marina', 'Hydrophiinae', 1, 14, 19, 1),
+
+	   ('Dragón de Komodo', 'Varanus komodoensis', 1, 6, 20, 1),
+	   ('Tortuga del Desierto', 'Gopherus agassizii', 1, 6, 1, 1),
+	   ('Camaleón', 'Chamaeleonidae', 1, 12, 20, 1);
+
+
+--***************************************************************/TABLA DE RAZAS*****************************************************************************--
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--****************************************************************TABLA DE ANIMALES**************************************************************************--
+INSERT INTO zool.tbAnimales (anim_Codigo, anim_Nombre, raza_Id, arzo_Id, alim_Id, anim_UserCreacion)
+VALUES 
+
+  -- Aves
+  ('#AVES0001',   'Trixy', 1, 7, 1,  1),
+  ('#AVES0002', 'Noibat', 2, 7, 1, 1 ),
+  ('#AVES0003','Bombirdier', 3, 7, 1, 1),
+							  
   -- Mamíferos
-  ('#MAMS0001','Tigre', 'Panthera tigris', 1, 13, 2, 2, 2, 1),
-  ('#MAMS0002','León', 'Panthera leo', 1, 12, 2, 2, 2, 1),
-  ('#MAMS0003','Elefante', 'Loxodonta africana', 1, 2, 2, 2, 6, 1),
+  ('#MAMS0001',   'Charmander', 4, 2, 2, 1),
+  ('#MAMS0002',    'Darmanitan', 5, 2, 2, 1),
+  ('#MAMS0003',		'Chimchar', 6, 2, 2, 1),
 
   -- Reptiles
-  ('#REPS0001','Tortuga Marina', 'Cheloniidae', 1, 4, 1, 3, 3, 1),
-  ('#REPS0002','Cocodrilo', 'Crocodylidae', 1, 14, 1, 3, 3, 1),
+  ('#REPS0001','Squirtle', 7, 1, 3, 1),
+  ('#REPS0002','Totodile',		 8, 1, 3,  1),
 
   -- Anfibios
-  ('#ANFI0001','Rana Arborícola', 'Hyla versicolor', 1, 1, 9, 4, 4, 1),
-  ('#ANFI0002','Salamandra', 'Salamandridae', 1,3, 9, 4, 4, 1),
-  ('#ANFI0003','Sapo Común', 'Bufo bufo', 1, 12, 9, 4, 4, 1),
+  ('#ANFI0001','Politoed',  9, 9, 4,  1),
+  ('#ANFI0002','Wooper',  10, 4, 4, 1),
+  ('#ANFI0003','Quagsire',  11, 9, 4, 1),
+
 
   -- Peces
-  ('#PECS0001','Salmón', 'Salmo salar', 1, 14, 1, 5, 5, 1),
-  ('#PECS0002','Tiburón Blanco', 'Carcharodon carcharias', 1, 4, 1, 5, 5, 1),
-  ('#PECS0003','Pez Payaso', 'Amphiprioninae', 1, 9, 1, 5, 5, 1),
+  ('#PECS0001','Goldy',  12, 1, 5, 1),
+  ('#PECS0002','Vaporeon',  13, 1, 5, 1),
+  ('#PECS0003','Lanturn',  14, 1, 5, 1),
 
   -- Insectos
-  ('#INSE0001','Mariposa Monarca', 'Danaus plexippus', 1, 12, 10, 6, 6, 1),
-  ('#INSE0002','Abeja de Miel', 'Apis mellifera', 1, 12, 4, 6, 6, 1),
-  ('#INSE0003','Escarabajo Rinoceronte', 'Dynastinae', 1, 13, 4, 6, 6, 1),
+  ('#INSE0001','Butterfly',  15, 10, 6, 1),
+  ('#INSE0002','Combee',  16, 4, 6,  1),
+  ('#INSE0003','Masquerain',  17, 4, 6,  1),
 
   -- Arácnidos
-  ('#ARAC0001','Tarántula', 'Theraphosidae', 1, 13, 4, 7, 7, 1),
-  ('#ARAC0002','Escorpión', 'Scorpiones', 1, 15, 4, 7, 7, 1),
-  ('#ARAC0003','Viuda Negra', 'Latrodectus', 1, 5, 4, 7, 7, 1),
+  ('#ARAC0001','Araidos',  18, 4, 7,  1),
+  ('#ARAC0002','Scizor',  19, 4, 7,  1),
+  ('#ARAC0003','Viuda Surskit', 20 ,4, 7,  1),
+
 
   -- Crustáceos
-  ('#CRUS0001','Cangrejo Rojo', 'Callinectes sapidus', 1, 4, 1, 8, 8, 1),
-  ('#CRUS0002','Langosta', 'Palinuridae', 1, 9, 1, 8, 8, 1),
-  ('#CRUS0003','Camaron', 'Pandalidae', 1, 9, 1, 8, 8, 1),
+  ('#CRUS0001','Crustle', 21, 1, 8,  1),
+  ('#CRUS0002','Rastreador', 22, 1, 8, 1),
+  ('#CRUS0003','Kravice',  23, 1, 8, 1),
 
   -- Moluscos
-  ('#MOLU0001','Caracol de Jardín', 'Helix aspersa', 1, 2, 1, 9, 9, 1),
-  ('#MOLU0002','Pulpo', 'Octopoda', 1, 4, 1, 9, 9, 1),
-  ('#MOLU0003','Almeja', 'Bivalvia', 1, 9, 1, 9, 9, 1),
+  ('#MOLU0001','Omanyte', 24,  1, 9, 1),
+  ('#MOLU0002','Grapploct',  25, 1, 9,  1),
+  ('#MOLU0003','Shellder', 26, 1, 9, 1),
 
   -- Marsupiales
-  ('#MARS0001','Canguro Rojo', 'Macropus rufus', 1, 2, 2, 10, 10, 1),
-  ('#MARS0002','Koala', 'Phascolarctos cinereus', 1,2, 2, 10, 10, 1),
-  ('#MARS0003','Wombat', 'Vombatidae', 1, 2, 2, 10, 10, 1),
+  ('#MARS0001','Khangaskhan', 27,  2, 10,  1),
+  ('#MARS0002','Komala',  28, 2, 10,  1),
+  ('#MARS0003','Woobat',  29, 2, 10,  1),
 
   -- Primates
-  ('#PRIM0001','Gorila', 'Gorilla gorilla', 1, 8, 5, 11, 11, 1),
-  ('#PRIM0002','Chimpancé', 'Pan troglodytes', 1, 2, 5, 11, 11, 1),
-  ('#PRIM0003','Orangután', 'Pongo abelii', 1, 1, 5, 11, 11, 1),
+  ('#PRIM0001','Gorila',  30, 5, 11,  1),
+  ('#PRIM0002','Chimpancé', 31, 5, 11,  1),
+  ('#PRIM0003','Orangután',  32, 5, 11,  1),
 
   -- Cetáceos
-  ('#CETS0001','Ballena Azul', 'Balaenoptera musculus', 1, 4, 1, 12, 12, 1),
-  ('#CETS0002','Delfín Nariz de Botella', 'Tursiops truncatus', 1, 4, 1, 12, 12, 1),
-  ('#CETS0003','Orca', 'Orcinus orca', 1, 4, 1, 12, 12, 1),
+  ('#CETS0001','Wairlod', 33,  1, 12,  1),
+  ('#CETS0002','Palafin', 34,  1, 12,  1),
+  ('#CETS0003','Kyogre', 35, 1, 12,  1),
 
   -- Carnívoros
-  ('#CARN0001','Oso Polar', 'Ursus maritimus', 1, 3, 1, 13, 13, 1),
-  ('#CARN0002','Lobo', 'Canis lupus', 1, 5, 2, 13, 13, 1),
+  ('#CARN0001','Zarude', 36, 1, 13,  1),
+  ('#CARN0002','Lycanroc', 37, 2, 13,  1),
 
   -- Hervíboros
-  ('#HERV0001','Jirafa', 'Giraffa camelopardalis', 1, 5, 2, 14, 14, 1),
-  ('#HERV0002','Cebra', 'Equus quagga', 1, 5, 2, 14, 14, 1),
-
-  -- Roedores
-  ('#ROED0001','Ratón', 'Mus musculus', 1, 2, 4, 15, 15, 1),
-  ('#ROED0002','Ardilla', 'Sciurus vulgaris', 1, 2, 4, 15, 15, 1),
-  ('#ROED0003','Conejo', 'Oryctolagus cuniculus', 1, 5, 4, 15, 15, 1),
+  ('#HERV0001','Girafarig', 38, 2, 14, 1),
+  ('#HERV0002','Zebstrika',  39, 2, 14,  1),
 
   -- Equinos
-  ('#EQUI0001','Caballo', 'Equus ferus caballus', 1, 5, 4, 16, 16, 1),
-  ('#EQUI0002','Cebra de Montaña', 'Equus zebra', 1, 4, 4, 16, 16, 1),
-  ('#EQUI0003','Asno', 'Equus africanus asinus', 1, 10, 4, 16, 16, 1),
+  ('#EQUI0001','Spectrier', 40,  4, 16,  1),
+  ('#EQUI0002','Glastier',  41, 4, 16,1),
+  ('#EQUI0003','Mudbray', 42,  4, 16,1),
+
     -- Caninos
-  ('#CANI0001','Perro', 'Canis lupas familiaris', 1,10, 4, 17, 17, 1),
-  ('#CANI0002','Coyote', 'Canis latrans', 1, 5, 4, 17, 17, 1),
+  ('#CANI0001','Houndoom', 43, 4, 17, 1),
+  ('#CANI0002','Ivy', 44, 4, 17, 1),
 
     -- Felinos
-  ('#FELI0001','Pantera', 'Panthera pardus', 1, 8, 6, 18, 18, 1),
-  ('#FELI0002','Guepardo', 'Acinonyx jubatus', 1, 5, 6, 18, 18, 1),
-  ('#FELI0003','Jaguar', 'Panthera onca', 1, 13, 6, 18, 18, 1),
+  ('#FELI0001','Arcanine', 45, 6, 18, 1),
+  ('#FELI0002','Zeraora', 46, 6, 18,  1),
+  ('#FELI0003','Growlithe', 47, 6, 18, 1),
 
   -- Reptiles acuáticos
-  ('#REAC0001','Tortuga de Galápagos', 'Chelonoidis nigra', 1, 8, 1, 19, 19, 1),
-  ('#REAC0002','Caimán', 'Caimaninae', 1, 14, 1, 19, 19, 1),
-  ('#REAC0003','Serpiente Marina', 'Hydrophiinae', 1,4, 1, 19, 19, 1),
+  ('#REAC0001','Drednow', 48, 1, 19,  1),
+  ('#REAC0002','Sandile',49,  1, 19,  1),
+  ('#REAC0003','Enaks', 50, 1, 19,  1),
 
   -- Reptiles terrestres
-  ('#RETE0001','Dragón de Komodo', 'Varanus komodoensis', 1, 13, 4, 20, 20, 1),
-  ('#RETE0002','Tortuga del Desierto', 'Gopherus agassizii', 1, 11, 4, 20, 20, 1),
-  ('#RETE0003','Camaleón', 'Chamaeleonidae', 1, 11, 9, 20, 20, 1);
+  ('#RETE0001','Goodra', 51,  4, 20,  1),
+  ('#RETE0002','Chewtle', 52, 4, 20,  1),
+  ('#RETE0003','Kecleon', 53, 9, 20,  1);
+
+
+
 
 --***************************************************************/TABLA DE ANIMALES***************************************************************************--
 
@@ -1556,48 +1678,85 @@ VALUES
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--************************************************************TABLA DE TIPOS DE PLANTAS***********************************************************************--
+INSERT INTO bota.tbTiposPlantas (tipl_NombreComun,tipl_NombreCientifico, rein_Id, tipl_UserCreacion)
+VALUES
+    ('Cactus de Navidad', 'Schlumbergera truncata', 2, 1),
+	('Cactus de Pascua', 'Hatiora gaertneri', 2, 1),
+
+    ('Orquídea Mariposa', 'Phalaenopsis spp.', 2, 1),
+	('Orquídea Cattleya', 'Cattleya spp.', 2, 1),
+
+    ('Begonia Rex', 'Begonia rex-cultorum',2, 1),
+	('Bananero', 'Musa spp.', 2,  1),
+
+    ('Pino de Monterrey', 'Pinus radiata',2, 1),
+	('Cedro del Atlas', 'Cedrus atlantica',2, 1),
+
+    ('Rosa del té', 'Camellia sinensis',2, 1),
+	('Rosa de Damasco', 'Rosa damascena',2, 1),
+
+    ('Menta', 'Mentha spp.',2, 1),
+	('Albahaca', 'Ocimum basilicum',2, 1),
+
+    ('Planta de Serpiente', 'Sansevieria trifasciata',2, 1),
+	('Cala', 'Zantedeschia spp.', 2, 1),
+
+    ('Manzano', 'Malus domestica', 2, 1),
+	('Naranjo', 'Citrus sinensis', 2, 1),
+
+    ('Boj', 'Buxus spp.',2, 1),
+	('Ligustro', 'Ligustrum spp.',2, 1),
+
+    ('Lirio de Agua', 'Nymphaea spp.',2, 1),
+	('Papiro', 'Cyperus papyrus',2, 1);
+
+--***********************************************************/TABLA DE TIPOS DE PLANTAS***********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --*****************************************************************TABLA DE PLANTAS***************************************************************************--
-INSERT INTO bota.tbPlantas (plan_Codigo, plan_Nombre, plan_NombreCientifico, rein_Id, arbo_Id, plan_UserCreacion)
+INSERT INTO bota.tbPlantas (plan_Codigo, tipl_Id, arbo_Id, plan_UserCreacion)
 VALUES
     -- Jardín de Cactus
-    ('#CACT0001', 'Cactus de Navidad', 'Schlumbergera truncata', 2,  1, 1),
-    ('#CACT0002','Cactus de Pascua', 'Hatiora gaertneri', 2,		 1, 1),
+    ('#CACT0001', 1,  1, 1),
+    ('#CACT0002', 2,  1, 1),
 
     -- Orquideario
-    ('#ORQU0001','Orquídea Mariposa', 'Phalaenopsis spp.', 2,  2, 1),
-    ('#ORQU0002','Orquídea Cattleya', 'Cattleya spp.', 2,  2, 1),
+    ('#ORQU0001', 3,  2, 1),
+    ('#ORQU0002', 4,  2, 1),
 
     -- Sendero de Plantas Tropicales
-    ('#PLTR0001','Begonia Rex', 'Begonia rex-cultorum', 2,  3, 1),
-    ('#PLTR0002','Bananero', 'Musa spp.', 2,  3, 1),
+    ('#PLTR0001', 5,  3, 1),
+    ('#PLTR0002', 6, 3,  1),
 
     -- Bosque de Coníferas
-    ('#CONI0001','Pino de Monterrey', 'Pinus radiata', 2,  4, 1),
-    ('#CONI0002','Cedro del Atlas', 'Cedrus atlantica', 2,  4, 1),
+    ('#CONI0001', 7,  4, 1),
+    ('#CONI0002', 8,  4, 1),
 
     -- Rosaleda
-    ('#ROSA0001','Rosa del té', 'Camellia sinensis', 2,  5, 1),
-    ('#ROSA0002','Rosa de Damasco', 'Rosa damascena', 2,  5, 1),
+    ('#ROSA0001', 9,  5, 1),
+    ('#ROSA0002', 10,  5, 1),
 
     -- Jardín de Hierbas Aromáticas
-    ('#HIAR0001','Menta', 'Mentha spp.', 2, 6, 1),
-    ('#HIAR0002','Albahaca', 'Ocimum basilicum', 2,  6, 1),
+    ('#HIAR0001', 11, 6, 1),
+    ('#HIAR0002', 12,  6, 1),
 
     -- Invernadero de Plantas Tropicales
-    ('#INTR0001','Planta de Serpiente', 'Sansevieria trifasciata', 2,  7, 1),
-    ('#INTR0002','Cala', 'Zantedeschia spp.', 2,  7, 1),
+    ('#INTR0001', 13,  7, 1),
+    ('#INTR0002',14,  7, 1),
 
     -- Huerto de Frutales
-    ('#HUFR0001','Manzano', 'Malus domestica', 2,  8, 1),
-    ('#HUFR0002','Naranjo', 'Citrus sinensis', 2,  8, 1),
+    ('#HUFR0001',15,  8, 1),
+    ('#HUFR0002',16,  8, 1),
 
     -- Laberinto de Arbustos
-    ('#LAAR0001','Boj', 'Buxus spp.', 2,  9, 1),
-    ('#LAAR0002','Ligustro', 'Ligustrum spp.', 2,  9, 1),
+    ('#LAAR0001', 17,  9, 1),
+    ('#LAAR0002', 18,  9, 1),
 
     -- Estanque de Plantas Acuáticas
-    ('#PLAC0001','Lirio de Agua', 'Nymphaea spp.', 2,  10, 1),
-    ('#PLAC0002','Papiro', 'Cyperus papyrus', 2,  10, 1);
+    ('#PLAC0001', 19,  10, 1),
+    ('#PLAC0002', 20,  10, 1);
 
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
