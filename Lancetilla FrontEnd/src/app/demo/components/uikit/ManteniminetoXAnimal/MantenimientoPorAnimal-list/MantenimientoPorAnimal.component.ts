@@ -37,7 +37,19 @@ export class MantenimientoPorAnimalComponent implements OnInit {
     //Paginacion de el datatable
 
     //Validacion
-    submitted: boolean = false;
+     submitted: boolean = false;
+    isExpanded: boolean = false;
+    first: number = 0;
+    rows: number = 10;
+
+    onPageChange(event: any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onRowsPerPageChange() {
+        this.first = 0; 
+      }
 
     cols: any[] = [];
 
@@ -45,10 +57,11 @@ export class MantenimientoPorAnimalComponent implements OnInit {
     formattedDate: string | undefined;
     formattedDate3!: Date;
 
-    expandedRows: expandedRows = {};
-    isExpanded: boolean = false;
+    expandedRows: ManteniminetoXAnimalViewModel[] = [];
+    expandedRow: any = null;
 
     Animal: any;
+
 
 
 
@@ -60,8 +73,7 @@ export class MantenimientoPorAnimalComponent implements OnInit {
         // Obtén la fecha del API
         this.ManteniminetoXAnimalService.getManteniminetoXAnimal().subscribe(
             Response => {
-                console.log(Response);
-                this.datos = Response;
+                 this.datos = Response;
         
                 // Filtrar los elementos duplicados por anim_Id
                 const uniqueAnimals = this.datos.filter((valorActual: { anim_Id: any; }, indiceActual: any, arreglo: { anim_Id: any; }[]) => {
@@ -72,9 +84,7 @@ export class MantenimientoPorAnimalComponent implements OnInit {
         
                 this.formattedDate = this.datePipe.transform(this.datos.maan_Fecha, 'yyyy-MM-dd')?.toString();
         
-                console.log(this.formattedDate);
-                console.log(this.datos);
-            },
+             },
             error => {
                 console.log(error);
             }
@@ -100,6 +110,18 @@ export class MantenimientoPorAnimalComponent implements OnInit {
     }
     //Metodo que desactiva el dialog
 
+    toggleRow(row: any) {
+        if (this.isRowExpanded(row)) {
+          this.expandedRow = null;
+        } else {
+          this.expandedRow = row;
+        }
+      }
+      
+      isRowExpanded(row: any): boolean {
+         return this.expandedRow === row;
+      }
+
     //Metodo que activa el dialog
     openNew() {
         this.mantenimientoXanimal = {};
@@ -114,43 +136,50 @@ export class MantenimientoPorAnimalComponent implements OnInit {
         this.mantenimientoXanimal = { ...MantenimientoPorAnimal };
     }
     //Toma el id del item
-
-
-
-    tomarAnimal(anim_Id: number) {
-        if (anim_Id !== undefined) {
-          console.log('anim_Id:', anim_Id);
-          this.expandedRows = {}; // Reinicia el objeto expandedRows
+    emmmm:ManteniminetoXAnimalViewModel = {}
+    mante:ManteniminetoXAnimalViewModel = {};
+    Pantallas(MantenimientoPorAnimal: ManteniminetoXAnimalViewModel) {
+        this.mante = { ...MantenimientoPorAnimal };
       
-          const elemento = this.MantenimientoPorAnimal.find(item => item.anim_Id === anim_Id);
-          
-          if (elemento) {
-            console.log('Elemento encontrado:', elemento);
-            
-            var params = {
-              anim_Id: anim_Id,
-            };
-            
-            this.ManteniminetoXAnimalService.GetAnimalesXMantenimineto(params).subscribe(
-              (response) => {
+        var params = {
+          "anim_Id": this.mante.anim_Id
+        };
+      
+        console.log(params);
+        this.ManteniminetoXAnimalService.GetAnimalesXMantenimineto(params).subscribe(
+          Response => {
+ 
+            this.datos = Response;
+            console.log(this.datos);
+            console.log(this.expandedRows);
 
-                console.log('Datos obtenidos:', response);
-                this.mantenimientoXanimal.Animales = response;
-                this.Animal = response;
-                this.expandedRows[elemento.maan_Id as any] = true; // Expande el elemento encontrado
-              },
-              (error) => {
-                console.log('Error al obtener los datos:', error);
-              }
-            );
+               // Verificar si la fila seleccionada ya está expandida
+          
+              
+            // Verificar si la fila seleccionada ya está expandida
+            const index = this.expandedRows.findIndex(row => row.anim_Id === this.mante.anim_Id);
+
+             if (index > -1) {
+              // La fila está expandida, la contraemos para ocultarla
+              this.expandedRows.splice(index, 1);
+              this.expandedRow = null;
+            } else {
+              // Cerrar todas las filas expandidas
+              this.expandedRows = [];
+              // Expandir la fila seleccionada
+              const selectedRow = this.MantenimientoPorAnimal.find(row => row.anim_Id === this.mante.anim_Id);
+                if (selectedRow) {
+                this.expandedRows.push(selectedRow);
+                this.expandedRow = selectedRow;
+                }
+            }
+          },
+          error => {
+            console.log("manzana");
           }
-        }
+        );
       }
       
-      
-      
-      
-
 
     //Confirma el eliminar
     confirmDelete() {
