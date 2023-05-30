@@ -36,7 +36,7 @@
                 <ng-template pTemplate="header">
                     <tr>
 
-                        <th pSortableColumn="dept_Id">Id <p-sortIcon field="dept_Id"></p-sortIcon></th>
+                        <th pSortableColumn="dept_Id">Codigo<p-sortIcon field="dept_Id"></p-sortIcon></th>
                         <th pSortableColumn="dept_Descripcion">Descripcion <p-sortIcon field="dept_Descripcion"></p-sortIcon></th>
 
                         <th></th>
@@ -79,17 +79,14 @@
                             <label for="name">Código</label>
                             <input type="text" pInputText id="id" [(ngModel)]="Departamento.dept_Id" required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString() || '')}"
-                                pattern="[0-9]*" title="Por favor ingrese solo números"
-                                (input)="formatInputAsText($event)" />
+                                (input)="filterInput($event)" maxlength="2" />
                             <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Departamento.dept_Id?.toString() || '')">
-                                El código es requerido.</small>
+                                El código es requerido.
+                            </small>
                         </div>
                         
                         
-                        
-                        
-                        
-                          
+                                                        
                     </div>
                      
       

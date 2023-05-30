@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { DepartamentosService } from 'src/app/demo/service/departamento.service';
 import { error } from 'console';
+
 //import { Departamentoss } from 'src/app/demo/api/DepartamentossViewModel';
 
 @Component({
@@ -156,11 +157,24 @@ export class DepartamentosComponent implements OnInit {
         const numericValue = inputValue.replace(/\D/g, ''); // Eliminar todos los caracteres que no sean dígitos
         this.Departamento.dept_Id = numericValue.toString();
     }
+
+    filterInput(event: any) {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(/\D/g, ''); // Eliminar todos los caracteres que no sean dígitos
+        this.Departamento.dept_Id = input.value.slice(0, 2); // Obtener solo los primeros dos caracteres
+    }
+
     
 
     //Enviamos y editamos datos
     saveDepartamentos() {
         this.submitted = true;
+
+        console.log(this.Departamento.dept_Id?.toString().length)    
+        if (this.Departamento.dept_Id?.toString().length == 1) {
+            
+            this.Departamento.dept_Id = "0" + this.Departamento.dept_Id
+        }
 
         var params = {
             "dept_Id": this.Departamento.dept_Id?.toString(),
@@ -174,6 +188,8 @@ export class DepartamentosComponent implements OnInit {
             console.log(this.Departamento.dept_Descripcion?.toString().length);
             this.espacio = true;
         }
+
+       
        
         //Validacion de params
         if (params.dept_Id?.toString() !== undefined && params.dept_Id?.toString().length > 2 || params.dept_Id?.toString() !== undefined && params.dept_Id?.toString().length > 0 && parseInt(params.dept_Id?.toString()) < 1) {
@@ -181,7 +197,7 @@ export class DepartamentosComponent implements OnInit {
             this.messageService.add({ severity: 'info', summary: 'info', detail: "Ingrese un código válido.", life: 3000 });
 
         }
-        
+      
         
         if (params.dept_Id?.toString() !== undefined &&
             params.dept_Id?.toString().length < 3  &&
@@ -191,6 +207,9 @@ export class DepartamentosComponent implements OnInit {
             params.dept_UserCreacion !== undefined &&
             params.dept_UserModificacion !== undefined) {
 
+          
+
+         console.log(this.Departamento.dept_Id?.toString());
             //Si insertara o editara
             if (!this.Editar) {
 

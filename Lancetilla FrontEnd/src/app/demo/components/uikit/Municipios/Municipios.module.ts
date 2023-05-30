@@ -16,11 +16,22 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { AutoCompleteModule } from "primeng/autocomplete";
+
+
+
+
+
 
 @NgModule({
     imports: [
         CommonModule,
+        FormsModule,
+        AutoCompleteModule,
+        InputTextModule,
+        CommonModule,
         MunicipiosRoutingModule,
+        AutoCompleteModule,
         TableModule,
         FileUploadModule,
         FormsModule,

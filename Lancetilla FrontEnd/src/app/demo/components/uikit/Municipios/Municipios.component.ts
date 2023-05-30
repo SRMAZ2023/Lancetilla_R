@@ -46,6 +46,8 @@ export class MunicipiosComponent implements OnInit {
     //validar espacio
     espacio: boolean = false;
 
+    departamentoselect: string = ""
+    OTROdepartamentoselect: string = ""
 
     constructor(private MunicipiosService: MunicipiosService, private messageService: MessageService) {
     }
@@ -178,24 +180,63 @@ export class MunicipiosComponent implements OnInit {
         );
 
     }
-    //Confirma el eliminar
 
+    filterInput(event: any) {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(/\D/g, ''); // Eliminar todos los caracteres que no sean dígitos
+        this.Municipio.muni_Id = input.value.substring(0, 4); // Obtener solo los primeros dos caracteres
+    }
+    
+    CambiarID(id: string){
+
+   this.departamentoselect = id
+   this.OTROdepartamentoselect =  this.departamentoselect
+    }
+
+    //Confirma el eliminar
+    validateNumericInput(inputElement: HTMLInputElement) {
+        const numericValue = inputElement.value.replace(/[^0-9]/g, ''); // Filtrar caracteres no numéricos
+        inputElement.value = numericValue; // Actualizar el valor del campo de entrada
+        this.Municipio.muni_Id = numericValue; // Actualizar el valor en la propiedad vinculada al modelo
+    }
 
 
     isInputEmptyOrWhitespace(value: string): boolean {
         return !value || value.trim() === '';
       }
 
+     
+
 
     //Enviamos y editamos datos
     saveMunicipios() {
         this.submitted = true;
       console.log("Entro")
+     
       if (this.Municipio.muni_Descripcion?.trim() == '') {
         console.log(this.Municipio.muni_Descripcion?.toString().length);
         this.espacio = true;
+       
     }
        
+     if (this.Municipio.muni_Id?.toString() != "" && this.Municipio.muni_Id?.toString() != undefined) {
+        
+        if (this.Municipio.muni_Id?.toString().length == 1) {
+            
+            this.Municipio.muni_Id = "0" + this.Municipio.muni_Id
+        }
+        
+        this.Municipio.muni_Id =  this.OTROdepartamentoselect  + this.Municipio.muni_Id
+
+     }
+
+      console.log(this.Municipio.muni_Descripcion)
+     if (this.Municipio.muni_Descripcion?.toString() == undefined || this.Municipio.muni_Descripcion?.toString() == "") {
+            
+          
+        this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
+    }
+
       var params = {
             "muni_Id": this.Municipio.muni_Id?.toString(),
             "muni_Descripcion": this.Municipio.muni_Descripcion?.trim(),
@@ -207,13 +248,9 @@ export class MunicipiosComponent implements OnInit {
 
          console.log(params);
  
-       
+      
 
-         if (params.muni_Id?.toString() !== undefined && params.muni_Id?.toString().length > 4 || params.muni_Id?.toString() !== undefined && params.muni_Id?.toString().length > 0 && parseInt(params.muni_Id?.toString()) < 1) {
-            
-            this.messageService.add({ severity: 'info', summary: 'info', detail: "Ingrese un código válido.", life: 3000 });
-
-        }
+         
        
         //Validacion de params
         if (params.muni_Id?.toString() !== undefined &&
@@ -235,6 +272,8 @@ export class MunicipiosComponent implements OnInit {
 
                             this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
 
+                            this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
+
                         } else if (this.datos.code == 200) {
 
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
@@ -243,10 +282,12 @@ export class MunicipiosComponent implements OnInit {
                             this.CargarMunicipios() 
                         } else {
                             this.messageService.add({ severity: 'info', summary: 'Error', detail: "Fallo al Insertar en Codigo del municipio", life: 3000 });
+                            this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
                         }
                     },
                     error => {
                         console.log(error);
+                        this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
                     }
                 )
 
@@ -266,10 +307,12 @@ export class MunicipiosComponent implements OnInit {
                             this.CargarMunicipios() 
                         } else {
                             this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                            
                         }
                     },
                     error => {
                         console.log(error);
+                      
                     }
                 )
 

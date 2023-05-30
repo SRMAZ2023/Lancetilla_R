@@ -19,7 +19,7 @@
             </p-toolbar>
 
             <p-table #dt [value]="Municipios" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['muni_Descripcion']" [paginator]="true"
+                [globalFilterFields]="['muni_Descripcion']"  [globalFilterFields]="['muni_Id']" [paginator]="true"
                 [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedMunicipios"
                 selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -80,37 +80,56 @@
                 <div class="flex flex-wrap">
              
                     <div class="field" style="width: 50%; padding-right: 1rem;">
+                        
                         <div class="field">
-                            <label for="name">Codigo</label>
-                            <input type="number" pInputText id="id" [(ngModel)]="Municipio.muni_Id" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')}" />
-                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')">
-                                El código es requerido.</small>
-                        </div>
+                            <label for="emplId">Departamentos</label>
+                            <p-dropdown id="deptId" [placeholder]="'Seleccione un Departamento'" [appendTo]="'body'" [(ngModel)]="Municipio.dept_Id" [options]="departamentos" optionValue="value" 
+                              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Municipio.dept_Id }"
+                              (onChange)="Municipio.dept_Id && CambiarID(Municipio.dept_Id)"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Municipio.dept_Id">
+                              Debe seleccionar un Departamento.
+                            </small>
+                          </div>
+                        
+
+                        
+                
+                      
+
                     </div>
                      
       
                     <div class="field" style="width: 50%; padding-right: 1rem;">
+                       
+                        <label for="name">Código</label>
+                        <div class="p-inputgroup">
+                          
+                            <span class="p-inputgroup-addon">
+                                <span >{{departamentoselect}}</span>
+                            </span>
+                            <span class="p-float-label">
+                            <input type="text" inputId="inputgroup" pInputText id="id" [(ngModel)]="Municipio.muni_Id" required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')}"
+                                (input)="filterInput($event)" maxlength="2" />
+                          
+                        </span>
+                      
+                        </div>
+                        <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')">
+                            El código es requerido.
+                        </small>
+                          
+                      </div>
+
+                      <div class="field" style="width: 100%; padding-right: 1rem;">
                         <div class="field">
                             <label for="name">Municipio</label>
                             <input type="text" pInputText id="descripcion" [(ngModel)]="Municipio.muni_Descripcion" required
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')}" />
                             <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')">
                                 La descripción es requerida.</small>
-                        </div>                      
-                      </div>
-
-                      <div class="field" style="width: 100%; padding-right: 1rem;">
-                        <div class="field">
-                            <label for="emplId">Departamentos</label>
-                            <p-dropdown id="deptId" [placeholder]="'Seleccione un Departamento'" [appendTo]="'body'" [(ngModel)]="Municipio.dept_Id" [options]="departamentos" optionValue="value" 
-                                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Municipio.dept_Id }"></p-dropdown>
-                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Municipio.dept_Id">
-                                Debe seleccionar un Departamento.
-                            </small>
-                        </div>
-                        
-                        
+                        </div>    
+                             
                     </div>
                     </div>
                  
