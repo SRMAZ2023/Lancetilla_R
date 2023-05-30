@@ -41,8 +41,8 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@cuid_Descripcion", item.cuid_Descripcion, DbType.String, ParameterDirection.Input);
-            parametros.Add("@cuid_Frecuencia", item.cuid_Frecuencia, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_Observacion", item.cuid_Observacion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@ticu_Id", item.ticu_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@cuid_UserCreacion", item.cuid_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarCuidados, parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -55,8 +55,8 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             var parametros = new DynamicParameters();
 
             parametros.Add("@cuid_Id", item.cuid_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@cuid_Descripcion", item.cuid_Descripcion, DbType.String, ParameterDirection.Input);
-            parametros.Add("@cuid_Frecuencia", item.cuid_Frecuencia, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_Observacion", item.cuid_Observacion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@ticu_Id", item.ticu_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@cuid_UserModificacion", item.cuid_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarCuidados, parametros, commandType: System.Data.CommandType.StoredProcedure);

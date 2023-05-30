@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { PlantasService } from 'src/app/demo/service/Plantas.service';
-import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
-import { CuidadosDePlantasService } from 'src/app/demo/service/CuidadoDePlantas';
-import { error } from 'console';
-import { PlantasCrud } from 'src/app/demo/Models/PlantasViewModel';
-import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
-import { CuidadoDePlantasViewModel } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
-import { PlantasViewModel } from 'src/app/demo/Models/PlantasViewModel';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
 import { ProductService } from 'src/app/demo/service/product.service';
@@ -19,12 +11,14 @@ import { HabitatViewModel } from 'src/app/demo/Models/HabitatViewModel';
 import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasViewModel';
 import { Especies } from 'src/app/demo/api/product';
 import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
+import { ReinosViewModel } from 'src/app/demo/Models/ReinosViewModel';
+import { ReinosService } from 'src/app/demo/service/Reinos.service';
 
 @Component({
   selector: 'app-animales-edit',
   // templateUrl: './plantas-edit.component.html',
   templateUrl: '../animales-new/AnimalesNewcomponent.html',
-  providers: [MessageService, AnimalService, HabitatService, AreasZoologicasService, ProductService, AlimentacionService]
+  providers: [MessageService, AnimalService, HabitatService, AreasZoologicasService, ProductService, AlimentacionService, ReinosService]
 
 })
 export class AnimalesEditComponent {
@@ -37,6 +31,7 @@ export class AnimalesEditComponent {
   areazoo: AreasZoologicasViewModel[] = [];
   especies: Especies[] = [];
   alimentacion: AlimentacionViewModel[] = [];
+  reinos: ReinosViewModel[] = [];
 
   public formValid = false;
   AnimalForm: any;
@@ -51,9 +46,10 @@ export class AnimalesEditComponent {
       private arzos: AreasZoologicasService,
       private alimentacionsservice: AlimentacionService,
       private especiesservices: ProductService,
+      private reinoservices: ReinosService,
       private _route: ActivatedRoute,
       private _rauter: Router) {
-      this.animal = new AnimalCrud(undefined, "", "", "", undefined, "", undefined, "", 1)
+        this.animal = new AnimalCrud(undefined,  "",  undefined, undefined, "")
       this.page_title = "Crear Animal"
   }
 
@@ -93,11 +89,19 @@ this.getAnimal()
     );
 
 
+    this.reinoservices.getReinos().subscribe(
+      Response => {
+
+          this.reinos = Response.map((item: { rein_Descripcion: any; rein_Id: any; }) => ({ label: item.rein_Descripcion, value: item.rein_Id }));
+      },
+      error => { }
+  );
+
 
 }
 
 checkFormValidity() {
-    this.formValid = this.AnimalForm.valid && this.animal.habi_Id || this.animal.espe_Id || this.animal.alim_Id || this.animal.arzo_Id;
+    this.formValid = this.AnimalForm.valid && this.animal.habi_Id || this.animal.espe_Id || this.animal.alim_Id || this.animal.arzo_Id || this.animal.rein_Id;
 }
 
 
@@ -108,8 +112,9 @@ checkFormValidity() {
     
     // Verificar si todos los campos están llenos
         if (this.animal.anim_Nombre &&
+          this.animal.anim_Codigo &&
             this.animal.anim_NombreCientifico &&
-            this.animal.anim_Reino &&
+            this.animal.rein_Id &&
             this.animal.habi_Id &&
             this.animal.alim_Id &&
             this.animal.espe_Id &&
@@ -125,7 +130,7 @@ checkFormValidity() {
         }else if(this.datos.code = 200){
           this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 1500 });
           setTimeout(() => {
-            this._rauter.navigate(['/uikit/animales']);
+            this._rauter.navigate(['/app/uikit/animales']);
           }, 1500);
         }
 

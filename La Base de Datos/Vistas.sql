@@ -538,13 +538,35 @@ GO
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+CREATE OR ALTER VIEW zool.VW_tbReinos
+AS 
+
+SELECT rein_Id, 
+	   rein_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = rein_UserCreacion)) AS usua_UserCreaNombre,
+	   rein_UserCreacion,
+	   rein_FechaCreacion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = rein_UserModificacion)) AS usua_UserModiNombre,
+	   rein_UserModificacion, 
+	   rein_FechaModificacion, 
+	   rein_Estado
+	   FROM zool.tbReinos  
+	   WHERE rein_Estado = 1;
+GO
+--************************************************************/TABLA DE AREAS BOTÁNICAS***********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --*****************************************************************TABLA DE CUIDADOS**************************************************************************--
 CREATE OR ALTER VIEW bota.VW_tbCuidados
 AS
 
 SELECT cuid_Id,
-       cuid_Descripcion,
-	   cuid_Frecuencia,
+       cuid_Observacion,
+	   T1.ticu_Id,
+	   ticu_Descripcion,
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = cuid_UserCreacion)) AS usua_UserCreaNombre,
 	   cuid_UserCreacion, 
@@ -554,10 +576,64 @@ SELECT cuid_Id,
 	   cuid_UserModificacion,
 	   cuid_FechaModificacion, 
 	   cuid_Estado 
-	   FROM bota.tbCuidados   
+	   FROM bota.tbCuidados   T1
+	   INNER JOIN bota.tbTiposCuidados T2
+	   ON T1.ticu_Id = T2.ticu_Id
 	   WHERE cuid_Estado = 1;
 GO
 --****************************************************************/TABLA DE CUIDADOS**************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--************************************************************TABLA DE TIPOS DE CUIDADOS**********************************************************************--
+CREATE OR ALTER VIEW bota.VW_tbCuidados
+AS
+
+SELECT ticu_Id,
+       ticu_Descripcion,
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = ticu_UserCreacion)) AS usua_UserCreaNombre,
+	   ticu_UserCreacion, 
+	   ticu_FechaCreacion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = ticu_UserModificacion)) AS usua_UserModiNombre,
+	   ticu_UserModificacion,
+	   ticu_FechaModificacion, 
+	   ticu_Estado 
+	   FROM bota.tbTiposCuidados  
+	   WHERE ticu_Estado = 1;
+GO
+--***********************************************************/TABLA DE TIPOS DE CUIDADOS**********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--**********************************************************TABLA DE CUIDADOS POR PLANTA**********************************************************************--
+CREATE OR ALTER VIEW bota.VW_tbCuidados
+AS
+
+SELECT cupl_Id, 
+	   T1.plan_Id,
+	   plan_Nombre,
+	   T1.ticu_Id, 
+	   ticu_Descripcion,
+	   cupl_Fecha,
+	   cupl_UserCreacion, 
+	   cupl_FechaCreacion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = cupl_UserCreacion)) AS usua_UserCreaNombre,
+	   cupl_UserModificacion, 
+	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
+	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = cupl_UserModificacion)) AS usua_UserModiNombre,
+	   cupl_FechaModificacion,
+	   cupl_Estado
+	   FROM bota.tbCuidadoPlanta T1
+	   INNER JOIN bota.tbPlantas T2
+	   ON T1.plan_Id = T2.plan_Id
+	   INNER JOIN bota.tbTiposCuidados T3
+	   ON T1.ticu_Id = T3.ticu_Id
+	   WHERE ticu_Estado = 1;
+GO
+--**********************************************************/TABLA DE CUIDADOS POR PLANTA**********************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -566,13 +642,13 @@ CREATE OR ALTER VIEW bota.VW_tbPlantas
 AS
 
 SELECT plan_Id, 
+plan_Codigo,
 	   plan_Nombre,
 	   plan_NombreCientifico,
 	   T1.rein_Id,
 	   rein_Descripcion,
 	   T1.arbo_Id, 
 	   arbo_Descripcion,
-
 	   (SELECT empl_Nombre+' '+empl_ApellIdo FROM mant.tbEmpleados 
 	   WHERE empl_Id IN (SELECT empl_Id FROM acce.tbUsuarios WHERE [usua_Id] = plan_UserCreacion)) AS usua_UserCreaNombre,
 	   plan_UserCreacion,

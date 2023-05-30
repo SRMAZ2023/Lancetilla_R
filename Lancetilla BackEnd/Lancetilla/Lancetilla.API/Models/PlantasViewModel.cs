@@ -8,25 +8,21 @@ namespace Lancetilla.API.Models
 {
     public class PlantasViewModel
     {
-
         public int plan_Id { get; set; }
+        public string plan_Codigo { get; set; }
         public string plan_Nombre { get; set; }
         public string plan_NombreCientifico { get; set; }
-        public string plan_Reino { get; set; }
+        public int rein_Id { get; set; }
+        public string rein_Descripcion { get; set; }
         public int arbo_Id { get; set; }
-
-        [NotMapped]
         public string arbo_Descripcion { get; set; }
-        public int cuid_Id { get; set; }
-        [NotMapped]
-        public string cuid_Descripcion { get; set; }
-        [NotMapped]
-        public string cuid_Frecuencia { get; set; }
-       
+        public string usua_UserCreaNombre { get; set; }
         public int? plan_UserCreacion { get; set; }
-      
- 
+        public DateTime? plan_FechaCreacion { get; set; }
+        public string usua_UserModiNombre { get; set; }
         public int? plan_UserModificacion { get; set; }
- 
+        public DateTime? plan_FechaModificacion { get; set; }
+        public bool? plan_Estado { get; set; }
+
     }
 }

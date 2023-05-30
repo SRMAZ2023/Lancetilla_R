@@ -71,7 +71,7 @@ export class PlantasComponent implements OnInit {
             { field: 'plan_Id', header: 'plan_Id' },
             { field: 'plan_Nombre', header: 'plan_Nombre' },
             { field: 'plan_NombreCientifico', header: 'plan_NombreCientifico' },
-            { field: 'plan_Reino', header: 'plan_Reino' },
+            { field: 'rein_Descripcion', header: 'rein_Descripcion' },
             { field: 'arbo_Descripcion', header: 'arbo_Descripcion' },
             { field: 'cuid_Descripcion', header: 'cuid_Descripcion' }
 

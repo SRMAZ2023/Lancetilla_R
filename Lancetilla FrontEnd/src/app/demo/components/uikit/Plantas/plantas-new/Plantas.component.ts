@@ -8,11 +8,13 @@ import { PlantasCrud } from 'src/app/demo/Models/PlantasViewModel';
 import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
 import { CuidadoDePlantasViewModel } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ReinosService } from 'src/app/demo/service/Reinos.service';
+import { ReinosViewModel } from 'src/app/demo/Models/ReinosViewModel';
 
 
 @Component({
     templateUrl: './PlantasNew.component.html',
-    providers: [MessageService, PlantasService, AreaBotanicaService, CuidadosDePlantasService]
+    providers: [MessageService, PlantasService, AreaBotanicaService, CuidadosDePlantasService, ReinosService]
 })
 
 export class PlantasNewComponent implements OnInit {
@@ -21,7 +23,7 @@ export class PlantasNewComponent implements OnInit {
     public page_title!: string;;
     submitted: boolean = false;
 
-    cuidado: CuidadoDePlantasViewModel[] = [];
+    reino: ReinosViewModel[] = [];
     areaBotanica: AreaBotanicaViewModel[] = [];
 
     public formValid = false;
@@ -34,10 +36,10 @@ export class PlantasNewComponent implements OnInit {
     constructor(private PlantasService: PlantasService,
         private messageService: MessageService,
         private AreaBotanicaService: AreaBotanicaService,
-        private CuidadosDePlantasService: CuidadosDePlantasService,
+        private reinos: ReinosService,
         private _route: ActivatedRoute,
         private _rauter: Router) {
-        this.planta = new PlantasCrud(undefined, "", "", "", undefined, "", undefined, "", "", 1, 1)
+        this.planta = new PlantasCrud(undefined, "", "", "", undefined, undefined)
         this.page_title = "Crear Planta"
     }
 
@@ -52,10 +54,10 @@ export class PlantasNewComponent implements OnInit {
             }
         );
 
-        this.CuidadosDePlantasService.getCuidadosDePlantas().subscribe(
+        this.reinos.getReinos().subscribe(
             Response => {
 
-                this.cuidado = Response.map((item: { cuid_Descripcion: any; cuid_Id: any; }) => ({ label: item.cuid_Descripcion, value: item.cuid_Id }));
+                this.reino = Response.map((item: { rein_Descripcion: any; rein_Id: any; }) => ({ label: item.rein_Descripcion, value: item.rein_Id }));
             },
             error => { }
         );
@@ -65,7 +67,7 @@ export class PlantasNewComponent implements OnInit {
     }
 
     checkFormValidity() {
-        this.formValid = this.PlantasForm.valid && this.planta.arbo_Id || this.planta.cuid_Id;
+        this.formValid = this.PlantasForm.valid && this.planta.arbo_Id || this.planta.rein_Id;
     }
 
 
@@ -73,10 +75,11 @@ export class PlantasNewComponent implements OnInit {
     savePlantas() {
         // Verificar si todos los campos están llenos
         if (this.planta.plan_Nombre &&
+            this.planta.plan_Codigo &&
             this.planta.plan_NombreCientifico &&
-            this.planta.plan_Reino &&
-            this.planta.arbo_Id &&
-            this.planta.cuid_Id) {
+            this.planta.rein_Id &&
+            this.planta.arbo_Id 
+           ) {
             // Todos los campos están llenos, realizar acciones adicionales
             console.log("Todos los campos están llenos");
 
@@ -89,7 +92,7 @@ export class PlantasNewComponent implements OnInit {
                 } else if (this.datos.code = 200) {
                     this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 1500 });
                     setTimeout(() => {
-                        this._rauter.navigate(['/uikit/Plantas']);
+                        this._rauter.navigate(['/app/uikit/Plantas']);
                     }, 1500);
                 }
 

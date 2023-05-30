@@ -59,9 +59,10 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
+            parametros.Add("@anim_Codigo", item.anim_Codigo, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_Reino", item.anim_Reino, DbType.String, ParameterDirection.Input);
+            parametros.Add("@rein_Id", item.rein_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
@@ -81,10 +82,10 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             var parametros = new DynamicParameters();
 
             parametros.Add("@anim_Id", item.anim_Id, DbType.String, ParameterDirection.Input);
-
+            parametros.Add("@anim_Codigo", item.anim_Codigo, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_Reino", item.anim_Reino, DbType.String, ParameterDirection.Input);
+            parametros.Add("@rein_Id", item.rein_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);

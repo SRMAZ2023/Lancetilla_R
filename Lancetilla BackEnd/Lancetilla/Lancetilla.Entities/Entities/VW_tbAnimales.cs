@@ -9,9 +9,11 @@ namespace Lancetilla.Entities.Entities
     public partial class VW_tbAnimales
     {
         public int anim_Id { get; set; }
+        public string anim_Codigo { get; set; }
         public string anim_Nombre { get; set; }
         public string anim_NombreCientifico { get; set; }
-        public string anim_Reino { get; set; }
+        public int rein_Id { get; set; }
+        public string rein_Descripcion { get; set; }
         public int habi_Id { get; set; }
         public string habi_Descripcion { get; set; }
         public int arzo_Id { get; set; }

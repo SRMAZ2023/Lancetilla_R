@@ -15,11 +15,13 @@ import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasVie
 import { Especies } from 'src/app/demo/api/product';
 import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
 import { AnimalCrud } from 'src/app/demo/Models/AnimalViewModel';
+import { ReinosViewModel } from 'src/app/demo/Models/ReinosViewModel';
+import { ReinosService } from 'src/app/demo/service/Reinos.service';
 
 
 @Component({
     templateUrl: './AnimalesNewcomponent.html',
-    providers: [MessageService, AnimalService, HabitatService, AreasZoologicasService, ProductService, AlimentacionService]
+    providers: [MessageService, AnimalService, HabitatService, AreasZoologicasService, ProductService, AlimentacionService, ReinosService]
 })
 
 export class AnimalNewComponent implements OnInit {
@@ -32,6 +34,7 @@ export class AnimalNewComponent implements OnInit {
     areazoo: AreasZoologicasViewModel[] = [];
     especies: Especies[] = [];
     alimentacion: AlimentacionViewModel[] = [];
+    reinos: ReinosViewModel[] = [];
 
     public formValid = false;
     AnimalForm: any;
@@ -46,9 +49,10 @@ export class AnimalNewComponent implements OnInit {
         private arzos: AreasZoologicasService,
         private alimentacionsservice: AlimentacionService,
         private especiesservices: ProductService,
+        private reinoserviii: ReinosService,
         private _route: ActivatedRoute,
         private _rauter: Router) {
-        this.animal = new AnimalCrud(undefined, "", "", "", undefined, "", undefined, "", 1)
+        this.animal = new AnimalCrud(undefined,  "",  undefined, undefined, "")
         this.page_title = "Crear Animal"
     }
 
@@ -87,12 +91,21 @@ export class AnimalNewComponent implements OnInit {
             error => { }
         );
 
+        this.reinoserviii.getReinos().subscribe(
+            Response => {
+
+                this.reinos = Response.map((item: { rein_Descripcion: any; rein_Id: any; }) => ({ label: item.rein_Descripcion, value: item.rein_Id }));
+            },
+            error => { }
+        );
+
+
 
 
     }
 
     checkFormValidity() {
-        this.formValid = this.AnimalForm.valid && this.animal.habi_Id || this.animal.espe_Id || this.animal.alim_Id || this.animal.arzo_Id;
+        this.formValid = this.AnimalForm.valid && this.animal.habi_Id || this.animal.espe_Id || this.animal.alim_Id || this.animal.rein_Id ;
     }
 
 
@@ -100,8 +113,9 @@ export class AnimalNewComponent implements OnInit {
     saveAnimal() {
         // Verificar si todos los campos están llenos
         if (this.animal.anim_Nombre &&
+            this.animal.anim_Codigo &&
             this.animal.anim_NombreCientifico &&
-            this.animal.anim_Reino &&
+            this.animal.rein_Id &&
             this.animal.habi_Id &&
             this.animal.alim_Id &&
             this.animal.espe_Id &&

@@ -452,6 +452,7 @@ CONSTRAINT FK_mant_tbMantenimientoAnimal_anim_tbAnimales_anim_Id							FOREIGN K
 
 --****************************************************************MÓDULO DE BOTÁNICA**************************************************************************--
 
+
 --*************************************************************TABLA DE AREAS BOTÁNICAS***********************************************************************--
 CREATE TABLE bota.tbAreasBotanicas(
 arbo_Id					INT IDENTITY(1,1)		NOT NULL PRIMARY KEY,
@@ -470,7 +471,8 @@ CONSTRAINT FK_bota_tbAreasBotanicas_arbo_UserModificacion_acce_tbUsuarios_usua_I
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE PLANTAS****************************************************************************--
+
+--*****************************************************************TABLA DE PLANTAS***************************************************************************--
 CREATE TABLE bota.tbPlantas (
 plan_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 plan_Codigo				NVARCHAR(100)		NOT NULL UNIQUE,
@@ -491,15 +493,34 @@ CONSTRAINT FK_bota_tbPlantas_plan_UserModificacion_acce_tbUsuarios_usua_Id		FORE
 CONSTRAINT FK_bota_tbPlantas_arbo_Id_bota_tbAreasBotanicas_arbo_Id				FOREIGN KEY (arbo_Id)					REFERENCES bota.tbAreasBotanicas(arbo_Id),
 CONSTRAINT FK_bota_tbPlantas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
 CONSTRAINT UK_bota_tbPlantas_plan_NombreCientifico								UNIQUE(plan_NombreCientifico));
+
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE CUIDADOS***************************************************************************--
+--************************************************************TABLA DE TIPOS DE CUIDADOS**********************************************************************--
+CREATE TABLE bota.tbTiposCuidados(
+ticu_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+ticu_Descripcion		NVARCHAR(100)		NOT NULL,
+
+/**********Campos de auditoria***********/
+ticu_UserCreacion		INT,
+ticu_FechaCreacion		DATETIME			DEFAULT GETDATE(),
+ticu_UserModificacion	INT,
+ticu_FechaModificacion	DATETIME,
+ticu_Estado				BIT					DEFAULT 1,
+
+CONSTRAINT FK_bota_TiposCuidados_ticu_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (ticu_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_TiposCuidados_ticu_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (ticu_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
+--***********************************************************/TABLA DE TIPOS DE CUIDADOS**********************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--****************************************************************TABLA DE CUIDADOS***************************************************************************--
 CREATE TABLE bota.tbCuidados(
 cuid_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
-cuid_Descripcion		NVARCHAR(100)		NOT NULL,
-cuid_Frecuencia			NVARCHAR(100)		NOT NULL,
+cuid_Observacion NVARCHAR(100)		NOT NULL,
+ticu_Id					INT					NOT NULL,
 
 /**********Campos de auditoria***********/
 cuid_UserCreacion		INT,
@@ -508,10 +529,33 @@ cuid_UserModificacion	INT,
 cuid_FechaModificacion	DATETIME,
 cuid_Estado				BIT					DEFAULT 1,
 
-CONSTRAINT FK_bota_tbCuidad_cuid_UserCreacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (cuid_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
-CONSTRAINT FK_bota_tbCuidad_cuid_UserModificacion_acce_tbUsuarios_usua_Id	FOREIGN KEY (cuid_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
---****************************************************************/TABLA DE CUIDADOS***************************************************************************--
+CONSTRAINT FK_bota_tbCuidados_bota_TiposCuidados_ticu_Id							FOREIGN KEY (ticu_Id)				REFERENCES bota.tbTiposCuidados(ticu_Id),
+CONSTRAINT FK_bota_tbCuidados_cuid_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (cuid_UserCreacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_tbCuidados_cuid_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (cuid_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id));
 
+--***************************************************************/TABLA DE CUIDADOS***************************************************************************--
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--*************************************************************TABLA DE CUIDADO POR PLANTA*********************************************************************--
+CREATE TABLE bota.tbCuidadoPlanta(
+cupl_Id					INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
+plan_Id					INT					NOT NULL,
+ticu_Id					INT					NOT NULL,
+cupl_Fecha				Varchar(100)				NOT NULL,
+
+/**********Campos de auditoria***********/
+cupl_UserCreacion		INT,
+cupl_FechaCreacion		DATETIME			DEFAULT GETDATE(),
+cupl_UserModificacion	INT,
+cupl_FechaModificacion	DATETIME,
+cupl_Estado				BIT					DEFAULT 1,
+
+CONSTRAINT FK_bota_tbCuidadosPlanta_cupl_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (cupl_UserCreacion)		REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_tbCuidadosPlanta_cupl_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (cupl_UserModificacion) REFERENCES acce.tbUsuarios(usua_Id),
+CONSTRAINT FK_bota_tbCuidadosPlanta_bota_TiposCuidados_ticu_Id							FOREIGN KEY (ticu_Id)				REFERENCES bota.tbTiposCuidados(ticu_Id),
+CONSTRAINT FK_bota_tbCuidadosPlanta_bota_tbPlantas_plan_Id								FOREIGN KEY (plan_Id)				REFERENCES bota.tbPlantas(plan_Id));
+--************************************************************/TABLA DE CUIDADO POR PLANTA*********************************************************************--
 
 
 --***************************************************************/MÓDULO DE BOTÁNICA**************************************************************************--
@@ -1474,7 +1518,7 @@ VALUES
 INSERT INTO mant.tbMantenimientoAnimal(anim_Id, tima_Id, maan_Fecha,maan_UserCreacion)
 VALUES  (21, 1,GETDATE(), 1),
 		(2, 2,GETDATE(), 1),
-		 (3, 3, GETDATE(),1),
+		(3, 3, GETDATE(),1),
 		(14, 4, GETDATE(),1),
 		(10, 5, GETDATE(),1),
 		(29, 6, GETDATE(),1),
@@ -1561,51 +1605,58 @@ VALUES
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---*****************************************************************TABLA DE CUIDADOS***************************************************************************--
-INSERT INTO bota.tbCuidados (cuid_Descripcion, cuid_Frecuencia, cuid_UserCreacion)
+--************************************************************TABLA DE TIPOS DE CUIDADOS***********************************************************************--
+
+INSERT INTO bota.tbTiposCuidados (ticu_Descripcion, ticu_UserCreacion)
 VALUES
-    -- Jardín de Cactus
-    ('Riego moderado', '2 veces por semana', 1),
-    ('Control de plagas', 'Mensual', 1),
+    ('Riego adecuado', 1),
+    ('Luz adecuada', 1),
+    ('Fertilización', 1),
+    ('Control de plagas', 1),
+    ('Poda', 1),
+    ('Transplante', 1),
+    ('Control de temperatura y humedad', 1),
+    ('Eliminación de hojas secas o marchitas', 1),
+    ('Protección contra condiciones climáticas extremas', 1),
+    ('Monitoreo y cuidado regular', 1);
 
-    -- Orquideario
-    ('Control de humedad', 'Semanal', 1),
-    ('Fertilización específica', 'Mensual', 1),
+--***********************************************************/TABLA DE TIPOS DE CUIDADOS***********************************************************************--
 
-    -- Sendero de Plantas Tropicales
-    ('Riego abundante', 'Diario', 1),
-    ('Control de malezas', 'Semanal', 1),
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    -- Bosque de Coníferas
-    ('Mantenimiento de suelo ácido', 'Trimestral', 1),
-    ('Podado de ramas secas', 'Anual', 1),
+--****************************************************************TABLA DE CUIDADOS****************************************************************************--
+INSERT INTO bota.tbCuidados (cuid_Observacion, ticu_Id, cuid_UserCreacion)
+VALUES
+    ('Regar las plantas adecuadamente según sus necesidades.', 1, 1),
+    ('Proporcionar la cantidad adecuada de luz a cada planta.', 2, 1),
+    ('Aplicar fertilizante de acuerdo con las indicaciones para promover un crecimiento saludable.', 3, 1),
+    ('Realizar un control regular de plagas y tomar medidas adecuadas para su eliminación.', 4, 1),
+    ('Realizar podas regulares para mantener la forma y salud de las plantas.', 5, 1),
+    ('Realizar transplantes cuando las plantas necesiten más espacio para crecer.', 6, 1),
+    ('Controlar la temperatura y humedad del entorno para adaptarse a las necesidades de las plantas.', 7, 1),
+    ('Eliminar las hojas secas o marchitas para mantener un aspecto saludable.', 8, 1),
+    ('Proteger las plantas de condiciones climáticas extremas como heladas o altas temperaturas.', 9, 1),
+    ('Realizar un monitoreo regular y brindar cuidado constante a las plantas.', 10, 1);
 
-    -- Rosaleda
-    ('Riego regular', '2 veces por semana', 1),
-    ('Poda de rosales', 'Anual', 1),
+--***************************************************************/TABLA DE CUIDADOS***************************************************************************--
 
-    -- Jardín de Hierbas Aromáticas
-    ('Riego adecuado', 'Según necesidad', 1),
-    ('Cosecha de hierbas', 'Según necesidad', 1),
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    -- Invernadero de Plantas Tropicales
-    ('Mantenimiento de humedad', 'Diario', 1),
-    ('Control de temperatura', 'Semanal', 1),
+--**********************************************************TABLA DE CUIDADOS POR PLANTA***********************************************************************--
+INSERT INTO bota.tbCuidadoPlanta (plan_Id, ticu_Id, cupl_Fecha, cupl_UserCreacion)
+VALUES
+    (1, 1, '2023-05-29', 1),
+    (2, 2, '2023-05-29', 1),
+    (1, 3, '2023-05-29', 1),
+    (3, 4, '2023-05-29', 1),
+    (2, 5, '2023-05-29', 1),
+    (4, 6, '2023-05-29', 1),
+    (3, 7, '2023-05-29', 1),
+    (1, 8, '2023-05-29', 1),
+    (4, 9, '2023-05-29', 1),
+    (2, 10, '2023-05-29', 1);
 
-    -- Huerto de Frutales
-    ('Riego adecuado', 'Según necesidad', 1),
-    ('Fertilización periódica', 'Mensual', 1),
-
-    -- Laberinto de Arbustos
-    ('Poda regular de arbustos', 'Anual', 1),
-    ('Control de crecimiento', 'Según necesidad', 1),
-
-    -- Estanque de Plantas Acuáticas
-    ('Mantenimiento de calidad del agua', 'Semanal', 1),
-    ('Control de algas', 'Según necesidad', 1);
-
---****************************************************************/TABLA DE CUIDADOS***************************************************************************--
-
+--*********************************************************/TABLA DE CUIDADOS POR PLANTA***********************************************************************--
 
 --***************************************************************/MÓDULO DE BOTÁNICA**************************************************************************--
 

@@ -2,9 +2,11 @@ export class AnimalViewModel {
 
     constructor(
         public anim_Id?: number,
+        public anim_Codigo?: string,
+        public rein_Id?: number,
         public anim_Nombre?: string,
         public anim_NombreCientifico?: string,
-        public anim_Reino?: string,
+        public rein_Descripcion?: string,
         public habi_Id?: number,
         public habi_Descripcion?: string,
         public arzo_Id?: number,
@@ -28,9 +30,11 @@ export class AnimalCrud {
 
     constructor(
         public anim_Id?: number,
+        public anim_Codigo?: string,
+        public rein_Id?: number,
         public anim_Nombre?: string,
         public anim_NombreCientifico?: string,
-        public anim_Reino?: string,
+        public rein_Descripcion?: string,
         public habi_Id?: number,
         public habi_Descripcion?: string,
         public arzo_Id?: number,

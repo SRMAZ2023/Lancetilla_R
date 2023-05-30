@@ -8,14 +8,9 @@ namespace Lancetilla.Entities.Entities
 {
     public partial class tbCuidados
     {
-        public tbCuidados()
-        {
-            tbPlantas = new HashSet<tbPlantas>();
-        }
-
         public int cuid_Id { get; set; }
-        public string cuid_Descripcion { get; set; }
-        public string cuid_Frecuencia { get; set; }
+        public string cuid_Observacion { get; set; }
+        public int ticu_Id { get; set; }
         public int? cuid_UserCreacion { get; set; }
         public DateTime? cuid_FechaCreacion { get; set; }
         public int? cuid_UserModificacion { get; set; }
@@ -24,6 +19,6 @@ namespace Lancetilla.Entities.Entities
 
         public virtual tbUsuarios cuid_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios cuid_UserModificacionNavigation { get; set; }
-        public virtual ICollection<tbPlantas> tbPlantas { get; set; }
+        public virtual tbTiposCuidados ticu { get; set; }
     }
 }

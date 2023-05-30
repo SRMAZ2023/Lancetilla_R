@@ -14,9 +14,10 @@ namespace Lancetilla.Entities.Entities
         }
 
         public int anim_Id { get; set; }
+        public string anim_Codigo { get; set; }
         public string anim_Nombre { get; set; }
         public string anim_NombreCientifico { get; set; }
-        public string anim_Reino { get; set; }
+        public int rein_Id { get; set; }
         public int habi_Id { get; set; }
         public int arzo_Id { get; set; }
         public int alim_Id { get; set; }
@@ -33,6 +34,7 @@ namespace Lancetilla.Entities.Entities
         public virtual tbAreasZoologico arzo { get; set; }
         public virtual tbEspecies espe { get; set; }
         public virtual tbHabitat habi { get; set; }
+        public virtual tbReinos rein { get; set; }
         public virtual ICollection<tbMantenimientoAnimal> tbMantenimientoAnimal { get; set; }
     }
 }

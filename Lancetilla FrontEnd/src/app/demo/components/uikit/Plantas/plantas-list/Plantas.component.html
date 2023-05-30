@@ -32,7 +32,7 @@
 
 
             <p-table #dt [value]="Plantas" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
-            [globalFilterFields]="['plan_Nombre','plan_NombreCientifico','plan_Reino','plan_Reino','arbo_Descripcion','cuid_Frecuencia']" 
+            [globalFilterFields]="['plan_Nombre','plan_NombreCientifico','plan_Reino','rein_Descripcion','arbo_Descripcion']" 
             [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedPlantas"
             selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
 
@@ -45,11 +45,10 @@
                     <tr>
 
                         <th pSortableColumn="plan_Id">Id <p-sortIcon field="plan_Id"></p-sortIcon></th>
+                        <th pSortableColumn="plan_Codigo">Código <p-sortIcon field="plan_Codigo"></p-sortIcon></th>
                         <th pSortableColumn="plan_Nombre">Nombre <p-sortIcon field="plan_Nombre"></p-sortIcon></th>
                         <th pSortableColumn="plan_NombreCientifico">Nombre Cientifico <p-sortIcon field="plan_NombreCientifico"></p-sortIcon></th>
                         <th pSortableColumn="arbo_Descripcion"> Area Botanica <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="cuid_Descripcion"> Cuidado <p-sortIcon field="cuid_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="cuid_Frecuencia">  Frecuencia de Cuidado  <p-sortIcon field="cuid_Frecuencia"></p-sortIcon></th>
 
                         <th></th>
                     </tr>
@@ -59,6 +58,10 @@
 
                         <td style="width:2%; min-width:5rem;"><span class="p-column-title">id</span>
                             {{Plantas.plan_Id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{Plantas.plan_Codigo}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Nombre</span>
@@ -73,14 +76,7 @@
                             <span class="p-column-title">Area Botanica</span>
                             {{Plantas.arbo_Descripcion}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Cuidador</span>
-                            {{Plantas.cuid_Descripcion}}
-                        </td>
-                        <td style="width:16%; min-width:14rem;">
-                            <span class="p-column-title">Cuidado Frecuente</span>
-                            {{Plantas.cuid_Frecuencia}}
-                        </td>
+
 
                         <td>
                             <div class="flex">

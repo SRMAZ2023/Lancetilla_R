@@ -6,20 +6,21 @@ using System.Collections.Generic;
 
 namespace Lancetilla.Entities.Entities
 {
-    public partial class VW_tbCuidados
+    public partial class tbCuidadoPlanta
     {
         public int cupl_Id { get; set; }
         public int plan_Id { get; set; }
-        public string plan_Nombre { get; set; }
         public int ticu_Id { get; set; }
-        public string ticu_Descripcion { get; set; }
         public string cupl_Fecha { get; set; }
         public int? cupl_UserCreacion { get; set; }
         public DateTime? cupl_FechaCreacion { get; set; }
-        public string usua_UserCreaNombre { get; set; }
         public int? cupl_UserModificacion { get; set; }
-        public string usua_UserModiNombre { get; set; }
         public DateTime? cupl_FechaModificacion { get; set; }
         public bool? cupl_Estado { get; set; }
+
+        public virtual tbUsuarios cupl_UserCreacionNavigation { get; set; }
+        public virtual tbUsuarios cupl_UserModificacionNavigation { get; set; }
+        public virtual tbPlantas plan { get; set; }
+        public virtual tbTiposCuidados ticu { get; set; }
     }
 }

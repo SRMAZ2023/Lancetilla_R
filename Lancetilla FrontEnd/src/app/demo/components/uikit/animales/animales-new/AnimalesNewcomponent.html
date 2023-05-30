@@ -12,6 +12,17 @@
                     <div class="grid p-fluid">
 
                         <div class="field col-6">
+                            <label for="anim_Codigo">Código</label>
+                            <input type="text" pInputText id="anim_Codigo" name="anim_Codigo"
+                                #anim_Codigo="ngModel" [(ngModel)]="animal.anim_Codigo" required
+                                autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !animal.anim_Codigo}"
+                                pattern="^(?!\s*$).+" />
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="!anim_Codigo.valid && anim_Codigo.touched">
+                                El código del animal es requerido.</small>
+                        </div>
+                        <div class="field col-6">
                             <label for="anim_Nombre">Nombre </label>
                             <input type="text" pInputText id="anim_Nombre" name="anim_Nombre" #anim_Nombre="ngModel"
                                 [(ngModel)]="animal.anim_Nombre" required autofocus
@@ -37,16 +48,6 @@
                         </div>
 
                         <div class="field col-6">
-                            <label for="anim_Reino">Reino</label>
-                            <input type="text" pInputText id="anim_Reino" name="anim_Reino" #anim_Reino="ngModel"
-                                [(ngModel)]="animal.anim_Reino" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !animal.anim_Reino}"
-                                pattern="^(?!\s*$).+" />
-                            <small class="ng-dirty ng-invalid" style="color: red;"
-                                *ngIf="!anim_Reino.valid && anim_Reino.touched">El
-                                reino del animal es requerido.</small>
-                        </div>
-                        <div class="field col-6">
                             <label for="habi_Id">Habitat</label>
                             <p-dropdown placeholder="Seleccione el hábitat" inputId="dropdown"
                                 [autoDisplayFirst]="false" name="habi_Id" #habi_Id="ngModel" [options]="habitat"
@@ -55,6 +56,15 @@
                             <small class="ng-dirty ng-invalid" style="color: red;"
                                 *ngIf="AnimalForm.submitted && !animal.habi_Id">El cuidado de la planta es
                                 requerido.</small>
+                        </div>
+                        <div class="field col-6">
+                            <label for="rein_Id">Reino</label>
+                            <p-dropdown placeholder="Seleccione un reino" inputId="dropdown"
+                                [autoDisplayFirst]="false" name="rein_Id" #rein_Id="ngModel" [options]="reinos"
+                                [(ngModel)]="animal.rein_Id" optionLabel="label" optionValue="value"
+                                [ngClass]="{ 'ng-invalid ng-dirty': AnimalForm.submitted && !animal.rein_Id }"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="AnimalForm.submitted && !animal.rein_Id">El reino del animal es requerida.</small>
                         </div>
 
                         <div class="field col-6">

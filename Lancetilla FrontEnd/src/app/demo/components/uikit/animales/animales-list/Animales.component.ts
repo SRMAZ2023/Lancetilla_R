@@ -73,6 +73,7 @@ export class AnimalesComponent implements OnInit {
             { field: 'anim_Id', header: 'anim_Id' },
             { field: 'anim_Nombre', header: 'anim_Nombre' },
             { field: 'anim_NombreCientifico', header: 'anim_NombreCientifico' },
+            { field: 'rein_Id', header: 'rein_Id' },
             { field: 'habi_Id', header: 'habi_Id' },
             { field: 'arzo_Id', header: 'arzo_Id' },
             { field: 'alim_Id', header: 'alim_Id' },
