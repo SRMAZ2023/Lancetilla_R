@@ -50,7 +50,7 @@ export class AppMenuComponent implements OnInit {
           "role_Id": this.RolID
         };
       
-        console.log(params);
+        
         this.rolesPorPantallaService.PantallasPorRol(params).subscribe(
           Response => {
             this.datos = Response;
