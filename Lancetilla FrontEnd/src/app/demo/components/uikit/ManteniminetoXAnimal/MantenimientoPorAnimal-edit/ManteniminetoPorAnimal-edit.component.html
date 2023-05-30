@@ -5,10 +5,10 @@
             <p-toast></p-toast>
             <h1 id="hasta_Arriba">{{ page_title }}</h1>
 
-            <p-accordion (click)="toco()"  aria-disabled="false">
+            <div id="titulo"> Editar Mantenimineto de animales</div>
+            <div id="Desplegable" [hidden]="mostrar">
 
-                <p-accordionTab   header=" Editar el mantenimineto de un Animal" [selected]="panelCollapsed" class="line-height-3 m-0">
-                    <div class="grid p-fluid">
+                     <div class="grid p-fluid">
                         <div class="field col-6">
                              <p-dropdown
                             #animalDropdown
@@ -58,9 +58,8 @@
                         </div>
           
                     </div>
-                </p-accordionTab>
-                  
-            </p-accordion>
+                   
+            </div>
              
             <div class="field col-2">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"

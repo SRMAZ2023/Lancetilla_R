@@ -64,17 +64,14 @@ export class MantenimientoPorAnimalEditComponent {
     if (this.animalDropdown && this.animalDropdown.nativeElement) {
       this.animalDropdown.nativeElement.focus();
     }
-     this.panelCollapsed = true
-  }
+   }
 
   scrollIntoViewIfNeeded() {
     const panelElement = document.getElementById('hasta_Arriba');
 
     if (panelElement) {
       panelElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (this.panelCollapsed) {
-         this.panelCollapsed = true
-      } 
+      
     }
   }
 
@@ -92,6 +89,10 @@ export class MantenimientoPorAnimalEditComponent {
 
   ocultarBoton: any = document.getElementById('p-panel-0-label');
 
+  cambioValor!: number;
+  noAbre!:number;
+
+  acordeonAbierto:boolean = false;
 
   cols: any[] = [];
 
@@ -103,6 +104,14 @@ export class MantenimientoPorAnimalEditComponent {
 
   count: number = 0;
 
+  isExpanded: boolean = false;
+
+  mostrar:boolean = true
+
+  expandDesplegable(): void {
+    this.isExpanded = true;
+  }
+
   constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private renderer: Renderer2,
     private messageService: MessageService,
@@ -112,6 +121,9 @@ export class MantenimientoPorAnimalEditComponent {
     this.page_title = "Editar Mantenimiento A Animal";
     this.minDate = new Date();
     this.animalDropdown = new ElementRef(null);
+
+
+    
 
   }
 
@@ -160,19 +172,21 @@ export class MantenimientoPorAnimalEditComponent {
 
   }
 
-  toco(){
-
-
-    if(!this.panelCollapsed){
-      console.log("True")
-      this.panelCollapsed = true
-    }else if(this.panelCollapsed){
-      console.log("False")
-
-      this.panelCollapsed = false
-
+ 
+  toco(event: Event) {
+    event.stopPropagation(); // Detener la propagación del evento de clic
+    this.panelCollapsed = true;
+    
+   
+    if(this.noAbre == 1){
+      this.panelCollapsed = false;
+    }else if( this.noAbre = 0){
+      
+      this.panelCollapsed = true;
+      
     }
   }
+  
    
   checkFormValidity() {
     this.formValid = this.MantenimientoPorAnimalForm.valid && this.mantenimientoXanimalp.anim_Id || this.mantenimientoXanimalp.maan_Id;
@@ -221,48 +235,31 @@ export class MantenimientoPorAnimalEditComponent {
    
 
   getInputsValues(id: any) {
-
     this.datos = this.DataAnimal;
     const mantenimiento = this.datos.find((item: any) => item.maan_Id === id);
-
-    try {
-
-
+  
+    if (mantenimiento && mantenimiento.maan_Fecha) {
       var cambio = mantenimiento.maan_Fecha;
+      var fechaFormateada = format(parse(cambio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd\'T\'HH:mm:ss.SSS');
+      fechaFormateada = new Date(fechaFormateada!).toDateString();
+  
+      this.fechaSola = new Date(fechaFormateada);
+      this.newParametros.maan_Id = mantenimiento.maan_Id;
+      this.newParametros.anim_Id = mantenimiento.anim_Id;
+      this.newParametros.tima_Id = mantenimiento.tima_Id;
+      this.scrollIntoViewIfNeeded();
+      this.noAbre = 1;
+       
+      this.mostrar = false;
+     
 
-      if (mantenimiento) {
-
-
-        if (mantenimiento.maan_Fecha) {
-
-          var fechaFormateada = format(parse(cambio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd\'T\'HH:mm:ss.SSS');
-
-          fechaFormateada = new Date(fechaFormateada!).toDateString();
-
-
-          this.fechaSola = new Date(fechaFormateada);
-          this.newParametros.maan_Id = mantenimiento.maan_Id;
-          this.newParametros.anim_Id = mantenimiento.anim_Id;
-          this.newParametros.tima_Id = mantenimiento.tima_Id;
-          this.scrollIntoViewIfNeeded();
-          this.abrirPanel();
-
-
-
-
-        } else {
-          console.log('El valor de maan_Fecha es nulo o indefinido');
-        }
-      } else {
-        console.log('No se encontró el ID de mantenimiento');
-      }
-
-    } catch (error) {
-
+    } else {
+      console.log('No se encontró el ID de mantenimiento o el valor de maan_Fecha es nulo o indefinido');
     }
-
-
   }
+  
+  
+  
 
 
 
@@ -282,8 +279,7 @@ export class MantenimientoPorAnimalEditComponent {
 
     }
 
-    console.log(params);
-
+ 
     if (params.anim_Id != 0 && params.anim_Id != undefined && params.tima_Id != 0 && params.tima_Id != undefined && this.fechaSola.toDateString() != "" && params.maan_Fecha != undefined) {
 
       this.ManteniminetoXAnimalService.EditManteniminetoXAnimal(params).subscribe(Response => {
