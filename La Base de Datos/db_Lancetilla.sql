@@ -229,8 +229,7 @@ CONSTRAINT FK_zool_tbAnimales_arzo_Id_zool_tbAreasZoologico_arzo_Id					FOREIGN 
 CONSTRAINT FK_zool_tbAnimales_rein_Id_zool_tbReinos_rein_Id							FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
 CONSTRAINT FK_zool_tbAnimales_alim_Id_zool_tbAlimetacion_alim_Id					FOREIGN KEY (alim_Id)					REFERENCES zool.tbAlimentacion(alim_Id),
 CONSTRAINT FK_zool_tbAnimales_habi_Id_zool_tbHabitat_habi_Id						FOREIGN KEY (habi_Id)					REFERENCES zool.tbHabitat(habi_Id),
-CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id),
-CONSTRAINT FK_zool_tbAnimales_anim_NombreCientifico									UNIQUE(anim_NombreCientifico));
+CONSTRAINT FK_zool_tbAnimales_espe_Id_zool_tbEspecies_espe_Id						FOREIGN KEY (espe_Id)					REFERENCES zool.tbEspecies(espe_Id));
 --***************************************************************/TABLA DE ANIMALES*************************************************************************--
 
 --**************************************************************/MÓDULO DE ZOOLOGICO**************************************************************************--
@@ -491,8 +490,7 @@ plan_Estado				BIT					DEFAULT 1,
 CONSTRAINT FK_bota_tbPlantas_plan_UserCreacion_acce_tbUsuarios_usua_Id			FOREIGN KEY (plan_UserCreacion)			REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_bota_tbPlantas_plan_UserModificacion_acce_tbUsuarios_usua_Id		FOREIGN KEY (plan_UserModificacion)		REFERENCES acce.tbUsuarios(usua_Id),
 CONSTRAINT FK_bota_tbPlantas_arbo_Id_bota_tbAreasBotanicas_arbo_Id				FOREIGN KEY (arbo_Id)					REFERENCES bota.tbAreasBotanicas(arbo_Id),
-CONSTRAINT FK_bota_tbPlantas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id),
-CONSTRAINT UK_bota_tbPlantas_plan_NombreCientifico								UNIQUE(plan_NombreCientifico));
+CONSTRAINT FK_bota_tbPlantas_rein_Id_zool_tbReinos_rein_Id						FOREIGN KEY (rein_Id)					REFERENCES zool.tbReinos(rein_Id));
 
 --****************************************************************/TABLA DE PLANTAS***************************************************************************--
 
