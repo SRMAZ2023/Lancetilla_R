@@ -10,7 +10,7 @@ namespace Lancetilla.Entities.Entities
     {
         public tbEspecies()
         {
-            tbAnimales = new HashSet<tbAnimales>();
+            tbRazas = new HashSet<tbRazas>();
         }
 
         public int espe_Id { get; set; }
@@ -23,6 +23,6 @@ namespace Lancetilla.Entities.Entities
 
         public virtual tbUsuarios espe_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios espe_UserModificacionNavigation { get; set; }
-        public virtual ICollection<tbAnimales> tbAnimales { get; set; }
+        public virtual ICollection<tbRazas> tbRazas { get; set; }
     }
 }

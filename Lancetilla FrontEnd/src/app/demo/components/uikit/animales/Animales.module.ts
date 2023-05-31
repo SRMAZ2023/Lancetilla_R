@@ -15,9 +15,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
-import { AnimalesComponent } from './animales-list/Animales.component';
-import { AnimalNewComponent } from './animales-new/AnimalesNew.component';
-import { AnimalesEditComponent } from './animales-edit/Animales-edit.component';
+import { AnimalesComponent } from './Animales.component';
 
 @NgModule({
     imports: [
@@ -38,6 +36,6 @@ import { AnimalesEditComponent } from './animales-edit/Animales-edit.component';
         InputNumberModule,
         DialogModule
     ],
-    declarations: [AnimalesComponent, AnimalNewComponent, AnimalesEditComponent]
+    declarations: [AnimalesComponent]
 })
 export class AnimalesModule { }

@@ -15,15 +15,18 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         private readonly AreasBotanicasRepository _areasBotanicasRepository;
         private readonly CuidadosRepository _cuidadosRepository;
         private readonly PlantasRepository _plantasRepository;
+        private readonly TiposdePlantasRepository _tiposdePlantasRepository;
       
 
         public BotanicaServicios(AreasBotanicasRepository areasBotanicasRepository, 
                                  CuidadosRepository cuidadosRepository, 
-                                 PlantasRepository plantasRepository)
+                                 PlantasRepository plantasRepository,
+                                 TiposdePlantasRepository  tiposdePlantasRepository)
         {
             _areasBotanicasRepository = areasBotanicasRepository;
             _cuidadosRepository = cuidadosRepository;
             _plantasRepository = plantasRepository;
+            _tiposdePlantasRepository = tiposdePlantasRepository;
            
         }
 
@@ -121,6 +124,102 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             }
         }
         #endregion
+
+        #region AreasBotanicas
+        public IEnumerable<VW_tbTiposPlantas> ListarTiposPlantas()
+        {
+            try
+            {
+                var list = _tiposdePlantasRepository.ListarTiposPlantas();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbTiposPlantas>();
+
+            }
+        }
+        /*
+        public ServiceResult InsertarAreaBotanica(tbAreasBotanicas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _areasBotanicasRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarAreaBotanica(tbAreasBotanicas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _areasBotanicasRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarAreaBotanica(tbAreasBotanicas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _areasBotanicasRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }*/
+        #endregion
+
 
         #region Cuidados de plantas
         public IEnumerable<VW_tbCuidados> ListarCuidadosDePlantas()

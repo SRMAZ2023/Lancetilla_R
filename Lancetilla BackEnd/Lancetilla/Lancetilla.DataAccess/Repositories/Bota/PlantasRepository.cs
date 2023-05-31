@@ -53,10 +53,8 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             var parametros = new DynamicParameters();
 
             parametros.Add("@plan_Codigo", item.plan_Codigo, DbType.String, ParameterDirection.Input);
-            parametros.Add("@plan_Nombre", item.plan_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@plan_NombreCientifico", item.plan_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@rein_Id", item.rein_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@arbo_Id", item.arbo_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@tipl_Id", item.tipl_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@plan_UserCreacion", item.plan_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarPlantas, parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -70,11 +68,9 @@ namespace Lancetilla.DataAccess.Repositories.Bota
 
             parametros.Add("@plan_Id", item.plan_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@plan_Codigo", item.plan_Codigo, DbType.String, ParameterDirection.Input);
-            parametros.Add("@plan_Nombre", item.plan_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@plan_NombreCientifico", item.plan_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@rein_Id", item.rein_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@arbo_Id", item.arbo_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@plan_UserModificacion", item.plan_UserCreacion, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@tipl_Id", item.tipl_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@plan_UserModificacion", item.plan_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarPlantas, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;

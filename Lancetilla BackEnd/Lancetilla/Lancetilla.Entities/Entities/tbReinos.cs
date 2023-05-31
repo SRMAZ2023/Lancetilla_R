@@ -10,8 +10,8 @@ namespace Lancetilla.Entities.Entities
     {
         public tbReinos()
         {
-            tbAnimales = new HashSet<tbAnimales>();
-            tbPlantas = new HashSet<tbPlantas>();
+            tbRazas = new HashSet<tbRazas>();
+            tbTiposPlantas = new HashSet<tbTiposPlantas>();
         }
 
         public int rein_Id { get; set; }
@@ -24,7 +24,7 @@ namespace Lancetilla.Entities.Entities
 
         public virtual tbUsuarios rein_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios rein_UserModificacionNavigation { get; set; }
-        public virtual ICollection<tbAnimales> tbAnimales { get; set; }
-        public virtual ICollection<tbPlantas> tbPlantas { get; set; }
+        public virtual ICollection<tbRazas> tbRazas { get; set; }
+        public virtual ICollection<tbTiposPlantas> tbTiposPlantas { get; set; }
     }
 }
