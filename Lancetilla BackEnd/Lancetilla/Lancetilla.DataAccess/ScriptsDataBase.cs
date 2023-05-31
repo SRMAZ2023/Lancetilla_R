@@ -241,7 +241,9 @@ namespace Lancetilla.DataAccess
 
         #region Factura
 
+        public static string EncabezadoFactura = "fact.UPD_CargarInformacionDelEncabezado_Factura";
 
+        public static string TablaFactura = "fact.UPD_CargarInformacionTabla_Factura";
 
 
         #endregion

@@ -470,7 +470,7 @@ namespace Lancetilla.DataAccess.Context
                     .IsRequired()
                     .HasMaxLength(201);
 
-                entity.Property(e => e.fact_Fecha).HasColumnType("date");
+                entity.Property(e => e.fact_Fecha).HasColumnType("datetime");
 
                 entity.Property(e => e.fact_FechaCreacion).HasColumnType("datetime");
 
@@ -1323,7 +1323,7 @@ namespace Lancetilla.DataAccess.Context
 
                 entity.Property(e => e.fact_Estado).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.fact_Fecha).HasColumnType("date");
+                entity.Property(e => e.fact_Fecha).HasColumnType("datetime");
 
                 entity.Property(e => e.fact_FechaCreacion)
                     .HasColumnType("datetime")

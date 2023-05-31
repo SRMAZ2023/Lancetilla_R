@@ -45,6 +45,35 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
 
             }
         }
+
+
+        public IEnumerable<tbFacturas> EncabezadoFactura(tbFacturas item)
+        {
+            try
+            {
+                var list = _facturaRepository.EncabezadoFactura(item);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<tbFacturas>();
+            }
+        }
+
+        public IEnumerable<tbFacturas> TablaFactura(tbFacturas item)
+        {
+            try
+            {
+                var list = _facturaRepository.TablaFactura(item);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<tbFacturas>();
+            }
+        }
         #endregion
 
         #region Factura Detalle

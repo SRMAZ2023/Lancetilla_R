@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReporteFacturaRoutingModule } from './ReporteFactura-routing.module';
 import { ReporteFacturaComponent } from './ReporteFactura.component';
-import { EmpleadosService } from 'src/app/demo/service/Empleados.service'; // Importa el servicio aquí
+import { FacturaService } from 'src/app/demo/service/facturas.service'; // Importa el servicio aquí
 
 
 
@@ -49,6 +49,6 @@ import { SliderModule } from 'primeng/slider';
     SliderModule
   ],
   declarations: [ReporteFacturaComponent],
-  providers: [EmpleadosService]
+  providers: [FacturaService]
 })
 export class ReporteFacturaModule { }
