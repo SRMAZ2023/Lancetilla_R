@@ -171,7 +171,7 @@ export class DepartamentosComponent implements OnInit {
         this.submitted = true;
 
         console.log(this.Departamento.dept_Id?.toString().length)    
-        if (this.Departamento.dept_Id?.toString().length == 1) {
+        if (this.Departamento.dept_Id?.toString().length == 1 && this.Editar == false) {
             
             this.Departamento.dept_Id = "0" + this.Departamento.dept_Id
         }
@@ -191,8 +191,8 @@ export class DepartamentosComponent implements OnInit {
 
        
        
-        //Validacion de params
-        if (params.dept_Id?.toString() !== undefined && params.dept_Id?.toString().length > 2 || params.dept_Id?.toString() !== undefined && params.dept_Id?.toString().length > 0 && parseInt(params.dept_Id?.toString()) < 1) {
+        const deptId = params.dept_Id?.toString();
+        if (deptId == undefined || parseInt(deptId) < 1 && this.Editar ==  false) {
             
             this.messageService.add({ severity: 'info', summary: 'info', detail: "Ingrese un código válido.", life: 3000 });
 

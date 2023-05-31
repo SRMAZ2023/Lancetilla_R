@@ -517,7 +517,7 @@ BEGIN
 		-- Si existe
 		IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion  AND muni_Estado = 1 AND dept_Id = @dept_Id)
 		BEGIN
-			SELECT 409 AS codeStatus, 'El municipio ya existe en ese departamento.' AS messageStatus
+			SELECT 409 AS codeStatus, 'El municipio ya existe.' AS messageStatus
 		END
 		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Id = @muni_Id AND muni_Estado = 1)
 		BEGIN
@@ -580,15 +580,14 @@ GO
 CREATE OR ALTER PROC mant.UDP_tbMunicipios_UPDATE
 @muni_Id CHAR(4),
 @muni_Descripcion NVARCHAR(100),
-@dept_Id CHAR(2),
 @muni_UserModificacion INT
 AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND dept_Id = @dept_Id AND muni_Id <> @muni_Id AND muni_Estado = 1)
+			IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion  AND muni_Id <> @muni_Id AND muni_Estado = 1)
 			BEGIN
-				SELECT 409 AS codeStatus, 'El municipio ya existe en este departamento .' AS messageStatus
+				SELECT 409 AS codeStatus, 'El municipio ya existe.' AS messageStatus
 			END
 			ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE  muni_Descripcion = @muni_Descripcion AND muni_Id = @muni_Id  AND muni_Estado = 1)
 			BEGIN
@@ -612,7 +611,7 @@ AS BEGIN
 			BEGIN
 				UPDATE mant.tbMunicipios
 				SET
-				    dept_Id = @dept_Id,
+				    
 					muni_Descripcion = @muni_Descripcion,
 					muni_UserModificacion = @muni_UserModificacion
 				WHERE muni_Id = @muni_Id

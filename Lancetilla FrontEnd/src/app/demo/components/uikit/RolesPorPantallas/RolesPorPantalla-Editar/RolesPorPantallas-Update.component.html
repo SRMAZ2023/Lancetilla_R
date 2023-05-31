@@ -8,11 +8,12 @@
         <p-toast></p-toast>
         <div class="card">
           <form class="mid-from" #RolForm="ngForm" (ngSubmit)="EditarRol()">
+            <br>
+<br>      
+<br>
+
             <div class="grid p-fluid align-items-center justify-content-start"> <!-- Cambio de 'end' a 'start' -->
-                <div class="field col-2"> <!-- Se quita la clase 'align-self-start' -->
-                  <button pButton pRipple label="Regresar" icon="pi pi-times" type="button" class="p-button-danger"
-                    [routerLink]="['/app/uikit/RolesPorPantalla']"></button>
-                </div>
+                
               </div>
                               
             <div class="grid p-fluid align-items-center justify-content-center">
@@ -31,8 +32,12 @@
             <br>
             <div class="grid p-fluid align-items-center justify-content-center">
               <div class="field col-2">
-                <button pButton pRipple label="Confirmar Nombre" icon="pi pi-check" type="submit" class="p-button-success"
+                <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit" class="p-button-success"
                ></button>
+              </div>
+              <div class="field col-2"> <!-- Se quita la clase 'align-self-start' -->
+                <button pButton pRipple label="Regresar" icon="pi pi-times" type="button" class="p-button-danger"
+                  [routerLink]="['/app/uikit/RolesPorPantalla']"></button>
               </div>
             </div>
           </form>
@@ -47,14 +52,15 @@
             <div class="flex justify-end" style="width: 100%;"> <!-- Alineación a la derecha de los elementos y ancho del contenedor -->
               <div class="field" style="width: 40%; padding-right: 1rem;"> <!-- Ancho del select -->
                 <div class="field">
-                    <span class="p-float-label">
-                      <p-multiSelect inputId="multiselect"   optionLabel="pant_Descripcion" [options]="pantallasSinRol" [filter]="false" [(ngModel)]="selectedPantallas"></p-multiSelect>
-                      <label for="multiselect">Pantallas</label>
-                    </span>
-                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && selectedPantallas.length === 0">
-                      Debe seleccionar al menos una pantalla.
-                    </small>
-                  </div>
+                  <span class="p-float-label">
+                    <p-multiSelect inputId="multiselect"  optionLabel="pant_Descripcion" [options]="pantallasSinRol" [filter]="true" [(ngModel)]="selectedPantallas"></p-multiSelect>
+                    <label for="multiselect">Pantallas</label>
+                  </span>
+                  <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && selectedPantallas.length === 0">
+                    Debe seleccionar al menos una pantalla.
+                  </small>
+                </div>
+                
                   
               </div>
               <div class="field" style="width: 20%; padding-left: 1rem;"> <!-- Ancho del botón -->

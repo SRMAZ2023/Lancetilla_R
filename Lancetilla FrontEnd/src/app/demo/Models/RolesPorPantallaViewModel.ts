@@ -21,7 +21,7 @@ export class RolesPorPantallaViewModel {
         public ropa_Id?: number,
         public role_Id?: number,
         public pant_Id?: number,
-        
+        public pant_Descripcion?: string,
         public ropa_UserCreacion?: number,
         public ropa_FechaCreacion?: string,
         public ropa_UserModificacion?: number,

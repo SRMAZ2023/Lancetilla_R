@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/demo/service/product.service';
 //import { Cargoss } from 'src/app/demo/api/CargossViewModel';
 import { Product } from 'src/app/demo/api/product';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 
 
@@ -120,13 +121,9 @@ export class RolesPorPantallaUpdateComponent implements OnInit {
     }
 
     
-
-
     AgregarPantallas() {
-    
-    
       const params = {
-        "role_Id":   this.role_Id,
+        "role_Id": this.role_Id,
         "pant_Id": 0,
         "role_Descripcion": "string",
         "pant_Descripcion": "string",
@@ -134,30 +131,47 @@ export class RolesPorPantallaUpdateComponent implements OnInit {
         "ropa_UserModificacion": 0
       };
     
-      for (const pantalla of this.selectedPantallas) {
-        params.pant_Id = pantalla.pant_Id; // Asignar el ID de la pantalla actual al parámetro pant_Id
+      let contador = 0;
+      const requests = [];
     
-        this.rolesPorPantallaService.AgregarPantallas(params).subscribe(
-          Response => {
-            this.datos = Response;
+      for (const pantalla of this.selectedPantallas) {
+        params.pant_Id = pantalla.pant_Id;
+        requests.push(this.rolesPorPantallaService.AgregarPantallas(params));
+      }
+    
+      forkJoin(requests).subscribe(
+        (responses: any[]) => {
+          for (const response of responses) {
+            this.datos = response;
     
             if (this.datos.code == 409) {
               this.messageService.add({ severity: 'info', summary: 'Atención', detail: this.datos.message, life: 3000 });
             } else if (this.datos.code == 200) {
-              this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+              contador++;
               this.Pantallas();
               this.PantallasSinRol();
             } else {
               this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
             }
-          },
-          error => {
-            console.log("manzana");
           }
-        );
-      }
-      this.selectedPantallas = []
+    
+          if (contador > 0) {
+            if (contador === 1) {
+              this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Pantalla ingresada exitosamente', life: 3000 });
+            } else {
+              this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Pantallas ingresadas exitosamente', life: 3000 });
+            }
+          }
+        },
+        error => {
+          console.log("manzana");
+        }
+      );
+    
+      this.selectedPantallas = [];
     }
+
+  
     
 
     Pantallas() {

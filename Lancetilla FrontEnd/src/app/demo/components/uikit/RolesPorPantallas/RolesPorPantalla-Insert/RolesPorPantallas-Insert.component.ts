@@ -8,6 +8,7 @@ import { error } from 'console';
 import { ProductService } from 'src/app/demo/service/product.service';
 //import { Cargoss } from 'src/app/demo/api/CargossViewModel';
 import { Product } from 'src/app/demo/api/product';
+import { forkJoin } from 'rxjs';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -29,6 +30,7 @@ export class RolesPorPantallaInsertComponent implements OnInit {
     //Dialogs
 
     datos: any = {};
+    shouldShowCard = false;
   
 
     public Editar: boolean = false;
@@ -88,7 +90,7 @@ export class RolesPorPantallaInsertComponent implements OnInit {
         "role_Id": this.RolSelecionado
       };
     
-      console.log(params);
+      
       this.rolesPorPantallaService.PantallasSinRol(params).subscribe(
         Response => {
          this.pantallas = Response
@@ -109,9 +111,6 @@ export class RolesPorPantallaInsertComponent implements OnInit {
 
 
     AgregarPantallas() {
-      console.log(this.selectedPantallas);
-      console.log(this.RolSelecionado);
-    
       const params = {
         "role_Id": this.RolSelecionado,
         "pant_Id": 0,
@@ -121,30 +120,46 @@ export class RolesPorPantallaInsertComponent implements OnInit {
         "ropa_UserModificacion": 0
       };
     
-      for (const pantalla of this.selectedPantallas) {
-        params.pant_Id = pantalla.pant_Id; // Asignar el ID de la pantalla actual al parámetro pant_Id
+      let contador = 0;
+      const requests = [];
     
-        this.rolesPorPantallaService.AgregarPantallas(params).subscribe(
-          Response => {
-            this.datos = Response;
+      for (const pantalla of this.selectedPantallas) {
+        params.pant_Id = pantalla.pant_Id;
+        requests.push(this.rolesPorPantallaService.AgregarPantallas(params));
+      }
+    
+      forkJoin(requests).subscribe(
+        (responses: any[]) => {
+          for (const response of responses) {
+            this.datos = response;
     
             if (this.datos.code == 409) {
               this.messageService.add({ severity: 'info', summary: 'Atención', detail: this.datos.message, life: 3000 });
             } else if (this.datos.code == 200) {
-              this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+              contador++;
               this.Pantallas();
               this.PantallasSinRol();
             } else {
               this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
             }
-          },
-          error => {
-            console.log("manzana");
           }
-        );
-      }
-      this.selectedPantallas = []
+    
+          if (contador > 0) {
+            if (contador === 1) {
+              this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Pantalla ingresada exitosamente', life: 3000 });
+            } else {
+              this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'Pantallas ingresadas exitosamente', life: 3000 });
+            }
+          }
+        },
+        error => {
+          console.log("manzana");
+        }
+      );
+    
+      this.selectedPantallas = [];
     }
+    
     
 
     Pantallas() {
@@ -216,6 +231,8 @@ export class RolesPorPantallaInsertComponent implements OnInit {
                       this.RolSelecionado = this.datos.data.role_Id
                       this.isDisabled2 = false;
                       this.isDisabled = true;
+
+                      this.shouldShowCard = true;
     
                       this.Pantallas()
                       this.PantallasSinRol()

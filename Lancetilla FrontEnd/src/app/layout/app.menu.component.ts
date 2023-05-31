@@ -289,6 +289,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
                     { label: 'Graficas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/charts'] },  
+                    { label: 'Reporte Factura', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Reporte Factura'] },  
                 ]
             },
           
@@ -333,11 +334,11 @@ export class AppMenuComponent implements OnInit {
             },       
             
             {
-                label: 'Botanica',
+                label: 'Zoologico',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [                 
                     {
-                        label: 'Paginas de Botanica',
+                        label: 'Paginas de Zoologico',
                         icon: 'pi pi-fw pi-user',
                         items: [
                             { label: 'Hábitat', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/habitat'] },

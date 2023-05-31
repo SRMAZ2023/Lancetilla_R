@@ -69,6 +69,7 @@ export class MunicipiosComponent implements OnInit {
      hideDialog() {
         this.InsertMunicipiostDialog = false;
         this.EditarMunicipiostDialog = false;
+        this.departamentoselect = ""
         this.submitted = false;
     }
 
@@ -268,6 +269,7 @@ export class MunicipiosComponent implements OnInit {
                 this.MunicipiosService.CrearMunicipio(params).subscribe(
                     Response => {
                         this.datos = Response;
+                        console.log(this.datos)
                         if (this.datos.code == 409) {
 
                             this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
@@ -279,6 +281,7 @@ export class MunicipiosComponent implements OnInit {
                             this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                             this.Municipio = {};
                             this.InsertMunicipiostDialog = false;
+                            this.departamentoselect = ""
                             this.CargarMunicipios() 
                         } else {
                             this.messageService.add({ severity: 'info', summary: 'Error', detail: "Fallo al Insertar en Codigo del municipio", life: 3000 });

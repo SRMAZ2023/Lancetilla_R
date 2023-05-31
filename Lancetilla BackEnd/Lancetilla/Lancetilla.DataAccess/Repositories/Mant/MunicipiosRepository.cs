@@ -57,7 +57,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
 
             parametros.Add("@muni_Id", item.muni_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@muni_Descripcion", item.muni_Descripcion, DbType.String, ParameterDirection.Input);
-            parametros.Add("@dept_Id", item.dept_Id, DbType.String, ParameterDirection.Input);
+           
 
             parametros.Add("@muni_UserModificacion", item.muni_UserModificacion, DbType.Int32, ParameterDirection.Input);
 

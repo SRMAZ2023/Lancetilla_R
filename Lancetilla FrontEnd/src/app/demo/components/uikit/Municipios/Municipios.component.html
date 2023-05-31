@@ -19,7 +19,8 @@
             </p-toolbar>
 
             <p-table #dt [value]="Municipios" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['muni_Descripcion']"  [globalFilterFields]="['muni_Id']" [paginator]="true"
+            [globalFilterFields]="['muni_Descripcion', 'muni_Id']"
+            [paginator]="true"
                 [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedMunicipios"
                 selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -151,7 +152,7 @@
         <ng-template pTemplate="content">
             <div class="flex flex-wrap">
              
-                <div class="field" style="width: 50%; padding-right: 1rem;">
+                <div class="field" style="width: 100%; padding-right: 1rem;">
                     <div class="field">
                         <label for="name">Municipio</label>
                         <input type="text" pInputText id="descripcion" [(ngModel)]="Municipio.muni_Descripcion" required
@@ -162,16 +163,7 @@
                 </div>
                  
   
-                <div class="field" style="width: 50%; padding-right: 1rem;">
-                    <div class="field">
-                        <label for="emplId">Departamentos</label>
-                        <p-dropdown id="deptId" [appendTo]="'body'" [(ngModel)]="Municipio.dept_Id" [options]="departamentos"optionValue="value" 
-                          [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Municipio.dept_Id }"></p-dropdown>
-                        <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Municipio.dept_Id">
-                          Debe seleccionar un Departamento.
-                        </small>                              
-                      </div>                                      
-                  </div>              
+                           
                 </div>
 
         </ng-template>
