@@ -2579,8 +2579,8 @@ BEGIN TRY
 
 		ELSE IF NOT EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Codigo = @anim_Codigo AND anim_Estado= 1)
 		BEGIN
-			INSERT INTO zool.tbAnimales(anim_Codigo, anim_Nombre, arzo_Id, alim_Id, anim_UserCreacion)
-			VALUES (@anim_Codigo, @anim_Nombre, @arzo_Id, @alim_Id, @anim_UserCreacion)
+			INSERT INTO zool.tbAnimales(anim_Codigo, anim_Nombre, raza_Id, arzo_Id, alim_Id, anim_UserCreacion)
+			VALUES (@anim_Codigo, @anim_Nombre,@raza_Id, @arzo_Id, @alim_Id, @anim_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
@@ -2617,11 +2617,11 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Codigo = @anim_Codigo AND anim_Estado = 1)
+		IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Codigo = @anim_Codigo AND anim_Estado = 1 AND anim_Codigo != @anim_Codigo)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El código del animal ya existe.' AS messageStatus
 		END
-		ELSE IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Codigo  = @anim_Codigo  AND anim_Estado= 0)
+		ELSE IF EXISTS (SELECT * FROM zool.tbAnimales WHERE anim_Codigo  = @anim_Codigo  AND anim_Estado= 0 )
 		BEGIN
 			DECLARE @Id INT = (SELECT anim_Id FROM zool.tbAnimales WHERE anim_Codigo  = @anim_Codigo  ) 
 
@@ -2629,6 +2629,7 @@ AS BEGIN
 				SET
 				  anim_Codigo = @anim_Codigo,
 				  anim_Nombre = @anim_Nombre,
+				  raza_Id = @raza_Id,
 				  arzo_Id = @arzo_Id,
 				  alim_Id = @alim_Id,
 				  anim_UserModificacion = @anim_UserModificacion,
@@ -2644,6 +2645,7 @@ AS BEGIN
 				SET
 				  anim_Codigo = @anim_Codigo,
 				  anim_Nombre = @anim_Nombre,
+				  raza_Id = @raza_Id,
 				  arzo_Id = @arzo_Id,
 				  alim_Id = @alim_Id,
 				  anim_UserModificacion = @anim_UserModificacion,
@@ -3244,17 +3246,17 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo)  AND plan_Estado = 1)
+		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo)  AND plan_Estado = 1 AND RTRIM(plan_Codigo) != RTRIM(@plan_Codigo))
 BEGIN
     SELECT 409 AS codeStatus, 'El código de la planta ya existe.' AS messageStatus
 END
 
 
 
-		 IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo) AND plan_Estado = 0 )
+		 IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo) AND RTRIM(plan_Codigo) != RTRIM(@plan_Codigo) AND plan_Estado = 0 )
 		BEGIN
 			DECLARE @Id INT = (SELECT plan_Id FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo)) 
-			select  @Id
+
 				UPDATE bota.tbPlantas
 				SET
 						plan_Codigo = @plan_Codigo,
@@ -3278,7 +3280,7 @@ END
 					  plan_UserModificacion = @plan_UserModificacion
 				WHERE plan_Id = @plan_Id
 
-				SELECT 200 AS codeStatus, 'La planta ha sido actualizado con éxito.' AS messageStatus
+				SELECT 200 AS codeStatus, 'La planta ha sido actualizada con éxito.' AS messageStatus
 			END
 
 			COMMIT
