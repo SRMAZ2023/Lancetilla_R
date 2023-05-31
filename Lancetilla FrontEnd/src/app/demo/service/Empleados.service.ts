@@ -24,6 +24,7 @@ export class EmpleadosService {
     }
 
     findMunicipios(empl_Id:any): Observable<any> {
+        console.log(empl_Id)
         let params = JSON.stringify(empl_Id);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 

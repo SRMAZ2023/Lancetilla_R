@@ -70,6 +70,7 @@ export class empleadosNewComponent implements OnInit {
                 // Manejo del error
             }
         );
+
         this.DepartamentosService.getCatgos().subscribe(
             response => {
                 this.departamento = response.map((item: { dept_Descripcion: any; dept_Id: any; }) => ({ label: item.dept_Descripcion, value: item.dept_Id }));
@@ -89,22 +90,20 @@ export class empleadosNewComponent implements OnInit {
     onDepartamentoChange(event: any) {
         const selectedDepartamento = event.value;
         console.log(selectedDepartamento);
+        var depa_id:string = selectedDepartamento;
 
         var params = {
-            "dept_Id": selectedDepartamento,
-            "muni_Id": 0,
-            "muni_Descripcion": "string",
-            "dept_Descripcion": "string",
-            "muni_UserCreacion": 0
-
+            "dept_Id": depa_id,
+    
         }
+
+        console.log(params);
 
         //Carga los Municipios
         this.EmpleadosService.findMunicipios(params).subscribe(
             Response => {
                 console.log(Response)
-                this.datos = Response;
-
+ 
                 this.municipios = Response.map((item: { muni_Descripcion: any; muni_Id: any; }) => ({ label: item.muni_Descripcion, value: item.muni_Id }));
 
                 // Activa el otro dropdown
@@ -114,6 +113,7 @@ export class empleadosNewComponent implements OnInit {
             error => {
                 console.log(error)
                 this.municipioDisabled = true;
+                
 
             }
         );
@@ -122,12 +122,15 @@ export class empleadosNewComponent implements OnInit {
     }
     //Enviamos y editamos datos
     saveEmpleados() {
+        this.submitted = true
         //Verificar si todos los campos están llenos
         if (this.empleado.empl_Nombre?.trim() != "" &&
             this.empleado.empl_Apellido?.trim() != "" &&
             this.empleado.empl_Sexo?.trim() != "" &&
-            this.empleado.muni_Id != 0 &&
-            this.empleado.dept_Id != 0) {
+            this.empleado.empl_FechaNacimiento != undefined &&
+             this.empleado.muni_Id != undefined &&
+            this.empleado.dept_Id != undefined 
+            ) {
 
             console.log("Todos los campos están llenos");
 

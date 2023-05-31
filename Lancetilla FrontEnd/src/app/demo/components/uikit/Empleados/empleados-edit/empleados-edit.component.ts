@@ -109,10 +109,6 @@ export class empleadosEditComponent {
 
     var params = {
       "dept_Id": selectedDepartamento,
-      "muni_Id": 0,
-      "muni_Descripcion": "string",
-      "dept_Descripcion": "string",
-      "muni_UserCreacion": 0
 
     }
 
@@ -140,30 +136,32 @@ export class empleadosEditComponent {
   saveEmpleados() {
     // Verificar si todos los campos están llenos
     if (this.empleado.empl_Nombre?.trim() != "" &&
-            this.empleado.empl_Apellido?.trim() != "" &&
-            this.empleado.empl_Sexo?.trim() != "" &&
-            this.empleado.muni_Id != 0 &&
-            this.empleado.dept_Id != 0) {
-    console.log("Todos los campos están llenos");
+      this.empleado.empl_Apellido?.trim() != "" &&
+      this.empleado.empl_Sexo?.trim() != "" &&
+      this.empleado.empl_FechaNacimiento != undefined &&
+      this.empleado.muni_Id != "" &&
+      this.empleado.dept_Id != "") {
+      console.log("Todos los campos están llenos");
 
-    this.EmpleadosService.EditEmpleados(this.empleado).subscribe(Response => {
-      this.datos = Response;
-      if (this.datos.code == 409) {
+      this.EmpleadosService.EditEmpleados(this.empleado).subscribe(Response => {
+        this.datos = Response;
+        if (this.datos.code == 409) {
 
-        this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
+          this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
-      } else if (this.datos.code = 200) {
-        this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 1500 });
-        setTimeout(() => {
-          this._rauter.navigate(['/app/uikit/Empleados']);
-        }, 1500);
-      }
+        } else if (this.datos.code = 200) {
+          this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 1500 });
+          console.log( this.datos.message)
+          setTimeout(() => {
+            this._rauter.navigate(['/app/uikit/Empleados']);
+          }, 1500);
+        }
 
 
 
-    }, error => {
-      console.log(error)
-    })
+      }, error => {
+        console.log(error)
+      })
 
     }
   }
@@ -179,12 +177,12 @@ export class empleadosEditComponent {
 
         console.log(this.empleado)
 
-       var fecha = new Date(this.empleado.empl_FechaNacimiento!);
-       console.log("Fecha = " + fecha)
+        var fecha = new Date(this.empleado.empl_FechaNacimiento!);
+        console.log("Fecha = " + fecha)
 
-       this.empleado.empl_FechaNacimiento = fecha;
+        this.empleado.empl_FechaNacimiento = fecha;
 
-        if (this.empleado.dept_Id !== 0 || this.empleado.muni_Id !== 0) {
+        if (this.empleado.dept_Id !== "" || this.empleado.muni_Id !== "") {
           console.log(Response);
 
           this.municipioDisabled = true;

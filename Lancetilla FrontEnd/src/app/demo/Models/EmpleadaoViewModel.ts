@@ -15,9 +15,9 @@ export class EmpleadosViewModel {
         public estc_Descripcion?: string,
         public carg_Id?: number,//2
         public carg_Descripcion?: string,
-        public muni_Id?: number,//3
+        public muni_Id?: string,//3
         public muni_Descripcion?: string,
-        public dept_Id?: number,//4
+        public dept_Id?: string,//4
         public dept_Descripcion?: string,
         public usua_UserCreaNombre?: string,
         public empl_UserCreacion?: number,
@@ -32,10 +32,10 @@ export class Municipios {
 
     constructor(
 
-        public muni_Id?: number,
+        public muni_Id?: string,
         public muni_Descripcion?: string,
         public dept_Descripcion?: string,
-        public dept_Id?: number,
+        public dept_Id?: string,
         public muni_UserCreacion?: number
 
     ) { }

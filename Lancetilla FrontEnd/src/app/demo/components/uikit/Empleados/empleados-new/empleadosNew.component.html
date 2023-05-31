@@ -15,7 +15,7 @@
                             [(ngModel)]="empleado.empl_Nombre" required autofocus
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && empl_Nombre.invalid}"
                             pattern="^(?!\s*$).+" />
-                        <small class="ng-dirty ng-invalid" style="color: red;"
+                        <small class="ng-invalid ng-dirty" style="color: red;"
                             *ngIf="empl_Nombre.invalid && (empl_Nombre.touched || submitted)">
                             La nombre del empleado es requerido.
                         </small>
@@ -60,10 +60,10 @@
                     <div class="field col-6">
                         <label for="empl_FechaNacimiento">Fecha de Nacimiento</label>
                         <p-calendar [showIcon]="true" id="empl_FechaNacimiento" name="empl_FechaNacimiento"
-                            #empl_FechaNacimiento="ngModel" [(ngModel)]="empleado.empl_FechaNacimiento"
+                            #empl_FechaNacimiento="ngModel"  [ngClass]="{'ng-invalid ng-dirty' : (empl_FechaNacimiento.touched && !empl_FechaNacimiento) || (submitted && !empleado.empl_FechaNacimiento)}" [(ngModel)]="empleado.empl_FechaNacimiento"
                             inputId="icon"></p-calendar>
-                        <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="!empl_FechaNacimiento.valid && empl_FechaNacimiento.touched">
+                        <small class="ng-invalid ng-dirty" style="color: red;"
+                            *ngIf="(empl_FechaNacimiento.touched && !empl_FechaNacimiento) || (submitted && !empleado.empl_FechaNacimiento) ">
                         La fecha de nacimiento del empleado es requerida.</small>
                     </div>
 
@@ -108,7 +108,7 @@
                         <p-dropdown placeholder="Seleccione Un Estado Civil" inputId="dropdown"
                             [autoDisplayFirst]="false" name="estc_Id" #estc_Id="ngModel" [options]="estadoCivil"
                             [(ngModel)]="empleado.estc_Id" optionLabel="label" optionValue="value"
-                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.estc_Id }"></p-dropdown>
+                            [ngClass]="{ 'ng-invalid ng-dirty': empleadosForm.submitted && !empleado.estc_Id }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empleadosForm.submitted && !empleado.estc_Id">El estado civil del empleado es requerido.</small>
                     </div>
@@ -119,7 +119,7 @@
                         <p-dropdown placeholder="Seleccione Un Cargo" inputId="dropdown" [autoDisplayFirst]="false"
                             name="carg_Id" #carg_Id="ngModel" [options]="cargo" [(ngModel)]="empleado.carg_Id"
                             optionLabel="label" optionValue="value"
-                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.carg_Id }"></p-dropdown>
+                            [ngClass]="{ 'ng-invalid ng-dirty': empleadosForm.submitted && !empleado.carg_Id }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empleadosForm.submitted && !empleado.carg_Id">El cargo del empleado es requerido.</small>
                     </div>
@@ -129,7 +129,7 @@
                         <p-dropdown placeholder="Seleccione Un Departamento" inputId="dropdown"
                             [autoDisplayFirst]="false" name="dept_Id" #dept_Id="ngModel" [options]="departamento"
                             [(ngModel)]="empleado.dept_Id" optionLabel="label" optionValue="value"
-                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.dept_Id }"
+                            [ngClass]="{ 'ng-invalid ng-dirty': empleadosForm.submitted && !empleado.dept_Id }"
                             (onChange)="onDepartamentoChange($event)"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empleadosForm.submitted && !empleado.dept_Id">
@@ -143,7 +143,7 @@
                             name="muni_Id" value="empleado.muni_Id" #muni_Id="ngModel" [options]="municipios"
                             [(ngModel)]="empleado.muni_Id" optionLabel="label" optionValue="value"
                             [disabled]="municipioDisabled"
-                            [ngClass]="{ 'ng-invalid': empleadosForm.submitted && !empleado.muni_Id }"></p-dropdown>
+                            [ngClass]="{ 'ng-invalid ng-dirty': empleadosForm.submitted && !empleado.muni_Id }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" style="color: red;"
                             *ngIf="empleadosForm.submitted && !empleado.muni_Id">
                             El municipios de residencia del empleado es requerido.
