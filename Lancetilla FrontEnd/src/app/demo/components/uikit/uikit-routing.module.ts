@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
         { path: 'Reporte Factura', data: { breadcrumb: 'Reporte Factura' }, loadChildren: () => import('./Reporte Factura/ReporteFactura.module').then(m => m.ReporteFacturaModule) },
         { path: 'charts', data: { breadcrumb: 'charts' }, loadChildren: () => import('./charts/chartsdemo.module').then(m => m.ChartsDemoModule) },
         { path: 'Usuarios', data: { breadcrumb: 'Usuarios' }, loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule) },
+        { path: 'razas', data: { breadcrumb: 'razas' }, loadChildren: () => import('./razas/Razas.module').then(m => m.RazasModule) },
         { path: 'animales', data: { breadcrumb: 'animales' }, loadChildren: () => import('./animales/Animales.module').then(m => m.AnimalesModule) },
         { path: 'ManteniminetoXAnimal', data: { breadcrumb: 'ManteniminetoXAnimal' }, loadChildren: () => import('./ManteniminetoXAnimal/ManteniminetoPorAnimal.module').then(m => m.MantenimientoPorAnimalModule) },
         { path: 'RolesPorPantalla', data: { breadcrumb: 'RolesPorPantalla' }, loadChildren: () => import('./RolesPorPantallas/RolesPorPantallas.module').then(m => m.RolesPorPantallaModule) },

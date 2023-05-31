@@ -137,7 +137,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
         #endregion
 
         #region Animales
-        public VW_tbAnimales BuscarAnimales(int id)
+        public IEnumerable<VW_tbAnimales> BuscarAnimales(int id)
         {
             try
             {
@@ -669,7 +669,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
 
         #endregion
 
-        #region Reinos
+        #region Razas
         public IEnumerable<VW_tbRazas> ListarRazas()
         {
             try
@@ -684,13 +684,13 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
 
             }
         }
-        /*
-        public ServiceResult EliminarHabitat(tbHabitat item)
+        
+        public ServiceResult EliminarRazas(tbRazas item)
         {
             var result = new ServiceResult();
             try
             {
-                var map = _habitatRepository.Delete(item);
+                var map = _razasRepository.Delete(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
@@ -711,12 +711,12 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
             }
         }
 
-        public ServiceResult InsertarHabitat(tbHabitat item)
+        public ServiceResult InsertarRaza(tbRazas item)
         {
             var result = new ServiceResult();
             try
             {
-                var map = _habitatRepository.Insert(item);
+                var map = _razasRepository.Insert(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
@@ -737,12 +737,12 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
             }
         }
 
-        public ServiceResult ActualizarHabitat(tbHabitat item)
+        public ServiceResult ActualizarRaza(tbRazas item)
         {
             var result = new ServiceResult();
             try
             {
-                var map = _habitatRepository.Update(item);
+                var map = _razasRepository.Update(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
@@ -763,7 +763,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
             }
         }
 
-        */
+        
 
 
 

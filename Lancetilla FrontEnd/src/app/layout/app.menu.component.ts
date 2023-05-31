@@ -346,6 +346,7 @@ export class AppMenuComponent implements OnInit {
                             { label: 'Áreas Zoológicas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areaszoologicas'] },
                             { label: 'Especies', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
                             { label: 'Animales', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/animales'] },
+                            { label: 'Razas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/razas'] },
                         ]
                     },
                    

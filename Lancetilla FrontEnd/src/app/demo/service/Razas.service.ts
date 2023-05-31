@@ -15,29 +15,36 @@ export class RazasService {
     getRazas(): Observable<any> {
         return this.http.get(this.url + "Razas/ListarRazas");
     }
-/*
-    postHabitat(HabitatViewModel: any): Observable<Response> {
 
-        let params = JSON.stringify(HabitatViewModel);
+    postRazas(RazasViewModel: any): Observable<Response> {
+
+        let params = JSON.stringify(RazasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + 'Habitat/InsertarHabitat', params, { headers: headers });
+        return this.http.post<Response>(this.url + 'Razas/InsertarRazas', params, { headers: headers });
 
     }
 
-    EditHabitat(HabitatViewModel:any):Observable<any>{
-        let params = JSON.stringify(HabitatViewModel);
+    GetAnimalesXRaza(RazasViewModel: any): Observable<Response> {
+        let params = JSON.stringify(RazasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + "Habitat/ActualizarHabitat", params, { headers: headers });
+        return this.http.post<Response>(this.url + `Animales/BuscarAnimal`, params, { headers: headers });
     }
 
-    DeleteHabitat(HabitatViewModel: any): Observable<Response> {
-        let params = JSON.stringify(HabitatViewModel);
+    EditRazas(RazasViewModel:any):Observable<any>{
+        let params = JSON.stringify(RazasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + `Habitat/EliminarHabitat`, params, { headers: headers });
+        return this.http.post<Response>(this.url + "Razas/ActualizarRazas", params, { headers: headers });
     }
-*/
+
+    DeleteRazas(RazasViewModel: any): Observable<Response> {
+        let params = JSON.stringify(RazasViewModel);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        return this.http.post<Response>(this.url + `Razas/EliminarRazas`, params, { headers: headers });
+    }
+
    
 }

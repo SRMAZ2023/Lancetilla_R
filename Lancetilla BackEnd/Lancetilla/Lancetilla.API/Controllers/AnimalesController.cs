@@ -30,11 +30,13 @@ namespace Lancetilla.API.Controllers
             var list = _zoologicoServicios.ListarAnimales();
             return Ok(list);
         }
-        [HttpGet("BuscarAnimal/{id}")]
-        public IActionResult BuscarPlanta(int id)
+
+        [HttpPost("BuscarAnimal")]
+        public IActionResult BuscarAnimales(AnimalesViewModel item)
         {
-            var list = _zoologicoServicios.BuscarAnimales(id);
-            return Ok(list);
+            var mantenimientos = _mapper.Map<tbAnimales>(item);
+            var List = _zoologicoServicios.BuscarAnimales(item.raza_Id);
+            return Ok(List);
         }
 
 

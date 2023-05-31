@@ -302,6 +302,8 @@ namespace Lancetilla.DataAccess
 
         public static string EliminacionAnimales = "zool.UDP_tbAnimales_DELETE";
 
+        public static string AnimalesRaza = "zool.UDP_tbAnimales_RAZAS";
+
         #endregion
 
 
@@ -311,6 +313,16 @@ namespace Lancetilla.DataAccess
         public static string ActualizarHabitat= "zool.UDP_tbHabitat_UPDATE";
 
         public static string EliminacionHabitat= "zool.UDP_tbHabitat_DELETE";
+
+        #endregion
+
+
+        #region Razas
+        public static string InsertarRaza= "zool.UDP_tbRazas_CREATE";
+
+        public static string ActualizarRaza= "zool.UDP_tbRazas_UPDATE";
+
+        public static string EliminacionRaza= "zool.UDP_tbRazas_DELETE";
 
         #endregion
 
@@ -325,7 +337,6 @@ namespace Lancetilla.DataAccess
         public static string AnimalesPorArea = "zool.UDP_tbAnimales_Grafica";
         public static string Visitantes = "mant.UDP_tbVisitantes_Grafica";
         public static string AnimalesPorHabitat = "zool.UDP_tbAnimales_AnimalesHabitatGrafica";
-        public static string AnimalesFind = "zool.UDP_tbAnimales_FIND";
 
 
         #endregion

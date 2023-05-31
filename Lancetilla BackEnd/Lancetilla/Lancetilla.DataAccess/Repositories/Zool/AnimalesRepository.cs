@@ -30,15 +30,13 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             return result;
         }
 
-        public VW_tbAnimales Find(int? id)
+        public IEnumerable<VW_tbAnimales>  Find(int id)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@anim_Id", id, DbType.Int32, ParameterDirection.Input);
-
-            var result = db.QueryFirst<VW_tbAnimales>(ScriptsDataBase.AnimalesFind, parametros, commandType: System.Data.CommandType.StoredProcedure);
-            return result;
+            parametros.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
+            return db.Query<VW_tbAnimales>(ScriptsDataBase.AnimalesRaza, parametros, commandType: CommandType.StoredProcedure);
         }
 
         public IEnumerable AnimalesPorArea()

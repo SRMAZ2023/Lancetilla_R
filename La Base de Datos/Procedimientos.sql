@@ -2274,7 +2274,7 @@ END
 GO
 
 
-CREATE OR ALTER PROC zool.UDP_tbRazas_UPDATE
+CREATE OR ALTER PROC zool.UDP_tbRazas_UPDATE 
 @raza_Id INT,
 @raza_Descripcion NVARCHAR(100),
 @raza_NombreCientifico NVARCHAR(100),
@@ -2287,21 +2287,21 @@ AS BEGIN
   	BEGIN TRY
 		BEGIN TRAN
 		-- Si existe
-		IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_Descripcion = @raza_Descripcion AND raza_Estado = 1)
+		IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_Estado = 1 AND  raza_Descripcion = @raza_Descripcion AND raza_Id != @raza_Id)
 		BEGIN
 			SELECT 409 AS codeStatus, 'La raza ya existe.' AS messageStatus
 		END
 
-		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico  AND raza_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE  raza_Estado = 1 AND raza_NombreCientifico  = @raza_NombreCientifico  AND raza_Id != @raza_Id)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El nombre científico de la raza ya existe.' AS messageStatus
 		END
 
-		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico  AND  raza_Descripcion = @raza_Descripcion AND raza_Estado = 1 AND raza_Id != @raza_Id )
 		BEGIN
 			SELECT 409 AS codeStatus, 'La raza y el nombre científico ya existe.' AS messageStatus
 		END
-		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE  raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado= 0)
+		ELSE IF EXISTS (SELECT * FROM zool.tbRazas WHERE  raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion AND raza_Estado = 0)
 		BEGIN
 			DECLARE @Id INT = (SELECT raza_Id FROM zool.tbRazas WHERE raza_NombreCientifico  = @raza_NombreCientifico OR  raza_Descripcion = @raza_Descripcion) 
 
@@ -2335,7 +2335,7 @@ AS BEGIN
 					  espe_Id = @espe_Id,
 					  raza_FechaModificacion = GETDATE(),
 					  raza_UserModificacion = @raza_UserModificacion
-				WHERE raza_Id = @espe_Id
+				WHERE raza_Id = @raza_Id
 
 				SELECT 200 AS codeStatus, 'La raza ha sido actualizado con éxito.' AS messageStatus
 			END
@@ -2537,6 +2537,17 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE ANIMALES**************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbAnimales_RAZAS 
+@raza_Id INT
+AS BEGIN
+
+SELECT * FROM zool.VW_tbAnimales
+WHERE raza_Id = @raza_Id
+AND anim_Estado = 1;
+
+END
+GO
+
 CREATE OR ALTER PROC zool.UDP_tbAnimales_CREATE
 @anim_Codigo NVARCHAR(100),
 @anim_Nombre NVARCHAR(100),

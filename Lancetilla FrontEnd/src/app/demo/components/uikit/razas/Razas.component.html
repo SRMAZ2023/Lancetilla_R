@@ -1,0 +1,237 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/GxbxWGK/razas.png" width="100%" height="40%">
+            </div>
+            <br>
+
+
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
+
+
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+
+            <br>
+            <p-table #dt [value]="Razas" [columns]="cols" [rows]="rows" [paginator]="true"
+                [showCurrentPageReport]="true" [(selection)]="selectedRazas" selectionMode="multiple" [rowHover]="true"
+                dataKey="id" [first]="first">
+
+
+
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+
+                        <th pSortableColumn="raza_Id">Id <p-sortIcon field="raza_Id"></p-sortIcon></th>
+                        <th pSortableColumn="raza_Descripcion">Raza <p-sortIcon field="raza_Descripcion"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="raza_NombreCientifico">Nombre Científico<p-sortIcon
+                                field="raza_NombreCientifico"></p-sortIcon></th>
+                        <th pSortableColumn="rein_Descripcion">Reino<p-sortIcon field="rein_Descripcion"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="habi_Descripcion">Hábitat<p-sortIcon field="habi_Descripcion"></p-sortIcon>
+                        </th>
+                        <th>Acciones</th>
+                    </tr>
+                </ng-template>
+
+
+                <ng-template pTemplate="body" let-razas let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button type="button" (click)="Animales(razas)" pButton pRipple
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="isRowExpanded(razas) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                        </td>
+                        <td style="min-width: 3rem;">{{razas.raza_Id}}</td>
+                        <td style="min-width: 1rem;">{{razas.raza_Descripcion}}</td>
+                        <td style="min-width: 1rem;">{{razas.raza_NombreCientifico}}</td>
+                        <td style="min-width: 1rem;">{{razas.rein_Descripcion}}</td>
+                        <td style="min-width: 1rem;">{{razas.habi_Descripcion}}</td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2" (click)="editRazas(razas)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteRazas(razas)"></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr *ngIf="expandedRow === razas" [ngClass]="{'ui-widget-content': true}">
+                        <td [attr.colspan]="7">
+                            <div class="table-container" style="display: flex; justify-content: center;">
+                                <div class="table-container">
+                                    <p-table [value]="datos" dataKey="id" [responsive]="true" [scrollable]="true"
+                                        [scrollHeight]='"500x"'>
+
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 3rem"></th>
+                                <th pSortableColumn="anim_Id">ID <p-sortIcon field="anim_Id"></p-sortIcon></th>
+                                <th pSortableColumn="anim_Codigo">Código <p-sortIcon field="anim_Codigo"></p-sortIcon></th>
+                                <th pSortableColumn="anim_Nombre">Animal <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
+                                <th pSortableColumn="arzo_Descripcion">Área Zoológica <p-sortIcon
+                                        field="arzo_Descripcion"></p-sortIcon></th>
+                                <th pSortableColumn="alim_Descripcion">Alimentación <p-sortIcon
+                                        field="alim_Descripcion"></p-sortIcon></th>
+                           
+                            </tr>
+                        </ng-template>
+
+
+
+
+                <ng-template pTemplate="body" let-datos>
+                    <tr>
+                        <td></td>
+                        <td style="min-width: 20rem;">{{datos.anim_Id}}</td>
+                        <td style="min-width: 20rem;">{{datos.anim_Codigo}}</td>
+                        <td style="min-width: 20rem;">{{datos.anim_Nombre}}</td>
+                        <td style="min-width: 20rem;">{{datos.arzo_Descripcion}}</td>
+                        <td style="min-width: 20rem;">{{datos.alim_Descripcion}}</td>
+                    </tr>
+                </ng-template>
+
+
+            </p-table>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <p-dialog [(visible)]="RazaDialog" [style]="{width: '500px', height: '700'}" header="Razas" [modal]="true"
+            class="p-fluid">
+            <br>
+            <ng-template pTemplate="content">
+
+                <div class="grid p-fluid">
+
+                    <div class="field col-6">
+                        <label for="name">Descripción</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="Raza.raza_Descripcion" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Raza.raza_Descripcion)}" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="submitted && isInputEmptyOrWhitespace(Raza.raza_Descripcion)">
+                            La descripción o el nombre de la raza es requerido.
+                        </small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="name">Nombre Científico</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="Raza.raza_NombreCientifico" required
+                            autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Raza.raza_NombreCientifico)}" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="submitted && isInputEmptyOrWhitespace(Raza.raza_NombreCientifico)">
+                            El nombre científico de la raza es requerido.
+                        </small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="rein_Id"> Reino</label>
+                        <p-dropdown name="rein_Id" #rein_Id="ngModel" [autoDisplayFirst]="false" [options]="reinos"
+                            [(ngModel)]="Raza.rein_Id" [ngClass]="{
+                            'ng-invalid': submitted && !Raza.rein_Id
+                        }" placeholder="Seleccione un reino" inputId="dropdown" optionLabel="label" optionValue="value"
+                            [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !Raza.rein_Id
+                        }"></p-dropdown>
+                        <small *ngIf="submitted && !Raza.rein_Id" class="ng-dirty ng-invalid" style="color: red">
+                            El reino de la raza es requerido.
+                        </small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="habi_Id"> Hábitat </label>
+                        <p-dropdown name="habi_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="habitat"
+                            [(ngModel)]="Raza.habi_Id" [ngClass]="{
+                            'ng-invalid': submitted && !Raza.habi_Id
+                        }" placeholder="Seleccione un hábitat" inputId="dropdown" optionLabel="label"
+                            optionValue="value" [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !Raza.habi_Id
+                        }"></p-dropdown>
+                        <small *ngIf="submitted && !Raza.habi_Id" class="ng-dirty ng-invalid" style="color: red">
+                            El hábitat de la raza es requerido.
+                        </small>
+                    </div>
+
+                    <div class="field col-12">
+                        <label for="espe_Id"> Especie </label>
+                        <p-dropdown name="espe_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="especies"
+                            [(ngModel)]="Raza.espe_Id" [ngClass]="{
+                            'ng-invalid': submitted && !Raza.espe_Id
+                        }" placeholder="Seleccione una especie" inputId="dropdown" optionLabel="label"
+                            optionValue="value" [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !Raza.espe_Id
+                        }"></p-dropdown>
+                        <small *ngIf="submitted && !Raza.espe_Id" class="ng-dirty ng-invalid" style="color: red">
+                            La especie de la raza es requerida.
+                        </small>
+                    </div>
+
+                </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+                    (click)="saveRazas()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+
+
+
+        <p-dialog [(visible)]="deleteRazaDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="Raza">¿Estás seguro de eliminar la raza
+                    <b>{{Raza.raza_Descripcion}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
+                    (click)="deleteRazaDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
