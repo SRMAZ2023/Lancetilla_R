@@ -649,7 +649,7 @@ fact_Id							INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 empl_Id							INT					NOT NULL,
 visi_Id							INT					NOT NULL,
 meto_Id							INT					NOT NULL,
-fact_Fecha						DATE				NOT NULL,
+fact_Fecha						DATETIME		    NOT NULL,
 
 /**********Campos de auditoria***********/
 fact_UserCreacion				INT,
@@ -745,6 +745,14 @@ ALTER TABLE acce.tbUsuarios ADD CONSTRAINT FK_acce_tbUsuarios_usua_UserModificac
 --*************************************************************TABLA DE USUARIOS******************************************************************************--
 
 
+  DECLARE @Pass AS NVARCHAR(MAX);
+	SET @Pass = CONVERT(NVARCHAR(MAX), HASHBYTES('sha2_512', '123'), 2);
+
+
+INSERT INTO acce.tbUsuarios(usua_NombreUsuario, empl_Id, usua_Clave, role_Id, usua_Admin, usua_UserCreacion)
+VALUES 
+  ('Admin', 1, @Pass, 1, 1, 1)
+
   DECLARE @Pass1 AS NVARCHAR(MAX);
 	SET @Pass1 = CONVERT(NVARCHAR(MAX), HASHBYTES('sha2_512', '123'), 2);
 
@@ -766,13 +774,7 @@ VALUES ('Alex', 3, @Pass2, 3, 1, 1);
 VALUES ('Selvin', 2, @Pass3, 2, 0, 2)
 
 
-  DECLARE @Pass AS NVARCHAR(MAX);
-	SET @Pass = CONVERT(NVARCHAR(MAX), HASHBYTES('sha2_512', '123'), 2);
 
-
-INSERT INTO acce.tbUsuarios(usua_NombreUsuario, empl_Id, usua_Clave, role_Id, usua_Admin, usua_UserCreacion)
-VALUES 
-  ('Admin', 1, @Pass, 1, 0, 1)
 
 --************************************************************/TABLA DE USUARIOS******************************************************************************--
 
@@ -1855,20 +1857,32 @@ VALUES
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --****************************************************************TABLA DE FACTURAS***************************************************************************--
-INSERT INTO fact.tbFacturas (empl_Id, visi_Id, meto_Id, fact_Fecha, fact_UserCreacion)
-VALUES (1, 1, 1, '2023-05-17', 1),
-(2, 2, 2, '2023-05-17', 1),
-(3, 3, 3, '2023-05-17', 1),
-(4, 4, 4, '2023-05-17', 1),
-(5, 5, 5, '2023-05-17', 1);
+INSERT INTO fact.tbFacturas (empl_Id, visi_Id, meto_Id, fact_Fecha, fact_UserCreacion, fact_FechaCreacion)
+VALUES (1, 1, 1, GETDATE(), 1, GETDATE());
+
+INSERT INTO fact.tbFacturas (empl_Id, visi_Id, meto_Id, fact_Fecha, fact_UserCreacion, fact_FechaCreacion)
+VALUES (2, 2, 2, GETDATE(), 2, GETDATE());
+
+
+
 
 --***************************************************************/TABLA DE FACTURAS***************************************************************************--
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 --***********************************************************TABLA DE FACTURAS DETALLE************************************************************************--
-/*PENDIENTE*/
+-- Insertar en la tabla tbFacturasDetalles
+INSERT INTO fact.tbFacturasDetalles (fact_Id, tick_Id, fade_Cantidad, fade_Total, fade_UserCreacion, fade_FechaCreacion)
+VALUES (1, 1, 4, 80.00, 1, GETDATE()),
+       (1, 2, 4, 60.00, 1, GETDATE());
+
+-- Insertar en la tabla tbFacturasDetalles
+INSERT INTO fact.tbFacturasDetalles (fact_Id, tick_Id, fade_Cantidad, fade_Total, fade_UserCreacion, fade_FechaCreacion)
+VALUES (2, 2, 1, 40.00, 1, GETDATE()),
+       (2, 2, 1, 30.00, 1, GETDATE());
+
 --**********************************************************/TABLA DE FACTURAS DETALLE************************************************************************--
+
 
 --**************************************************************/INSERT DE FACTURACIÓN************************************************************************--
 

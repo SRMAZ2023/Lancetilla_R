@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Lancetilla.Entities.Entities;
+using Microsoft.Data.SqlClient;
 
 namespace Lancetilla.DataAccess.Repositories.Fact
 {
@@ -25,6 +27,18 @@ namespace Lancetilla.DataAccess.Repositories.Fact
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<tbFacturas> EncabezadoFactura(tbFacturas item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@visi_Id", item.visi_Id, DbType.String, ParameterDirection.Input);
+
+            var result = db.Query<tbFacturas>(ScriptsDataBase.EncabezadoFactura, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
 
         public RequestStatus Insert(tbFacturasDetalles item)
         {

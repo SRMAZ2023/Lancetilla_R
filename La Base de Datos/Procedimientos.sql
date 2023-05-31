@@ -79,9 +79,13 @@ BEGIN
 			BEGIN
 			  SELECT 409 AS codeStatus, 'El nombre de usuario no esta disponible.' AS messageStatus
 			END
-			ELSE
+			ELSE IF (@usua_Id = 1)
 			BEGIN 
-			  UPDATE acce.tbUsuarios
+			   	SELECT 409 AS codeStatus, 'No se puede modificar al admin' AS messageStatus
+			END
+			ELSE
+			BEGIN
+			UPDATE acce.tbUsuarios
 			SET
 			    usua_NombreUsuario  =   @usua_NombreUsuario,
 				empl_Id				=	@empl_Id,
@@ -110,10 +114,22 @@ AS BEGIN
 
 	BEGIN TRY
 	BEGIN TRAN
+
+	IF(@usua_Id = 1)
+	BEGIN 
+	  SELECT 200 AS codeStatus, 'No se puede eliminar al admin.' AS messageStatus
+	END
+	ELSE
+	BEGIN 
+	 
 DELETE FROM acce.tbUsuarios WHERE usua_Id = @usua_Id
 
 SELECT 200 AS codeStatus, 'Usuario eliminado con éxito.' AS messageStatus
 			COMMIT
+
+	END
+
+
 	END TRY
 	BEGIN CATCH
 	ROLLBACK
@@ -521,7 +537,7 @@ BEGIN
 		END
 		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Id = @muni_Id AND muni_Estado = 1)
 		BEGIN
-			SELECT 409 AS codeStatus, 'Codigo de municipio no disponible.' AS messageStatus
+			SELECT 409 AS codeStatus, 'Codigo de municipio ocupado.' AS messageStatus
 		END
 		ELSE IF EXISTS (SELECT * FROM mant.tbMunicipios WHERE muni_Descripcion = @muni_Descripcion AND muni_Id = @muni_Id AND dept_Id = @dept_Id AND muni_Estado = 0)
 		BEGIN
@@ -3560,6 +3576,56 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --***********************************************************TABLA DE FACTURAS DETALLE************************************************************************--
+
+CREATE OR ALTER PROCEDURE fact.UPD_CargarInformacionDelEncabezado_Factura 
+@visi_Id  INT
+AS
+BEGIN
+
+SELECT  T1.fact_Id,
+        T1.fact_Fecha,
+
+       T2.visi_Nombres + ' ' + T2.visi_Apellido AS visi_Nombres,
+       T2.visi_RTN,
+	   T2.visi_Sexo,
+
+	   T3.empl_Nombre + ' ' + T3.empl_Apellido AS empl_Nombre,
+
+	   T4.meto_Descripcion
+	   
+
+FROM fact.tbFacturas T1     INNER JOIN mant.tbVisitantes T2
+ON T1.visi_Id = T2.visi_Id  INNER JOIN mant.tbEmpleados T3
+ON T1.empl_Id = T3.empl_Id  INNER JOIN fact.tbMetodosPago T4
+ON T1.meto_Id = T4.meto_Id
+
+WHERE T2.visi_Id = @visi_Id  
+
+END
+
+
+
+GO
+
+CREATE OR ALTER PROCEDURE fact.UPD_CargarInformacionTabla_Factura  
+@fact_Id  INT
+AS
+BEGIN
+
+SELECT  T2.tick_Descripcion,
+        T2.tick_Precio,
+		T1.fade_Cantidad,
+		T1.fade_Total
+		
+        	  
+FROM fact.tbFacturasDetalles T1   INNER JOIN fact.tbTickets T2
+ON T1.tick_Id = T2.tick_Id
+WHERE T1.fact_Id = @fact_Id  
+
+END
+
+go
+
 CREATE OR ALTER PROC fact.UDP_tbFacturasDetalle_DETALLESPORFACTS
 @fact_Id INT
 AS BEGIN
@@ -3573,3 +3639,5 @@ END
 --**************************************************************/PROCS DE FACTURACIÓN************************************************************************--
 
 --************************************************************************************************************************************************************--
+
+

@@ -232,11 +232,7 @@ export class MunicipiosComponent implements OnInit {
      }
 
       console.log(this.Municipio.muni_Descripcion)
-     if (this.Municipio.muni_Descripcion?.toString() == undefined || this.Municipio.muni_Descripcion?.toString() == "") {
-            
-          
-        this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
-    }
+   
 
       var params = {
             "muni_Id": this.Municipio.muni_Id?.toString(),
@@ -258,6 +254,7 @@ export class MunicipiosComponent implements OnInit {
             params.muni_Id?.toString().length < 5  &&
             parseInt(params.muni_Id?.toString()) > 0 &&
             params.muni_Descripcion !== undefined &&
+            params.muni_Descripcion !== "" &&
             params.dept_Id?.toString() !== undefined &&
             params.dept_Descripcion.trim() !== '' &&
             params.muni_UserCreacion !== undefined &&
@@ -323,6 +320,7 @@ export class MunicipiosComponent implements OnInit {
 
 
         }
+        else{ this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);}
     }
     //Enviamos y editamos datos
 
