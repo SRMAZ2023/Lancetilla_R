@@ -61,13 +61,9 @@ namespace Lancetilla.DataAccess.Repositories.Zool
 
             parametros.Add("@anim_Codigo", item.anim_Codigo, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@rein_Id", item.rein_Id, DbType.String, ParameterDirection.Input);
-            parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@raza_Id", item.raza_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
-
             parametros.Add("@anim_UserCreacion", item.anim_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
 
@@ -84,13 +80,9 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             parametros.Add("@anim_Id", item.anim_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_Codigo", item.anim_Codigo, DbType.String, ParameterDirection.Input);
             parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@rein_Id", item.rein_Id, DbType.String, ParameterDirection.Input);
-            parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@raza_Id", item.raza_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
-
             parametros.Add("@anim_UserModificacion", item.anim_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
 

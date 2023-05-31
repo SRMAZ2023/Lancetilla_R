@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Lancetilla.API.Models;
-using Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios;
-using Lancetilla.Entities.Entities;
+using Lancetilla.BussinessLogic.Servicios.Botanica_Servicios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,30 +11,31 @@ namespace Lancetilla.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AnimalesController : ControllerBase
+    public class TiposdePlantasController : ControllerBase
     {
-
-        private readonly ZoologicoServicios _zoologicoServicios;
+        private readonly BotanicaServicios _botanicaServicios;
         private readonly IMapper _mapper;
 
-        public AnimalesController(ZoologicoServicios zoologicoServicios, IMapper mapper)
+        public TiposdePlantasController(BotanicaServicios botanicaServicios, IMapper mapper)
         {
-            _zoologicoServicios = zoologicoServicios;
+            _botanicaServicios = botanicaServicios;
             _mapper = mapper;
         }
-        [HttpGet("ListarAnimales")]
-        public IActionResult ListarAnimales()
+
+    [HttpGet("ListarTiposPlantas")]
+        public IActionResult ListarTiposPlantas()
         {
-            var list = _zoologicoServicios.ListarAnimales();
+            var list = _botanicaServicios.ListarTiposPlantas();
             return Ok(list);
         }
+        /*
         [HttpGet("BuscarAnimal/{id}")]
         public IActionResult BuscarPlanta(int id)
         {
             var list = _zoologicoServicios.BuscarAnimales(id);
             return Ok(list);
         }
-
+    
 
         [HttpPost("InsertarAnimales")]
         public IActionResult InsertarAnimales(AnimalesViewModel item)
@@ -75,6 +74,6 @@ namespace Lancetilla.API.Controllers
             var list = _zoologicoServicios.AnimalesPorHabitat();
 
             return Ok(list);
-        }
+        }*/
     }
 }

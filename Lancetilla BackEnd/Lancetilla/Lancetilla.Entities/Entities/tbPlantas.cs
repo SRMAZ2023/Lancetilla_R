@@ -15,10 +15,8 @@ namespace Lancetilla.Entities.Entities
 
         public int plan_Id { get; set; }
         public string plan_Codigo { get; set; }
-        public string plan_Nombre { get; set; }
-        public string plan_NombreCientifico { get; set; }
-        public int rein_Id { get; set; }
         public int arbo_Id { get; set; }
+        public int tipl_Id { get; set; }
         public int? plan_UserCreacion { get; set; }
         public DateTime? plan_FechaCreacion { get; set; }
         public int? plan_UserModificacion { get; set; }
@@ -28,7 +26,7 @@ namespace Lancetilla.Entities.Entities
         public virtual tbAreasBotanicas arbo { get; set; }
         public virtual tbUsuarios plan_UserCreacionNavigation { get; set; }
         public virtual tbUsuarios plan_UserModificacionNavigation { get; set; }
-        public virtual tbReinos rein { get; set; }
+        public virtual tbTiposPlantas tipl { get; set; }
         public virtual ICollection<tbCuidadoPlanta> tbCuidadoPlanta { get; set; }
     }
 }

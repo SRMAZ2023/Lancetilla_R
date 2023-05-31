@@ -10,7 +10,10 @@ namespace Lancetilla.Entities.Entities
     {
         public int cupl_Id { get; set; }
         public int plan_Id { get; set; }
-        public string plan_Nombre { get; set; }
+        public string plan_Codigo { get; set; }
+        public int tipl_Id { get; set; }
+        public string tipl_NombreComun { get; set; }
+        public string tipl_NombreCientifico { get; set; }
         public int ticu_Id { get; set; }
         public string ticu_Descripcion { get; set; }
         public string cupl_Fecha { get; set; }

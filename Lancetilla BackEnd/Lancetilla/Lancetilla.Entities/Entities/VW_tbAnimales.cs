@@ -11,17 +11,16 @@ namespace Lancetilla.Entities.Entities
         public int anim_Id { get; set; }
         public string anim_Codigo { get; set; }
         public string anim_Nombre { get; set; }
-        public string anim_NombreCientifico { get; set; }
-        public int rein_Id { get; set; }
-        public string rein_Descripcion { get; set; }
+        public int raza_Id { get; set; }
+        public string raza_Descripcion { get; set; }
         public int habi_Id { get; set; }
         public string habi_Descripcion { get; set; }
+        public int rein_Id { get; set; }
+        public string rein_Descripcion { get; set; }
         public int arzo_Id { get; set; }
         public string arzo_Descripcion { get; set; }
         public int alim_Id { get; set; }
         public string alim_Descripcion { get; set; }
-        public int espe_Id { get; set; }
-        public string espe_Descripcion { get; set; }
         public string usua_UserCreaNombre { get; set; }
         public int? anim_UserCreacion { get; set; }
         public DateTime? anim_FechaCreacion { get; set; }

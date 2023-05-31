@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlantasRoutingModule } from './Plantas-routing.module';
-import { PlantasComponent } from './plantas-list/Plantas.component';
+import { PlantasComponent } from './Plantas.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,8 +16,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { PlantasNewComponent } from './plantas-new/Plantas.component';
-import { PlantasEditComponent } from './plantas-edit/plantas-edit.component';
 
 @NgModule({
     imports: [
@@ -38,6 +36,6 @@ import { PlantasEditComponent } from './plantas-edit/plantas-edit.component';
         InputNumberModule,
         DialogModule
     ],
-    declarations: [PlantasComponent, PlantasNewComponent,PlantasEditComponent ]
+    declarations: [PlantasComponent]
 })
 export class PlantasModule { }

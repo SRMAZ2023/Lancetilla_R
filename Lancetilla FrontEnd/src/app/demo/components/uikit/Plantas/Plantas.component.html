@@ -1,0 +1,194 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/p0LVnXp/plantas.png" width="100%" height="40%">
+            </div>
+            <br>
+
+
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
+
+
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+
+            <br>
+
+            <p-table #dt [value]="Plantas" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedPlantas"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
+
+
+
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="plan_Id">Id <p-sortIcon field="plan_Id"></p-sortIcon></th>
+                        <th pSortableColumn="plan_Codigo">Código <p-sortIcon field="plan_Codigo"></p-sortIcon></th>
+                        <th pSortableColumn="tipl_NombreComun">Nombre Común <p-sortIcon field="tipl_NombreComun"></p-sortIcon></th>
+                        <th pSortableColumn="arbo_Descripcion">Área Botánica <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
+                               
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Plantas>
+                    <tr>
+
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                            {{Plantas.plan_Id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Plantas.plan_Codigo}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Plantas.tipl_NombreComun}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Plantas.arbo_Descripcion}}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editPlantas(Plantas)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deletePlantas(Plantas)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="PlantasDialog" [style]="{width: '500px', height: '700'}" header="Plantas" [modal]="true"
+            class="p-fluid">
+            <br>
+            <ng-template pTemplate="content">
+
+                <div class="grid p-fluid">
+
+                <div class="field col-6">
+                    <label for="name">Código</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="Planta.plan_Codigo" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Planta.plan_Codigo)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;"
+                        *ngIf="submitted && isInputEmptyOrWhitespace(Planta.plan_Codigo)">
+                        El código de la planta es requerido.
+                    </small>
+                </div>
+
+                <div class="field col-6">
+                    <label for="tima_Id"> Tipo de planta </label>
+                    <p-dropdown
+                        name="tipl_Id"
+                        #tipl_Id="ngModel"
+                        [autoDisplayFirst]="false"
+                        [options]="tiposdeplantas"
+                        [(ngModel)]="Planta.tipl_Id"
+                        [ngClass]="{
+                            'ng-invalid': submitted && !Planta.tipl_Id
+                        }"
+                        placeholder="Seleccione un tipo de planta"
+                        inputId="dropdown"
+                        optionLabel="label"
+                        optionValue="value"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !Planta.tipl_Id
+                        }"
+                    ></p-dropdown>
+                    <small
+                        *ngIf="submitted && !Planta.tipl_Id"
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        El tipo de planta es requerido.
+                    </small>
+                </div>
+
+                <div class="field col-12">
+                    <label for="arbo_Id"> Área Botánica </label>
+                    <p-dropdown
+                        name="arbo_Id"
+                        #tima_Id="ngModel"
+                        [autoDisplayFirst]="false"
+                        [options]="arbos"
+                        [(ngModel)]="Planta.arbo_Id"
+                        [ngClass]="{
+                            'ng-invalid': submitted && !Planta.arbo_Id
+                        }"
+                        placeholder="Seleccione un área botánicas"
+                        inputId="dropdown"
+                        optionLabel="label"
+                        optionValue="value"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !Planta.arbo_Id
+                        }"
+                    ></p-dropdown>
+                    <small
+                        *ngIf="submitted && !Planta.arbo_Id"
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        El área botánica es requerida.
+                    </small>
+                </div>
+
+            </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+                    (click)="savePlantas()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deletePlantasDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="Planta">¿Estás seguro de eliminar la planta con el código
+                    <b>{{Planta.plan_Codigo}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
+                    (click)="deletePlantasDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
+</div>

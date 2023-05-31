@@ -17,6 +17,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
         private readonly AreasZoologicoRepository _areasZoologicoRepository;
         private readonly EspeciesRepository _especiesRepository;
         private readonly HabitatRepository  _habitatRepository;
+        private readonly RazasRepository _razasRepository;
 
         private readonly ReinosRepository _reinosRepository;
 
@@ -25,6 +26,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
                                       AreasZoologicoRepository  areasZoologicoRepository,
                                       EspeciesRepository  especiesRepository,
                                        HabitatRepository  habitatRepository,
+                                       RazasRepository razasRepository,
                                        ReinosRepository reinosRepository)
                                       
         {
@@ -34,7 +36,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
             _especiesRepository = especiesRepository;
             _habitatRepository = habitatRepository;
             _reinosRepository = reinosRepository;
-
+            _razasRepository = razasRepository;
 
         }
 
@@ -566,7 +568,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
 
         #endregion
 
-        #region Habitat
+        #region Reinos
         public IEnumerable<VW_tbReinos> ListarReinos()
         {
             try
@@ -666,6 +668,108 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
 
 
         #endregion
+
+        #region Reinos
+        public IEnumerable<VW_tbRazas> ListarRazas()
+        {
+            try
+            {
+                var list = _razasRepository.ListarRazas();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbRazas>();
+
+            }
+        }
+        /*
+        public ServiceResult EliminarHabitat(tbHabitat item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _habitatRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult InsertarHabitat(tbHabitat item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _habitatRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarHabitat(tbHabitat item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _habitatRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        */
+
+
+
+
+        #endregion
+
 
     }
 }

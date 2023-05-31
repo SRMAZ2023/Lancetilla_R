@@ -1,0 +1,243 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/X2Qx2Tz/animales.png" width="100%" height="40%">
+            </div>
+            <br>
+
+
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
+
+
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+
+            <br>
+
+            <p-table #dt [value]="Animales" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedanimals"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
+
+
+
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="anim_Id">Id <p-sortIcon field="anim_Id"></p-sortIcon></th>
+                        <th pSortableColumn="anim_Codigo">Código <p-sortIcon field="anim_Codigo"></p-sortIcon></th>
+                        <th pSortableColumn="anim_Nombre">Nombres <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
+                        <th pSortableColumn="raza_Descripcion">Raza <p-sortIcon field="raza_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="arzo_Descripcion">Área Zoológica <p-sortIcon field="arzo_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="alim_Descripcion">Alimentación <p-sortIcon field="alim_Descripcion"></p-sortIcon></th>
+                               
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Animales>
+                    <tr>
+
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                            {{Animales.anim_Id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Animales.anim_Codigo}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Animales.anim_Nombre}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Animales.raza_Descripcion}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Animales.arzo_Descripcion}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{Animales.alim_Descripcion}}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editAnimales(Animales)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteAnimal(Animales)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="AnimalesDialog" [style]="{width: '600px', height: '550PX'}" header="Animales" [modal]="true"
+            class="p-fluid">
+            <br>  <br>  <br>
+            <ng-template pTemplate="content">
+
+                <div class="grid p-fluid">
+
+                <div class="field col-6">
+                    <label for="name">Código</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="animal.anim_Codigo" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(animal.anim_Codigo)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;"
+                        *ngIf="submitted && isInputEmptyOrWhitespace(animal.anim_Codigo)">
+                        El código del animal es requerido.
+                    </small>
+                </div>
+
+                <div class="field col-6">
+                    <label for="name">Nombre</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="animal.anim_Nombre" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(animal.anim_Nombre)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;"
+                        *ngIf="submitted && isInputEmptyOrWhitespace(animal.anim_Nombre)">
+                        El nombre del nombre es requerido.
+                    </small>
+                </div>
+
+                <div class="field col-6">
+                    <label for="raza_Id"> Raza </label>
+                    <p-dropdown
+                        name="raza_Id"
+                        #raza_Id="ngModel"
+                        [autoDisplayFirst]="false"
+                        [options]="razas"
+                        [(ngModel)]="animal.raza_Id"
+                        [ngClass]="{
+                            'ng-invalid': submitted && !animal.raza_Id
+                        }"
+                        placeholder="Seleccione una raza"
+                        inputId="dropdown"
+                        optionLabel="label"
+                        optionValue="value"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !animal.raza_Id
+                        }"
+                    ></p-dropdown>
+                    <small
+                        *ngIf="submitted && !animal.raza_Id"
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        La raza del animal es requerida.
+                    </small>
+                </div>
+
+                <div class="field col-6">
+                    <label for="arzo_Id">Área Zoológica</label>
+                    <p-dropdown
+                        name="arzo_Id"
+                        #arzo_Id="ngModel"
+                        [autoDisplayFirst]="false"
+                        [options]="arzos"
+                        [(ngModel)]="animal.arzo_Id"
+                        [ngClass]="{
+                            'ng-invalid': submitted && !animal.arzo_Id
+                        }"
+                        placeholder="Seleccione un tipo de planta"
+                        inputId="dropdown"
+                        optionLabel="label"
+                        optionValue="value"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !animal.arzo_Id
+                        }"
+                    ></p-dropdown>
+                    <small
+                        *ngIf="submitted && !animal.arzo_Id"
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        El área zoológica de la planta es requerido.
+                    </small>
+                </div>
+
+                <div class="field col-12">
+                    <label for="alim_Id"> Alimentación</label>
+                    <p-dropdown
+                        name="alim_Id"
+                        #tima_Id="ngModel"
+                        [autoDisplayFirst]="false"
+                        [options]="alimentacion"
+                        [(ngModel)]="animal.alim_Id"
+                        [ngClass]="{
+                            'ng-invalid': submitted && !animal.alim_Id
+                        }"
+                        placeholder="Seleccione un área botánicas"
+                        inputId="dropdown"
+                        optionLabel="label"
+                        optionValue="value"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty':
+                                submitted && !animal.alim_Id
+                        }"
+                    ></p-dropdown>
+                    <small
+                        *ngIf="submitted && !animal.alim_Id"
+                        class="ng-dirty ng-invalid"
+                        style="color: red"
+                    >
+                        La alimentación de la planta es requerida.
+                    </small>
+                </div>
+
+            </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+                    (click)="saveanimals()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteAnimalesDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="animal">¿Estás seguro de eliminar el animal con el código
+                    <b>{{animal.anim_Codigo}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
+                    (click)="deleteAnimalesDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
+</div>

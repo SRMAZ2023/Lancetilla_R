@@ -3,18 +3,10 @@ export class AnimalViewModel {
     constructor(
         public anim_Id?: number,
         public anim_Codigo?: string,
-        public rein_Id?: number,
         public anim_Nombre?: string,
-        public anim_NombreCientifico?: string,
-        public rein_Descripcion?: string,
-        public habi_Id?: number,
-        public habi_Descripcion?: string,
+        public raza_Id?: number,
         public arzo_Id?: number,
-        public arzo_Descripcion?: string,
         public alim_Id?: number,
-        public alim_Descripcion?: string,
-        public espe_Id?: number,
-        public espe_Descripcion?: string,
         public usua_UserCreaNombre?: string,
         public anim_UserCreacion?: number,
         public anim_FechaCreacion?: string,
@@ -26,25 +18,3 @@ export class AnimalViewModel {
 
 }
 
-export class AnimalCrud {
-
-    constructor(
-        public anim_Id?: number,
-        public anim_Codigo?: string,
-        public rein_Id?: number,
-        public anim_Nombre?: string,
-        public anim_NombreCientifico?: string,
-        public rein_Descripcion?: string,
-        public habi_Id?: number,
-        public habi_Descripcion?: string,
-        public arzo_Id?: number,
-        public arzo_Descripcion?: string,
-        public alim_Id?: number,
-        public alim_Descripcion?: string,
-        public espe_Id?: number,
-        public espe_Descripcion?: string,
-        public anim_UserCreacion?: number,
-        public anim_UserModificacion?: number,
-    ){}
-
-}

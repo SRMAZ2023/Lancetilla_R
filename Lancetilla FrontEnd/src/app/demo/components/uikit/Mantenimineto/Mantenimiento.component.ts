@@ -62,7 +62,9 @@ export class MantenimientoComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private MantenimintoService: MantenimintoService, private TiposDeMantenimientoService:TiposDeMantenimientoService, private messageService: MessageService) {
+    constructor(private MantenimintoService: MantenimintoService, 
+        private TiposDeMantenimientoService:TiposDeMantenimientoService, 
+        private messageService: MessageService) {
     }
 
     ngOnInit() {
