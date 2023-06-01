@@ -55,8 +55,8 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             var parametros = new DynamicParameters();
 
             parametros.Add("@cuid_Id", item.cuid_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@cuid_Descripcion", item.cuid_Observacion, DbType.String, ParameterDirection.Input);
-            parametros.Add("@cuid_Frecuencia", item.ticu_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@cuid_Observacion", item.cuid_Observacion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@ticu_Id", item.ticu_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@cuid_UserModificacion", item.cuid_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarCuidados, parametros, commandType: System.Data.CommandType.StoredProcedure);

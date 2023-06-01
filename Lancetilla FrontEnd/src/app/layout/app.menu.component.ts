@@ -23,6 +23,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'UI Components',
                 items: [
+                    { label: 'TipoCuidado', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoCuidado'] },
+                    { label: 'Cuidados', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/Cuidados'] },
                     { label: 'Especies', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/Especies'] },
                     { label: 'Cargos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/cargos'] },
                     { label: 'Departamentos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/departamentos'] },

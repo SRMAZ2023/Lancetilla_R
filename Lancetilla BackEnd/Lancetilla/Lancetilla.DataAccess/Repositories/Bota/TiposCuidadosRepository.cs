@@ -58,7 +58,7 @@ namespace Lancetilla.DataAccess.Repositories.Bota
 
             parametros.Add("@ticu_Id", item.ticu_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@ticu_Descripcion", item.ticu_Descripcion, DbType.String, ParameterDirection.Input);
-            parametros.Add("@ticu_UserCreacion", item.ticu_UserCreacion, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@ticu_UserModificacion", item.ticu_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.tbTiposCuidados_UPDATE, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
