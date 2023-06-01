@@ -28,7 +28,7 @@ namespace Lancetilla.API.Controllers
         [HttpGet("ListarCuidadosDePlantas")]
         public IActionResult ListarCuidadosDePlantas()
         {
-            var list = _botanicaServicios.ListarCuidadosDePlantas();
+            var list = _botanicaServicios.ListarCuidados();
             return Ok(list);
         }
 

@@ -9,8 +9,9 @@ namespace Lancetilla.Entities.Entities
     public partial class VW_tbCuidados
     {
         public int cuid_Id { get; set; }
-        public string cuid_Descripcion { get; set; }
-        public string cuid_Frecuencia { get; set; }
+        public string cuid_Observacion { get; set; }
+        public int ticu_Id { get; set; }
+        public string ticu_Descripcion { get; set; }
         public string usua_UserCreaNombre { get; set; }
         public int? cuid_UserCreacion { get; set; }
         public DateTime? cuid_FechaCreacion { get; set; }

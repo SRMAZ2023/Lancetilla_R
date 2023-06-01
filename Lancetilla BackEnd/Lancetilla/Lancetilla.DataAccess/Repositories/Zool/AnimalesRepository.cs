@@ -34,49 +34,49 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             throw new NotImplementedException();
         }
 
-        public RequestStatus Insert(tbAnimales item)
-        {
-            using var db = new SqlConnection(Lancetilla.ConnectionString);
-            var parametros = new DynamicParameters();
+        //public RequestStatus Insert(tbAnimales item)
+        //{
+        //    using var db = new SqlConnection(Lancetilla.ConnectionString);
+        //    var parametros = new DynamicParameters();
 
-            parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_Reino", item.anim_Reino, DbType.String, ParameterDirection.Input);
-            parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
+        //    parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
+        //    parametros.Add("@anim_Reino", item.anim_Reino, DbType.String, ParameterDirection.Input);
+        //    parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
 
-            parametros.Add("@anim_UserCreacion", item.anim_UserCreacion, DbType.Int32, ParameterDirection.Input);
-
-
-
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarAnimales, parametros, commandType: System.Data.CommandType.StoredProcedure);
-            return result;
-        }
-
-        public RequestStatus Update(tbAnimales item)
-        {
-            using var db = new SqlConnection(Lancetilla.ConnectionString);
-            var parametros = new DynamicParameters();
-
-            parametros.Add("@anim_Id", item.anim_Id, DbType.String, ParameterDirection.Input);
-
-            parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
-            parametros.Add("@anim_Reino", item.anim_Reino, DbType.String, ParameterDirection.Input);
-            parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
-            parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
-
-            parametros.Add("@anim_UserModificacion", item.anim_UserModificacion, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@anim_UserCreacion", item.anim_UserCreacion, DbType.Int32, ParameterDirection.Input);
 
 
 
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarAnimales, parametros, commandType: System.Data.CommandType.StoredProcedure);
-            return result;
-        }
+        //    var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarAnimales, parametros, commandType: System.Data.CommandType.StoredProcedure);
+        //    return result;
+        //}
+
+        //public RequestStatus Update(tbAnimales item)
+        //{
+        //    using var db = new SqlConnection(Lancetilla.ConnectionString);
+        //    var parametros = new DynamicParameters();
+
+        //    parametros.Add("@anim_Id", item.anim_Id, DbType.String, ParameterDirection.Input);
+
+        //    parametros.Add("@anim_Nombre", item.anim_Nombre, DbType.String, ParameterDirection.Input);
+        //    parametros.Add("@anim_NombreCientifico", item.anim_NombreCientifico, DbType.String, ParameterDirection.Input);
+        //    parametros.Add("@anim_Reino", item.anim_Reino, DbType.String, ParameterDirection.Input);
+        //    parametros.Add("@habi_Id", item.habi_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@arzo_Id", item.arzo_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@alim_Id", item.alim_Id, DbType.Int32, ParameterDirection.Input);
+        //    parametros.Add("@espe_Id", item.espe_Id, DbType.Int32, ParameterDirection.Input);
+
+        //    parametros.Add("@anim_UserModificacion", item.anim_UserModificacion, DbType.Int32, ParameterDirection.Input);
+
+
+
+        //    var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarAnimales, parametros, commandType: System.Data.CommandType.StoredProcedure);
+        //    return result;
+        //}
 
         public IEnumerable<tbAnimales> List()
         {
@@ -84,6 +84,11 @@ namespace Lancetilla.DataAccess.Repositories.Zool
         }
 
         public RequestStatus Update(tbAnimales item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RequestStatus Insert(tbAnimales item)
         {
             throw new NotImplementedException();
         }

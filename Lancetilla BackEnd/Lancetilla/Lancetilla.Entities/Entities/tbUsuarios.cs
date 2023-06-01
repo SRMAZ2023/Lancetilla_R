@@ -22,6 +22,8 @@ namespace Lancetilla.Entities.Entities
             tbAreasZoologicoarzo_UserModificacionNavigation = new HashSet<tbAreasZoologico>();
             tbCargoscarg_UserCreacionNavigation = new HashSet<tbCargos>();
             tbCargoscarg_UserModificacionNavigation = new HashSet<tbCargos>();
+            tbCuidadoPlantacupl_UserCreacionNavigation = new HashSet<tbCuidadoPlanta>();
+            tbCuidadoPlantacupl_UserModificacionNavigation = new HashSet<tbCuidadoPlanta>();
             tbCuidadoscuid_UserCreacionNavigation = new HashSet<tbCuidados>();
             tbCuidadoscuid_UserModificacionNavigation = new HashSet<tbCuidados>();
             tbDepartamentosdept_UserCreacionNavigation = new HashSet<tbDepartamentos>();
@@ -50,14 +52,22 @@ namespace Lancetilla.Entities.Entities
             tbPantallaspant_UserModificacionNavigation = new HashSet<tbPantallas>();
             tbPlantasplan_UserCreacionNavigation = new HashSet<tbPlantas>();
             tbPlantasplan_UserModificacionNavigation = new HashSet<tbPlantas>();
+            tbRazasraza_UserCreacionNavigation = new HashSet<tbRazas>();
+            tbRazasraza_UserModificacionNavigation = new HashSet<tbRazas>();
+            tbReinosrein_UserCreacionNavigation = new HashSet<tbReinos>();
+            tbReinosrein_UserModificacionNavigation = new HashSet<tbReinos>();
             tbRolesPantallasropa_UserCreacionNavigation = new HashSet<tbRolesPantallas>();
             tbRolesPantallasropa_UserModificacionNavigation = new HashSet<tbRolesPantallas>();
             tbRolesrole_UserCreacionNavigation = new HashSet<tbRoles>();
             tbRolesrole_UserModificacionNavigation = new HashSet<tbRoles>();
             tbTicketstick_UserCreacionNavigation = new HashSet<tbTickets>();
             tbTicketstick_UserModificacionNavigation = new HashSet<tbTickets>();
+            tbTiposCuidadosticu_UserCreacionNavigation = new HashSet<tbTiposCuidados>();
+            tbTiposCuidadosticu_UserModificacionNavigation = new HashSet<tbTiposCuidados>();
             tbTiposMantenimientostima_UserCreacionNavigation = new HashSet<tbTiposMantenimientos>();
             tbTiposMantenimientostima_UserModificacionNavigation = new HashSet<tbTiposMantenimientos>();
+            tbTiposPlantastipl_UserCreacionNavigation = new HashSet<tbTiposPlantas>();
+            tbTiposPlantastipl_UserModificacionNavigation = new HashSet<tbTiposPlantas>();
             tbVisitantesvisi_UserCreacionNavigation = new HashSet<tbVisitantes>();
             tbVisitantesvisi_UserModificacionNavigation = new HashSet<tbVisitantes>();
         }
@@ -88,6 +98,8 @@ namespace Lancetilla.Entities.Entities
         public virtual ICollection<tbAreasZoologico> tbAreasZoologicoarzo_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbCargos> tbCargoscarg_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbCargos> tbCargoscarg_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbCuidadoPlanta> tbCuidadoPlantacupl_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbCuidadoPlanta> tbCuidadoPlantacupl_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbCuidados> tbCuidadoscuid_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbCuidados> tbCuidadoscuid_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbDepartamentos> tbDepartamentosdept_UserCreacionNavigation { get; set; }
@@ -116,14 +128,22 @@ namespace Lancetilla.Entities.Entities
         public virtual ICollection<tbPantallas> tbPantallaspant_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbPlantas> tbPlantasplan_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbPlantas> tbPlantasplan_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbRazas> tbRazasraza_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbRazas> tbRazasraza_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbReinos> tbReinosrein_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbReinos> tbReinosrein_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbRolesPantallas> tbRolesPantallasropa_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbRolesPantallas> tbRolesPantallasropa_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbRoles> tbRolesrole_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbRoles> tbRolesrole_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbTickets> tbTicketstick_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbTickets> tbTicketstick_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbTiposCuidados> tbTiposCuidadosticu_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbTiposCuidados> tbTiposCuidadosticu_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbTiposMantenimientos> tbTiposMantenimientostima_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbTiposMantenimientos> tbTiposMantenimientostima_UserModificacionNavigation { get; set; }
+        public virtual ICollection<tbTiposPlantas> tbTiposPlantastipl_UserCreacionNavigation { get; set; }
+        public virtual ICollection<tbTiposPlantas> tbTiposPlantastipl_UserModificacionNavigation { get; set; }
         public virtual ICollection<tbVisitantes> tbVisitantesvisi_UserCreacionNavigation { get; set; }
         public virtual ICollection<tbVisitantes> tbVisitantesvisi_UserModificacionNavigation { get; set; }
     }
