@@ -1,23 +1,39 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                        [routerLink]="['/app/uikit/ManteniminetoXAnimal/Create']"></button>
-                    </div>
-                </ng-template>
+			<p-toast></p-toast>
 
-                <!--
-                <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
-                </ng-template>-->
-            </p-toolbar>
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/ByVTPCG/mantenimientoxanimal.png" width="100%" height="40%">
+            </div>
+            <br>
+
+
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+					<button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+					[routerLink]="['/app/uikit/ManteniminetoXAnimal/Create']"></button>
+                </div>
+
+
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+
+            <br>
+
 
             <div class="col-12">
         
@@ -25,9 +41,9 @@
 				
 	  
 	  
-				  <p-table #dt [value]="Roles" [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
-					[showCurrentPageReport]="true" [(selection)]="Rol" selectionMode="multiple" [rowHover]="true" dataKey="id"
-					[first]="first" [rows]="rows">
+				<p-table #dt [value]="Roles" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="Rol"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
 			   		  
 					<ng-template pTemplate="header">
 					  <tr>

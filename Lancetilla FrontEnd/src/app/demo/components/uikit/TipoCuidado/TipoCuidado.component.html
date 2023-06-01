@@ -1,0 +1,112 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/smMkHTB/ESTADOS-CIVILES-8.png" width="100%" height="40%">
+            </div>
+            <br>
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
+
+
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+            <br>
+
+            <p-table #dt [value]="TipoCuidados" [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
+                [showCurrentPageReport]="true" [(selection)]="selectedTipoCuidados" selectionMode="multiple"
+                [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="ticu_Id">Id <p-sortIcon field="ticu_Id"></p-sortIcon></th>
+                        <th pSortableColumn="TipoCuidado">Descripcion <p-sortIcon field="TipoCuidado"></p-sortIcon></th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-TipoCuidados>
+                    <tr>
+
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                            {{TipoCuidados.ticu_Id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{TipoCuidados.ticu_Descripcion}}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editTipoCuidados(TipoCuidados)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteTipoCuidados(TipoCuidados)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="TipoCuidadostDialog" [style]="{width: '450px'}" header="Tipo de cuidados" [modal]="true"
+            class="p-fluid">
+            <br>
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="name">Descripción</label>
+                    <input type="text" pInputText id="name"   [(ngModel)]="TipoCuidado.ticu_Descripcion" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(TipoCuidado.ticu_Descripcion)}" />
+                    <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(TipoCuidado.ticu_Descripcion)">
+                        La descripción del tipo de cuidado es requerida.</small>
+                </div>
+
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                    (click)="saveTipoCuidados()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteTipoCuidadosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="TipoCuidado">¿Estás seguro de eliminar el tipo de cuidado
+                    <b>{{TipoCuidado.ticu_Descripcion}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteTipoCuidadosDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
+</div>

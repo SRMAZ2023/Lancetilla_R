@@ -13,38 +13,43 @@ namespace Lancetilla.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CuidadosDePlantasController : ControllerBase
+    public class CuidadosController : ControllerBase
     {
 
 
         private readonly BotanicaServicios _botanicaServicios;
         private readonly IMapper _mapper;
 
-        public CuidadosDePlantasController(BotanicaServicios botanicaServicios, IMapper mapper)
+        public CuidadosController(BotanicaServicios botanicaServicios, IMapper mapper)
         {
             _botanicaServicios = botanicaServicios;
             _mapper = mapper;
         }
-
-
-        [HttpPost("InsertarCuidados")]
-        public IActionResult InsertarCuidados(CuidadosDePlantaViewModel item)
+        [HttpGet("List")]
+        public IActionResult ListarCuidadosDePlantas()
         {
-            var  cuidados = _mapper.Map<tbCuidados>(item);
+            var list = _botanicaServicios.ListarCuidados();
+            return Ok(list);
+        }
+
+        [HttpPost("Insert")]
+        public IActionResult InsertarCuidados(CuidadosViewModel item)
+        {
+            var cuidados = _mapper.Map<tbCuidados>(item);
             var List = _botanicaServicios.InsertarCuidados(cuidados);
             return Ok(List);
         }
 
-        [HttpPost("ActualizarCuidado")]
-        public IActionResult ActualizarCuidado(CuidadosDePlantaViewModel item)
+        [HttpPost("Update")]
+        public IActionResult ActualizarCuidado(CuidadosViewModel item)
         {
             var cuidados = _mapper.Map<tbCuidados>(item);
             var List = _botanicaServicios.ActualizarCuidado(cuidados);
             return Ok(List);
         }
 
-        [HttpPost("EliminarCuidado")]
-        public IActionResult EliminarCuidado(CuidadosDePlantaViewModel item)
+        [HttpPost("Delte")]
+        public IActionResult EliminarCuidado(CuidadosViewModel item)
         {
             var cuidados = _mapper.Map<tbCuidados>(item);
             var List = _botanicaServicios.EliminarCuidado(cuidados);

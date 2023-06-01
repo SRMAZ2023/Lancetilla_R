@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs"
 import { Global } from './Global';
+import { TiposPlantasViewModel } from '../Models/TiposPlantasViewModel';
 
 @Injectable()
 export class TiposPlantasService {
@@ -15,29 +16,36 @@ export class TiposPlantasService {
     getTiposPlantas(): Observable<any> {
         return this.http.get(this.url + "TiposdePlantas/ListarTiposPlantas");
     }
-/*
-    postHabitat(HabitatViewModel: any): Observable<Response> {
 
-        let params = JSON.stringify(HabitatViewModel);
+    postTiposPlantas(TiposPlantasViewModel: any): Observable<Response> {
+
+        let params = JSON.stringify(TiposPlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + 'Habitat/InsertarHabitat', params, { headers: headers });
+        return this.http.post<Response>(this.url + 'TiposdePlantas/InsertarTiposPlantas', params, { headers: headers });
 
     }
 
-    EditHabitat(HabitatViewModel:any):Observable<any>{
-        let params = JSON.stringify(HabitatViewModel);
+    GetPlantasPorTipo(PlantasViewModel: any): Observable<Response> {
+        let params = JSON.stringify(PlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + "Habitat/ActualizarHabitat", params, { headers: headers });
+        return this.http.post<Response>(this.url + `TiposdePlantas/BuscarPlantasPorTipo`, params, { headers: headers });
     }
 
-    DeleteHabitat(HabitatViewModel: any): Observable<Response> {
-        let params = JSON.stringify(HabitatViewModel);
+    EditTiposPlantas(TiposPlantasViewModel:any):Observable<any>{
+        let params = JSON.stringify(TiposPlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        return this.http.post<Response>(this.url + `Habitat/EliminarHabitat`, params, { headers: headers });
+        return this.http.post<Response>(this.url + "TiposdePlantas/ActualizarTiposPlantas", params, { headers: headers });
     }
-*/
+
+    DeleteTiposPlantas(TiposPlantasViewModel: any): Observable<Response> {
+        let params = JSON.stringify(TiposPlantasViewModel);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        return this.http.post<Response>(this.url + `TiposdePlantas/EliminarTiposPlantas`, params, { headers: headers });
+    }
+
    
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Botanica_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,58 +24,46 @@ namespace Lancetilla.API.Controllers
             _mapper = mapper;
         }
 
-    [HttpGet("ListarTiposPlantas")]
+        [HttpGet("ListarTiposPlantas")]
         public IActionResult ListarTiposPlantas()
         {
             var list = _botanicaServicios.ListarTiposPlantas();
             return Ok(list);
         }
-        /*
-        [HttpGet("BuscarAnimal/{id}")]
-        public IActionResult BuscarPlanta(int id)
-        {
-            var list = _zoologicoServicios.BuscarAnimales(id);
-            return Ok(list);
-        }
-    
 
-        [HttpPost("InsertarAnimales")]
-        public IActionResult InsertarAnimales(AnimalesViewModel item)
+        [HttpPost("BuscarPlantasPorTipo")]
+        public IActionResult BuscarPlantasPorTipo(PlantasViewModel item)
         {
-            var animales = _mapper.Map<tbAnimales>(item);
-            var List = _zoologicoServicios.InsertarAnimales(animales);
+            var mantenimientos = _mapper.Map<tbPlantas>(item);
+            var List = _botanicaServicios.BuscarPlantasporTipo(item.tipl_Id);
             return Ok(List);
         }
 
-        [HttpPost("ActualizarAnimales")]
-        public IActionResult ActualizarAnimales(AnimalesViewModel item)
+
+        [HttpPost("InsertarTiposPlantas")]
+        public IActionResult InsertarTiposPlantas(TiposdePlantasViewModel item)
         {
-            var animales = _mapper.Map<tbAnimales>(item);
-            var List = _zoologicoServicios.ActualizarAnimales(animales);
+            var animales = _mapper.Map<tbTiposPlantas>(item);
+            var List = _botanicaServicios.InsertarTiposPlanta(animales);
             return Ok(List);
         }
 
-        [HttpPost("EliminarAnimales")]
-        public IActionResult EliminarAnimales(AnimalesViewModel item)
+        [HttpPost("ActualizarTiposPlantas")]
+        public IActionResult ActualizarTiposPlantas(TiposdePlantasViewModel item)
         {
-            var animales = _mapper.Map<tbAnimales>(item);
-            var List = _zoologicoServicios.EliminarAnimales(animales);
+            var animales = _mapper.Map<tbTiposPlantas>(item);
+            var List = _botanicaServicios.ActualizarTiposPlanta(animales);
             return Ok(List);
         }
 
-        [HttpGet("AnimalesPorArea")]
-        public IActionResult AnimalesPorArea()
+        [HttpPost("EliminarTiposPlantas")]
+        public IActionResult EliminarTiposPlantas(TiposdePlantasViewModel item)
         {
-            var list = _zoologicoServicios.AnimalesPorArea();
-
-            return Ok(list);
+            var animales = _mapper.Map<tbTiposPlantas>(item);
+            var List = _botanicaServicios.EliminarTiposPlanta(animales);
+            return Ok(List);
         }
-        [HttpGet("AnimalesPorHabitat")]
-        public IActionResult AnimalesPorHabitat()
-        {
-            var list = _zoologicoServicios.AnimalesPorHabitat();
 
-            return Ok(list);
-        }*/
+
     }
 }

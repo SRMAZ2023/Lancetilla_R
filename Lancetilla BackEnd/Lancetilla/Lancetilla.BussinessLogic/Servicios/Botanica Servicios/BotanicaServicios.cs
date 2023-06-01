@@ -13,6 +13,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
     {
 
         private readonly AreasBotanicasRepository _areasBotanicasRepository;
+        private readonly TiposCuidados _tiposCuidados;
         private readonly CuidadosRepository _cuidadosRepository;
         private readonly PlantasRepository _plantasRepository;
         private readonly TiposdePlantasRepository _tiposdePlantasRepository;
@@ -21,11 +22,13 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         public BotanicaServicios(AreasBotanicasRepository areasBotanicasRepository, 
                                  CuidadosRepository cuidadosRepository, 
                                  PlantasRepository plantasRepository,
+                                 TiposCuidados tiposCuidados,
                                  TiposdePlantasRepository  tiposdePlantasRepository)
         {
             _areasBotanicasRepository = areasBotanicasRepository;
             _cuidadosRepository = cuidadosRepository;
             _plantasRepository = plantasRepository;
+            _tiposCuidados = tiposCuidados;
             _tiposdePlantasRepository = tiposdePlantasRepository;
            
         }
@@ -220,13 +223,12 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         }*/
         #endregion
 
-
-        #region Cuidados de plantas
-        public IEnumerable<VW_tbCuidados> ListarCuidadosDePlantas()
+        #region Cuidados  
+        public IEnumerable<VW_tbCuidados> ListarCuidados()
         {
             try
             {
-                var list = _cuidadosRepository.ListarCuidadosDePlantas();
+                var list = _cuidadosRepository.ListarCuidados();
                 return list;
             }
             catch (Exception ex)
@@ -315,6 +317,108 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
                 return result.Error(ex.Message);
             }
         }
+        #endregion
+
+        #region tiposcuidados
+        public IEnumerable<VW_tbTiposCuidados> ListarTiposCuidados()
+        {
+            try
+            {
+                var list = _tiposCuidados.ListarTiposCuidados();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbTiposCuidados>();
+
+            }
+        }
+
+
+
+
+
+
+
+        public ServiceResult InsertarTiposCuidados(tbTiposCuidados item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _tiposCuidados.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarTiposCuidados(tbTiposCuidados item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _tiposCuidados.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarTiposCuidados(tbTiposCuidados item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _tiposCuidados.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Plantas
@@ -443,6 +547,123 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             }
         }
         #endregion
+
+        #region Tipos de Plantas
+
+        public IEnumerable<VW_tbPlantas> BuscarPlantasporTipo(int id)
+        {
+            try
+            {
+                var list = _tiposdePlantasRepository.Find(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+
+            }
+        }
+        public IEnumerable<VW_tbTiposPlantas> ListarTipoPlantas()
+        {
+            try
+            {
+                var list = _tiposdePlantasRepository.ListarTiposPlantas();
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbTiposPlantas>();
+
+            }
+        }
+
+
+
+
+
+
+
+        public ServiceResult InsertarTiposPlanta(tbTiposPlantas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _tiposdePlantasRepository.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarTiposPlanta(tbTiposPlantas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _tiposdePlantasRepository.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarTiposPlanta(tbTiposPlantas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _tiposdePlantasRepository.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+        #endregion
+
 
 
     }

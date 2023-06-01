@@ -1,0 +1,180 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/nsr6kHp/tiposplantas.png" width="100%" height="40%">
+            </div>
+            <br>
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
+
+
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+            <br>
+            
+            <p-table #dt [value]="TiPlantas" [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
+                [showCurrentPageReport]="true" [(selection)]="selectedTiposPlantas" selectionMode="multiple"
+                [rowHover]="true" [first]="first" [rows]="rows">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+
+                        <th pSortableColumn="tipl_Id">Id <p-sortIcon field="tipl_Id"></p-sortIcon></th>
+                        <th pSortableColumn="tipl_NombreComun">Nombre Común <p-sortIcon
+                                field="tipl_NombreComun"></p-sortIcon></th>
+                        <th pSortableColumn="tipl_NombreCientifico">Nombre Científico <p-sortIcon
+                                field="tipl_NombreCientifico"></p-sortIcon></th>
+                        <th pSortableColumn="rein_Descripcion">Reino <p-sortIcon field="rein_Descripcion"></p-sortIcon>
+                        </th>
+
+                        <th>Acciones</th>
+                    </tr>
+                </ng-template>
+
+
+
+                <ng-template pTemplate="body" let-tiposPlantas >
+                    <tr>
+                        <td>
+                            <button type="button" (click)="Animales(tiposPlantas)" pButton pRipple
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="isRowExpanded(tiposPlantas) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                        </td>
+                        <td style="min-width: 3rem;">{{tiposPlantas.tipl_Id}}</td>
+                        <td style="min-width: 1rem;">{{tiposPlantas.tipl_NombreComun}}</td>
+                        <td style="min-width: 1rem;">{{tiposPlantas.tipl_NombreCientifico}}</td>
+                        <td style="min-width: 1rem;">{{tiposPlantas.rein_Descripcion}}</td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editTiposPlantas(tiposPlantas)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteTiposPlantas(tiposPlantas)"></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr *ngIf="expandedRow === tiposPlantas" [ngClass]="{'ui-widget-content': true}">
+                        <td [attr.colspan]="7">
+                            <div class="table-container" style="display: flex; justify-content: center;">
+                                <div class="table-container">
+                                    <p-table [value]="datos" dataKey="id" [responsive]="true" [scrollable]="true"
+                                        [scrollHeight]='"500x"'>
+
+                                        <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th pSortableColumn="plan_Id">ID <p-sortIcon field="plan_Id"></p-sortIcon></th>
+                        <th pSortableColumn="plan_Codigo">Código <p-sortIcon field="plan_Codigo"></p-sortIcon></th>
+                        <th pSortableColumn="arbo_Descripcion">Área Botánica <p-sortIcon
+                                field="anim_Nombre"></p-sortIcon></th>
+
+                    </tr>
+                </ng-template>
+
+
+
+
+                <ng-template pTemplate="body" let-tiposPlantas>
+                    <tr>
+                        <td></td>
+                        <td style="min-width: 20rem;">{{tiposPlantas.plan_Id}}</td>
+                        <td style="min-width: 20rem;">{{tiposPlantas.plan_Codigo}}</td>
+                        <td style="min-width: 20rem;">{{tiposPlantas.arbo_Descripcion}}</td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="NuevoDIalog" [style]="{width: '450px'}" header="Tipos de Plantas" [modal]="true"
+            class="p-fluid">
+            <br>
+            <ng-template pTemplate="content">
+                <div class="grid p-fluid">
+                    <div class="field col-6">
+                        <label for="name">Nombre Común</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="TiPlanta.tipl_NombreComun" required
+                            autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(TiPlanta.tipl_NombreComun)}" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="submitted && isInputEmptyOrWhitespace(TiPlanta.tipl_NombreComun)">El nombre cimún de
+                            la planta es requerido.</small>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="name">Nombre Científico</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="TiPlanta.tipl_NombreCientifico" required
+                            autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(TiPlanta.tipl_NombreCientifico)}" />
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="submitted && isInputEmptyOrWhitespace(TiPlanta.tipl_NombreCientifico)">El nombre
+                            cimún de la planta es requerido.</small>
+                    </div>
+
+                    <div class="field col-12">
+                        <label for="rein_Id"> Reino </label>
+                        <p-dropdown name="rein_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="reino"
+                            [(ngModel)]="TiPlanta.rein_Id" [ngClass]="{
+                        'ng-invalid': submitted && !TiPlanta.rein_Id
+                    }" placeholder="Seleccione un hábitat" inputId="dropdown" optionLabel="label" optionValue="value"
+                            [ngClass]="{
+                        'ng-invalid ng-dirty':
+                            submitted && !TiPlanta.rein_Id
+                    }"></p-dropdown>
+                        <small *ngIf="submitted && !TiPlanta.rein_Id" class="ng-dirty ng-invalid" style="color: red">
+                            El reino de la planta es requerido.
+                        </small>
+                    </div>
+                </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+                    (click)="saveTiposPlantas()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteTiposPlantasDialog" header="Confirmación" [modal]="true"
+            [style]="{width:'450px'}"><br>
+            <div class="flex align-items-center justify-content-center">
+
+                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                    style="margin-right: 15px;">
+                <span *ngIf="TiPlanta">¿Estás seguro de eliminar el tipo de planta
+                    <b>{{TiPlanta.tipl_NombreComun}}</b>?</span>
+            </div>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
+                    (click)="deleteTiposPlantasDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Sí"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
