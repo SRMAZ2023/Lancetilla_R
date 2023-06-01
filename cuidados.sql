@@ -1,28 +1,5 @@
- GO 
-CREATE OR ALTER PROC bota.tbTiposCuidados_SELECT
-AS
-BEGIN
 
-	SELECT TOP (1000) *
-	FROM [bota].[VW_tbTiposCuidados]
-	where ticu_Estado = 1  
- 	
-END
 
-GO
-CREATE OR ALTER PROC bota.tbTiposCuidados_FIND 
-@ticu_Id int
-AS
-BEGIN
-
-	SELECT TOP (1000) *
-	FROM [bota].[VW_tbTiposCuidados]
-	where ticu_Estado = 1  
-	AND	ticu_Id = @ticu_Id
- 	
-END
-
-GO
 CREATE OR ALTER PROC bota.tbTiposCuidados_CREATE
 @ticu_Descripcion nvarchar(100),
 @ticu_UserCreacion int 

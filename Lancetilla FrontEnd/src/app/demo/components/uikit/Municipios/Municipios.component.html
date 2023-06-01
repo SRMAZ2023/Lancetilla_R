@@ -2,38 +2,37 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                            (click)="openNew()"></button>
-                    </div>
-                </ng-template>
+            <div class="card-img-top">
+                <img src="https://i.ibb.co/m9QqHm2/municipios.png" width="100%" height="40%">
+            </div>
+            <br>
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+                <div class="mr-3">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+                        (click)="openNew()"></button>
+                </div>
 
-                <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                        chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
-                </ng-template>
-            </p-toolbar>
 
-            <p-table #dt [value]="Municipios" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-            [globalFilterFields]="['muni_Descripcion', 'muni_Id']"
-            [paginator]="true"
-                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} " [(selection)]="selectedMunicipios"
-                selectionMode="multiple" [rowHover]="true" dataKey="id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Municipios</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
-                                class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
+
+
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+            <br>
+            <p-table #dt [value]="Municipios" [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
+                [showCurrentPageReport]="true" [(selection)]="selectedMunicipios" selectionMode="multiple"
+                [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
                 <ng-template pTemplate="header">
                     <tr>
 

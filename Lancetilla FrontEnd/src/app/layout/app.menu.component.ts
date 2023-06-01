@@ -217,11 +217,11 @@ export class AppMenuComponent implements OnInit {
               
                  
                 ...(this.Botanica.length > 0 ? [{
-                    label: 'Botanica',
+                    label: 'Botánica',
                     icon: 'pi pi-fw pi-briefcase',
                     items: [
                       {
-                        label: 'Páginas de Botanica',
+                        label: 'Páginas de Botánica',
                         icon: 'pi pi-fw pi-user',
                         items: this.Botanica
                       }
@@ -229,11 +229,11 @@ export class AppMenuComponent implements OnInit {
                   }] : []),
 
                   ...(this.Zoologico.length > 0 ? [{
-                    label: 'Zoologico',
+                    label: 'Zoológico',
                     icon: 'pi pi-fw pi-briefcase',
                     items: [
                       {
-                        label: 'Páginas de Zoologico',
+                        label: 'Páginas de Zoológico',
                         icon: 'pi pi-fw pi-user',
                         items: this.Zoologico
                       }
@@ -241,11 +241,11 @@ export class AppMenuComponent implements OnInit {
                   }] : []),
 
                   ...(this.Facturacion.length > 0 ? [{
-                    label: 'Facturacion',
+                    label: 'Facturación',
                     icon: 'pi pi-fw pi-briefcase',
                     items: [
                       {
-                        label: 'Páginas de Facturacion',
+                        label: 'Páginas de Facturación',
                         icon: 'pi pi-fw pi-user',
                         items: this.Facturacion
                       }
@@ -288,8 +288,8 @@ export class AppMenuComponent implements OnInit {
                 label: 'Inicio',
                 items: [
                     { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
-                    { label: 'Graficas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/charts'] },  
-                    { label: 'Reporte Factura', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Reporte Factura'] },  
+                    { label: 'Gráficas', icon: 'pi pi-chart-line', routerLink: ['/app/uikit/charts'] },  
+                    { label: 'Reporte', icon: 'pi pi-print', routerLink: ['/app/uikit/Reporte Factura'] },  
                 ]
             },
           
@@ -298,35 +298,37 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [                 
                     {
-                        label: 'Paginas de Mantenimeinto',
+                        label: 'Páginas de Mantenimeinto',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                                { label: 'Empleados', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Empleados'] },  
-                                { label: 'Manteniminto', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Mantenimineto'] },             
-                                { label: 'Visitantes', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/visitantes'] },                              
-                                { label: 'Cargos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/cargos'] },
-                                { label: 'Municipios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Municipios'] },
-                                { label: 'Departamentos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/departamentos'] },
-                                { label: 'Tipos De Mantenimiento', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/TiposDeMantenimiento'] },           
-                                { label: 'Metodo De Pago', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/MetodoDePago'] },
-                                { label: 'Estado Civil', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/EstadoCivil'] },
-                                { label: 'Mantenimiento Animal', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/ManteniminetoXAnimal'] },
+                                { label: 'Empleados', icon: 'pi pi-user', routerLink: ['/app/uikit/Empleados'] },  
+                                { label: 'Mantenimiento', icon: 'pi pi-briefcase', routerLink: ['/app/uikit/Mantenimineto'] },             
+                                { label: 'Visitantes', icon: 'pi pi-users', routerLink: ['/app/uikit/visitantes'] },                              
+                                { label: 'Cargos', icon: 'pi pi-desktop', routerLink: ['/app/uikit/cargos'] },
+                                { label: 'Municipios', icon: 'pi pi-home', routerLink: ['/app/uikit/Municipios'] },
+                                { label: 'Departamentos', icon: 'pi pi-map', routerLink: ['/app/uikit/departamentos'] },
+                                { label: 'Tipos De Mantenimiento', icon: 'pi pi-wrench', routerLink: ['/app/uikit/TiposDeMantenimiento'] },           
+                                { label: 'Estado Civil', icon: 'pi pi-envelope', routerLink: ['/app/uikit/EstadoCivil'] },
+                                { label: 'Mantenimiento Por Animal', icon: 'pi pi-cog', routerLink: ['/app/uikit/ManteniminetoXAnimal'] },
                         ]
                     },
                    
                 ]
             },    
             {
-                label: 'Botanica',
+                label: 'Botánica',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [                 
                     {
-                        label: 'Pagina de Botanica',
+                        label: 'Páginas de Botánica',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                            { label: 'Cuidado de Plantas', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/cuidadosplantas'] },
-                            { label: 'Áreas Botánica', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areasbotanicas'] },
-                            { label: 'Plantas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Plantas'] },
+                            { label: 'Cuidado de Plantas', icon: 'pi pi-apple', routerLink: ['/app/uikit/cuidadosplantas'] },
+                            { label: 'Tipos de Cuidados', icon: 'pi pi-arrows-v', routerLink: ['/app/uikit/TipoCuidado'] },
+                            { label: 'Cuidados Generales', icon: 'pi pi-compass', routerLink: ['/app/uikit/Cuidados'] },
+                            { label: 'Áreas Botánica', icon: 'pi pi-gift', routerLink: ['/app/uikit/areasbotanicas'] },
+                            { label: 'Tipos de Plantas', icon: 'pi pi-palette', routerLink: ['/app/uikit/TiposPlantas'] },
+                            { label: 'Plantas', icon: 'pi pi-slack', routerLink: ['/app/uikit/Plantas'] },
                         ]
                     },
                    
@@ -334,35 +336,35 @@ export class AppMenuComponent implements OnInit {
             },       
             
             {
-                label: 'Zoologico',
+                label: 'Zoológico',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [                 
                     {
-                        label: 'Paginas de Zoologico',
+                        label: 'Páginas de Zoológico',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                            { label: 'Hábitat', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/habitat'] },
-                            { label: 'Alimentacion', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/alimentacion'] },
-                            { label: 'Áreas Zoológicas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areaszoologicas'] },
-                            { label: 'Especies', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
-                            { label: 'Animales', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/animales'] },
-                            { label: 'Razas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/razas'] },
+                            { label: 'Hábitats', icon: 'pi pi-qrcode', routerLink: ['/app/uikit/habitat'] },
+                            { label: 'Alimentación', icon: 'pi pi-sitemap', routerLink: ['/app/uikit/alimentacion'] },
+                            { label: 'Áreas Zoológicas', icon: 'pi pi-sun', routerLink: ['/app/uikit/areaszoologicas'] },
+                            { label: 'Especies', icon: 'pi pi-th-large', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Animales', icon: 'pi pi-twitter', routerLink: ['/app/uikit/animales'] },
+                            { label: 'Razas', icon: 'pi pi-star-fill', routerLink: ['/app/uikit/razas'] },
                         ]
                     },
                    
                 ]
             },   
             {
-                label: 'Facturacion',
+                label: 'Facturación',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [                 
                     {
-                        label: 'Paginas de Facturacion',
+                        label: 'Páginas de Facturación',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                            { label: 'Facturas', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
-                            { label: 'Tickets', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
-                            { label: 'Metodos de pago', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/MetodoDePago'] },
+                            { label: 'Facturas', icon: 'pi pi-paypal', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Métodos de Pago', icon: 'pi pi-money-bill', routerLink: ['/app/uikit/MetodoDePago'] },
                         ]
                     },
                    
@@ -373,11 +375,11 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [                 
                     {
-                        label: 'Paginas de Seguridad',
+                        label: 'Páginas de Seguridad',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                            { label: 'Usuarios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Usuarios'] },
-                            { label: 'Roles', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/RolesPorPantalla'] },
+                            { label: 'Usuarios', icon: 'pi pi-user-plus', routerLink: ['/app/uikit/Usuarios'] },
+                            { label: 'Roles', icon: 'pi pi-upload', routerLink: ['/app/uikit/RolesPorPantalla'] },
                         ]
                     },
                    

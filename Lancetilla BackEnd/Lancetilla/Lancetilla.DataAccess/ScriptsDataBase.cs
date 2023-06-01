@@ -179,6 +179,28 @@ namespace Lancetilla.DataAccess
 
         #region Apartado de Botanica
 
+        #region Cuidados
+
+        public static string InsertarCuidados = "bota.UDP_tbCuidados_CREATE";
+
+        public static string ActualizarCuidados = "bota.UDP_tbCuidados_UPDATE";
+
+        public static string EliminarCuidados = "bota.UDP_tbCuidados_DELETE";
+
+
+        #endregion
+
+        #region TiposCuidados
+
+        public static string tbTiposCuidados_CREATE = "bota.tbTiposCuidados_CREATE";
+
+        public static string tbTiposCuidados_UPDATE = "bota.tbTiposCuidados_UPDATE";
+
+        public static string tbTiposCuidados_DELETE = "bota.tbTiposCuidados_DELETE";
+
+
+        #endregion
+
         #region Areas de Botanica
 
         public static string InsertarAreaBotanica = "bota.UDP_tbAreasBotanicas_CREATE";
@@ -187,17 +209,6 @@ namespace Lancetilla.DataAccess
 
          public static string EliminarAreaBotanica = "bota.UDP_tbAreasBotanicas_DELETE";
 
-
-
-        #endregion
-
-        #region Cuidados de Plantas
-
-        public static string InsertarCuidados = "bota.UDP_tbCuidados_CREATE";
-
-        public static string ActualizarCuidados = "bota.UDP_tbCuidados_UPDATE";
-
-        public static string EliminarCuidados = "bota.UDP_tbCuidados_DELETE";
 
 
         #endregion
@@ -211,6 +222,19 @@ namespace Lancetilla.DataAccess
         public static string ActualizarPlantas = "bota.UDP_tbPlantas_UPDATE";
 
         public static string EliminarPlantas = "bota.UDP_tbPlanta_DELETE";
+
+
+        #endregion
+
+        #region Tipos de plantas
+
+        public static string InsertarTipoPlanta = "bota.UDP_tbTiposPlantas_CREATE";
+
+        public static string ActualizarTipoPlantas = "bota.UDP_tbTiposPlantas_UPDATE";
+
+        public static string EliminarTipoPlantas = "bota.UDP_tbTiposPlantas_DELETE";
+
+        public static string BuscarTipoPlantas = "bota.UDP_tbTiposPlantas_Find";
 
 
         #endregion

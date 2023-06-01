@@ -3030,8 +3030,18 @@ GO
 
 --*************************************************************TABLA DE TIPOS DE PLANTAS************************************************************************--
 GO
+CREATE OR ALTER PROC bota.UDP_tbTiposPlantas_Find
+@tipl_Id INT
+AS BEGIN
 
-CREATE OR ALTER PROC bota.UDP_tbTiposPlantas_CREATE 
+SELECT * FROM bota.VW_tbPlantas
+WHERE tipl_Id = @tipl_Id
+AND plan_Estado = 1;
+
+END
+GO
+
+CREATE OR ALTER PROC bota.UDP_tbTiposPlantas_CREATE  
 @tipl_NombreComun NVARCHAR(100),
 @tipl_NombreCientifico NVARCHAR(100),
 @rein_Id INT,
@@ -3043,16 +3053,16 @@ BEGIN TRY
 	BEGIN TRAN
 		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun)  AND tipl_Estado = 1)
 		BEGIN
-			SELECT 409 AS codeStatus, 'El ´nombre común de la planta ya existe.' AS messageStatus
+			SELECT 409 AS codeStatus, 'El nombre común de la planta ya existe.' AS messageStatus
 		END
 		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
 		END
 
-		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE tipl_NombreComun = @tipl_NombreComun OR tipl_NombreCientifico = @tipl_NombreCientifico  AND tipl_Estado = 1)
 		BEGIN
-			SELECT 409 AS codeStatus, 'El nombre y el nombre científico de la planta ya existe.' AS messageStatus
+			SELECT 409 AS codeStatus, 'El nombre común y el nombre científico de la planta ya existe.' AS messageStatus
 		END
 
 		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 0 )
@@ -3114,16 +3124,16 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun)  AND tipl_Estado = 1)
+		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun)  AND tipl_Estado = 1 AND tipl_Id != @tipl_Id)
 		BEGIN
-			SELECT 409 AS codeStatus, 'El ´nombre común de la planta ya existe.' AS messageStatus
+			SELECT 409 AS codeStatus, 'El nombre común de la planta ya existe.' AS messageStatus
 		END
-		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1 AND tipl_Id != @tipl_Id)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El nombre científico de la planta ya existe.' AS messageStatus
 		END
 
-		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1)
+		ELSE IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) AND RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 1 AND tipl_Id != @tipl_Id)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El nombre y el nombre científico de la planta ya existe.' AS messageStatus
 		END
@@ -3131,7 +3141,6 @@ AS BEGIN
 		IF EXISTS (SELECT * FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)  AND tipl_Estado = 0 )
 		BEGIN
 			DECLARE @Id INT = (SELECT tipl_Id FROM bota.tbTiposPlantas WHERE  RTRIM(tipl_NombreComun) = RTRIM(@tipl_NombreComun) OR RTRIM(tipl_NombreCientifico) = RTRIM(@tipl_NombreCientifico)) 
-			select  @Id
 				UPDATE bota.tbTiposPlantas
 				SET
 						tipl_NombreComun = @tipl_NombreComun,
