@@ -52,7 +52,7 @@ namespace Lancetilla.BussinessLogic
             services.AddScoped<AreasBotanicasRepository>();
             services.AddScoped<CuidadosRepository>();
             services.AddScoped<PlantasRepository>();
-            services.AddScoped<TiposCuidados>();
+            services.AddScoped<TiposdePlantasRepository>();
 
             //Factura
             services.AddScoped<FacturaDetalleRepository>();
@@ -66,6 +66,8 @@ namespace Lancetilla.BussinessLogic
             services.AddScoped<AreasZoologicoRepository>();
             services.AddScoped<EspeciesRepository>();
             services.AddScoped<HabitatRepository>();
+            services.AddScoped<ReinosRepository>();
+            services.AddScoped<RazasRepository>();
 
 
         }

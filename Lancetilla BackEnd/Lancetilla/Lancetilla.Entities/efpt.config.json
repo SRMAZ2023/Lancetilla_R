@@ -34,23 +34,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[bota].[tbCuidadoPlanta]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[bota].[tbCuidados]",
          "ObjectType": 0
       },
       {
          "Name": "[bota].[tbPlantas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[bota].[tbTiposCuidados]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[bota].[tbTiposPlantas]",
          "ObjectType": 0
       },
       {
@@ -126,14 +114,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[zool].[tbRazas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[zool].[tbReinos]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[acce].[VW_tbRoles]",
          "ObjectType": 3
       },
@@ -150,19 +130,11 @@
          "ObjectType": 3
       },
       {
-         "Name": "[bota].[VW_tbCuidadoPlanta]",
-         "ObjectType": 3
-      },
-      {
          "Name": "[bota].[VW_tbCuidados]",
          "ObjectType": 3
       },
       {
          "Name": "[bota].[VW_tbPlantas]",
-         "ObjectType": 3
-      },
-      {
-         "Name": "[bota].[VW_tbTiposCuidados]",
          "ObjectType": 3
       },
       {
@@ -236,21 +208,9 @@
       {
          "Name": "[zool].[VW_tbHabitat]",
          "ObjectType": 3
-      },
-      {
-         "Name": "[zool].[VW_tbRazas]",
-         "ObjectType": 3
-      },
-      {
-         "Name": "[zool].[VW_tbReinos]",
-         "ObjectType": 3
-      },
-      {
-         "Name": "[zool].[VW_tbTiposPlantas]",
-         "ObjectType": 3
       }
    ],
-   "UiHint": "DESKTOP-4VGT370.db_Lancetilla",
+   "UiHint": "DESKTOP-QEULE6U\\SQLEXPRESSLOCAL.db_Lancetilla",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

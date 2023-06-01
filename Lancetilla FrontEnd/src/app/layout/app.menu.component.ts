@@ -1,177 +1,396 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { Console } from 'console';
+import { LocalStorageService } from '../local-storage.service';
+import { RolesPorPantallaService } from 'src/app/demo/service/RolesPorPantalla';
+import { RolesViewModel, RolesPorPantallaViewModel } from 'src/app/demo/Models/RolesPorPantallaViewModel';
 
+interface DatosItem {
+    pant_Id: number;
+    // Otros campos en DatosItem
+}
 @Component({
     selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
+    templateUrl: './app.menu.component.html',
+    providers: [RolesPorPantallaService]
 })
 export class AppMenuComponent implements OnInit {
 
-    model: any[] = [];
+    model : any[] = []; 
+    usuarioID: any;
+    EsAdmin: any;
+    RolID: any;
+    datos: any = {};
 
-    constructor(public layoutService: LayoutService) { }
+    Mantenimiento : any[] = []; 
+    
+    Botanica : any[] = []; 
 
+    Facturacion : any[] = []; 
+
+    Zoologico : any[] = []; 
+
+    Seguridad : any[] = []; 
+
+    constructor(public layoutService: LayoutService,private rolesPorPantallaService: RolesPorPantallaService,private localStorage: LocalStorageService) { 
+     
+        this.usuarioID = this.localStorage.getItem('UsuarioID')
+        this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.RolID = this.localStorage.getItem('RolID')
+    }
+
+  
+    Pantallas() {
+        
+       
+     
+      
+        var params = {
+          "role_Id": this.RolID
+        };
+      
+        
+        this.rolesPorPantallaService.PantallasPorRol(params).subscribe(
+          Response => {
+            this.datos = Response;
+           
+            console.log(  this.datos);
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 1) {
+                    this.Mantenimiento.push({ label: 'Empleados', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Empleados']},);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 2) {
+                    this.Mantenimiento.push( { label: 'Visitantes', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/visitantes'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 3) {
+                    this.Mantenimiento.push({ label: 'Tipos De Mantenimiento', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/TiposDeMantenimiento'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 4) {
+                    this.Mantenimiento.push( { label: 'Mantenimientos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Mantenimineto'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 5) {
+                    this.Mantenimiento.push( { label: 'Mantenimiento Animal', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/ManteniminetoXAnimal'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 6) {
+                    this.Mantenimiento.push( { label: 'Departamentos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/departamentos'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 7) {
+                    this.Mantenimiento.push( { label: 'Municipios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Municipios'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 8) {
+                    this.Mantenimiento.push({ label: 'Estado Civil', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/EstadoCivil'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 9) {
+                    this.Mantenimiento.push({ label: 'Cargos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/cargos'] },);
+                }
+            });
+
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 10) {
+                    this.Botanica.push({ label: 'Áreas Botánica', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areasbotanicas'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 11) {
+                    this.Botanica.push( { label: 'Cuidado de Plantas', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/cuidadosplantas'] },);
+                }
+            });
+
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 12) {
+                    this.Botanica.push({ label: 'Plantas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Plantas'] },);
+                }
+            });
+
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 13) {
+                    this.Facturacion.push({ label: 'Tickets', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 14) {
+                    this.Facturacion.push( { label: 'Metodos de pago', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/MetodoDePago'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 15) {
+                    this.Facturacion.push( { label: 'Facturas', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 16) {
+                    this.Zoologico.push( { label: 'Áreas Zoológicas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areaszoologicas'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 17) {
+                    this.Zoologico.push(  { label: 'Hábitat', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/habitat'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 18) {
+                    this.Zoologico.push( { label: 'Especies', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 19) {
+                    this.Zoologico.push( { label: 'Alimentacion', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/alimentacion'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 20) {
+                    this.Zoologico.push(  { label: 'Animales', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/animales'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 21) {
+                    this.Seguridad.push(  { label: 'Usuarios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Usuarios'] },);
+                }
+            });
+
+            this.datos.forEach((item: DatosItem) => {
+                if (item.pant_Id === 22) {
+                    this.Seguridad.push({ label: 'Roles', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/RolesPorPantalla'] },);
+                }
+            });
+
+            
+            this.model = [
+                {
+                  label: 'Inicio',
+                  items: [
+                    { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] }
+                  ]
+                },
+                // ... otros elementos del menú ...
+                
+                // Pestaña de Mantenimiento (con condición)
+                ...(this.Mantenimiento.length > 0 ? [{
+                  label: 'Mantenimiento',
+                  icon: 'pi pi-fw pi-briefcase',
+                  items: [
+                    {
+                      label: 'Páginas de Mantenimiento',
+                      icon: 'pi pi-fw pi-user',
+                      items: this.Mantenimiento
+                    }
+                  ]
+                }] : []),
+              
+                 
+                ...(this.Botanica.length > 0 ? [{
+                    label: 'Botanica',
+                    icon: 'pi pi-fw pi-briefcase',
+                    items: [
+                      {
+                        label: 'Páginas de Botanica',
+                        icon: 'pi pi-fw pi-user',
+                        items: this.Botanica
+                      }
+                    ]
+                  }] : []),
+
+                  ...(this.Zoologico.length > 0 ? [{
+                    label: 'Zoologico',
+                    icon: 'pi pi-fw pi-briefcase',
+                    items: [
+                      {
+                        label: 'Páginas de Zoologico',
+                        icon: 'pi pi-fw pi-user',
+                        items: this.Zoologico
+                      }
+                    ]
+                  }] : []),
+
+                  ...(this.Facturacion.length > 0 ? [{
+                    label: 'Facturacion',
+                    icon: 'pi pi-fw pi-briefcase',
+                    items: [
+                      {
+                        label: 'Páginas de Facturacion',
+                        icon: 'pi pi-fw pi-user',
+                        items: this.Facturacion
+                      }
+                    ]
+                  }] : []),
+
+                  ...(this.Seguridad.length > 0 ? [{
+                    label: 'Seguridad',
+                    icon: 'pi pi-fw pi-briefcase',
+                    items: [
+                      {
+                        label: 'Páginas de Seguridad',
+                        icon: 'pi pi-fw pi-user',
+                        items: this.Seguridad
+                      }
+                    ]
+                  }] : []),
+                 
+              ];
+              
+                      
+        },
+          error => {
+            console.log("manzana");
+          }
+        );
+      }
+  
+  
+  
     ngOnInit() {
+               
+      if (this.EsAdmin == false) {
+        this.Pantallas()
+      }
+      else{
+
         this.model = [
             {
-                label: 'Home',
+                label: 'Inicio',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
+                    { label: 'Graficas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/charts'] },  
+                    { label: 'Reporte Factura', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Reporte Factura'] },  
                 ]
             },
+          
             {
-                label: 'UI Components',
-                items: [
-                    { label: 'TipoCuidado', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoCuidado'] },
-                    { label: 'Cuidados', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/Cuidados'] },
-                    { label: 'Especies', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/Especies'] },
-                    { label: 'Cargos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/cargos'] },
-                    { label: 'Departamentos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/departamentos'] },
-                    { label: 'Tipos De Mantenimiento', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/TiposDeMantenimiento'] },
-                    { label: 'Plantas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/Plantas'] },
-                    { label: 'Metodo De Pago', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/MetodoDePago'] },
-                    { label: 'Estado Civil', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/EstadoCivil'] },
-                    { label: 'Empleados', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/Empleados'] },
-                    { label: 'Manteniminto', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/Mantenimineto'] },
-                    { label: 'Manteniminto a Animales', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/ManteniminetoXAnimal'] },
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
-                    { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
-                    { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
-                    { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
-                    { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
-                    { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
-                    { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },
-                    { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], routerLinkActiveOptions: { paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' } },
-                    { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
-                    { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
-                    { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
-                ]
-            },
-            {
-                label: 'Prime Blocks',
-                items: [
-                    { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
-                    { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
-                ]
-            },
-            {
-                label: 'Utilities',
-                items: [
-                    { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', routerLink: ['/utilities/icons'] },
-                    { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: ['https://www.primefaces.org/primeflex/'], target: '_blank' },
-                ]
-            },
-            {
-                label: 'Pages',
+                label: 'Mantenimiento',
                 icon: 'pi pi-fw pi-briefcase',
-                items: [
+                items: [                 
                     {
-                        label: 'Landing',
-                        icon: 'pi pi-fw pi-globe',
-                        routerLink: ['/landing']
-                    },
-                    {
-                        label: 'Auth',
+                        label: 'Paginas de Mantenimeinto',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                            {
-                                label: 'Login',
-                                icon: 'pi pi-fw pi-sign-in',
-                                routerLink: ['/auth/login']
-                            },
-                            {
-                                label: 'Error',
-                                icon: 'pi pi-fw pi-times-circle',
-                                routerLink: ['/auth/error']
-                            },
-                            {
-                                label: 'Access Denied',
-                                icon: 'pi pi-fw pi-lock',
-                                routerLink: ['/auth/access']
-                            }
+                                { label: 'Empleados', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Empleados'] },  
+                                { label: 'Manteniminto', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Mantenimineto'] },             
+                                { label: 'Visitantes', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/visitantes'] },                              
+                                { label: 'Cargos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/cargos'] },
+                                { label: 'Municipios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Municipios'] },
+                                { label: 'Departamentos', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/departamentos'] },
+                                { label: 'Tipos De Mantenimiento', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/TiposDeMantenimiento'] },           
+                                { label: 'Metodo De Pago', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/MetodoDePago'] },
+                                { label: 'Estado Civil', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/EstadoCivil'] },
+                                { label: 'Mantenimiento Animal', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/ManteniminetoXAnimal'] },
                         ]
                     },
-                    {
-                        label: 'Crud',
-                        icon: 'pi pi-fw pi-pencil',
-                        routerLink: ['/pages/crud']
-                    },
-                    {
-                        label: 'Timeline',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/timeline']
-                    },
-                    {
-                        label: 'Not Found',
-                        icon: 'pi pi-fw pi-exclamation-circle',
-                        routerLink: ['/notfound']
-                    },
-                    {
-                        label: 'Empty',
-                        icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/empty']
-                    },
+                   
                 ]
-            },
+            },    
             {
-                label: 'Hierarchy',
-                items: [
+                label: 'Botanica',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [                 
                     {
-                        label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
+                        label: 'Pagina de Botanica',
+                        icon: 'pi pi-fw pi-user',
                         items: [
-                            {
-                                label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
-                                ]
-                            },
+                            { label: 'Cuidado de Plantas', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/cuidadosplantas'] },
+                            { label: 'Áreas Botánica', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areasbotanicas'] },
+                            { label: 'Plantas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Plantas'] },
                         ]
                     },
-                    {
-                        label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                        ]
-                    }
+                   
                 ]
-            },
+            },       
+            
             {
-                label: 'Get Started',
-                items: [
+                label: 'Zoologico',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [                 
                     {
-                        label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
+                        label: 'Paginas de Zoologico',
+                        icon: 'pi pi-fw pi-user',
+                        items: [
+                            { label: 'Hábitat', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/habitat'] },
+                            { label: 'Alimentacion', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/alimentacion'] },
+                            { label: 'Áreas Zoológicas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/areaszoologicas'] },
+                            { label: 'Especies', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Animales', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/animales'] },
+                            { label: 'Razas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/razas'] },
+                        ]
                     },
+                   
+                ]
+            },   
+            {
+                label: 'Facturacion',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [                 
                     {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
-                    }
+                        label: 'Paginas de Facturacion',
+                        icon: 'pi pi-fw pi-user',
+                        items: [
+                            { label: 'Facturas', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Tickets', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Metodos de pago', icon: 'pi pi-fw pi-id-card', routerLink: ['/app/uikit/MetodoDePago'] },
+                        ]
+                    },
+                   
+                ]
+            },     
+            {
+                label: 'Seguridad',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [                 
+                    {
+                        label: 'Paginas de Seguridad',
+                        icon: 'pi pi-fw pi-user',
+                        items: [
+                            { label: 'Usuarios', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/Usuarios'] },
+                            { label: 'Roles', icon: 'pi pi-fw pi-bookmark', routerLink: ['/app/uikit/RolesPorPantalla'] },
+                        ]
+                    },
+                   
                 ]
             }
-        ];
-    }
+        
+            
+                  
+            
+            
+         
+         ];
+     }
+   }
 }
+      

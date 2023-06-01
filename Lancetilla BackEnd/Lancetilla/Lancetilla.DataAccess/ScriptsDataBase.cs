@@ -191,24 +191,13 @@ namespace Lancetilla.DataAccess
 
         #endregion
 
-        #region Cuidados
+        #region Cuidados de Plantas
 
         public static string InsertarCuidados = "bota.UDP_tbCuidados_CREATE";
 
         public static string ActualizarCuidados = "bota.UDP_tbCuidados_UPDATE";
 
         public static string EliminarCuidados = "bota.UDP_tbCuidados_DELETE";
-
-
-        #endregion
-
-        #region TiposCuidados
-
-        public static string tbTiposCuidados_CREATE = "bota.tbTiposCuidados_CREATE";
-
-        public static string tbTiposCuidados_UPDATE = "bota.tbTiposCuidados_UPDATE";
-
-        public static string tbTiposCuidados_DELETE = "bota.tbTiposCuidados_DELETE";
 
 
         #endregion

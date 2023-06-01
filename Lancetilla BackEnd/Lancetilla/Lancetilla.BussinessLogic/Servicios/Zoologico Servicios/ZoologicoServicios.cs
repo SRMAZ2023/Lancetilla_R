@@ -227,7 +227,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
             var result = new ServiceResult();
             try
             {
-                var map = _animalesRepository.Update(item,1);
+                var map = _animalesRepository.Update(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
