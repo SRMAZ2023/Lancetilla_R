@@ -112,6 +112,9 @@ export class MantenimientoPorAnimalEditComponent {
     this.isExpanded = true;
   }
 
+  yanoMas!:number;
+
+
   constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private renderer: Renderer2,
     private messageService: MessageService,
@@ -138,7 +141,7 @@ export class MantenimientoPorAnimalEditComponent {
       response => {
         // console.log(response)
 
-        this.tipoMantenimiento = response.map((item: { tima_Descripcion: any; tima_Id: any; }) => ({ label: item.tima_Descripcion, value: item.tima_Id }));
+        this.tipoMantenimiento = response.map((item: { tima_Descripcion: any; tima_Id: any; }) => ({ label: item.tima_Descripcion , value: item.tima_Id }));
       },
       error => {
         // Manejo del error
@@ -149,7 +152,7 @@ export class MantenimientoPorAnimalEditComponent {
       response => {
         // console.log(response)
 
-        this.Animal = response.map((item: { anim_Nombre: any; anim_Id: any; }) => ({ label: item.anim_Nombre, value: item.anim_Id }));
+        this.Animal = response.map((item: { anim_Nombre: any; anim_Id: any; }) => ({ label: item.anim_Nombre + " -     Codigo: "  + item.anim_Id, value: item.anim_Id }));
       },
       error => {
         // Manejo del error
@@ -233,6 +236,13 @@ export class MantenimientoPorAnimalEditComponent {
   }
 
    
+  message(){
+
+    if(this.yanoMas != 1){
+      this.messageService.add({ severity: 'info', summary: 'Informacion', detail: "Elige a un Animal al que quieras editar el manteniminetio", life: 2000 });
+    }
+
+  }
 
   getInputsValues(id: any) {
     this.datos = this.DataAnimal;
@@ -251,7 +261,7 @@ export class MantenimientoPorAnimalEditComponent {
       this.noAbre = 1;
        
       this.mostrar = false;
-     
+      this.yanoMas = 1;
 
     } else {
       console.log('No se encontró el ID de mantenimiento o el valor de maan_Fecha es nulo o indefinido');
