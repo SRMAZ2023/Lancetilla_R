@@ -27,6 +27,7 @@ import { RouterModule } from '@angular/router';
         { path: 'departamentos', data: { breadcrumb: 'departamentos' }, loadChildren: () => import('./departamentos/departamentos.module').then(m => m.departamentosModule) },
         { path: 'TiposDeMantenimiento', data: { breadcrumb: 'TiposDeMantenimiento' }, loadChildren: () => import('./TipoDeMantenimiento/TiposDeMantenimiento.module').then(m => m.TiposDeMantenimientosModule) },
         { path: 'Plantas', data: { breadcrumb: 'Plantas' }, loadChildren: () => import('./Plantas/Plantas.module').then(m => m.PlantasModule) },
+        { path: 'CuidadoPlantas', data: { breadcrumb: 'CuidadoPlantas' }, loadChildren: () => import('./CuidadoPlantas/CuidadoPlantas.module').then(m => m.CuidadoPlantasModule) },
         { path: 'MetodoDePago', data: { breadcrumb: 'MetodoDePago' }, loadChildren: () => import('./MetodoDePago/MetodoPago.module').then(m => m.MetodoPagoModule) },
         { path: 'EstadoCivil', data: { breadcrumb: 'EstadoCivil' }, loadChildren: () => import('./EstadoCivil/EstadoCivil.module').then(m => m.EstadoCivilModule) },
         { path: '**', redirectTo: '/notfound' }

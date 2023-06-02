@@ -5,16 +5,30 @@ BEGIN
 
 	SELECT TOP (1000) *
 	FROM [bota].[VW_tbCuidadoPlanta]
-	where cupl_Id = 1
+	where cupl_Estado = 1
  	
 
 END
 
-GO
-CREATE OR ALTER PROC bota.tbCuidadoPlanta_CREATE
+ GO 
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_FINDArea 
+@arbo INT
+AS
+BEGIN
+
+	SELECT TOP (1000) *
+	FROM [bota].[VW_tbCuidadoPlanta]
+	where cupl_Estado = 1
+	and  arbo_Id = @arbo
+ 	
+
+END
+ 
+ GO
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_CREATE  
 @plan_Id int,
 @ticu_Id int,
-@cupl_Fecha varchar,
+@cupl_Fecha varchar(100),
 @cupl_UserCreacion int
 AS BEGIN
 
@@ -38,18 +52,18 @@ INSERT INTO [bota].[tbCuidadoPlanta]
 END TRY
 
 BEGIN CATCH
- END CATCH
 			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+ END CATCH
 
 END
 GO
 
 
-CREATE OR ALTER PROC bota.tbCuidadoPlanta_UPDATE
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_UPDATE  
 @cupl_Id int,
 @plan_Id int,
 @ticu_Id int,
-@cupl_Fecha varchar,
+@cupl_Fecha varchar(100),
 @cupl_UserModificacion int
 AS BEGIN
 BEGIN TRY
@@ -80,7 +94,7 @@ GO
 
 
 GO
-CREATE OR ALTER PROC bota.tbCuidadoPlanta_DELETE
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_DELETE 
 @cupl_Id INT
  AS BEGIN
 

@@ -138,7 +138,7 @@ export class MantenimientoPorAnimalEditComponent {
       response => {
         // console.log(response)
 
-        this.Animal = response.map((item: { anim_Nombre: any; anim_Id: any; }) => ({ label: item.anim_Nombre, value: item.anim_Id }));
+        this.Animal = response.map((item: { anim_Nombre: any; anim_Id: any; anim_Codigo:any }) => ({ label: `${item.anim_Nombre}  Codigo:${item.anim_Codigo}`, value: item.anim_Id }));
       },
       error => {
         // Manejo del error

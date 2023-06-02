@@ -1,46 +1,64 @@
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div class="container"
+  style="background: 'https://estaticos-cdn.elperiodico.com/clip/b9afb6c2-a1af-4191-b0c9-cd8082d26fa1_alta-libre-aspect-ratio_default_0.jpg'; background-size: cover; background-position: center; height: 100%;">
+
   <div class="flex flex-column align-items-center justify-content-center">
-    <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-      <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
-        <div class="text-center mb-5">
-          <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
-          <div class="text-900 text-3xl font-medium mb-3">Lancetilla</div>
-          <span class="text-600 font-medium">Iniciar Sesion</span>
+    <div class="card" style="border-radius: 53px;  
+        display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50vh;
+  height: 100%;
+  margin-top: 20vh; 
+  margin-bottom: 20vh;
+  margin-left: 30%; ">
+      <p-toast></p-toast>
+      <div class="text-center mb-5">
+        <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
+        <div class="text-900 text-3xl font-medium mb-3">Lancetilla</div>
+        <span class="text-600 font-medium">Iniciar Sesion</span>
+      </div>
+
+      <div>
+
+        <div class="field col-9">
+          <label for="usua_NombreUsuario">Descripción</label>
+          <input type="text" placeholder="Usuario" pInputText class="w-80 md:w-100rem mb-3" style="padding: 1rem"
+            id="usua_NombreUsuario" name="usua_NombreUsuario" #usua_NombreUsuario="ngModel"
+            [(ngModel)]="Usuario.usua_NombreUsuario" required autofocus
+            [ngClass]="{ 'ng-invalid ng-dirty': submitted && usua_NombreUsuario.invalid }" pattern="^(?!\s*$).+" />
+          <small class="ng-dirty ng-invalid" style="color: red;"
+            *ngIf="usua_NombreUsuario.invalid && (usua_NombreUsuario.touched || submitted)">
+            <br>
+            El nombre de usuario es requerido.
+          </small>
         </div>
+        
+        <div class="field col-6">
+          <label for="Contraseña">Contraseña</label>
+          <input type="password" placeholder="Contraseña" pInputText class="w-80 md:w-80rem mb-3" style="padding: 1rem"
+            id="usua_Clave" name="usua_Clave" #usua_Clave="ngModel"
+            [(ngModel)]="Usuario.usua_Clave" required autofocus
+            [ngClass]="{ 'ng-invalid ng-dirty': submitted && usua_Clave.invalid }" pattern="^(?!\s*$).+" />
+          <small class="ng-dirty ng-invalid" style="color: red;"
+            *ngIf="usua_Clave.invalid && (usua_Clave.touched || submitted)">
+            <br>
+            La contraseña es requerida.
+          </small>
+        </div>
+        
+        
 
-        <div>
-          <div class="field col-6">
-            <label for="email1" class="block text-900 text-xl font-medium mb-2">Usuario</label>
-            <input type="text" placeholder="Usuario" pInputText class="w-full md:w-30rem mb-3" style="padding: 1rem" pInputText id="usua_NombreUsuario" name="usua_NombreUsuario" #usua_NombreUsuario="ngModel"
-              [(ngModel)]="Usuario.usua_NombreUsuario" required autofocus
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && usua_NombreUsuario.invalid }"
-              pattern="^(?!\s*$).+" />
-            <small class="error-message" *ngIf="usua_NombreUsuario.invalid && (usua_NombreUsuario.touched || submitted)">
-              El Nombre de usuario es requerido.
-            </small>
-          </div>
 
-          <div class="field col-6">
-            <label for="password1" class="block text-900 text-xl font-medium mb-2">Contraseña</label>
-            <input type="password" placeholder="Contraseña" pInputText class="w-full md:w-30rem mb-3" style="padding: 1rem" pInputText id="usua_Clave" name="usua_Clave" #usua_Clave="ngModel"
-              [(ngModel)]="Usuario.usua_Clave" required autofocus
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && usua_Clave.invalid }"
-              pattern="^(?!\s*$).+" />
-            <small class="error-message" *ngIf="usua_Clave.invalid && (usua_Clave.touched || submitted)">
-              La contraseña es requerida.
-            </small>
+        <div class="flex align-items-center justify-content-between mb-3 gap-5">
+          <div class="flex align-items-center">
+            <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+            <label for="rememberme1">Recuérdame</label>
           </div>
-
-          <div class="flex align-items-center justify-content-between mb-3 gap-5">
-            <div class="flex align-items-center">
-              <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-              <label for="rememberme1">Recuérdame</label>
-            </div>
-          </div>
-          
-          <button pButton pRipple label="Ingresar" (click)="Ingresar()" class="w-full p-3 text-xl"></button>
         </div>
       </div>
+      <button pButton pRipple label="Ingresar" (click)="Ingresar()" class="w-full p-3 text-xl"></button>
+
     </div>
   </div>
 </div>
