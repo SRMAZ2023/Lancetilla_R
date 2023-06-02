@@ -36,5 +36,9 @@ export class FacturaService {
         return this.http.post<Response>(this.url + 'Facturas/TablaFactura', params, { headers: headers });
 
     }
+
+    TodosLosVisitantes(): Observable<any> {
+        return this.http.get(this.url + "Visitantes/ListarVisitantes");
+    }
    
 }

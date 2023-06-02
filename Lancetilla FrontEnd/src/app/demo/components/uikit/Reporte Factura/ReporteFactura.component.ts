@@ -31,6 +31,8 @@ export class ReporteFacturaComponent implements OnInit {
 
   TotalTotal : any = 0
 
+  public empleado!: FacturasViewModel;
+  submitted: boolean = false;
  
   Encabezado: any = {};
   Tabla: any = {};

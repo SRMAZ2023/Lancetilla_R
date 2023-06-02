@@ -9,7 +9,10 @@ namespace Lancetilla.Entities.Entities
     public partial class VW_tbVisitantes
     {
         public int visi_Id { get; set; }
-        public string visi_Nombre { get; set; }
+        public string visi_NombreCompleto { get; set; }
+        public string visi_Nombres { get; set; }
+        public string visi_Apellido { get; set; }
+
         public string visi_RTN { get; set; }
         public string visi_Sexo { get; set; }
         public string visi_Sexos { get; set; }

@@ -1590,6 +1590,7 @@ VALUES
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
 INSERT INTO mant.tbVisitantes (visi_Nombres, visi_Apellido, visi_RTN, visi_Sexo, visi_UserCreacion)
 VALUES 
+  ('Cliente', 'Preferido', '0',  'M', 1),
   ('María', 'González', '0801199012345',  'F', 1),
   ('Carlos', 'López', '0502198567890',    'M', 1),
   ('Laura', 'Hernández', '0303199545678', 'F', 1),

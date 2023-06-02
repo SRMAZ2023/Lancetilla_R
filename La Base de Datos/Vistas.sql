@@ -253,7 +253,9 @@ CREATE OR ALTER VIEW mant.VW_tbVisitantes
 AS 
 
 SELECT visi_Id, 
-       visi_Nombres + ' ' + visi_Apellido AS visi_Nombre, 
+       visi_Nombres + ' ' + visi_Apellido + ' RTN: ' + visi_RTN  AS visi_NombreCompleto, 
+	   visi_Nombres,
+	   visi_Apellido,
 	   visi_RTN,
 	   visi_Sexo,
 	   CASE visi_Sexo WHEN 'F' THEN 'Femenino'
