@@ -8,12 +8,14 @@ import { UsuarioService } from 'src/app/demo/service/Usuario.service';
 import { AppLayoutComponent } from "../../../../layout/app.layout.component";
 import { Injectable, Inject } from '@angular/core';
 import { LocalStorageService } from '../../../../local-storage.service';
+import { Toast } from 'primeng/toast';
 
 
 
 @Component({
   selector: 'app-login',
-  providers: [MessageService, UsuarioService],
+  providers: [MessageService, UsuarioService, Toast],
+  styleUrls: ['./login-design.scss'],
   templateUrl: './login.component.html',
   styles: [`
     :host ::ng-deep .pi-eye,
@@ -25,6 +27,15 @@ import { LocalStorageService } from '../../../../local-storage.service';
   `]
 })
 export class LoginComponent {
+
+  
+  isInputEmptyOrWhitespace(value: string | undefined): boolean {
+    if (value === undefined) {
+        return true; // Tratar 'undefined' como un valor vacío
+    }
+
+    return value.trim() === '';
+}
 
   valCheck: string[] = ['remember'];
 
@@ -48,56 +59,57 @@ export class LoginComponent {
   Ingresar() {
     // Verificar si todos los campos están llenos
 
-    this.messageService.add({
-        severity: 'success',
-        summary: 'Felicidades',
-        detail: "sss",
-        life: 1500
-      });
-     
-    if (
-      this.Usuario.usua_NombreUsuario &&
-      this.Usuario.usua_Clave
-    ) {
-      // Todos los campos están llenos, realizar acciones adicionales
-      console.log("Holaa")
-      this.UsuarioService.Login(this.Usuario).subscribe(Response => {
-        this.datos = Response;
-        console.log(this.datos);
-       
-        if (this.datos.data.usua_NombreUsuario == "Usuario o Contraseña Incorrectos") {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Error',
-            detail: this.datos.data.usua_NombreUsuario,
-            life: 3000
-          });
-        } else if (this.datos.code === 200) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Felicidades',
-            detail: "Bienvenido "+ this.datos.data.usua_NombreUsuario ,                     
-           
-         
-           
-            life: 1500
-          });
 
-          console.log(this.datos.data.usua_NombreUsuario);
-         this.localStorage.setItem('NombreUsuario', this.datos.data.usua_NombreUsuario);
-         this.localStorage.setItem('UsuarioID', this.datos.data.usua_Id);
-         this.localStorage.setItem('RolID', this.datos.data.role_Id);
-         this.localStorage.setItem('EmpleadoNombre', this.datos.data.empl_Nombre);
-         this.localStorage.setItem('EsAdmin', this.datos.data.usua_Admin);
 
+      if(this.Usuario.usua_NombreUsuario == "" || this.Usuario.usua_Clave == ""){
+        this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'Los campos son requeridos.', life: 3000 });
+
+      }
+      else{
+        if (
+          this.Usuario.usua_NombreUsuario &&
+          this.Usuario.usua_Clave
+        ) {
+          // Todos los campos están llenos, realizar acciones adicionales
+          this.UsuarioService.Login(this.Usuario).subscribe(Response => {
+            this.datos = Response;
+
+           
+            if (this.datos.data.usua_NombreUsuario == "Usuario o Contraseña Incorrectos") {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error:',
+                detail: this.datos.data.usua_NombreUsuario,
+                life: 3000
+              });
+            } else if (this.datos.code === 200) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Felicidades',
+                detail: "Bienvenido "+ this.datos.data.usua_NombreUsuario ,                     
+               
+             
+               
+                life: 1500
+              });
     
-          setTimeout(() => {
-           this._router.navigate(['/app']);
-          }, 1500);
+              console.log(this.datos.data.usua_NombreUsuario);
+             this.localStorage.setItem('NombreUsuario', this.datos.data.usua_NombreUsuario);
+             this.localStorage.setItem('UsuarioID', this.datos.data.usua_Id);
+             this.localStorage.setItem('RolID', this.datos.data.role_Id);
+             this.localStorage.setItem('EmpleadoNombre', this.datos.data.empl_Nombre);
+             this.localStorage.setItem('EsAdmin', this.datos.data.usua_Admin);
+    
+        
+              setTimeout(() => {
+               this._router.navigate(['/app']);
+              }, 1500);
+            }
+          }, error => {
+            console.log(error);
+          });
         }
-      }, error => {
-        console.log(error);
-      });
-    }
+      }
+   
   }
 }

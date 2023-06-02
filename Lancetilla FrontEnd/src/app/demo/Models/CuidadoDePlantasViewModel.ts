@@ -1,5 +1,5 @@
 export class CuidadoDePlantasViewModel {
-    constructor(
+     constructor(
         public cuid_Id?: number,
         public cuid_Descripcion?: string,
         public cuid_Frecuencia?: string,

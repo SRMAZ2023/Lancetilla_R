@@ -290,6 +290,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
                     { label: 'Gráficas', icon: 'pi pi-chart-line', routerLink: ['/app/uikit/charts'] },  
                     { label: 'Reporte', icon: 'pi pi-print', routerLink: ['/app/uikit/Reporte Factura'] },  
+                    { label: 'CuidadoPlantas', icon: 'pi pi-print', routerLink: ['/app/uikit/CuidadoPlantas'] },  
                 ]
             },
           

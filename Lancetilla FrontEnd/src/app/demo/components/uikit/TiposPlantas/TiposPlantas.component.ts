@@ -61,7 +61,6 @@ export class TiposPlantasComponent implements OnInit {
 
     constructor(private TiposPlantasService: TiposPlantasService,
         private ReinosServices: ReinosService,
-        private datePipe: DatePipe, 
         private messageService: MessageService,) {
     }
 
@@ -202,7 +201,7 @@ export class TiposPlantasComponent implements OnInit {
     editTiposPlantas(TiPla: TiposPlantasViewModel) {
         this.Editar = true;
         this.TiPlanta = { ...TiPla };
-        this.TiposPlantasDialog = true;
+        this.NuevoDIalog = true;
     }
     //Toma los datos de ka tabla
 
@@ -329,7 +328,7 @@ export class TiposPlantasComponent implements OnInit {
 
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.TiPlanta = {};
-                                this.TiposPlantasDialog = false;
+                                this.NuevoDIalog = false;
                                 this.loadData();
 
 

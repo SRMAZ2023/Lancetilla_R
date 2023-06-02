@@ -187,6 +187,17 @@ namespace Lancetilla.DataAccess
 
         public static string EliminarCuidados = "bota.UDP_tbCuidados_DELETE";
 
+        #endregion
+
+        #region CuidadoPlantas
+
+        public static string tbCuidadoPlanta_FINDArea = "bota.tbCuidadoPlanta_FINDArea ";
+
+        public static string tbCuidadoPlanta_CREATE = "bota.tbCuidadoPlanta_CREATE";
+
+        public static string tbCuidadoPlanta_UPDATE = "bota.tbCuidadoPlanta_UPDATE";
+
+        public static string tbCuidadoPlanta_DELETE = "bota.tbCuidadoPlanta_DELETE";
 
         #endregion
 

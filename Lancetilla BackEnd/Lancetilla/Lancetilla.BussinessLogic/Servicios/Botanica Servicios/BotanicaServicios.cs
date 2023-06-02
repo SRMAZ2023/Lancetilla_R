@@ -17,19 +17,22 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         private readonly CuidadosRepository _cuidadosRepository;
         private readonly PlantasRepository _plantasRepository;
         private readonly TiposdePlantasRepository _tiposdePlantasRepository;
+        private readonly CuidadoPlantas _cuidadoPlantas;
       
 
         public BotanicaServicios(AreasBotanicasRepository areasBotanicasRepository, 
                                  CuidadosRepository cuidadosRepository, 
                                  PlantasRepository plantasRepository,
                                  TiposCuidados tiposCuidados,
-                                 TiposdePlantasRepository  tiposdePlantasRepository)
+                                 TiposdePlantasRepository  tiposdePlantasRepository,
+                                  CuidadoPlantas cuidadoPlantas)
         {
             _areasBotanicasRepository = areasBotanicasRepository;
             _cuidadosRepository = cuidadosRepository;
             _plantasRepository = plantasRepository;
             _tiposCuidados = tiposCuidados;
             _tiposdePlantasRepository = tiposdePlantasRepository;
+            _cuidadoPlantas = cuidadoPlantas;
            
         }
 
@@ -664,7 +667,117 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         }
         #endregion
 
+        #region CuidadosPlantas 
+        public IEnumerable<VW_tbCuidadoPlanta> ListarCuidadoPlantas()
+        {
+            try
+            {
+                var list = _cuidadoPlantas.ListarCuidados();
+                return list;
+            }
+            catch (Exception ex)
+            {
 
+                return Enumerable.Empty<VW_tbCuidadoPlanta>();
+
+            }
+        }
+
+        public IEnumerable<VW_tbCuidadoPlanta> BuscarCuidadoPlantas(int id)
+        {
+            try
+            {
+                var list = _cuidadoPlantas.Find2(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbCuidadoPlanta>();
+
+            }
+        }
+
+
+        public ServiceResult InsertarCuidadoPlantas(tbCuidadoPlanta item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _cuidadoPlantas.Insert(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarCuidadoPlantas(tbCuidadoPlanta item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _cuidadoPlantas.Update(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+
+        public ServiceResult EliminarCuidadoPlantas(tbCuidadoPlanta item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _cuidadoPlantas.Delete(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+        #endregion
 
     }
 }
