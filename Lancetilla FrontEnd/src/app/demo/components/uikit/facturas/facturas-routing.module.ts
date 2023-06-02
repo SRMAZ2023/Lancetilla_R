@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { facturasComponent } from './facturas.component';
 
-import { SeatComponent } from './seat.component';
-import { PersonalComponent } from './personal.component';
+
 
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenubarModule } from 'primeng/menubar';
@@ -42,12 +41,25 @@ import { ToastModule } from 'primeng/toast';
 
 
 
+import { FileUploadModule } from 'primeng/fileupload';
+
+import { RippleModule } from 'primeng/ripple';
+
+
+
+
+
+
+
+
 
 
 
 @NgModule({
   imports: [
     CommonModule,
+    FileUploadModule,
+    RippleModule,
     ToastModule,
     DropdownModule,
 	  CheckboxModule,
@@ -73,8 +85,7 @@ import { ToastModule } from 'primeng/toast';
       {
         path: '', component: facturasComponent, children: [
           { path: '', redirectTo: 'personal', pathMatch: 'full' },
-          { path: 'personal', component: PersonalComponent },
-          { path: 'seat', component: SeatComponent }
+        
         ]
       }
     ])

@@ -1,56 +1,56 @@
 import { Component, OnInit } from '@angular/core';
-import { MegaMenuItem, MenuItem } from 'primeng/api';
-
+import { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { FacturasViewModel } from 'src/app/demo/Models/FacturasViewModel';
 import { VisitantesViewModel } from 'src/app/demo/Models/VisitantesViewModel';
 import { FacturaService } from 'src/app/demo/service/facturas.service';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Console } from 'console';
-import * as moment from 'moment';
+
+
+
+
 
 
 @Component({
-    templateUrl: './facturas.component.html',
-    providers: [MessageService, FacturaService],
-    styles: [`
-        :host ::ng-deep .p-menubar-root-list {
-            flex-wrap: wrap;
-        }
-    `]
+  templateUrl: './facturas.component.html',
+  providers: [MessageService, FacturaService],
+  styles: [`
+      :host ::ng-deep .p-menubar-root-list {
+          flex-wrap: wrap;
+      }
+  `]
 })
-export class facturasComponent implements OnInit { 
+export class facturasComponent implements OnInit {
+  // Class properties and variables
+  public visitante!: VisitantesViewModel;
+  public page_title!: string;
+  submitted: boolean = false;
+  
+  routeItems: MenuItem[] = [];
+  selectedOption: number = 1;
+  
+  public formValid = false;
 
-    public visitante!: VisitantesViewModel;
-    public page_title!: string;;
-    submitted: boolean = false;
-    
-    routeItems: MenuItem[] = [];
-    selectedOption: number = 2; // Declarar la propiedad selectedOption
+  visitantesForm: any;
+  datos: any = {};
 
-    public formValid = false;
+  Genero : string = ""
 
-    visitantesForm: any;
-    datos: any = {};
+  VisitantesTodos: VisitantesViewModel[] = [];
 
-    VisitantesTodos: VisitantesViewModel[] = [];
+  camposDesactivados = true;
+   
+  Permiso = true;
+  Select = true;
 
-    camposDesactivados = true;
-     
-     Permiso = true;
-     Select = true;
+  refreshClasses = false;
 
-
-    constructor(
-        private messageService: MessageService,
-        private service: FacturaService,
-      
-     
-       
-        ) {  this.visitante = new VisitantesViewModel(undefined, "", "", "","", undefined, undefined)
-        this.page_title = "Venta Tickets"}
+  constructor(
+      private messageService: MessageService,
+      private service: FacturaService,
+  ) {
+      this.visitante = new VisitantesViewModel(undefined, "","", "", "","", undefined, undefined)
+      this.page_title = "Venta Tickets"
+  }
    
 
     ngOnInit() {
@@ -58,7 +58,7 @@ export class facturasComponent implements OnInit {
 
         this.Select = false
         this.visitante.visi_Id = 1
-        this.visitante.visi_Nombre = "Cliente"
+        this.visitante.visi_Nombres = "Cliente"
         this.visitante.visi_Apellido = "Preferido"
         this.visitante.visi_RTN = "0"
         this.visitante.visi_Sexo = "M"
@@ -72,14 +72,11 @@ export class facturasComponent implements OnInit {
             }
         );
 
-
         this.routeItems = [
             { label: 'Personal', routerLink: 'personal' },
             { label: 'Seat', routerLink: 'seat' },
           
-        ];
-
-     
+        ];   
     }
 
 
@@ -88,16 +85,12 @@ export class facturasComponent implements OnInit {
       
         this.service.TodosLosVisitantes().subscribe(
           response => {
-            // Almacenar los datos en una variable
-            const todosLosVisitantes = response;
-      
-            // Filtrar los datos compatibles con this.visitante.visi_Id
+   
+            const todosLosVisitantes = response;       
             const datosCompatibles = todosLosVisitantes.filter((visitante: { visi_Id: number }) => visitante.visi_Id === this.visitante.visi_Id);
-
-            console.log(datosCompatibles)
-
+     
             this.visitante.visi_Id = datosCompatibles[0].visi_Id
-            this.visitante.visi_Nombre = datosCompatibles[0].visi_Nombres
+            this.visitante.visi_Nombres = datosCompatibles[0].visi_Nombres
             this.visitante.visi_Apellido = datosCompatibles[0].visi_Apellido
             this.visitante.visi_RTN = datosCompatibles[0].visi_RTN
             this.visitante.visi_Sexo = datosCompatibles[0].visi_Sexo
@@ -109,21 +102,18 @@ export class facturasComponent implements OnInit {
       }
 
     onCheckboxChange() {
-       
-    console.log(this.Permiso)
-        if (this.Permiso == true) {
         
-     
-
+        if (this.Permiso == true) {
         
         this.Select = true
         this.visitante.visi_Id = 0
-        this.visitante.visi_Nombre = ""
+        this.visitante.visi_Nombres = ""
         this.visitante.visi_Apellido = ""
         this.visitante.visi_RTN = ""
         this.visitante.visi_Sexo = ""
         
-
+        this.submitted = false
+        
         this.Permiso = false
         this.camposDesactivados = false
 
@@ -133,7 +123,7 @@ export class facturasComponent implements OnInit {
 
 
         this.visitante.visi_Id = 1
-        this.visitante.visi_Nombre = "Cliente"
+        this.visitante.visi_Nombres = "Cliente"
         this.visitante.visi_Apellido = "Preferido"
         this.visitante.visi_RTN = "000000000000"
         this.visitante.visi_Sexo = "M"
@@ -141,38 +131,57 @@ export class facturasComponent implements OnInit {
         this.Permiso = true
         this.Select = false
 
-        this.camposDesactivados = false
+        this.camposDesactivados = true
      
-      }
-      
-      
+        }
+          
       }
     
       // Resto de tu código
     
  
     selectOption(option: number) {
-        // Aquí puedes agregar tu lógica para validar si se llenaron todos los campos
-        // Si todos los campos están llenos, puedes habilitar la siguiente opción y permitir cambiar de página
-        // Por ejemplo:
-        if (this.visitante.visi_Nombre && this.visitante.visi_Apellido && this.visitante.visi_RTN && this.visitante.visi_Sexo) {
+     
+      console.log(option)
+      if (option == 2) {
+        this.refreshClasses = true;
+        console.log("hOLA")
+      } else {
+        this.refreshClasses = false;
+      }
+        
+      if (this.visitante.visi_Nombres && this.visitante.visi_Apellido && this.visitante.visi_RTN && this.visitante.visi_Sexo != undefined) {
           this.selectedOption = option;
-          this.camposDesactivados = false;
+         
         } else {
-       
-          this.messageService.add({ severity: 'info', summary: 'Error', detail: "Faltan campos por llenar.", life: 3000 });
-          alert("nO FUNCIONA EL TOAST")
+   
         }
       }
     
+      onSiguienteClick() {
+      
+          this.submitted = true;
+          
+           this.messageService.add({ severity: 'info', summary: 'Error', detail: "Faltan campos por llenar.", life: 3000 });
+       
+           if (this.visitante.visi_Nombres?.trim() != "" &&
+           this.visitante.visi_Apellido?.trim() != "" &&
+           this.visitante.visi_Sexo?.trim() != ""        
+            ) {
+          this.selectOption(2);
+        }
+      }
+      
       isCamposLlenos(): boolean {
         return (
-          this.visitante.visi_Nombre !== undefined  || this.visitante.visi_Nombre != "" &&
-          this.visitante.visi_Apellido !== undefined  || this.visitante.visi_Apellido != "" &&
-          this.visitante.visi_RTN !== undefined || this.visitante.visi_RTN != "" &&
-          this.visitante.visi_Sexo !== undefined || this.visitante.visi_Sexo != ""
+          !!this.visitante.visi_Id &&
+          !!this.visitante.visi_Nombres &&
+          !!this.visitante.visi_Apellido &&
+          !!this.visitante.visi_RTN &&
+          this.visitante.visi_Sexo != undefined
         );
       }
+      
 
       decrement(): void {
         // Lógica para disminuir el número
@@ -183,11 +192,11 @@ export class facturasComponent implements OnInit {
       }
       
 
-      saveEmpleados() {
+      GuardarVisitante() {
         this.submitted = true
         //Verificar si todos los campos están llenos
-        if (this.visitante.visi_Nombre?.trim() != "" &&
-            this.visitante.visi_Nombre?.trim() != "" &&
+        if (this.visitante.visi_Nombres?.trim() != "" &&
+            this.visitante.visi_Apellido?.trim() != "" &&
             this.visitante.visi_Sexo?.trim() != "" &&
             this.visitante.visi_RTN != undefined 
            

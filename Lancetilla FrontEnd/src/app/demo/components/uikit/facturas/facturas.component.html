@@ -1,99 +1,104 @@
 <div class="col-12" style="display: flex; justify-content: center; height: 100vh;">
-    <div class="card card-w-title" style="width: 100%; text-align: center;">
+    <div class="card card-w-title" [ngClass]="{ 'refreshed-class': refreshClasses }"  style="width: 100%; text-align: center;">
       <h2>Facturación de Tickets</h2>
   
       <div style="display: flex; justify-content: center;">
         <div *ngIf="selectedOption === 1">
           <div class="card">
             <div class="card-body">
-  
+              <p-toast></p-toast>
+              <form class="mid-from" #visitantesForm="ngForm" (ngSubmit)="GuardarVisitante()">
               <div class="grid p-fluid">
-  
                 <div class="field col-6">
                   <h4>Nuevo visitante?</h4>
                   <p-checkbox id="Permiso" [binary]="true" (onChange)="onCheckboxChange()"></p-checkbox>
-
                 </div>
-  
+              
                 <div class="field col-6">
-                    <label for="visi_Id">Visitantes registrados</label>
-                    <p-dropdown (onChange)="CompletarValores()" placeholder="Seleccione un visitante" inputId="dropdown"
-                      [autoDisplayFirst]="false" name="visi_Id" #visi_Id="ngModel" [options]="VisitantesTodos"
-                      [(ngModel)]="visitante.visi_Id" optionLabel="label" optionValue="value"
-                      [ngClass]="{ 'ng-invalid ng-dirty': visitantesForm?.submitted && visi_Id?.invalid }"
-                      [disabled]="Select" [filter]="true"></p-dropdown>
-                    <small class="ng-dirty ng-invalid" style="color: red;"
-                      *ngIf="visitantesForm?.submitted && !visitante?.visi_Id">El visitante es requerido.</small>
-                  </div>
-                  
-  
+                  <label for="visi_Id">Visitantes registrados</label>
+                  <p-dropdown (onChange)="CompletarValores()" placeholder="Seleccione un visitante" inputId="dropdown"
+                    [autoDisplayFirst]="false" name="visi_Id" #visi_Id="ngModel" [options]="VisitantesTodos"
+                    [(ngModel)]="visitante.visi_Id" optionLabel="label" optionValue="value"
+                    [ngClass]="{ 'ng-invalid ng-dirty': visitantesForm?.submitted && visi_Id?.invalid }"
+                    [disabled]="Select" [filter]="true"></p-dropdown>
+                  <small class="ng-dirty ng-invalid" style="color: red;"
+                    *ngIf="visitantesForm?.submitted && !visitante?.visi_Id">El visitante es requerido.</small>
+                </div>
+              
+
+                
                 <div class="field col-6">
-                  <label for="visi_Nombre">Nombre</label>
-                  <input type="text" pInputText id="visi_Nombre" name="visi_Nombre" #visi_Nombre="ngModel"
-                    [(ngModel)]="visitante.visi_Nombre" required autofocus
-                    [ngClass]="{'ng-invalid ng-dirty' : submitted && visi_Nombre?.invalid}"
-                    pattern="^(?!\s*$).+" [disabled]="camposDesactivados" />
+                  <label for="visi_Nombres">Nombres</label>
+                  <input type="text" pInputText id="visi_Nombres" name="visi_Nombres" #visi_Nombres="ngModel"
+                      [(ngModel)]="visitante.visi_Nombres"  [disabled]="camposDesactivados" required 
+                      [ngClass]="{'ng-invalid ng-dirty' : submitted && visi_Nombres.invalid}"
+                      pattern="^(?!\s*$).+" />
                   <small class="ng-invalid ng-dirty" style="color: red;"
-                    *ngIf="visi_Nombre?.invalid && (visi_Nombre?.touched || submitted)">
-                    El nombre del visitante es requerido.
+                      *ngIf="visi_Nombres.invalid && (visi_Nombres.touched || submitted)">
+                      El nombre del visitante es requerido.
                   </small>
-                </div>
-  
-                <div class="field col-6">
-                  <label for="visi_Apellido">Apellido</label>
-                  <input type="text" pInputText id="visi_Apellido" name="visi_Apellido" #visi_Apellido="ngModel"
-                    [(ngModel)]="visitante.visi_Apellido" required autofocus
-                    [ngClass]="{'ng-invalid ng-dirty' : submitted && visi_Apellido?.invalid}"
-                    pattern="^(?!\s*$).+" [disabled]="camposDesactivados" />
-                  <small class="ng-dirty ng-invalid" style="color: red;"
-                    *ngIf="!visi_Apellido?.valid && visi_Apellido?.touched">
-                    El apellido del visitante es requerido.
-                  </small>
-                </div>
-  
-                <div class="field col-6">
-                  <label for="visi_RTN">DNI</label>
-                  <p-inputMask type="text" inputId="visi_RTN" mask="9999-9999-99999" name="visi_RTN"
-                    #visi_RTN="ngModel" [(ngModel)]="visitante.visi_RTN"
-                    [ngClass]="{'ng-invalid ng-dirty' : submitted && visi_RTN?.invalid}"
-                    pattern="^(?!\s*$).+" [required]="true" [disabled]="camposDesactivados"></p-inputMask>
-                  <small class="ng-dirty ng-invalid" style="color: red;"
-                    *ngIf="!visi_RTN?.valid && visi_RTN?.touched">
-                    El número de identidad del visitante es requerido.
-                  </small>
-                </div>
-  
-                <div class="field col-6">
-                  <label for="muni_Id">Sexo</label>
-                  <div class="grid formgrid">
-                    <div class="col-12 md:col-4">
-                      <div class="field-radiobutton">
-                        <p-radioButton id="visi_Sexo_M" name="visi_Sexo" value="M"
-                          [(ngModel)]="visitante.visi_Sexo" [disabled]="camposDesactivados"></p-radioButton>
-                        <label for="visi_Sexo_M">Masculino</label>
-                      </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                      <div class="field-radiobutton">
-                        <p-radioButton id="visi_Sexo_F" name="visi_Sexo" #empl_Direccion="ngModel" value="F"
-                          [(ngModel)]="visitante.visi_Sexo" [disabled]="camposDesactivados"></p-radioButton>
-                        <label for="visi_Sexo_F">Femenino</label>
-                      </div>
-                    </div>
-                  </div>
-                  <small class="ng-dirty ng-invalid" style="color: red;"
-                    *ngIf="visitantesForm?.submitted && !visitante?.visi_Sexo">El género del visitante es requerido.</small>
-                </div>
-  
-                <br>
-  
-               
-
-                <button pButton pRipple label="Siguiente" (click)="selectOption(2)"
-                [disabled]="!isCamposLlenos() || camposDesactivados" icon="pi pi-check"
-                class="p-button-success"></button>
-  
               </div>
+
+               
+              <div class="field col-6">
+                <label for="visi_Apellido">Apellidos</label>
+                <input type="text" pInputText id="visi_Apellido" name="visi_Apellido" #visi_Apellido="ngModel"
+                    [(ngModel)]="visitante.visi_Apellido" [disabled]="camposDesactivados" required 
+                    [ngClass]="{'ng-invalid ng-dirty' : submitted && visi_Apellido.invalid}"
+                    pattern="^(?!\s*$).+" />
+                <small class="ng-invalid ng-dirty" style="color: red;"
+                    *ngIf="visi_Apellido.invalid && (visi_Apellido.touched || submitted)">
+                    El apellido del visitante es requerido.
+                </small>
+            </div>
+              
+
+            <div class="field col-6">
+              <label for="visi_RTN">RTN</label>
+              <p-inputMask type="text"  id="visi_RTN" mask="9999-9999-99999" name="visi_RTN" #visi_RTN="ngModel"
+                  [(ngModel)]="visitante.visi_RTN" [disabled]="camposDesactivados" [required]="true" 
+                  [ngClass]="{'ng-invalid ng-dirty' : submitted && visi_RTN.invalid}"
+                  pattern="^(?!\s*$).+" ></p-inputMask>
+              <small class="ng-invalid ng-dirty" style="color: red;"
+                  *ngIf="visi_RTN.invalid && (visi_RTN.touched || submitted)">
+                  El RTN del visitante es requerido.
+              </small>
+          </div>
+
+          
+
+          
+                 
+          <div class="field col-6">
+            <label for="visi_Sexo">Sexo</label>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton id="visi_Sexo_M" [disabled]="camposDesactivados" name="visi_Sexo" value="M" [(ngModel)]="visitante.visi_Sexo"></p-radioButton>
+                        <label for="city1">Masculino</label>
+                    </div>
+                </div>
+                <div class="col-12 md:col-4">
+                    <div class="field-radiobutton">
+                        <p-radioButton id="visi_Sexo"  [disabled]="camposDesactivados" name="visi_Sexo" #Genero="ngModel" value="F" [(ngModel)]="visitante.visi_Sexo"></p-radioButton>
+                        <label for="city2">Femenino</label>
+                    </div>
+                </div>
+            </div>
+            <small class="ng-dirty ng-invalid" style="color: red;"
+                *ngIf="visitantesForm.submitted && !visitante.visi_Sexo && submitted == true">El género del visitante es requerido.</small>
+        </div>
+        
+              
+                <br>
+              
+                <button pButton pRipple label="Siguiente" type="submit"
+                (click)="onSiguienteClick()" icon="pi pi-check"
+                  class="p-button-success"></button>
+              
+              </div>
+            </form>
+              
             </div>
          </div>
           </div>
@@ -101,62 +106,55 @@
        
        
         <div *ngIf="selectedOption === 2" class="row">
-            <div class="col-sm-6" style="float: left;">
-                <!-- Columna izquierda -->
-                <div class="card" style="height: 200%; padding: 95px;">
-                  <div class="card-body" style="text-align: center;">
-                    <h4>Tickets de zoológico</h4> <!-- Título agregado -->
-                    <div style="margin-bottom: 20px;">
-                        <img src="https://thumbs.dreamstime.com/b/boletos-coloridos-del-parque-zool%C3%B3gico-con-el-fondo-tropical-66561836.jpg" alt="Imagen derecha" style="width: 280px; height: auto; object-fit: cover;">
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center;">
-                      <button pButton pRipple icon="pi pi-minus" (click)="decrement()" class="p-button-primary"></button>
-                      <div style="margin: 0 10px;">
-                        <p-inputMask type="number" [ngClass]="'p-inputtext-sm ng-invalid ng-dirty'" style="width: 60px; height: 40px; padding: 5px;"></p-inputMask>
-                      </div>
-                      <button pButton pRipple icon="pi pi-plus" (click)="increment()" class="p-button-primary"></button>
-                    </div>
-                  </div>
+          <div class="col-sm-6" style="float: left;">
+            <!-- Columna izquierda -->
+            <div class="card" style="height: 200%; padding: 70px; transform: scale(1); transition: transform 0.3s;">
+              <div class="card-body" style="text-align: center;">
+                <h4>Tickets de zoológico</h4> <!-- Título agregado -->
+                <div style="margin-bottom: 20px;">
+                  <img src="https://thumbs.dreamstime.com/b/boletos-coloridos-del-parque-zool%C3%B3gico-con-el-fondo-tropical-66561836.jpg" alt="Imagen derecha" style="width: 280px; height: auto; object-fit: cover;">
                 </div>
-              </div>
-              
-              
-              <div class="col-sm-6" style="float: right;">
-                <!-- Columna izquierda -->
-                <div class="card" style="height: 200%; padding: 95px;">
-                  <div class="card-body" style="text-align: center;">
-                    <h4>Tickets de botánica</h4> <!-- Título agregado -->
-                    <div style="margin-bottom: 20px;">
-                      <img src="https://thumbs.dreamstime.com/b/boletos-coloridos-del-parque-zool%C3%B3gico-con-el-fondo-tropical-66561836.jpg" alt="Imagen derecha" style="width: 280px; height: auto; object-fit: cover;">
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center;">
-                      <button pButton pRipple icon="pi pi-minus" (click)="decrement()" class="p-button-primary"></button>
-                      <div style="margin: 0 10px;">
-                        <p-inputMask type="number" [ngClass]="'p-inputtext-sm ng-invalid ng-dirty'" style="width: 60px; height: 40px; padding: 5px;"></p-inputMask>
-                      </div>
-                      <button pButton pRipple icon="pi pi-plus" (click)="increment()" class="p-button-primary"></button>
-                    </div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                  <button pButton pRipple icon="pi pi-minus" (click)="decrement()" class="p-button-sm ng-invalid ng-dirty"></button>
+                  <div style="margin: 0 10px;">
+                    <p-inputMask type="number" [ngClass]="'p-inputtext-sm ng-invalid ng-dirty'" style="width: 60px; height: 40px; padding: 5px;"></p-inputMask>
                   </div>
+                  <button pButton pRipple icon="pi pi-plus" (click)="increment()" class="p-button-sm ng-invalid ng-dirty"></button>
+                  
                 </div>
-              </div>
-              
-          
-            <div class="row" style="margin-top: 40px; clear: both;">
-              <div class="col-12" style="display: flex; justify-content: center;">
-                <button pButton pRipple label="Regresar" (click)="selectOption(1)" class="p-button-secondary"></button>
-                <button pButton pRipple label="Finalizar" class="p-button-success"></button>
               </div>
             </div>
           </div>
+        
+        
+          <div class="col-sm-6" style="float: right;">
+            <!-- Columna izquierda -->
+            <div class="card" style="height: 200%; padding: 70px; transform: scale(1); transition: transform 0.3s;">
+              <div class="card-body" style="text-align: center;">
+                <h4>Tickets de botánica</h4> <!-- Título agregado -->
+                <div style="margin-bottom: 20px;">
+                  <img src="https://thumbs.dreamstime.com/b/boletos-coloridos-del-parque-zool%C3%B3gico-con-el-fondo-tropical-66561836.jpg" alt="Imagen derecha" style="width: 280px; height: auto; object-fit: cover;">
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                  <button pButton pRipple icon="pi pi-minus" (click)="decrement()" class="p-button-sm  ng-dirty"></button>
+                  <div style="margin: 0 10px;">
+                    <p-inputMask type="number" [ngClass]="'p-inputtext-sm ng-invalid ng-dirty'" style="width: 60px; height: 40px; padding: 5px;"></p-inputMask>
+                  </div>
+                  <button pButton pRipple icon="pi pi-plus" (click)="increment()" class="p-button-sm  ng-dirty"></button>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 40px; clear: both;">
+            <div class="col-12" style="display: flex; justify-content: center;">
+              <button pButton pRipple label="Regresar" (click)="selectOption(1)" class="p-button-secondary"></button>
+              <button pButton pRipple label="Finalizar" class="p-button-success"></button>
+            </div>
+          </div>
+        
           
-          
-          
-          
-          
-            
-          
-          
-      
-   
+        </div>
+        
   </div>
   
