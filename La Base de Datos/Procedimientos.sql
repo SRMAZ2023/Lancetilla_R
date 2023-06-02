@@ -1208,8 +1208,13 @@ BEGIN TRY
 BEGIN TRAN
 	-- Si existe
 		IF EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
-		BEGIN	
-			SELECT 409 AS codeStatus, 'El número de RTN ya existe.' AS messageStatus
+		BEGIN									
+		
+		DECLARE @id INT = (SELECT visi_Id FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
+		
+		SELECT @id AS visi_Id, 200 AS visi_UserCreacion, 'Todo Perfecto' AS visi_Apellido
+		
+				
 		END
 
 		ELSE IF NOT EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
@@ -1219,7 +1224,7 @@ BEGIN TRAN
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
 
-			SELECT 200 AS codeStatus, 'El visitate ha sido creado con éxito.' AS messageStatus
+			SELECT 1 AS visi_Id, 200 AS visi_UserCreacion, 'Todo Perfecto' AS visi_Apellido
 
 			COMMIT -- Agregado COMMIT
 		END
@@ -1235,9 +1240,10 @@ END CATCH
 END
 GO
 
+
 --EXEC mant.UDP_tbVisitantes_UPDATE 11, 'a', 'e', '111', 'f', 1
 --select * from mant.tbVisitantes
-
+GO
 
 CREATE OR ALTER PROC mant.UDP_tbVisitantes_UPDATE
 @visi_Id INT,
@@ -1250,7 +1256,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
+			IF EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN AND visi_Id <> @visi_Id )
 			BEGIN
 				SELECT 409 AS codeStatus, 'El número de RTN ya existe.' AS messageStatus
 			END

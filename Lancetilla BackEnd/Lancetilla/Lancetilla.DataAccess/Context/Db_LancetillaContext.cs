@@ -847,7 +847,6 @@ namespace Lancetilla.DataAccess.Context
 
                 entity.Property(e => e.usua_UserModiNombre).HasMaxLength(100);
             });
-
             modelBuilder.Entity<VW_tbVisitantes>(entity =>
             {
                 entity.HasNoKey();
@@ -864,9 +863,17 @@ namespace Lancetilla.DataAccess.Context
 
                 entity.Property(e => e.visi_Id).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.visi_Nombre)
+                entity.Property(e => e.visi_NombreCompleto)
                     .IsRequired()
-                    .HasMaxLength(201);
+                    .HasMaxLength(307);
+
+                entity.Property(e => e.visi_Nombres)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.visi_Apellido).HasMaxLength(100);
+
+
 
                 entity.Property(e => e.visi_RTN)
                     .IsRequired()

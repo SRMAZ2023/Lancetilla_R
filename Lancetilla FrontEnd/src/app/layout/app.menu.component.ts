@@ -363,7 +363,8 @@ export class AppMenuComponent implements OnInit {
                         label: 'Páginas de Facturación',
                         icon: 'pi pi-fw pi-user',
                         items: [
-                            { label: 'Facturas', icon: 'pi pi-paypal', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Facturas', icon: 'pi pi-paypal', routerLink: ['/app/uikit/facturas'] },
+                     
                             { label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Especies'] },
                             { label: 'Métodos de Pago', icon: 'pi pi-money-bill', routerLink: ['/app/uikit/MetodoDePago'] },
                         ]
