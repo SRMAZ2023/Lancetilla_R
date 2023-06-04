@@ -1,0 +1,32 @@
+.custom-button {
+    width: 100px;
+    height: 40px;
+  }
+  
+  .custom-button-inverse {
+    background-color: red; /* Cambia el color a tu preferencia */
+    color: white; /* Cambia el color a tu preferencia */
+  }
+  
+
+  .ticket-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .highlight-input {
+    border: 2px solid #ffcc00; /* Cambia el color del borde a amarillo */
+    padding: 8px; /* Aumenta el espacio interno del input */
+    font-weight: bold; /* Aplica negrita al texto del input */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Agrega una sombra al input */
+    outline: none; /* Elimina el contorno al hacer clic */
+  }
+
+  .custom-icon {
+    color: green;
+  }
+
+  .green-border {
+    border: 2px solid green;
+  }

@@ -26,6 +26,9 @@ import { PlantasViewModel } from 'src/app/demo/Models/PlantasViewModel';
 import { TiposCuidadosService } from 'src/app/demo/service/TiposCuidadios.Service';
 import { TiposCuidadosViewModel } from 'src/app/demo/Models/TiposCuidadosViewModel';
 
+import { LocalStorageService } from '../../../../../local-storage.service';
+
+
 @Component({
   templateUrl: './CuidadoPlantas-New.component.html',
   providers: [MessageService, CuidadoPlantasService, ManteniminetoXAnimalService, TiposCuidadosService, AreaBotanicaService, TiposDeMantenimientoService, PlantasService]
@@ -39,6 +42,9 @@ export class CuidadoPlantasNewComponent implements OnInit {
   animNombre: string = ""; // Variable para almacenar el valor del label del ddl Animal
   timaDescripcion: string = ""; // Variable para almacenar el valor del label del ddl Tipo de Mantenimiento
 
+
+  EsAdmin: any;
+    Permiso: any;
 
   //Dialogs
   CuidadoPlantasDialog: boolean = false;
@@ -90,7 +96,9 @@ export class CuidadoPlantasNewComponent implements OnInit {
 
 
 
-  constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
+  constructor( private _router: Router ,
+ private localStorage: LocalStorageService,
+private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private messageService: MessageService,
     private TiposDeMantenimientoService: TiposDeMantenimientoService,
     private AreaBotanicaService: AreaBotanicaService,
@@ -98,15 +106,34 @@ export class CuidadoPlantasNewComponent implements OnInit {
     private CuidadoPlantasService: CuidadoPlantasService,
     private PlantasService: PlantasService,
     private _route: ActivatedRoute,
+    
 
     private _rauter: Router) {
     this.page_title = "Editar Mantenimiento A Animal";
     this.minDate = new Date();
-
+    this.EsAdmin = this.localStorage.getItem('EsAdmin')
+    this.Permiso = this.localStorage.getItem('CuidadoDePlantas')
+         
 
   }
 
   ngOnInit() {
+
+        
+    if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+      if (this.EsAdmin == false) {
+
+          if (this.Permiso == false) {
+              this._router.navigate(['login']);
+          }              
+      }
+
+  }else{
+
+      this._router.navigate(['login']);
+  }
+
 
     //this.getPlanta();
 

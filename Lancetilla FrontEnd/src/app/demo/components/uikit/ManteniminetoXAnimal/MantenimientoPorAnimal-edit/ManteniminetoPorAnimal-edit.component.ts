@@ -12,6 +12,8 @@ import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeMantenimi
 import { AnimalViewModel } from 'src/app/demo/Models/AnimalViewModel';
 import { MantenimintoViewModel } from 'src/app/demo/Models/MantenimintoViewModel';
 import { format, parse } from 'date-fns';
+import { LocalStorageService } from '../../../../../local-storage.service';
+
 
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -36,6 +38,10 @@ export class MantenimientoPorAnimalEditComponent {
   //Dialogs
   MantenimientoXanimalDialog: boolean = false;
   deleteMantenimientoXanimalDialog: boolean = false;
+
+  EsAdmin: any;
+  Permiso: any;
+
   //Dialogs
 
   Sube: boolean = false;
@@ -104,7 +110,8 @@ export class MantenimientoPorAnimalEditComponent {
 
   count: number = 0;
 
-  constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
+  constructor( private _router: Router ,
+    private localStorage: LocalStorageService,private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private renderer: Renderer2,
     private messageService: MessageService,
     private TiposDeMantenimientoService: TiposDeMantenimientoService,
@@ -113,12 +120,27 @@ export class MantenimientoPorAnimalEditComponent {
     this.page_title = "Editar Mantenimiento A Animal";
     this.minDate = new Date();
     this.animalDropdown = new ElementRef(null);
-
+    this.EsAdmin = this.localStorage.getItem('EsAdmin')
+    this.Permiso = this.localStorage.getItem('MantenimientoPorAnimal')
   }
 
 
 
   ngOnInit() {
+
+    if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+      if (this.EsAdmin == false) {
+
+          if (this.Permiso == false) {
+              this._router.navigate(['login']);
+          }              
+      }
+
+  }else{
+
+      this._router.navigate(['login']);
+  }
 
 
     this.getMantenimientoPorAnimal();

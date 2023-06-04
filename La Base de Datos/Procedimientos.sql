@@ -1202,35 +1202,40 @@ CREATE OR ALTER PROC mant.UDP_tbVisitantes_CREATE
 @visi_RTN NVARCHAR(100),
 @visi_Sexo CHAR(1),
 @visi_UserCreacion INT
+
 AS BEGIN
 
 BEGIN TRY
 BEGIN TRAN
 	-- Si existe
+												
 		IF EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
 		BEGIN									
 		
-		DECLARE @id INT = (SELECT visi_Id FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
 		
-		SELECT @id AS visi_Id, 200 AS visi_UserCreacion, 'Todo Perfecto' AS visi_Apellido
+		SELECT  409 AS visi_UserCreacion, 'El visitante ya existe.' AS visi_Apellido
 		
 				
 		END
 
 		ELSE IF NOT EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN)
 		BEGIN
+
+		
+			
+			
 			INSERT INTO mant.tbVisitantes(visi_Nombres, visi_Apellido, visi_RTN, visi_Sexo, visi_UserCreacion)
 			VALUES (@visi_Nombres, @visi_Apellido, @visi_RTN, @visi_Sexo, @visi_UserCreacion)
 
 			BEGIN TRAN -- Agregado BEGIN TRAN
-
-			SELECT 1 AS visi_Id, 200 AS visi_UserCreacion, 'Todo Perfecto' AS visi_Apellido
+				DECLARE @visi_Id INT
+		    SET @visi_Id = SCOPE_IDENTITY()
+			SELECT @visi_Id AS visi_Id, 200 AS visi_UserCreacion, 'Todo Perfecto' AS visi_Apellido
 
 			COMMIT -- Agregado COMMIT
+		
 		END
-
-
-
+		
 COMMIT
 END TRY
 
@@ -1241,8 +1246,7 @@ END
 GO
 
 
---EXEC mant.UDP_tbVisitantes_UPDATE 11, 'a', 'e', '111', 'f', 1
---select * from mant.tbVisitantes
+
 GO
 
 CREATE OR ALTER PROC mant.UDP_tbVisitantes_UPDATE
@@ -1258,7 +1262,7 @@ AS BEGIN
 		BEGIN TRAN
 			IF EXISTS (SELECT * FROM mant.tbVisitantes WHERE visi_RTN = @visi_RTN AND visi_Id <> @visi_Id )
 			BEGIN
-				SELECT 409 AS codeStatus, 'El número de RTN ya existe.' AS messageStatus
+				SELECT 409 AS codeStatus, 'El visitante ya existe.' AS messageStatus
 			END
 	
 			ELSE -- Estadi civil no existe, se realiza la actualización
@@ -3603,6 +3607,96 @@ GO
 
 --***********************************************************TABLA DE FACTURAS DETALLE************************************************************************--
 
+CREATE OR ALTER PROCEDURE fact.UDP_InsertarFactura 
+(
+    @empl_Id INT,
+    @visi_Id INT,
+    @fact_UserCreacion INT
+
+)
+AS
+BEGIN
+    BEGIN TRY
+	BEGIN TRAN
+
+    -- Insertar la factura
+    INSERT INTO fact.tbFacturas (empl_Id , visi_Id, fact_Fecha, meto_Id, fact_UserCreacion)
+    VALUES (@empl_Id, @visi_Id,  GETDATE(), 1, @fact_UserCreacion);
+
+    -- Obtener el ID de la factura recién insertada
+    DECLARE @fact_Id INT;
+    SET @fact_Id = SCOPE_IDENTITY();
+
+	SELECT @fact_Id AS fact_Id
+
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+END
+
+GO
+CREATE OR ALTER PROCEDURE fact.UDP_InsertarFacturaMetodoDePago 
+(
+      @fact_Id INT,
+	  @meto_Id INT
+)
+AS
+BEGIN
+    BEGIN TRY
+	BEGIN TRAN
+
+   UPDATE fact.tbFacturas
+   SET    meto_Id = @meto_Id
+   WHERE  fact_Id = @fact_Id
+    
+	SELECT 200 AS codeStatus, 'Todo correcto' AS messageStatus
+
+	COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+
+END
+
+
+GO
+CREATE OR ALTER PROCEDURE fact.UDP_InsertarFacturaDetalle
+    @fact_Id INT,
+    @tick_Id INT,
+    @fade_Cantidad INT,
+    @fade_UserCreacion INT
+ 
+AS
+BEGIN
+  
+    BEGIN TRY
+	BEGIN TRAN
+    	
+	DECLARE @Precio DECIMAL(8,2) = (SELECT T1.tick_Precio FROM fact.tbTickets T1 WHERE tick_Id = @tick_Id)
+	DECLARE @TOTAL DECIMAL(8,2) = (@Precio * @fade_Cantidad)
+
+	INSERT INTO fact.tbFacturasDetalles (fact_Id, tick_Id, fade_Cantidad, fade_Total, fade_UserCreacion)
+    VALUES (@fact_Id, @tick_Id, @fade_Cantidad, @TOTAL, @fade_UserCreacion);
+    
+    SELECT 200 AS codeStatus, 'Todo correcto' AS messageStatus
+    
+   COMMIT
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+			SELECT 500 AS codeStatus, ERROR_MESSAGE ( ) AS messageStatus
+	END CATCH
+END
+
+GO
+
+
 CREATE OR ALTER PROCEDURE fact.UPD_CargarInformacionDelEncabezado_Factura 
 @visi_Id  INT
 AS
@@ -3667,3 +3761,64 @@ END
 --************************************************************************************************************************************************************--
 
 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+         
+            
+            
+            
+            
+            
+            
+           
+            
+          
+            
+            
+            
+            
+         
+            
+            
+            
+          
+            
+            

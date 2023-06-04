@@ -10,6 +10,10 @@ import { ProductService } from 'src/app/demo/service/product.service';
 import { Product } from 'src/app/demo/api/product';
 import { forkJoin } from 'rxjs';
 
+import { LocalStorageService } from '../../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -20,6 +24,8 @@ interface expandedRows {
     providers: [MessageService, RolesPorPantallaService]
 })
 export class RolesPorPantallaInsertComponent implements OnInit {
+  EsAdmin: any;
+  Permiso: any;
 
     //Dialogs
     CargostDialog: boolean = false;
@@ -71,12 +77,27 @@ export class RolesPorPantallaInsertComponent implements OnInit {
     expandedRows: RolesPorPantallaViewModel[] = [];
    
 
-    constructor(private productService: ProductService, private rolesPorPantallaService: RolesPorPantallaService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+      private localStorage: LocalStorageService,private productService: ProductService, private rolesPorPantallaService: RolesPorPantallaService, private messageService: MessageService) {
+        this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.Permiso = this.localStorage.getItem('Roles')}
 
     ngOnInit() {
  
-       
+           
+      if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+        if (this.EsAdmin == false) {
+
+            if (this.Permiso == false) {
+                this._router.navigate(['login']);
+            }              
+        }
+
+    }else{
+
+        this._router.navigate(['login']);
+    }
 
       this.Pantallas()
       this.PantallasSinRol()

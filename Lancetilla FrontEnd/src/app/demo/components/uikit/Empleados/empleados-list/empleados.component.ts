@@ -5,11 +5,19 @@ import { EmpleadosViewModel } from 'src/app/demo/Models/EmpleadaoViewModel';
 import { EmpleadosService } from 'src/app/demo/service/Empleados.service';
 import { error } from 'console';
 
+import { LocalStorageService } from '../../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 @Component({
     templateUrl: './empleados.component.html',
     providers: [MessageService, EmpleadosService]
 })
 export class empleadosComponent implements OnInit {
+
+    EsAdmin: any;
+    Permiso: any;
+
 
     //Dialogs
     empleadostDialog: boolean = false;
@@ -54,10 +62,27 @@ export class empleadosComponent implements OnInit {
     statuses: any[] = [];
 
 
-    constructor(private EmpleadosService: EmpleadosService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private EmpleadosService: EmpleadosService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Empleados') }
 
     ngOnInit() {
+
+            
+       if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+        if (this.EsAdmin == false) {
+
+            if (this.Permiso == false) {
+                this._router.navigate(['login']);
+            }              
+        }
+
+    }else{
+
+        this._router.navigate(['login']);
+    }
 
         this.EmpleadosService.getEmpleados().subscribe(
             Response => {

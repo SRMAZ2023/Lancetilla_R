@@ -11,6 +11,9 @@ import { Product } from 'src/app/demo/api/product';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
+import { LocalStorageService } from '../../../../../local-storage.service';
+
+import { Router, Params } from '@angular/router';
 
 
 
@@ -25,7 +28,8 @@ export class RolesPorPantallaUpdateComponent implements OnInit {
   role_Id: string = "";
   role_Descripcion: string = "";
  
-
+  EsAdmin: any;
+  Permiso: any;
 
     //Dialogs
     CargostDialog: boolean = false;
@@ -76,11 +80,28 @@ export class RolesPorPantallaUpdateComponent implements OnInit {
     expandedRows: RolesPorPantallaViewModel[] = [];
    
 
-    constructor(private route: ActivatedRoute, private productService: ProductService, private rolesPorPantallaService: RolesPorPantallaService, private messageService: MessageService) {
+    constructor( private _router: Router , 
+      private localStorage: LocalStorageService,
+     private route: ActivatedRoute, private productService: ProductService, private rolesPorPantallaService: RolesPorPantallaService, private messageService: MessageService) {
       
-    }
+      this.EsAdmin = this.localStorage.getItem('EsAdmin')
+      this.Permiso = this.localStorage.getItem('Roles') }
 
     ngOnInit() {
+
+      if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+        if (this.EsAdmin == false) {
+
+            if (this.Permiso == false) {
+                this._router.navigate(['login']);
+            }              
+        }
+
+    }else{
+
+        this._router.navigate(['login']);
+    }
  
       this.route.paramMap.subscribe(params => {
         this.role_Id = params.get('role_Id') ?? '';

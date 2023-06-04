@@ -39,6 +39,20 @@ namespace Lancetilla.DataAccess.Repositories.Fact
             return result;
         }
 
+        public RequestStatus InsertarFacturaDetalle(tbFacturasDetalles item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@fact_Id", item.fact_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@tick_Id", item.tick_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@fade_Cantidad", item.fade_Cantidad, DbType.String, ParameterDirection.Input);
+            parametros.Add("@fade_UserCreacion", item.fade_UserCreacion, DbType.String, ParameterDirection.Input);
+
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarDetallesFactura, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
 
         public RequestStatus Insert(tbFacturasDetalles item)
         {

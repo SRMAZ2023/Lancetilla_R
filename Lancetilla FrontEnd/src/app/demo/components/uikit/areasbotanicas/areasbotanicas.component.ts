@@ -6,6 +6,10 @@ import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasVie
 import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
 import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
 import { AreasZoologicasService } from 'src/app/demo/service/AreasZoologicas.service';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     templateUrl: './areasbotanicas.component.html',
@@ -23,6 +27,10 @@ export class AreasBotanicasComponent implements OnInit {
     //Dialogs
 
     datos: any = {};
+
+    
+  EsAdmin: any;
+  Permiso: any;
 
 
     public Editar: boolean = false;
@@ -59,10 +67,28 @@ export class AreasBotanicasComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private AreasBotanicasService: AreaBotanicaService, private messageService: MessageService) {
-    }
+    constructor(
+        private _router: Router ,
+        private localStorage: LocalStorageService,private AreasBotanicasService: AreaBotanicaService, private messageService: MessageService) {
+    
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('ÁreasBotánica')    }
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
        this.CargarDatos();
 

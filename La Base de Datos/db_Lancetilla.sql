@@ -793,37 +793,42 @@ VALUES
 -- mant
 INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
 VALUES ('Empleados', NULL, GETDATE(), NULL, NULL), --1
-       ('Visitantes', NULL, GETDATE(), NULL, NULL), --2
-       ('TiposMantenimientos', NULL, GETDATE(), NULL, NULL), --3
        ('Mantenimientos', NULL, GETDATE(), NULL, NULL), --4
-       ('MantenimientoAnimal', NULL, GETDATE(), NULL, NULL), --5
-       ('Departamentos', NULL, GETDATE(), NULL, NULL), --6
-       ('Municipios', NULL, GETDATE(), NULL, NULL), --7
-       ('EstadosCiviles', NULL, GETDATE(), NULL, NULL), --8
-       ('Cargos', NULL, GETDATE(), NULL, NULL); --9
+       ('Visitantes', NULL, GETDATE(), NULL, NULL), --2
+	   ('Cargos', NULL, GETDATE(), NULL, NULL), --9
+	   ('Municipios', NULL, GETDATE(), NULL, NULL), --7
+	   ('Departamentos', NULL, GETDATE(), NULL, NULL), --6
+       ('TiposMantenimientos', NULL, GETDATE(), NULL, NULL), --3
+	   ('EstadosCiviles', NULL, GETDATE(), NULL, NULL), --8    
+       ('MantenimientoAnimal', NULL, GETDATE(), NULL, NULL) --5
+     
+      
+       
+     
 
 -- bota
 INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
-VALUES ('AreasBotanicas', NULL, GETDATE(), NULL, NULL), --10
+VALUES ('Cuidado de Plantas', NULL, GETDATE(), NULL, NULL), --10
+       ('Tipos de Cuidado', NULL, GETDATE(), NULL, NULL), --10
+	   ('Cuidados Generales', NULL, GETDATE(), NULL, NULL), --10
+	   ('AreasBotanicas', NULL, GETDATE(), NULL, NULL), --10
        ('Cuidados', NULL, GETDATE(), NULL, NULL), --11
        ('Plantas', NULL, GETDATE(), NULL, NULL); --12
 
-
--- fact
+-- zool
 INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
+VALUES ('Habitat', NULL, GETDATE(), NULL, NULL), --17
+       ('Alimentacion', NULL, GETDATE(), NULL, NULL), --19
+       ('Areas Zoológicas', NULL, GETDATE(), NULL, NULL), --16     
+       ('Especies', NULL, GETDATE(), NULL, NULL), --18
+	   ('Animales', NULL, GETDATE(), NULL, NULL), --20
+	   ('Razas', NULL, GETDATE(), NULL, NULL); --20
+             
+	   INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
 VALUES ('Tickets', NULL, GETDATE(), NULL, NULL), --13
        ('MetodosPago', NULL, GETDATE(), NULL, NULL), --14
        ('Facturas', NULL, GETDATE(), NULL, NULL) --15
       
-
--- zool
-INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
-VALUES ('AreasZoologico', NULL, GETDATE(), NULL, NULL), --16
-       ('Habitat', NULL, GETDATE(), NULL, NULL), --17
-       ('Especies', NULL, GETDATE(), NULL, NULL), --18
-       ('Alimentacion', NULL, GETDATE(), NULL, NULL), --19
-       ('Animales', NULL, GETDATE(), NULL, NULL); --20
-
 	   -- acce
 INSERT INTO acce.tbPantallas (pant_Descripcion, pant_UserCreacion, pant_FechaCreacion, pant_UserModificacion, pant_FechaModificacion)
 VALUES ('Usuarios', NULL, GETDATE(), NULL, NULL), --21
@@ -1590,7 +1595,7 @@ VALUES
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
 INSERT INTO mant.tbVisitantes (visi_Nombres, visi_Apellido, visi_RTN, visi_Sexo, visi_UserCreacion)
 VALUES 
-  ('Cliente', 'Preferido', '0',  'M', 1),
+  ('Cliente', 'Final', '0',  'M', 1),
   ('María', 'González', '0801199012345',  'F', 1),
   ('Carlos', 'López', '0502198567890',    'M', 1),
   ('Laura', 'Hernández', '0303199545678', 'F', 1),

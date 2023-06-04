@@ -5,13 +5,16 @@ import { Table } from 'primeng/table';
 import { MetodosPagoService } from 'src/app/demo/service/Pago.service';
 import { error } from 'console';
 //import { MetodoPagos } from 'src/app/demo/api/MetodoPagosViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './MetodoPago.component.html',
     providers: [MessageService, MetodosPagoService]
 })
 export class MetodoPagoComponent implements OnInit {
-
+    EsAdmin: any;
+    Permiso: any;
     //Dialogs
     MetodoPagotDialog: boolean = false;
 
@@ -56,10 +59,26 @@ export class MetodoPagoComponent implements OnInit {
     statuses: any[] = [];
 
 
-    constructor(private MetodosPagoService: MetodosPagoService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private MetodosPagoService: MetodosPagoService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('MétodosDePago')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
             this.loadData();
         this.cols = [
             { field: 'meto_Id', header: 'meto_Id' },

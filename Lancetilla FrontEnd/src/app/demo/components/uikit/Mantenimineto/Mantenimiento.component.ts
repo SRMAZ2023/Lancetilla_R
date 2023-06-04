@@ -7,12 +7,21 @@ import { MantenimintoViewModel } from 'src/app/demo/Models/MantenimintoViewModel
 import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeManteniminetoViewModel';
 import { TiposDeMantenimientoService } from 'src/app/demo/service/TipoDeMantenimiento.service';
 //import { Mantenimientos } from 'src/app/demo/api/MantenimientosViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     templateUrl: './Mantenimiento.component.html',
     providers: [MessageService, MantenimintoService, TiposDeMantenimientoService]
 })
 export class MantenimientoComponent implements OnInit {
+
+    
+  EsAdmin: any;
+  Permiso: any;
+
 
     //Dialogs
     MantenimientotDialog: boolean = false;
@@ -62,12 +71,28 @@ export class MantenimientoComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private MantenimintoService: MantenimintoService, 
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private MantenimintoService: MantenimintoService, 
         private TiposDeMantenimientoService:TiposDeMantenimientoService, 
         private messageService: MessageService) {
-    }
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Mantenimientos')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         //Trae los datos de la api
         this.loadData();

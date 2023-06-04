@@ -4,6 +4,9 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { error } from 'console';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
 //import { Especiess } from 'src/app/demo/api/EspeciessViewModel';
 
 @Component({
@@ -11,7 +14,8 @@ import { error } from 'console';
     providers: [MessageService, ProductService]
 })
 export class especiesComponent implements OnInit {
-
+    EsAdmin: any;
+    Permiso: any;
     //Dialogs
     EspeciestDialog: boolean = false;
 
@@ -59,10 +63,27 @@ export class especiesComponent implements OnInit {
     statuses: any[] = [];
 
 
-    constructor(private productService: ProductService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private productService: ProductService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Especies')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
+
 
         //Trae los datos de la api
         this.loadData();

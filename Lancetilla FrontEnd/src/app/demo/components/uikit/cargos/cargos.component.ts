@@ -5,12 +5,18 @@ import { Table } from 'primeng/table';
 import { CargosService } from 'src/app/demo/service/cargo.service';
 import { error } from 'console';
 //import { Cargoss } from 'src/app/demo/api/CargossViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
 
 @Component({
     templateUrl: './cargos.component.html',
     providers: [MessageService, CargosService]
 })
 export class cargosComponent implements OnInit {
+
+    EsAdmin: any;
+    Permiso: any;
 
     //Dialogs
     CargostDialog: boolean = false;
@@ -58,10 +64,26 @@ export class cargosComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private cargosService: CargosService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private cargosService: CargosService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Cargos')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         //Trae los datos de la api
         this.loadData();

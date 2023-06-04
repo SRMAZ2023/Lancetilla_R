@@ -8,13 +8,16 @@ import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel
 import { TiposPlantasViewModel } from 'src/app/demo/Models/TiposPlantasViewModel';
 import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
 //import { MetodoPagos } from 'src/app/demo/api/MetodoPagosViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './Plantas.component.html',
     providers: [MessageService, PlantasService, TiposPlantasService, AreaBotanicaService]
 })
 export class PlantasComponent implements OnInit {
-
+    EsAdmin: any;
+    Permiso: any;
     //Dialogs
     PlantasDialog: boolean = false;
 
@@ -64,10 +67,26 @@ export class PlantasComponent implements OnInit {
     constructor(private PlantasService: PlantasService, 
         private TiposPlantasService: TiposPlantasService,
         private areabotanicassevrice: AreaBotanicaService,
-        private messageService: MessageService) {
+        private messageService: MessageService, private _router: Router ,
+        private localStorage: LocalStorageService,) {   this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.Permiso = this.localStorage.getItem('Plantas')
     }
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
             this.loadData();
         this.cols = [
             { field: 'plan_Id', header: 'plan_Id' },

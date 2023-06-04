@@ -902,18 +902,18 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             try
             {
                 var map = _visitantesRepository.Insert(item);
-                if (map.CodeStatus == 200)
+                if (map.visi_UserCreacion == 200)
                 {
-                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+                    return result.Ok(map);
 
                 }
-                else if (map.CodeStatus == 409)
+                else if (map.visi_UserCreacion == 409)
                 {
-                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                    return result.SetMessage(map.visi_Apellido, ServiceResultType.Conflict);
                 }
                 else
                 {
-                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                    return result.SetMessage(map.visi_Apellido, ServiceResultType.Error);
                 }
             }
             catch (Exception ex)

@@ -9,6 +9,8 @@ import { RazasViewModel } from 'src/app/demo/Models/RazasViewModel';
 import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
 import { RazasService } from 'src/app/demo/service/Razas.service';
 //import { MetodoPagos } from 'src/app/demo/api/MetodoPagosViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './Animales.component.html',
@@ -21,6 +23,8 @@ export class AnimalesComponent implements OnInit {
 
     deleteAnimalesDialog: boolean = false;
 
+    EsAdmin: any;
+    Permiso : any;
 
     first: number = 0;
     rows: number = 10;
@@ -67,11 +71,33 @@ export class AnimalesComponent implements OnInit {
         private RazasService: RazasService,
         private AreasZoologicasService: AreasZoologicasService,
         private alimentacionService: AlimentacionService,
-        private messageService: MessageService) {
+        private messageService: MessageService,private _router: Router ,
+        private localStorage: LocalStorageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Animales')
     }
 
     ngOnInit() {
-            this.loadData();
+          
+        
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
+        
+        
+        
+        
+        this.loadData();
         this.cols = [
             { field: 'anim_Id', header: 'plan_Id' },
             { field: 'anim_Codigo', header: 'plan_Codigo' },

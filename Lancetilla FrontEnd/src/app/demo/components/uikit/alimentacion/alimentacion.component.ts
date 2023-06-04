@@ -3,6 +3,11 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { AlimentacionViewModel } from 'src/app/demo/Models/AlimentacionViewModel';
 import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
+
 
 @Component({
     templateUrl: './alimentacion.component.html',
@@ -11,6 +16,13 @@ import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
 })
 export class AlimentacionComponent implements OnInit {
 
+    
+    AlimentacionPermiso: any;
+
+    EsAdmin: any;
+
+    
+    
     //Dialogs
     AlimentaciontDialog: boolean = false;
 
@@ -55,10 +67,32 @@ export class AlimentacionComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private alimentosService: AlimentacionService, private messageService: MessageService) {
+    constructor(private alimentosService: AlimentacionService, private messageService: MessageService, 
+        private _router: Router ,
+        private localStorage: LocalStorageService) {
+
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.AlimentacionPermiso = this.localStorage.getItem('Alimentación')
     }
 
     ngOnInit() {
+      
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.AlimentacionPermiso == false) {
+                    this._router.navigate(['login']);
+                }
+                
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
+
+
 
 this.CargarDatos();
         //Modelo de los datos de la tabla

@@ -12,6 +12,8 @@ import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeMantenimi
 import { AnimalViewModel } from 'src/app/demo/Models/AnimalViewModel';
 import { MantenimintoViewModel } from 'src/app/demo/Models/MantenimintoViewModel';
 import { format, parse } from 'date-fns';
+import { LocalStorageService } from '../../../../../local-storage.service';
+
 
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -84,6 +86,10 @@ export class CuidadoPlantasEditComponent {
 
   datos: any = {};
 
+  EsAdmin: any;
+  Permiso: any;
+
+
   //Paginacion de el datatable
   selectedMantenimiento: MantenimintoViewModel[] = [];
   rowsPerPageOptions = [5, 10, 20];
@@ -104,7 +110,7 @@ export class CuidadoPlantasEditComponent {
 
   count: number = 0;
 
-  constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
+  constructor( private _router: Router , private localStorage: LocalStorageService,private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private renderer: Renderer2,
     private messageService: MessageService,
     private TiposDeMantenimientoService: TiposDeMantenimientoService,
@@ -113,12 +119,28 @@ export class CuidadoPlantasEditComponent {
     this.page_title = "Editar Mantenimiento A Animal";
     this.minDate = new Date();
     this.animalDropdown = new ElementRef(null);
-
+    
+    this.EsAdmin = this.localStorage.getItem('EsAdmin')
+    this.Permiso = this.localStorage.getItem('CuidadoDePlantas')
   }
 
 
 
   ngOnInit() {
+
+    if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+      if (this.EsAdmin == false) {
+
+          if (this.Permiso == false) {
+              this._router.navigate(['login']);
+          }              
+      }
+
+  }else{
+
+      this._router.navigate(['login']);
+  }
 
 
     this.getMantenimientoPorAnimal();

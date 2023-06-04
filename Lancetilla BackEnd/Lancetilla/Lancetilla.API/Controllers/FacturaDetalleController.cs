@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Lancetilla.API.Models;
 using Lancetilla.BussinessLogic.Servicios.Factura_Servicios;
+using Lancetilla.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,6 +30,15 @@ namespace Lancetilla.API.Controllers
         {
             var list = _facturaServicios.ListarFacturaDetalles();
             return Ok(list);
+        }
+
+        [HttpPost("InsertarFacturaDetalle")]
+        public IActionResult InsertarFacturaDetalle(FacturaDetalleViewModel item)
+        {
+            var visitantes = _mapper.Map<tbFacturasDetalles>(item);
+            var List = _facturaServicios.InsertarFacturaDetalle(visitantes);
+
+            return Ok(List);
         }
     }
 }

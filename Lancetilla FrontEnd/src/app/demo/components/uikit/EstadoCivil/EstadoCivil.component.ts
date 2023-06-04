@@ -4,6 +4,10 @@ import { EstadoCivilesService } from 'src/app/demo/service/EstadoCivil.service';
 import { EstadoCivilViewModel } from 'src/app/demo/Models/EstadoCivilViewModel';
 import { error } from 'console';
 //import { EstadoCiviless } from 'src/app/demo/api/EstadoCivilessViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     templateUrl: './EstadoCivil.component.html',
@@ -17,7 +21,8 @@ export class EstadoCivilesComponent implements OnInit {
       this.first = 0; 
     }
 
-
+    EsAdmin: any;
+    Permiso: any;
     
     //Dialogs
     EstadoCivilestDialog: boolean = false;
@@ -63,10 +68,27 @@ export class EstadoCivilesComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private EstadoCivilesService: EstadoCivilesService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private EstadoCivilesService: EstadoCivilesService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('EstadoCivil') }
 
     ngOnInit() {
+
+          
+       if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+        if (this.EsAdmin == false) {
+
+            if (this.Permiso == false) {
+                this._router.navigate(['login']);
+            }              
+        }
+
+    }else{
+
+        this._router.navigate(['login']);
+    }
 
         //Trae los datos de la api
         this.loadData();

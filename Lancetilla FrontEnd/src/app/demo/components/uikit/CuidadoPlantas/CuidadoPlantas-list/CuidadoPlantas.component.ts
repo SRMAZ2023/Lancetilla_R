@@ -5,6 +5,9 @@ import { ManteniminetoXAnimalViewModel } from 'src/app/demo/Models/Mantenimineto
 import { ManteniminetoXAnimalService } from 'src/app/demo/service/ManteniminetoXAnimal.service';
 import { error } from 'console';
 import { DatePipe } from '@angular/common';
+import { LocalStorageService } from '../../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
 
 interface expandedRows {
     [key: string]: boolean;
@@ -15,6 +18,9 @@ interface expandedRows {
     providers: [MessageService, ManteniminetoXAnimalService, DatePipe]
 })
 export class CuidadoPlantasComponent implements OnInit {
+
+  EsAdmin: any;
+  Permiso: any;
 
     //Dialogs
     CuidadoPlantastDialog: boolean = false;
@@ -69,10 +75,28 @@ export class CuidadoPlantasComponent implements OnInit {
 
 
 
-    constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService, private datePipe: DatePipe, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+      private localStorage: LocalStorageService,private ManteniminetoXAnimalService: ManteniminetoXAnimalService, private datePipe: DatePipe, private messageService: MessageService) {
+        this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.Permiso = this.localStorage.getItem('CuidadoDePlantas')}
 
     ngOnInit() {
+
+    
+           
+          if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+   
+               if (this.EsAdmin == false) {
+   
+                   if (this.Permiso == false) {
+                       this._router.navigate(['login']);
+                   }              
+               }
+       
+           }else{
+   
+               this._router.navigate(['login']);
+           }
 
         // Obtén la fecha del API
         this.ManteniminetoXAnimalService.getManteniminetoXAnimal().subscribe(

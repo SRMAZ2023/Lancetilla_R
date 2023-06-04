@@ -43,9 +43,12 @@ namespace Lancetilla.API.Controllers
         {
             var visitantes = _mapper.Map<tbVisitantes>(item);
             var List = _mantenimientoServicios.InsertVisitantes(visitantes);
+
+            List.Data = _mapper.Map<VisitantesViewModel>(List.Data);
             return Ok(List);
         }
 
+        
         [HttpPost("ActualizarVisitantes")]
         public IActionResult ActualizarVisitantes(VisitantesViewModel item)
         {

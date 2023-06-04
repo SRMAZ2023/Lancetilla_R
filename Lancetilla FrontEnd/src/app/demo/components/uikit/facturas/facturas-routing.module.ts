@@ -45,6 +45,13 @@ import { FileUploadModule } from 'primeng/fileupload';
 
 import { RippleModule } from 'primeng/ripple';
 
+import { DialogModule } from 'primeng/dialog';
+
+
+
+
+
+
 
 
 
@@ -58,6 +65,8 @@ import { RippleModule } from 'primeng/ripple';
 @NgModule({
   imports: [
     CommonModule,
+    DialogModule,
+    
     FileUploadModule,
     RippleModule,
     ToastModule,

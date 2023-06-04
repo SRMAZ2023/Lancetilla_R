@@ -9,6 +9,9 @@ import { UsuarioService } from 'src/app/demo/service/Usuario.service';
 import { isUndefined } from 'util';
 import { __values } from 'tslib';
 import { ChangeDetectorRef } from '@angular/core';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
 //import { Cargoss } from 'src/app/demo/api/CargossViewModel';
 
 
@@ -17,6 +20,8 @@ import { ChangeDetectorRef } from '@angular/core';
     providers: [MessageService, UsuarioService]
 })
 export class UsuariosComponent implements OnInit {
+    EsAdmin: any;
+    Permiso: any;
 
     //Dialogs
     InsertarUsuarioDialog: boolean = false;
@@ -65,10 +70,26 @@ export class UsuariosComponent implements OnInit {
     empleados: any[] = []; // Array para almacenar los datos de empleados
 
 
-    constructor(private changeDetectorRef: ChangeDetectorRef, private usuarioService: UsuarioService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private changeDetectorRef: ChangeDetectorRef, private usuarioService: UsuarioService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Usuarios')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         this.CargarUsuarios()
 

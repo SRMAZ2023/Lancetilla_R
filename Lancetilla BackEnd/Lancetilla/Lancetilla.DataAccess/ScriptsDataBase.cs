@@ -280,13 +280,17 @@ namespace Lancetilla.DataAccess
 
         public static string TablaFactura = "fact.UPD_CargarInformacionTabla_Factura";
 
+        public static string FacturaInsert = "fact.UDP_InsertarFactura";
+
+        public static string FacturaInsertMetodoPago = "fact.UDP_InsertarFacturaMetodoDePago";
+
 
         #endregion
 
         #region Factura Detalle
 
 
-
+        public static string InsertarDetallesFactura = "fact.UDP_InsertarFacturaDetalle";
 
         #endregion
 

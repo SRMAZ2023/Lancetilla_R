@@ -7,12 +7,16 @@ import { error } from 'console';
 import { VisitantesService } from 'src/app/demo/service/Visitantes.servicel';
 import { VisitantesViewModel } from 'src/app/demo/Models/VisitantesViewModel';
 //import { MetodoPagos } from 'src/app/demo/api/MetodoPagosViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './visitantes.component.html',
     providers: [MessageService, VisitantesService]
 })
 export class visitantesComponent implements OnInit {
+    EsAdmin: any;
+    Permiso: any;
 
     //Dialogs
     visitanteDialog: boolean = false;
@@ -60,10 +64,26 @@ export class visitantesComponent implements OnInit {
     statuses: any[] = [];
 
 
-    constructor(private VisitanteService: VisitantesService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private VisitanteService: VisitantesService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Visitantes')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         this.VisitanteService.getVisitantes().subscribe(
             Response => {

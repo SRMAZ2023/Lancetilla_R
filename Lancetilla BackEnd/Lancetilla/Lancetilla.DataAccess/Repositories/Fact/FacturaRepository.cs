@@ -55,6 +55,32 @@ namespace Lancetilla.DataAccess.Repositories.Fact
             return result;
         }
 
+        public tbFacturas InsertarFactura(tbFacturas item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@empl_Id", item.empl_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@visi_Id", item.visi_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@fact_UserCreacion", item.fact_UserCreacion, DbType.String, ParameterDirection.Input);
+        
+
+            var result = db.QueryFirst<tbFacturas>(ScriptsDataBase.FacturaInsert, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        public RequestStatus InsertarMetodoPago(tbFacturas item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@fact_Id", item.fact_Id, DbType.String, ParameterDirection.Input);
+            parametros.Add("@meto_Id", item.meto_Id, DbType.String, ParameterDirection.Input);
+         
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.FacturaInsertMetodoPago, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
         public IEnumerable<tbFacturas> List()
         {
             throw new NotImplementedException();

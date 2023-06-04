@@ -30,7 +30,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             return db.Query(ScriptsDataBase.Visitantes, null, commandType: System.Data.CommandType.StoredProcedure);
         }
 
-        public RequestStatus Insert(tbVisitantes item)
+        public tbVisitantes Insert(tbVisitantes item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
@@ -42,9 +42,11 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             parametros.Add("@visi_UserCreacion", item.visi_UserCreacion, DbType.Int32, ParameterDirection.Input);
           
 
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarVisitante, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            var result = db.QueryFirst<tbVisitantes>(ScriptsDataBase.InsertarVisitante, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
+
+      
 
         public RequestStatus Update(tbVisitantes item)
         {
@@ -76,6 +78,11 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         }
 
         public RequestStatus Update(tbVisitantes item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        RequestStatus IRepository<tbVisitantes>.Insert(tbVisitantes item)
         {
             throw new NotImplementedException();
         }

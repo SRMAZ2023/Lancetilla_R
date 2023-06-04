@@ -4,6 +4,8 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { DepartamentosService } from 'src/app/demo/service/departamento.service';
 import { error } from 'console';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 //import { Departamentoss } from 'src/app/demo/api/DepartamentossViewModel';
 
@@ -12,6 +14,9 @@ import { error } from 'console';
     providers: [MessageService, DepartamentosService]
 })
 export class DepartamentosComponent implements OnInit {
+
+    EsAdmin: any;
+    Permiso: any;
 
     //Dialogs
     InsertDepartamentostDialog: boolean = false;
@@ -58,10 +63,27 @@ export class DepartamentosComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private DepartamentosService: DepartamentosService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private DepartamentosService: DepartamentosService, private messageService: MessageService) {
+  
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Departamentos')  }
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
        this.CargarDepartamentos()
 
@@ -87,6 +109,8 @@ export class DepartamentosComponent implements OnInit {
             )
         );
     }
+
+    
    
     hideDialog() {
         this.InsertDepartamentostDialog = false;

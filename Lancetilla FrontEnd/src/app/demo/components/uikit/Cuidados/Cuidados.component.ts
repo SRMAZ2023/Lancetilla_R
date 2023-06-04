@@ -7,12 +7,20 @@ import { CuidadosViewModel } from 'src/app/demo/Models/CuidadosViewModel';
 
 import { TiposCuidadosService } from 'src/app/demo/service/TiposCuidadios.Service';
 import { TiposCuidadosViewModel } from 'src/app/demo/Models/TiposCuidadosViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     templateUrl: './Cuidados.component.html',
     providers: [MessageService, CuidadosService, TiposCuidadosService]
 })
 export class CuidadosComponent implements OnInit {
+
+    EsAdmin: any;
+    Permiso: any;
+
 
     //Dialogs
     CuidadostDialog: boolean = false;
@@ -61,10 +69,28 @@ export class CuidadosComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private CuidadosService: CuidadosService, private TiposCuidadosService:TiposCuidadosService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,
+       private CuidadosService: CuidadosService, private TiposCuidadosService:TiposCuidadosService, private messageService: MessageService) {
+        this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.Permiso = this.localStorage.getItem('CuidadosGenerales')
+              }
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         //Trae los datos de la api
         this.loadData();

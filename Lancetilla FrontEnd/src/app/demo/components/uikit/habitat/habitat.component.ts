@@ -5,6 +5,10 @@ import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasVie
 import { HabitatViewModel } from 'src/app/demo/Models/HabitatViewModel';
 import { AreasZoologicasService } from 'src/app/demo/service/AreasZoologicas.service';
 import { HabitatService } from 'src/app/demo/service/Habitat.service';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     templateUrl: './habitat.component.html',
@@ -12,6 +16,10 @@ import { HabitatService } from 'src/app/demo/service/Habitat.service';
     providers: [MessageService, HabitatService]
 })
 export class HabitatComponent implements OnInit {
+
+    
+  EsAdmin: any;
+  Permiso: any;
 
     //Dialogs
     HabitatDialog: boolean = false;
@@ -58,10 +66,26 @@ export class HabitatComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private habitatservice: HabitatService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private habitatservice: HabitatService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Hábitats')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
        this.CargarDatos();
 

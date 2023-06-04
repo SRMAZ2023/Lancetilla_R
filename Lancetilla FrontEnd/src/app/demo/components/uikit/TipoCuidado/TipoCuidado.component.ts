@@ -4,12 +4,20 @@ import { Table } from 'primeng/table';
 import { TiposCuidadosService } from 'src/app/demo/service/TiposCuidadios.Service';
 import { TiposCuidadosViewModel } from 'src/app/demo/Models/TiposCuidadosViewModel';
 import { error } from 'console';
+
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
  
 @Component({
     templateUrl: './TipoCuidado.component.html',
     providers: [MessageService, TiposCuidadosService]
 })
 export class TipoCuidadosComponent implements OnInit {
+
+    
+  EsAdmin: any;
+  Permiso: any;
 
     //Dialogs
     TipoCuidadostDialog: boolean = false;
@@ -55,10 +63,26 @@ export class TipoCuidadosComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private TiposCuidadosService: TiposCuidadosService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private TiposCuidadosService: TiposCuidadosService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('TiposDeCuidados')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         //Trae los datos de la api
         this.loadData();

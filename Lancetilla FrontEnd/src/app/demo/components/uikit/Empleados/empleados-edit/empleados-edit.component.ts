@@ -14,6 +14,10 @@ import { DepartamentoViewModel } from 'src/app/demo/Models/DepartamentoViewModel
 import { EmpleadosViewModel } from 'src/app/demo/Models/EmpleadaoViewModel';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
+import { LocalStorageService } from '../../../../../local-storage.service';
+
+
+
 @Component({
   selector: 'app-empleados-edit',
   // templateUrl: './empleados-edit.component.html',
@@ -22,6 +26,9 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 })
 export class empleadosEditComponent {
+
+  EsAdmin: any;
+    Permiso: any;
 
   public empleado!: EmpleadosViewModel;
   public page_title!: string;;
@@ -42,6 +49,8 @@ export class empleadosEditComponent {
 
 
   constructor(private EmpleadosService: EmpleadosService,
+    private _router: Router ,
+    private localStorage: LocalStorageService,
     private messageService: MessageService,
     private EstadoCivilesService: EstadoCivilesService,
     private CargosService: CargosService,
@@ -50,9 +59,25 @@ export class empleadosEditComponent {
     private _rauter: Router) {
     this.empleado = new EmpleadosViewModel(undefined, "", "", "", undefined, "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", undefined, "", undefined,)
     this.page_title = "Editar empleado"
+    this.EsAdmin = this.localStorage.getItem('EsAdmin')
+    this.Permiso = this.localStorage.getItem('Empleados')
   }
 
   ngOnInit() {
+
+    if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+      if (this.EsAdmin == false) {
+
+          if (this.Permiso == false) {
+              this._router.navigate(['login']);
+          }              
+      }
+
+  }else{
+
+      this._router.navigate(['login']);
+  }
 
     this.getEmpleado();
 

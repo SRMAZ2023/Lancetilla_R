@@ -74,6 +74,50 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
                 return Enumerable.Empty<tbFacturas>();
             }
         }
+
+        public ServiceResult InsertFactura(tbFacturas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _facturaRepository.InsertarFactura(item);
+              
+                    return result.Ok(map);
+
+                
+                         
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult InsertarMetodoDePagoFactura(tbFacturas item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _facturaRepository.InsertarMetodoPago(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
 
         #region Factura Detalle
@@ -89,6 +133,32 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
 
                 return Enumerable.Empty<VW_FacturasDetalle>();
 
+            }
+        }
+
+        public ServiceResult InsertarFacturaDetalle(tbFacturasDetalles item)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _facturaDetalleRepository.InsertarFacturaDetalle(item);
+                if (map.CodeStatus == 200)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
+
+                }
+                else if (map.CodeStatus == 409)
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Conflict);
+                }
+                else
+                {
+                    return result.SetMessage(map.MessageStatus, ServiceResultType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
             }
         }
         #endregion

@@ -17,6 +17,10 @@ import { ReinosViewModel } from 'src/app/demo/Models/ReinosViewModel';
 import { RazasViewModel } from 'src/app/demo/Models/RazasViewModel';
 import { Console } from 'console';
 import { DatePipe } from '@angular/common';
+
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
 //import { MetodoPagos } from 'src/app/demo/api/MetodoPagosViewModel';
 
 @Component({
@@ -27,6 +31,9 @@ export class RazasComponent implements OnInit {
 
     //Dialogs
     RazaDialog: boolean = false;
+
+    EsAdmin: any;
+    Permiso: any;
 
     deleteRazaDialog: boolean = false;
 
@@ -71,13 +78,18 @@ export class RazasComponent implements OnInit {
     statuses: any[] = [];
     columns: any[] = []; 
 
-    constructor(private RazasService: RazasService, 
+    constructor(
+        private _router: Router ,
+        private localStorage: LocalStorageService,private RazasService: RazasService, 
         
         private datePipe: DatePipe, 
         private reinoservicio: ReinosService,
         private habitatservicio: HabitatService,
         private especieservicio: ProductService,
         private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('Razas')
+                 
             this.columns = []; 
     }
 
@@ -137,6 +149,20 @@ export class RazasComponent implements OnInit {
       formattedDate: string | undefined;
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         this.RazasService.getRazas().subscribe(
             Response => {

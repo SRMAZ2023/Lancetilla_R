@@ -4,13 +4,16 @@ import { Table } from 'primeng/table';
 import { TiposDeMantenimientoService } from 'src/app/demo/service/TipoDeMantenimiento.service';
 import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeManteniminetoViewModel';
 import { Console, error } from 'console';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './TiposDeMantenimientos.component.html',
     providers: [MessageService, TiposDeMantenimientoService]
 })
 export class TiposDeMantenimientosComponent implements OnInit {
-
+    EsAdmin: any;
+    Permiso: any;
     //Dialogs
     TiposDeMantenimientostDialog: boolean = false;
 
@@ -53,10 +56,27 @@ export class TiposDeMantenimientosComponent implements OnInit {
     statuses: any[] = [];
 
 
-    constructor(private TiposDeMantenimientosService: TiposDeMantenimientoService, private messageService: MessageService) {
-    }
+    constructor(  private _router: Router ,
+        private localStorage: LocalStorageService,private TiposDeMantenimientosService: TiposDeMantenimientoService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('TiposDeMantenimiento') }
 
     ngOnInit() {
+
+         
+       if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+        if (this.EsAdmin == false) {
+
+            if (this.Permiso == false) {
+                this._router.navigate(['login']);
+            }              
+        }
+
+    }else{
+
+        this._router.navigate(['login']);
+    }
 
         //Trae los datos de la api
         this.loadData();

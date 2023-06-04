@@ -3,12 +3,18 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { CuidadoDePlantasViewModel } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
 import { CuidadosDePlantasService } from 'src/app/demo/service/CuidadoDePlantas';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './cuidadosplantas.component.html',
     providers: [MessageService, CuidadosDePlantasService]
 })
 export class CuidadosPlantasComponent implements OnInit {
+
+    EsAdmin: any;
+    Permiso: any;
+
 
     //Dialogs
     CuidadosPlantasDialog: boolean = false;
@@ -56,10 +62,27 @@ export class CuidadosPlantasComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private CuidadosPlantasService: CuidadosDePlantasService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,
+       private CuidadosPlantasService: CuidadosDePlantasService, private messageService: MessageService) {
+        this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.Permiso = this.localStorage.getItem('TiposDeCuidados') }
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         this.CargarDatos();
         //Modelo de los datos de la tabla

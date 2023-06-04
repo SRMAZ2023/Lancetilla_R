@@ -4,6 +4,10 @@ import { Table } from 'primeng/table';
 import { AreasZoologicasViewModel } from 'src/app/demo/Models/AreasZoologicasViewModel';
 import { AlimentacionService } from 'src/app/demo/service/Alimentacion.service';
 import { AreasZoologicasService } from 'src/app/demo/service/AreasZoologicas.service';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     templateUrl: './areaszoologicas.component.html',
@@ -11,6 +15,11 @@ import { AreasZoologicasService } from 'src/app/demo/service/AreasZoologicas.ser
     providers: [MessageService, AreasZoologicasService]
 })
 export class AreasZoologicasComponent implements OnInit {
+
+    
+  EsAdmin: any;
+  Permiso: any;
+
 
     //Dialogs
     AreasZoologicastDialog: boolean = false;
@@ -58,10 +67,27 @@ export class AreasZoologicasComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor(private AreasZoologicasService: AreasZoologicasService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private AreasZoologicasService: AreasZoologicasService, private messageService: MessageService) {
+            this.EsAdmin = this.localStorage.getItem('EsAdmin')
+            this.Permiso = this.localStorage.getItem('ÁreasZoológicas')}
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
+
 
        this.CargarDatos();
 

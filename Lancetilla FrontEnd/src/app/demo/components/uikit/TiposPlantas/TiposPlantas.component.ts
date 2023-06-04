@@ -9,13 +9,16 @@ import { TiposPlantasViewModel } from 'src/app/demo/Models/TiposPlantasViewModel
 import { ReinosViewModel } from 'src/app/demo/Models/ReinosViewModel';
 import { ReinosService } from 'src/app/demo/service/Reinos.service';
 import { DatePipe } from '@angular/common';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './TiposPlantas.component.html',
     providers: [MessageService, TiposPlantasService, ReinosService, DatePipe]
 })
 export class TiposPlantasComponent implements OnInit {
-
+    EsAdmin: any;
+    Permiso: any;
     //Dialogs
     TiposPlantasDialog: boolean = false;
     NuevoDIalog: boolean = false;
@@ -59,9 +62,14 @@ export class TiposPlantasComponent implements OnInit {
     statuses: any[] = [];
 
 
-    constructor(private TiposPlantasService: TiposPlantasService,
+    constructor(
+        private _router: Router ,
+        private localStorage: LocalStorageService,private TiposPlantasService: TiposPlantasService,
         private ReinosServices: ReinosService,
         private messageService: MessageService,) {
+            
+   this.EsAdmin = this.localStorage.getItem('EsAdmin')
+   this.Permiso = this.localStorage.getItem('TiposDePlantas')
     }
 
     toggleRow(row: any) {
@@ -121,6 +129,20 @@ export class TiposPlantasComponent implements OnInit {
 
 
     ngOnInit() {
+
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         this.TiposPlantasService.getTiposPlantas().subscribe(
             Response => {

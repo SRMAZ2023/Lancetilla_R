@@ -11,6 +11,8 @@ import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeMantenimi
 //Animal
 import { AnimalViewModel } from 'src/app/demo/Models/AnimalViewModel';
 import { MantenimintoViewModel } from 'src/app/demo/Models/MantenimintoViewModel';
+import { LocalStorageService } from '../../../../../local-storage.service';
+
 
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -26,7 +28,8 @@ import { error } from 'console';
 export class MantenimientoPorAnimalNewComponent implements OnInit {
 
   minDate: Date;
-
+  EsAdmin: any;
+    Permiso: any;
   
   animNombre: string = ""; // Variable para almacenar el valor del label del ddl Animal
   timaDescripcion: string = ""; // Variable para almacenar el valor del label del ddl Tipo de Mantenimiento
@@ -72,16 +75,35 @@ export class MantenimientoPorAnimalNewComponent implements OnInit {
 
   constructor(private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private messageService: MessageService,
+    private _router: Router ,
+    private localStorage: LocalStorageService,
     private TiposDeMantenimientoService: TiposDeMantenimientoService,
     private _route: ActivatedRoute,
     private _rauter: Router) {
     this.page_title = "Editar Mantenimiento A Animal";
     this.minDate = new Date();
+    this.EsAdmin = this.localStorage.getItem('EsAdmin')
+   this.Permiso = this.localStorage.getItem('MantenimientoPorAnimal')
 
 
   }
 
   ngOnInit() {
+
+      
+    if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+      if (this.EsAdmin == false) {
+
+          if (this.Permiso == false) {
+              this._router.navigate(['login']);
+          }              
+      }
+
+  }else{
+
+      this._router.navigate(['login']);
+  }
 
     //this.getPlanta();
 

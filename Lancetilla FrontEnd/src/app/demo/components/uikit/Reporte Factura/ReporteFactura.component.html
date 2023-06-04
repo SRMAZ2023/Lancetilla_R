@@ -1,7 +1,12 @@
-<h1>FACTURA</h1>
-
-<iframe #pdfViewer style="width: 100%; height: 100vh;"></iframe>
+<iframe #pdfViewer style="width: 100%; height: 600px;"></iframe>
 
 <div *ngIf="errorMessage">
   <p>{{ errorMessage }}</p>
 </div>
+
+<style>
+  #pdfViewer {
+    transform: scale(0.50); /* Cambia el valor de escala según tus necesidades */
+    transform-origin: top left;
+  }
+</style>

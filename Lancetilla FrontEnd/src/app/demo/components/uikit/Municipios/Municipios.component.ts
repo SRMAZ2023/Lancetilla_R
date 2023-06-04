@@ -5,13 +5,16 @@ import { Table } from 'primeng/table';
 import { MunicipiosService } from 'src/app/demo/service/Municipios.service';
 import { error } from 'console';
 //import { Municipioss } from 'src/app/demo/api/MunicipiossViewModel';
+import { LocalStorageService } from '../../../../local-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './Municipios.component.html',
     providers: [MessageService, MunicipiosService]
 })
 export class MunicipiosComponent implements OnInit {
-
+    EsAdmin: any;
+    Permiso: any;
     //Dialogs
     InsertMunicipiostDialog: boolean = false;
      //Dialogs
@@ -62,10 +65,26 @@ export class MunicipiosComponent implements OnInit {
     departamentoselect: string = ""
     OTROdepartamentoselect: string = ""
 
-    constructor(private MunicipiosService: MunicipiosService, private messageService: MessageService) {
-    }
+    constructor( private _router: Router ,
+        private localStorage: LocalStorageService,private MunicipiosService: MunicipiosService, private messageService: MessageService) {
+    
+   this.EsAdmin = this.localStorage.getItem('EsAdmin')
+   this.Permiso = this.localStorage.getItem('Municipios') }
 
     ngOnInit() {
+        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+            if (this.EsAdmin == false) {
+
+                if (this.Permiso == false) {
+                    this._router.navigate(['login']);
+                }              
+            }
+    
+        }else{
+
+            this._router.navigate(['login']);
+        }
 
         this.CargarMunicipios() 
         //Modelo de los datos de la tabla

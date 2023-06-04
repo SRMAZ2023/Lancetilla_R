@@ -93,7 +93,8 @@ export class LoginComponent {
                 life: 1500
               });
     
-              console.log(this.datos.data.usua_NombreUsuario);
+              console.log(  this.datos);
+              this.localStorage.setItem('EmpleadoID', this.datos.data.empl_Id);
              this.localStorage.setItem('NombreUsuario', this.datos.data.usua_NombreUsuario);
              this.localStorage.setItem('UsuarioID', this.datos.data.usua_Id);
              this.localStorage.setItem('RolID', this.datos.data.role_Id);
