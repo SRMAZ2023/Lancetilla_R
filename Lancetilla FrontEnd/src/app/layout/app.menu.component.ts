@@ -5,6 +5,7 @@ import { Console } from 'console';
 import { LocalStorageService } from '../local-storage.service';
 import { RolesPorPantallaService } from 'src/app/demo/service/RolesPorPantalla';
 import { RolesViewModel, RolesPorPantallaViewModel } from 'src/app/demo/Models/RolesPorPantallaViewModel';
+import { style } from '@angular/animations';
 
 interface DatosItem {
     pant_Id: number;
@@ -365,7 +366,7 @@ export class AppMenuComponent implements OnInit {
            
             this.model = [
                 {
-                  label: 'Inicio',
+                  label: 'Inicio' ,
                   items: [
                     { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
                     { label: 'Gráficas', icon: 'pi pi-chart-line', routerLink: ['/app/uikit/charts'] },  
@@ -457,8 +458,9 @@ export class AppMenuComponent implements OnInit {
       else{
 
         this.model = [
-            {
+            {   
                 label: 'Inicio',
+                styleCss: ' justify-content: center;   display: flex;',
                 items: [
                     { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app'] },
                     { label: 'Gráficas', icon: 'pi pi-chart-line', routerLink: ['/app/uikit/charts'] },  
@@ -538,7 +540,7 @@ export class AppMenuComponent implements OnInit {
                         items: [
                             { label: 'Facturas', icon: 'pi pi-paypal', routerLink: ['/app/uikit/facturas'] },
                      
-                            { label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/tickets'] },
                             { label: 'Métodos de Pago', icon: 'pi pi-money-bill', routerLink: ['/app/uikit/MetodoDePago'] },
                         ]
                     },

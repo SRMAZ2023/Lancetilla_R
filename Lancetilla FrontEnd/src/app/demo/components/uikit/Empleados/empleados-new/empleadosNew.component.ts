@@ -46,7 +46,7 @@ export class empleadosNewComponent implements OnInit {
 
 
     constructor(private EmpleadosService: EmpleadosService,
-        private _router: Router ,
+        private _router: Router,
         private localStorage: LocalStorageService,
         private messageService: MessageService,
         private EstadoCivilesService: EstadoCivilesService,
@@ -55,23 +55,23 @@ export class empleadosNewComponent implements OnInit {
         private _route: ActivatedRoute,
         private _rauter: Router) {
         this.empleado = new EmpleadosViewModel(undefined, "", "", "", undefined, "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", 1, "", 1,)
-        this.page_title = "Crear empleado"
+        this.page_title = "https://i.ibb.co/PjpGtjQ/13.png"
         this.EsAdmin = this.localStorage.getItem('EsAdmin')
         this.Permiso = this.localStorage.getItem('Empleados')
     }
 
     ngOnInit() {
 
-        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+        if (this.EsAdmin != null || this.EsAdmin != undefined) {
 
             if (this.EsAdmin == false) {
 
                 if (this.Permiso == false) {
                     this._router.navigate(['login']);
-                }              
+                }
             }
-    
-        }else{
+
+        } else {
 
             this._router.navigate(['login']);
         }
@@ -114,11 +114,11 @@ export class empleadosNewComponent implements OnInit {
     onDepartamentoChange(event: any) {
         const selectedDepartamento = event.value;
         console.log(selectedDepartamento);
-        var depa_id:string = selectedDepartamento;
+        var depa_id: string = selectedDepartamento;
 
         var params = {
             "dept_Id": depa_id,
-    
+
         }
 
         console.log(params);
@@ -127,7 +127,7 @@ export class empleadosNewComponent implements OnInit {
         this.EmpleadosService.findMunicipios(params).subscribe(
             Response => {
                 console.log(Response)
- 
+
                 this.municipios = Response.map((item: { muni_Descripcion: any; muni_Id: any; }) => ({ label: item.muni_Descripcion, value: item.muni_Id }));
 
                 // Activa el otro dropdown
@@ -137,7 +137,7 @@ export class empleadosNewComponent implements OnInit {
             error => {
                 console.log(error)
                 this.municipioDisabled = true;
-                
+
 
             }
         );
@@ -152,9 +152,9 @@ export class empleadosNewComponent implements OnInit {
             this.empleado.empl_Apellido?.trim() != "" &&
             this.empleado.empl_Sexo?.trim() != "" &&
             this.empleado.empl_FechaNacimiento != undefined &&
-             this.empleado.muni_Id != undefined &&
-            this.empleado.dept_Id != undefined 
-            ) {
+            this.empleado.muni_Id != undefined &&
+            this.empleado.dept_Id != undefined
+        ) {
 
             console.log("Todos los campos están llenos");
 
@@ -178,9 +178,9 @@ export class empleadosNewComponent implements OnInit {
                 console.log(error)
             })
 
-        }else{
+        } else {
             console.log(this.empleado.empl_Sexo);
-                        console.log(this.empleado)
+            console.log(this.empleado)
 
         }
     }

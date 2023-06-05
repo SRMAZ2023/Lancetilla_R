@@ -29,31 +29,35 @@
                 </div>
             </div>
             <br>
-            <p-table #dt [value]="Municipios" [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
-                [showCurrentPageReport]="true" [(selection)]="selectedMunicipios" selectionMode="multiple"
-                [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+            <p-table #dt [value]="Municipios" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedMunicipios"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
 
                 <ng-template pTemplate="header">
                     <tr>
-
-                        <th pSortableColumn="muni_Id">Municipio ID<p-sortIcon field="muni_Id"></p-sortIcon></th>
-                        <th pSortableColumn="muni_Descripcion">Municipio<p-sortIcon field="muni_Descripcion"></p-sortIcon></th>
-                        <th pSortableColumn="dept_Descripcion">Departamento<p-sortIcon field="dept_Descripcion"></p-sortIcon></th>
-
                         <th></th>
+
+                        <th pSortableColumn="muni_Id">Id del Municipio<p-sortIcon field="muni_Id"></p-sortIcon></th>
+                        <th pSortableColumn="muni_Descripcion">Municipio<p-sortIcon
+                                field="muni_Descripcion"></p-sortIcon></th>
+                        <th pSortableColumn="dept_Descripcion">Departamento<p-sortIcon
+                                field="dept_Descripcion"></p-sortIcon></th>
+
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-Municipios>
                     <tr>
-
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                        <td style="width:16%; min-width:10rem;">
+                        </td>
+                        <td style="width:17%; min-width:10rem;"><span class="p-column-title">Code</span>
                             {{Municipios.muni_Id}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:18%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
                             {{Municipios.muni_Descripcion}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
                             {{Municipios.dept_Descripcion}}
                         </td>
@@ -61,9 +65,9 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
+                                    class="p-button-rounded p-button-warning mr-2"
                                     (click)="editMunicipios(Municipios)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteMunicipios(Municipios)"></button>
                             </div>
                         </td>
@@ -72,68 +76,125 @@
             </p-table>
         </div>
 
-     <p-dialog [(visible)]="InsertMunicipiostDialog" [style]="{width: '650px'}" header="Municipio" [modal]="true"
-            class="p-fluid">
+        <p-dialog [(visible)]="InsertMunicipiostDialog" [style]="{width: '500px'}" [modal]="true" class="p-fluid">
+            <p-header>
+                <div class="header-content" style="display: flex; align-items: center; justify-content: center;">
+                    <h5 style="font-size: 25px;">Municipios</h5>
+                    <div style="margin-left: 30px;">
+                        <img src="https://media.tenor.com/_a-KB9igYHsAAAAi/animal-bear.gif" width="55px" height="55px">
+                    </div>
+                </div>
+            </p-header>
             
+            <br>
             <ng-template pTemplate="content">
 
                 <div class="flex flex-wrap">
-             
+
                     <div class="field" style="width: 50%; padding-right: 1rem;">
-                        
+
                         <div class="field">
                             <label for="emplId">Departamentos</label>
-                            <p-dropdown id="deptId" [placeholder]="'Seleccione un Departamento'" [appendTo]="'body'" [(ngModel)]="Municipio.dept_Id" [options]="departamentos" optionValue="value" 
-                              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Municipio.dept_Id }"
-                              (onChange)="Municipio.dept_Id && CambiarID(Municipio.dept_Id)"></p-dropdown>
-                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && !Municipio.dept_Id">
-                              Debe seleccionar un Departamento.
+                            <p-dropdown id="deptId" [placeholder]="'Seleccione un Departamento'" [appendTo]="'body'"
+                                [(ngModel)]="Municipio.dept_Id" [options]="departamentos" optionValue="value"
+                                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !Municipio.dept_Id }"
+                                (onChange)="Municipio.dept_Id && CambiarID(Municipio.dept_Id)"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="submitted && !Municipio.dept_Id">
+                                Debe seleccionar un Departamento.
                             </small>
-                          </div>
-                        
+                        </div>
 
-                        
-                
-                      
+
+
+
+
 
                     </div>
-                     
-      
+
+
                     <div class="field" style="width: 50%; padding-right: 1rem;">
-                       
+
                         <label for="name">Código</label>
                         <div class="p-inputgroup">
-                          
+
                             <span class="p-inputgroup-addon">
-                                <span >{{departamentoselect}}</span>
+                                <span>{{departamentoselect}}</span>
                             </span>
                             <span class="p-float-label">
-                            <input type="text" inputId="inputgroup" pInputText id="id" [(ngModel)]="Municipio.muni_Id" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')}"
-                                (input)="filterInput($event)" maxlength="2" />
-                          
-                        </span>
-                      
+                                <input type="text" inputId="inputgroup" pInputText id="id"
+                                    [(ngModel)]="Municipio.muni_Id" required autofocus
+                                    [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')}"
+                                    (input)="filterInput($event)" maxlength="2" />
+
+                            </span>
+
                         </div>
-                        <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')">
+                        <small class="ng-dirty ng-invalid" style="color: red;"
+                            *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Id?.toString() || '')">
                             El código es requerido.
                         </small>
-                          
-                      </div>
 
-                      <div class="field" style="width: 100%; padding-right: 1rem;">
+                    </div>
+
+                    <div class="field" style="width: 100%; padding-right: 1rem;">
                         <div class="field">
                             <label for="name">Municipio</label>
-                            <input type="text" pInputText id="descripcion" [(ngModel)]="Municipio.muni_Descripcion" required
+                            <input type="text" pInputText id="descripcion" [(ngModel)]="Municipio.muni_Descripcion"
+                                required
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')}" />
-                            <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')">
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')">
                                 La descripción es requerida.</small>
-                        </div>    
-                             
+                        </div>
+
                     </div>
+                </div>
+
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-danger"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+                    (click)="saveMunicipios()"></button>
+            </ng-template>
+            <br><br>
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="EditarMunicipiostDialog" [style]="{width: '500px'}"  [modal]="true"
+            class="p-fluid">
+            <p-header>
+                <div class="header-content" style="display: flex; align-items: center; justify-content: center;">
+                    <h5 style="font-size: 25px;">Municipios</h5>
+                    <div style="margin-left: 30px;">
+                        <img src="https://media.tenor.com/_a-KB9igYHsAAAAi/animal-bear.gif" width="55px" height="55px">
                     </div>
-                 
-           
+                </div>
+            </p-header>
+            
+            <br>
+            <ng-template pTemplate="content">
+                <div class="flex flex-wrap">
+
+                    <div class="field" style="width: 100%; padding-right: 1rem;">
+                        <div class="field">
+                            <label for="name">Municipio</label>
+                            <input type="text" pInputText id="descripcion" [(ngModel)]="Municipio.muni_Descripcion"
+                                required
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')}" />
+                            <small class="ng-dirty ng-invalid" style="color: red;"
+                                *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')">
+                                La descripción es requerida.</small>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
             </ng-template>
 
             <ng-template pTemplate="footer">
@@ -144,52 +205,25 @@
             </ng-template>
         </p-dialog>
 
-       
-        <p-dialog [(visible)]="EditarMunicipiostDialog" [style]="{width: '650px'}" header="Municipio" [modal]="true"
-        class="p-fluid">
-        
-        <ng-template pTemplate="content">
-            <div class="flex flex-wrap">
-             
-                <div class="field" style="width: 100%; padding-right: 1rem;">
-                    <div class="field">
-                        <label for="name">Municipio</label>
-                        <input type="text" pInputText id="descripcion" [(ngModel)]="Municipio.muni_Descripcion" required
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')}" />
-                        <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="submitted && isInputEmptyOrWhitespace(Municipio.muni_Descripcion || '')">
-                            La descripción es requerida.</small>
-                    </div>     
-                </div>
-                 
-  
-                           
-                </div>
 
-        </ng-template>
 
-        <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-                (click)="hideDialog()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
-                (click)="saveMunicipios()"></button>
-        </ng-template>
-    </p-dialog>
 
-        
-    
-    
-    <p-dialog [(visible)]="deleteMunicipiosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteMunicipiosDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirmación">
+            <br>
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Municipio">Estas seguro de querer eliminar a <b>{{Municipio.muni_Descripcion}}</b>?</span>
-            </div>
+
+                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
+                    style="margin-right: 15px;">
+                    <span *ngIf="Municipio">¿Estás seguro de querer eliminar al municipio de <b>{{Municipio.muni_Descripcion}}</b>?</span>
+                </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="deleteMunicipiosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-                    (click)="confirmDelete()"></button>
+                <button (click)="deleteMunicipiosDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-outlined p-button-secondary" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+                    class="p-button-outlined p-button-success" label="Sí"></button>
             </ng-template>
-        </p-dialog> 
+        </p-dialog>
 
 
     </div>

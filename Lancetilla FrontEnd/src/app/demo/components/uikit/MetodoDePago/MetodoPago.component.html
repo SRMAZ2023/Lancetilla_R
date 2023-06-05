@@ -43,21 +43,22 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-
+                        <th></th>
                         <th pSortableColumn="meto_Id">Id <p-sortIcon field="meto_Id"></p-sortIcon></th>
-                        <th pSortableColumn="meto_Descripcion">Descripcion <p-sortIcon
+                        <th pSortableColumn="meto_Descripcion">Descripción <p-sortIcon
                                 field="meto_Descripcion"></p-sortIcon></th>
 
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-MetodoPago>
                     <tr>
-
+                        <td style="width:25%; min-width:10rem;">
+                        </td>
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
                             {{MetodoPago.meto_Id}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
                             {{MetodoPago.meto_Descripcion}}
                         </td>
@@ -78,7 +79,20 @@
 
         <p-dialog [(visible)]="MetodoPagotDialog" [style]="{width: '450px'}" header="Métodos de Pago" [modal]="true"
             class="p-fluid">
-            <br>
+            <p-header>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Métodos de pago
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/rK1tjNmtv8MAAAAi/animal-bunny.gif" width="70px" height="70px"
+                        style="margin-left: 20px;">
+
+                </div>
+
+            </p-header>
+            <br><br>
+
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Descripción</label>
@@ -95,29 +109,29 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-secondary"
                     (click)="hideDialog()"></button>
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                     (click)="saveMetodoPago()"></button>
             </ng-template>
         </p-dialog>
-
-        <p-dialog [(visible)]="deleteMetodoPagoDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteMetodoPagoDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirmación">
+            <br>
             <div class="flex align-items-center justify-content-center">
 
-                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
                     style="margin-right: 15px;">
-                <span *ngIf="Pago">¿Estás seguro de eliminar el método de pago de
-                    <b>{{Pago.meto_Descripcion}}</b>?</span>
-            </div>
+                    <span *ngIf="Pago">¿Estás seguro de eliminar el método de pago de
+                        <b>{{Pago.meto_Descripcion}}</b>?</span>
+                </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
-                    (click)="deleteMetodoPagoDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
-                    (click)="confirmDelete()"></button>
+                <button (click)="deleteMetodoPagoDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-outlined p-button-secondary" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+                    class="p-button-outlined p-button-success" label="Sí"></button>
             </ng-template>
         </p-dialog>
-
 
     </div>
 </div>

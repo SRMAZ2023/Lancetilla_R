@@ -1,0 +1,100 @@
+PROCS:
+--*********************************************************************GRAFICOS*******************************************************************************--
+CREATE OR ALTER PROC zool.UDP_tbMantenimientoAnimal_Grafica
+AS BEGIN
+SELECT COUNT(T1.maan_Id) as conteo, T1.anim_Id, T2.anim_Nombre
+FROM mant.tbMantenimientoAnimal T1 
+INNER JOIN zool.tbAnimales T2
+ON T1.anim_Id = T2.anim_Id
+GROUP BY T1.anim_Id, T2.anim_Nombre;
+END
+
+CREATE OR ALTER PROC bota.UDP_tbCuidadosPorPlantas_Grafica
+AS BEGIN
+SELECT COUNT(T1.cupl_Id) as conteo, T1.plan_Id, T3.tipl_NombreComun
+FROM bota.tbCuidadoPlanta T1 
+INNER JOIN bota.tbPlantas T2
+ON T1.plan_Id = T2.plan_Id
+INNER JOIN bota.tbTiposPlantas T3
+ON T2.tipl_Id = T3.tipl_Id
+GROUP BY T1.plan_Id, T3.tipl_NombreComun;
+END
+--*********************************************************************GRAFICOS*******************************************************************************--
+
+
+
+GRAFICO 1
+
+script dbase:
+        public static string Grafica = "zool.UDP_tbMantenimientoAnimal_Grafica";
+Repo:
+        public IEnumerable<VW_tbAnimales>  Find(int id)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@raza_Id", id, DbType.Int32, ParameterDirection.Input);
+            return db.Query<VW_tbAnimales>(ScriptsDataBase.AnimalesRaza, parametros, commandType: CommandType.StoredProcedure);
+        }
+servicio:
+    public IEnumerable MantenimientoPorAnimal()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _animalesRepository.MantenimientosPorAnimal();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_MantenimientoAnimales>();
+            }
+        }
+
+controller:
+        [HttpGet("MantenimientosPorAnimal")]
+        public IActionResult MantenimientosPorAnimal()
+        {
+            var list = _zoologicoServicios.MantenimientoPorAnimal();
+
+            return Ok(list);
+        }
+
+
+
+
+GRAFICO 2:
+
+scripy:
+        public static string Grafica2 = "bota.UDP_tbCuidadosPorPlantas_Grafica";
+
+repo:
+       public IEnumerable CuidadoPorPlanta()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.Grafica2, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+servicio: 
+    public IEnumerable CuidadoPorPlanta()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _cuidadosRepository.CuidadoPorPlanta();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbCuidados>();
+            }
+        }
+
+contorller:
+      [HttpGet("CuidadoPorPlanta")]
+        public IActionResult CuidadoPorPlanta()
+        {
+            var list = _botanicaServicios.CuidadoPorPlanta();
+
+            return Ok(list);
+        }

@@ -36,20 +36,21 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-
-                        <th pSortableColumn="ticu_Id">Id <p-sortIcon field="ticu_Id"></p-sortIcon></th>
-                        <th pSortableColumn="TipoCuidado">Descripcion <p-sortIcon field="TipoCuidado"></p-sortIcon></th>
-
                         <th></th>
+                        <th pSortableColumn="ticu_Id">Id <p-sortIcon field="ticu_Id"></p-sortIcon></th>
+                        <th pSortableColumn="TipoCuidado">Descripción <p-sortIcon field="TipoCuidado"></p-sortIcon></th>
+
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-TipoCuidados>
                     <tr>
-
+                        <td style="width:25%; min-width:10rem;">
+                        </td>
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
                             {{TipoCuidados.ticu_Id}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:25%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
                             {{TipoCuidados.ticu_Descripcion}}
                         </td>
@@ -57,9 +58,9 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
+                                    class="p-button-rounded p-button-warning mr-2"
                                     (click)="editTipoCuidados(TipoCuidados)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteTipoCuidados(TipoCuidados)"></button>
                             </div>
                         </td>
@@ -68,9 +69,21 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="TipoCuidadostDialog" [style]="{width: '450px'}" header="Tipo de cuidados" [modal]="true"
+        <p-dialog [(visible)]="TipoCuidadostDialog" [style]="{width: '450px'}"[modal]="true"
             class="p-fluid">
-            <br>
+            <p-header>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Tipos de cuidados
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/34RGu0piVaAAAAAi/a-pinch-grows-a-pinch-plant.gif" width="55px" height="55px"
+                        style="margin-left: 20px;">
+
+                </div>
+
+            </p-header>
+            <br><br>
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Descripción</label>
@@ -84,29 +97,30 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-danger"
                     (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                     (click)="saveTipoCuidados()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteTipoCuidadosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+
+        <p-dialog [(visible)]="deleteTipoCuidadosDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirmación">
+            <br>
             <div class="flex align-items-center justify-content-center">
 
-                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
-                    style="margin-right: 15px;">
+                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px">
                 <span *ngIf="TipoCuidado">¿Estás seguro de eliminar el tipo de cuidado
                     <b>{{TipoCuidado.ticu_Descripcion}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="deleteTipoCuidadosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-                    (click)="confirmDelete()"></button>
+                <button (click)="deleteTipoCuidadosDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-outlined p-button-secondary" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+                    class="p-button-outlined p-button-success" label="Sí"></button>
             </ng-template>
         </p-dialog>
-
 
     </div>
 </div>

@@ -58,7 +58,7 @@ export class empleadosEditComponent {
     private _route: ActivatedRoute,
     private _rauter: Router) {
     this.empleado = new EmpleadosViewModel(undefined, "", "", "", undefined, "", "", "", "", undefined, "", undefined, "", undefined, "", undefined, "", "", undefined, "", undefined,)
-    this.page_title = "Editar empleado"
+    this.page_title = "https://i.ibb.co/d2YXGdn/14.png"
     this.EsAdmin = this.localStorage.getItem('EsAdmin')
     this.Permiso = this.localStorage.getItem('Empleados')
   }

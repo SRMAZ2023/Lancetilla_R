@@ -36,20 +36,23 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-
-                        <th pSortableColumn="dept_Id">Codigo<p-sortIcon field="dept_Id"></p-sortIcon></th>
-                        <th pSortableColumn="dept_Descripcion">Descripcion <p-sortIcon field="dept_Descripcion"></p-sortIcon></th>
-
                         <th></th>
+
+                        <th pSortableColumn="dept_Id">Código<p-sortIcon field="dept_Id"></p-sortIcon></th>
+                        <th pSortableColumn="dept_Descripcion">Descripción <p-sortIcon field="dept_Descripcion"></p-sortIcon></th>
+
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-departamentos>
                     <tr>
 
+                        <td style="width:28%; min-width:10rem;">
+                        </td>
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
                             {{departamentos.dept_Id}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
                             {{departamentos.dept_Descripcion}}
                         </td>
@@ -57,9 +60,9 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
+                                    class="p-button-rounded p-button-warning mr-2"
                                     (click)="editDepartamentos(departamentos)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteDepartamentos(departamentos)"></button>
                             </div>
                         </td>
@@ -68,9 +71,21 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="InsertDepartamentostDialog" [style]="{width: '650px'}" header="Departamentos" [modal]="true"
+        <p-dialog [(visible)]="InsertDepartamentostDialog" [style]="{width: '500px'}" [modal]="true"
             class="p-fluid">
-            
+            <p-header>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Departamentos
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/ahUI5RIPE1AAAAAi/animal-bunny.gif" width="55px" height="55px">
+
+                        <img src="https://media.tenor.com/ahUI5RIPE1AAAAAi/animal-bunny.gif" width="45px" height="45px">
+                </div>
+
+            </p-header>
+            <br>
             <ng-template pTemplate="content">
 
                 <div class="flex flex-wrap">
@@ -111,17 +126,29 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-danger"
                     (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                     (click)="saveDepartamentos()"></button>
             </ng-template>
         </p-dialog>
 
         
-        <p-dialog [(visible)]="EditarDepartamentostDialog" [style]="{width: '450px'}" header="departamentos" [modal]="true"
+        <p-dialog [(visible)]="EditarDepartamentostDialog" [style]="{width: '500px'}" header="departamentos" [modal]="true"
         class="p-fluid">
-        
+        <p-header>
+            <div class="header-content " style="display: inline-flex; align-items: center;">
+                <h5 style="font-size: 25px;">Departamentos
+
+                </h5>
+                <DIV></DIV>
+                <img src="https://media.tenor.com/ahUI5RIPE1AAAAAi/animal-bunny.gif" width="55px" height="55px">
+
+                    <img src="https://media.tenor.com/ahUI5RIPE1AAAAAi/animal-bunny.gif" width="45px" height="45px">
+            </div>
+
+        </p-header>
+        <br>
         <ng-template pTemplate="content">
             <div class="field">
                 <label for="name">Departamento</label>
@@ -135,9 +162,9 @@
         </ng-template>
 
         <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-danger"
                 (click)="hideDialog()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                 (click)="saveDepartamentos()"></button>
         </ng-template>
     </p-dialog>
@@ -145,18 +172,22 @@
         
     
     
-    <p-dialog [(visible)]="deleteDepartamentosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="Departamento">Estas seguro de querer eliminar a <b>{{Departamento.dept_Descripcion}}</b>?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="deleteDepartamentosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-                    (click)="confirmDelete()"></button>
-            </ng-template>
-        </p-dialog>
+    <p-dialog [(visible)]="deleteDepartamentosDialog" [modal]="true" [style]="{ width: '450px' }"
+    header="Confirmación">
+    <br>
+    <div class="flex align-items-center justify-content-center">
+
+        <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
+            style="margin-right: 15px;">
+            <span *ngIf="Departamento">¿Estás seguro de querer eliminar al departamento de <b>{{Departamento.dept_Descripcion}}</b>?</span>
+        </div>
+    <ng-template pTemplate="footer">
+        <button (click)="deleteDepartamentosDialog = false" pButton pRipple icon="pi pi-times"
+            class="p-button-outlined p-button-secondary" label="No"></button>
+        <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+            class="p-button-outlined p-button-success" label="Sí"></button>
+    </ng-template>
+</p-dialog>
 
 
     </div>

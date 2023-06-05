@@ -12,14 +12,14 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     templateUrl: './habitat.component.html',
-    styleUrls:   ['./habitat-design.scss'],
+    styleUrls: ['./habitat-design.scss'],
     providers: [MessageService, HabitatService]
 })
 export class HabitatComponent implements OnInit {
 
-    
-  EsAdmin: any;
-  Permiso: any;
+
+    EsAdmin: any;
+    Permiso: any;
 
     //Dialogs
     HabitatDialog: boolean = false;
@@ -44,7 +44,7 @@ export class HabitatComponent implements OnInit {
     //Validacion
     submitted: boolean = false;
 
-        
+
     first: number = 0;
     rows: number = 10;
 
@@ -56,9 +56,9 @@ export class HabitatComponent implements OnInit {
     }
 
     onRowsPerPageChange() {
-        this.first = 0; 
-      }
-  
+        this.first = 0;
+    }
+
 
 
     statuses: any[] = [];
@@ -66,32 +66,33 @@ export class HabitatComponent implements OnInit {
     espacio: boolean = false;
 
 
-    constructor( private _router: Router ,
-        private localStorage: LocalStorageService,private habitatservice: HabitatService, private messageService: MessageService) {
-            this.EsAdmin = this.localStorage.getItem('EsAdmin')
-            this.Permiso = this.localStorage.getItem('Hábitats')}
+    constructor(private _router: Router,
+        private localStorage: LocalStorageService, private habitatservice: HabitatService, private messageService: MessageService) {
+        this.EsAdmin = this.localStorage.getItem('EsAdmin')
+        this.Permiso = this.localStorage.getItem('Hábitats')
+    }
 
     ngOnInit() {
 
-        if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+        if (this.EsAdmin != null || this.EsAdmin != undefined) {
 
             if (this.EsAdmin == false) {
 
                 if (this.Permiso == false) {
                     this._router.navigate(['login']);
-                }              
+                }
             }
-    
-        }else{
+
+        } else {
 
             this._router.navigate(['login']);
         }
 
-       this.CargarDatos();
+        this.CargarDatos();
 
         //Modelo de los datos de la tabla
         this.cols = [
-            { field: 'habi_Id',          header: 'habi_Id' },
+            { field: 'habi_Id', header: 'habi_Id' },
             { field: 'habi_Descripcion', header: 'habi_Descripcion' }
 
         ];
@@ -99,17 +100,17 @@ export class HabitatComponent implements OnInit {
 
     }
 
-private CargarDatos(){
-    this.habitatservice.getHabitat().subscribe(
-        Response => {
-            console.log(Response);
-            this.habitat = Response
-        },
-        error => (
-            console.log(error)
-        )
-    );
-}
+    private CargarDatos() {
+        this.habitatservice.getHabitat().subscribe(
+            Response => {
+                console.log(Response);
+                this.habitat = Response
+            },
+            error => (
+                console.log(error)
+            )
+        );
+    }
 
     //Metodo que desactiva el dialog
     hideDialog() {
@@ -130,8 +131,9 @@ private CargarDatos(){
     //Toma los datos de ka tabla
     editHabitat(habi: HabitatViewModel) {
         this.Editar = true;
-        this.habi = { ...this.habi };
+        this.habi = { ...habi };
         this.HabitatDialog = true;
+
     }
     //Toma los datos de ka tabla
 
@@ -196,7 +198,7 @@ private CargarDatos(){
 
         var params = {
             "habi_Id": this.habi.habi_Id,
-            "habi_Descripcion": this.habi.habi_Descripcion? this.habi.habi_Descripcion.trim() : '',
+            "habi_Descripcion": this.habi.habi_Descripcion ? this.habi.habi_Descripcion.trim() : '',
             "habi_UserCreacion": 1,
             "habi_UserModificacion": 1
         }
@@ -207,33 +209,33 @@ private CargarDatos(){
             this.espacio = true;
         }
 
-        if(params.habi_Descripcion === ""){
+        if (params.habi_Descripcion === "") {
             this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'El campo es requerido.', life: 3000 });
 
         }
-        else{
+        else {
             if (params.habi_Descripcion !== undefined &&
                 params.habi_Descripcion.trim() !== '' &&
                 params.habi_UserCreacion !== undefined &&
                 params.habi_UserModificacion !== undefined) {
-    
+
                 //Si insertara o editara
                 if (!this.Editar) {
-    
+
                     this.habitatservice.postHabitat(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
-    
+
                                 this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: this.datos.message, life: 3000 });
-    
+
                             } else if (this.datos.code == 200) {
-    
+
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.habi = {};
                                 this.HabitatDialog = false;
                                 this.CargarDatos()
-    
+
                             } else {
                                 this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                             }
@@ -242,22 +244,22 @@ private CargarDatos(){
                             console.log(error);
                         }
                     )
-    
+
                 } else {
                     this.habitatservice.EditHabitat(params).subscribe(
                         Response => {
                             this.datos = Response;
                             if (this.datos.code == 409) {
-    
+
                                 this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
-    
+
                             } else if (this.datos.code == 200) {
-    
+
                                 this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
                                 this.habi = {};
                                 this.HabitatDialog = false;
                                 this.CargarDatos();
-    
+
                             } else {
                                 this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
                             }
@@ -266,15 +268,15 @@ private CargarDatos(){
                             console.log(error);
                         }
                     )
-    
+
                 }
-    
-    
+
+
             }
         }
-        }
-        //Validacion de params
-      
+    }
+    //Validacion de params
+
     //Enviamos y editamos datos
 
 
