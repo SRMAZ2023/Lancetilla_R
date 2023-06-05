@@ -882,20 +882,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             }
         }
 
-        public IEnumerable VisitantesSexo()
-        {
-            var result = new ServiceResult();
-            try
-            {
-                var list = _visitantesRepository.VisitantesSexo();
-                return list;
-            }
-            catch (Exception e)
-            {
-                return Enumerable.Empty<VW_tbVisitantes>();
-            }
-        }
-
+    
         public ServiceResult InsertVisitantes(tbVisitantes item)
         {
             var result = new ServiceResult();

@@ -30,13 +30,6 @@ namespace Lancetilla.API.Controllers
             var list = _mantenimientoServicios.ListarVisitantes();
             return Ok(list);
         }
-        [HttpGet("VisitantesSexo")]
-        public IActionResult Grafica()
-        {
-            var list = _mantenimientoServicios.VisitantesSexo();
-
-            return Ok(list);
-        }
 
         [HttpPost("InsertVisitantes")]
         public IActionResult InsertVisitantes(VisitantesViewModel item)

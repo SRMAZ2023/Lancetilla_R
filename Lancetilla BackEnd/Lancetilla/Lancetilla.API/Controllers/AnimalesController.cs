@@ -64,13 +64,6 @@ namespace Lancetilla.API.Controllers
             return Ok(List);
         }
 
-        [HttpGet("AnimalesPorArea")]
-        public IActionResult AnimalesPorArea()
-        {
-            var list = _zoologicoServicios.AnimalesPorArea();
-
-            return Ok(list);
-        }
         [HttpGet("AnimalesPorHabitat")]
         public IActionResult AnimalesPorHabitat()
         {

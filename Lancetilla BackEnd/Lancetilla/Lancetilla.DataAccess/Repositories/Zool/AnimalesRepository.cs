@@ -39,11 +39,6 @@ namespace Lancetilla.DataAccess.Repositories.Zool
             return db.Query<VW_tbAnimales>(ScriptsDataBase.AnimalesRaza, parametros, commandType: CommandType.StoredProcedure);
         }
 
-        public IEnumerable AnimalesPorArea()
-        {
-            using var db = new SqlConnection(Lancetilla.ConnectionString);
-            return db.Query(ScriptsDataBase.AnimalesPorArea, null, commandType: System.Data.CommandType.StoredProcedure);
-        }
 
         public IEnumerable AnimalesPorHabitat()
         {

@@ -30,12 +30,39 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             return result;
         }
 
-        public IEnumerable PlantasPorArea()
+        public IEnumerable MantenimientosPorAnimal()
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
-            return db.Query(ScriptsDataBase.PlantasPorArea, null, commandType: System.Data.CommandType.StoredProcedure);
+            return db.Query(ScriptsDataBase.Grafica, null, commandType: System.Data.CommandType.StoredProcedure);
         }
 
+        public IEnumerable CuidadosPorPlantas()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.Grafica2, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        public IEnumerable ConteoZoologico()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.dashboard1, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+        public IEnumerable ConteoBotanica()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.dashboard2, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+        public IEnumerable qntienemasmantenimientos()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.dashboard3, null, commandType: System.Data.CommandType.StoredProcedure);
+
+        }
+        public IEnumerable AnimalesPorAreas()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.dashboard4, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
         public VW_tbPlantas Find(int? id)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);

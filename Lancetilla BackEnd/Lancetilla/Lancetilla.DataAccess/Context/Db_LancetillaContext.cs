@@ -868,7 +868,7 @@ namespace Lancetilla.DataAccess.Context
 
                 entity.Property(e => e.visi_Id).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.visi_Nombre)
+                entity.Property(e => e.visi_Nombres)
                     .IsRequired()
                     .HasMaxLength(201);
 

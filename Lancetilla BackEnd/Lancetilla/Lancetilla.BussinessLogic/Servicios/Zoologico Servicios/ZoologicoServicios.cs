@@ -167,19 +167,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Zoologico_Servicios
 
             }
         }
-        public IEnumerable AnimalesPorArea()
-        {
-            var result = new ServiceResult();
-            try
-            {
-                var list = _animalesRepository.AnimalesPorArea();
-                return list;
-            }
-            catch (Exception e)
-            {
-                return Enumerable.Empty<VW_tbAnimales>();
-            }
-        }
+
 
         public IEnumerable AnimalesPorHabitat()
         {

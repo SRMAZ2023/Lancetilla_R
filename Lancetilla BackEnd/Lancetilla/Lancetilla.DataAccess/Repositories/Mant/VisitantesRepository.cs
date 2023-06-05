@@ -24,11 +24,7 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             throw new NotImplementedException();
         }
 
-        public IEnumerable VisitantesSexo()
-        {
-            using var db = new SqlConnection(Lancetilla.ConnectionString);
-            return db.Query(ScriptsDataBase.Visitantes, null, commandType: System.Data.CommandType.StoredProcedure);
-        }
+
 
         public tbVisitantes Insert(tbVisitantes item)
         {

@@ -46,6 +46,55 @@ namespace Lancetilla.API.Controllers
             return Ok(List);
         }
 
+        [HttpGet("MantenimientosPorAnimal")]
+        public IActionResult MantenimientosPorAnimal()
+        {
+            var list = _botanicaServicios.MantenimientosPorAnimal();
+
+            return Ok(list);
+        }
+
+        [HttpGet("CuidadosPorPlantas")]
+        public IActionResult CuidadosPorPlantas()
+        {
+            var list = _botanicaServicios.CuidadosPorPlantas();
+
+            return Ok(list);
+        }
+
+        [HttpGet("ConteoZoologico")]
+        public IActionResult ConteoZoologico()
+        {
+            var list = _botanicaServicios.ConteoZoologico();
+
+            return Ok(list);
+        }
+
+        [HttpGet("ConteoBotanica")]
+        public IActionResult ConteoBotanica()
+        {
+            var list = _botanicaServicios.ConteoBotanica();
+
+            return Ok(list);
+        }
+        [HttpGet("qntienemasmantenimientos")]
+        public IActionResult qntienemasmantenimientos()
+        {
+            var list = _botanicaServicios.qntienemasmantenimientos();
+
+            return Ok(list);
+        }
+              [HttpGet("AnimalesPorAreas")]
+        public IActionResult AnimalesPorAreas()
+        {
+            var list = _botanicaServicios.AnimalesPorAreas();
+
+            return Ok(list);
+        }
+
+
+
+
         [HttpPost("ActualizarPlanta")]
         public IActionResult ActualizarPlanta(PlantasViewModel item)
         {
@@ -62,12 +111,6 @@ namespace Lancetilla.API.Controllers
             return Ok(List);
         }
 
-        [HttpGet("PlantasPorArea")]
-        public IActionResult Grafica()
-        {
-            var list = _botanicaServicios.PlantasPorArea();
 
-            return Ok(list);
-        }
     }
 }
