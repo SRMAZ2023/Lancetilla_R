@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RolesViewModel, RolesPorPantallaViewModel } from 'src/app/demo/Models/RolesPorPantallaViewModel';
 
+
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { RolesPorPantallaService } from 'src/app/demo/service/RolesPorPantalla';
@@ -77,7 +78,7 @@ export class RolesPorPantallaComponent implements OnInit {
     espacio: boolean = false;
     expandedRows: RolesPorPantallaViewModel[] = [];
    
-
+    
     constructor( private _router: Router ,
       private localStorage: LocalStorageService,private productService: ProductService, private rolesPorPantallaService: RolesPorPantallaService, private messageService: MessageService) {
         this.EsAdmin = this.localStorage.getItem('EsAdmin')

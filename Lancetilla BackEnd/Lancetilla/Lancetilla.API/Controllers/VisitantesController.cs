@@ -57,6 +57,17 @@ namespace Lancetilla.API.Controllers
             return Ok(List);
         }
 
-     
+        [HttpPost("FacturasPorVisitante")]
+        public IActionResult FacturasPorVisitante(VisitantesViewModel item)
+        {
+            var resultMapeado = _mapper.Map<tbVisitantes>(item);
+
+            var respuesta = _mantenimientoServicios.FacturasPorVisitante(resultMapeado);
+
+
+            return Ok(respuesta);
+        }
+
+
     }
 }

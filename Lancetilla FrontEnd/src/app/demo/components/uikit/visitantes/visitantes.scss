@@ -1,0 +1,46 @@
+.table-menu {
+    position: relative;
+  }
+  
+  .table-menu .p-tieredmenu {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+  }
+  
+
+  .label-name {
+    font-weight: bold;
+    color: blue;
+  }
+  
+  .label-ticket {
+    font-size: 14px;
+    color: green;
+    margin-bottom: 10px;
+  }
+
+  .dialog-content {
+    text-align: center;
+  }
+  
+  .title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .ticket {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .value {
+    font-style: italic;
+  }
+  

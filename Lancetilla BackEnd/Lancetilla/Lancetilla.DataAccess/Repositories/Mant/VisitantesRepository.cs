@@ -46,7 +46,19 @@ namespace Lancetilla.DataAccess.Repositories.Mant
             return result;
         }
 
-      
+        public IEnumerable<tbFacturas> FacturasPorVisitante(tbVisitantes item)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+
+            parametros.Add("@visi_Id", item.visi_Id, DbType.Int32, ParameterDirection.Input);
+
+            var result = db.Query<tbFacturas>(ScriptsDataBase.CargarFacturasPorVisitante, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+
 
         public RequestStatus Update(tbVisitantes item)
         {

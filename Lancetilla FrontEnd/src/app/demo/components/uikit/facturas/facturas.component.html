@@ -1,4 +1,4 @@
-<div class="col-12" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+<div class="col-12" style="display: flex; height: 100vh;">
   <div class="card card-w-title" [ngClass]="{ 'refreshed-class': refreshClasses }" style="width: 120%; left: 50%; text-align: center;">
     <h2>Facturación de Tickets</h2>
 
@@ -117,12 +117,12 @@
         <div class="row">
           <div class="col-sm-6 d-flex align-items-stretch">
             <!-- Columna izquierda -->
-            <div class="card w-150" style="float: left;">
+            <div class="card w-200" style="float: left;">
               <div class="card-body d-flex flex-column align-items-center" style="text-align: center;">
                 <label class="ticket-description" style="font-weight: bold; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{tickets[0].tick_Descripcion}}</label>
-                <div style="margin-bottom: 20px;">
-                  <img src="https://thumbs.dreamstime.com/b/boletos-coloridos-del-parque-zool%C3%B3gico-con-el-fondo-tropical-66561836.jpg"
-                    alt="Imagen derecha" style="width: 280px; height: auto; object-fit: cover;">
+                <div style="margin-bottom: 55px;">
+                  <img src="https://i.postimg.cc/Bbv4QtV0/1.png"
+                    alt="Imagen derecha" style="width: 415px; height: auto; object-fit: cover;">
                 </div>
                 <div style="display: flex; justify-content: center; align-items: center;">
                   <button pButton pRipple icon="pi pi-minus" (click)="decrementZooCounter()" class="p-button-success"></button>
@@ -134,19 +134,19 @@
                 </div>
               </div>
               <br>
-              <label for="Precio: 20.00 lps">Precio: {{tickets[0].tick_Precio}} lps</label>
+              <label style="font-size: 18px;" class="label-ticket">Precio: {{tickets[0].tick_Precio}} lps</label>
             </div>
           </div>
       
           <div class="col-sm-6 d-flex align-items-stretch">
             <!-- Columna derecha -->
             
-            <div class="card w-100" style="float: right;">
+            <div class="card w-200" style="float: right;">
               <div class="card-body d-flex flex-column align-items-center" style="text-align: center;">
                 <label class="ticket-description" style="font-weight: bold; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{tickets[1].tick_Descripcion}}</label>
-                <div style="margin-bottom: 20px;">
-                  <img src="https://thumbs.dreamstime.com/b/boletos-coloridos-del-parque-zool%C3%B3gico-con-el-fondo-tropical-66561836.jpg"
-                    alt="Imagen derecha" style="width: 280px; height: auto; object-fit: cover;">
+                <div style="margin-bottom: 55px;">
+                  <img src="https://i.postimg.cc/Z5NZqGVC/2.png"
+                    alt="Imagen derecha" style="width: 415px; height: auto; object-fit: cover;">
                 </div>
                 <div style="display: flex; justify-content: center; align-items: center;">
                   <button pButton pRipple icon="pi pi-minus" (click)="decrementBotanicaCounter()" class="p-button-success"></button>
@@ -158,17 +158,18 @@
                 </div>
               </div>
               <br>
-              <label for="Precio: 20lps">Precio: {{tickets[1].tick_Precio}} lps</label>
+          
+              <label style="font-size: 18px;" class="label-ticket">Precio: {{tickets[1].tick_Precio}} lps</label>
             </div>
           </div>
       
           <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
       
-          <br>  <br>    <br>  <br> <br>  <br>    <br>  <br>    <br> 
+          <br>  <br>    <br>  
           <div class="col-sm-12">
             <!-- Input y botones -->
             <div style="text-align: center; margin-top: 20px;">
-              <label for="total">Total:  </label><br>
+              <label class="ticket-description" style="font-weight: bold; font-size: 30px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Total:</label><br>
               <input type="number" disabled pInputText id="total" name="total" [(ngModel)]="total" style="border: 2px solid red; background-color: white;" />
 
 

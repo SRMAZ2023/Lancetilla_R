@@ -948,6 +948,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Mantenimiento_Servicios
             }
         }
 
+        public IEnumerable<tbFacturas> FacturasPorVisitante(tbVisitantes items)
+        {
+            try
+            {
+                var list = _visitantesRepository.FacturasPorVisitante(items);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<tbFacturas>();
+            }
+        }
+
         public ServiceResult EliminarVisitantes(tbVisitantes item)
         {
             var result = new ServiceResult();

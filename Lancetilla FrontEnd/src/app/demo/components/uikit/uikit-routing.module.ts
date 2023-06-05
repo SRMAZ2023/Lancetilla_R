@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
         { path: 'Empleados', data: { breadcrumb: 'Empleados' }, loadChildren: () => import('./Empleados/empleados.module').then(m => m.EmpleadosModule) },
         
         { path: 'Reporte Factura', data: { breadcrumb: 'Reporte Factura' }, loadChildren: () => import('./Reporte Factura/ReporteFactura.module').then(m => m.ReporteFacturaModule) },
+        { path: 'Tickets', data: { breadcrumb: 'Tickets' }, loadChildren: () => import('./Tickets/tickets-routing.module').then(m => m.ticketsRoutingModule) },
         { path: 'charts', data: { breadcrumb: 'charts' }, loadChildren: () => import('./charts/chartsdemo.module').then(m => m.ChartsDemoModule) },
         { path: 'facturas', data: { breadcrumb: 'facturas' }, loadChildren: () => import('./facturas/facturas-routing.module').then(m => m.FacturasRoutingModule) },
         { path: 'Cuidados', data: { breadcrumb: 'Cuidados' }, loadChildren: () => import('./Cuidados/Cuidados.module').then(m => m.CuidadosModule) },

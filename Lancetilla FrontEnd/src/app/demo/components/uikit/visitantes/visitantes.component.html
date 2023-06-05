@@ -24,49 +24,102 @@
                     </span>
                 </div>
             </div>
-
-            <br>
-
-            <p-table #dt [value]="visitantes" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
-                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedVisitante"
-                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows" class="responsiveLayout">
+            
+           
 
 
-                <ng-template pTemplate="header">
-                    <tr>
+            <p-table #dt [value]="visitantes"  [columns]="cols" responsiveLayout="scroll" [rows]="rows" [paginator]="true"
+              [showCurrentPageReport]="true" [(selection)]="Rol" selectionMode="multiple" [rowHover]="true" dataKey="id"
+              [first]="first" [rows]="rows">
+         
 
-                        <th pSortableColumn="visi_Id">Id                   <p-sortIcon field="visi_Id"></p-sortIcon></th>
-                        <th pSortableColumn="visi_Nombre">Nombres <p-sortIcon field="visi_Nombre"></p-sortIcon></th>
-                        <th pSortableColumn="visi_RTN">RTN                   <p-sortIcon field="visi_RTN"></p-sortIcon></th>
-                        <th pSortableColumn="visi_Sexos">Sexo <p-sortIcon field="visi_Sexos"></p-sortIcon></th>
 
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-visitantes>
-                    <tr>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 3rem"></th>
+                  
+                  <th pSortableColumn="visi_Id">Id <p-sortIcon field="visi_Id"></p-sortIcon></th>
+                  <th pSortableColumn="visi_Nombres">Nombres <p-sortIcon field="visi_Nombres"></p-sortIcon></th>
+                  <th pSortableColumn="visi_RTN">RTN <p-sortIcon field="visi_RTN"></p-sortIcon></th>
+                  <th pSortableColumn="visi_Sexos">Sexo <p-sortIcon field="visi_Sexos"></p-sortIcon></th>
+                      
+                  <th pSortableColumn="category"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-visitantes let-expanded="expanded">
+                <tr>
+                  <td>
+                    <button type="button" (click)="Pantallas(visitantes)" pButton pRipple
+                      class="p-button-text p-button-rounded p-button-plain"
+                      [icon]="isRowExpanded(visitantes) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                  </td>
+                  <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                    {{visitantes.visi_Id}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    <span class="p-column-title">Name</span>
+                    {{visitantes.visi_Nombres}}  {{visitantes.visi_Apellido}}
+                </td>
 
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
-                            {{visitantes.visi_Id}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{visitantes.visi_Nombre}}
-                        </td>
+                <td style="width:14%; min-width:10rem;">
+                    <span class="p-column-title">Name</span>
+                    {{visitantes.visi_RTN}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    <span class="p-column-title">Name</span>
+                    {{visitantes.visi_Sexos}}
+                </td>
+               
+                 
+                </tr>
+                <tr *ngIf="expandedRow === visitantes" [ngClass]="{'ui-widget-content': true}">
+                  <td [attr.colspan]="8">
+                    <div class="p-2">
+                      <div class="table-container">
+                        <p-table [value]="datos" dataKey="id" [responsive]="true" [scrollable]="true"
+                          [scrollHeight]="'300px'">
 
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{visitantes.visi_RTN}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
-                            {{visitantes.visi_Sexos}}
-                        </td>
-                        
+                          <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="pant_Id">FacturaID <p-sortIcon field="pant_Id"></p-sortIcon></th>
+                  <th pSortableColumn="pant_Descripcion">Metodo Pago <p-sortIcon field="pant_Descripcion"></p-sortIcon>
+             
+                    <th pSortableColumn="pant_Descripcion">Fecha <p-sortIcon field="pant_Descripcion"></p-sortIcon></th>
+                    <th pSortableColumn="customer">Detalles <p-sortIcon field="customer"></p-sortIcon></th>
+                  <th pSortableColumn="customer">Generar Factura <p-sortIcon field="customer"></p-sortIcon></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-datos>
+                <tr>
+                    <td>{{datos.fact_Id}}</td>
+                    <td>{{datos.meto_Descripcion}}</td>
+               
+                  <td>{{datos.fact_Fecha}}</td>
+                  <td>
+                    <div class="flex">
+                      <button  (click)="Detalles(datos)" pButton pRipple icon="pi pi-qrcode"
+                        class="p-button-rounded p-button-warning"></button>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex">
+                      <button  (click)="Factura(datos)" pButton pRipple icon="pi pi-envelope"
+                        class="p-button-rounded p-button-warning"></button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
 
-                    </tr>
-                </ng-template>
             </p-table>
+          </div>
+        </div>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+
+
+
         </div>
 
 
@@ -75,3 +128,22 @@
 
     </div>
 </div>
+
+<p-dialog [(visible)]="visitanteDialog" [style]="{width: '450px'}" header="Detalles de Factura" [modal]="true" class="p-fluid">
+  <br>
+  <ng-template pTemplate="content">
+    <div class="text-center">
+      <label style="font-size: 20px; font-weight: bold;" class="label-name">Tickets comprados:</label><br><br>
+      <label style="font-size: 18px;" class="label-ticket">{{DetallesFactura.ticket_JardinBotanico}}</label><br>
+      <label style="font-size: 18px;" class="label-ticket">{{DetallesFactura.ticket_Zoologico}}</label><br><br>
+
+      <label style="font-size: 20px; font-weight: bold;" class="label-name">Total gastado:</label><br>
+      <label style="font-size: 18px;" class="label-ticket">{{DetallesFactura.fade_Total}}</label><br>
+    
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-outlined p-button-success" (click)="hideDialog()"></button>
+  </ng-template>
+</p-dialog>
