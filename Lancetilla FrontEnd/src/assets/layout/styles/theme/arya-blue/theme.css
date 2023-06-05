@@ -3108,10 +3108,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   padding: 1rem;
 }
 
-.fc {
-  /* FullCalendar 4 */
-  /* FullCalendar 5 */
-}
+
 .fc.fc-unthemed .fc-view-container th {
   background: #1e1e1e;
   border: 1px solid #383838;
@@ -4421,13 +4418,14 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-dialog {
-  border-radius: 3px;
+  border-radius: 10px;
   box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
-  border: 1px solid #383838;
-}
+  border-image: url('https://media.istockphoto.com/id/1157947172/es/vector/patr%C3%B3n-sin-costuras-con-rayas-de-tigre.jpg?s=612x612&w=0&k=20&c=p2d8GB6ONP925KvjDHQC7gavpYx7MlcRcO_njA-BRnM=') 10 round;  
+  border-width: 10px;}
+
 .p-dialog .p-dialog-header {
-  border-bottom: 0 none;
-  background: #1e1e1e;
+  border-bottom: 0 none; 
+  background: #ecffec;
   color: rgba(255, 255, 255, 0.87);
   padding: 1.5rem;
   border-top-right-radius: 3px;
@@ -4435,9 +4433,13 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-dialog .p-dialog-header .p-dialog-title {
   font-weight: 600;
+  background: #ecffec;
+
   font-size: 1.25rem;
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon {
+  background: #ecffec;
+
   width: 2rem;
   height: 2rem;
   color: rgba(255, 255, 255, 0.6);
@@ -4448,16 +4450,22 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   margin-right: 0.5rem;
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
+  background: #ecffec;
+
   color: rgba(255, 255, 255, 0.87);
   border-color: transparent;
   background: rgba(255, 255, 255, 0.03);
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
+  background: #ecffec;
+
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 1px #93cbf9;
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon:last-child {
+  background: #ecffec;
+
   margin-right: 0;
 }
 .p-dialog .p-dialog-content {

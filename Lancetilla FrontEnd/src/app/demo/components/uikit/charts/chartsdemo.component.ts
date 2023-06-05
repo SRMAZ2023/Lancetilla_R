@@ -15,13 +15,19 @@ interface data {
     cantidad: number;
   }
   interface plantas {
-    arbo_Descripcion: string;
-    cantidad: number;
+    tipl_NombreComun: string;
+    conteo: number;
+    plan_Is: number;
   }
 
   interface visis {
     visi_Sexo: string;
     cantidad: number;
+  }
+  interface anims {
+    conteo: number;
+    anim_Nombre: string;
+    anim_Id: number;
   }
   
 @Component({
@@ -66,9 +72,9 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     // Obtener datos de la API para la gráfica de barras
-    this.http.get<data[]>(this.url + "Animales/AnimalesPorArea").subscribe((data: data[]) => {
-      const labels = data.map(item => item.arzo_Descripcion);
-      const values = data.map(item => item.cantidad);
+    this.http.get<plantas[]>(this.url + "Cuidados/CuidadoPorPlanta").subscribe((data: plantas[]) => {
+      const labels = data.map(item => item.tipl_NombreComun);
+      const values = data.map(item => item.conteo);
 
       const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700']; // Escala de colores verdes
 
@@ -76,7 +82,7 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
         labels: labels,
         datasets: [
           {
-            label: 'animales',
+            label: 'Plantas',
             backgroundColor: colors.slice(0, values.length),
             borderColor: '#122341',
             data: values
@@ -119,35 +125,34 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
     });
 
 
+ // Obtener datos de la API para la gráfica de tarta
+ this.http.get<anims[]>(this.url + "Animales/MantenimientosPorAnimal").subscribe((data: anims[]) => {
+  const labels = data.map(item => item.anim_Nombre);
+  const values = data.map(item => item.conteo);
+  const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700'];  // Colores para cada rebanada
 
-
-    // Obtener datos de la API para la gráfica de tarta
-    this.http.get<habitat[]>(this.url + "Animales/AnimalesPorHabitat").subscribe((data: habitat[]) => {
-      const labels = data.map(item => item.habi_Descripcion);
-      const values = data.map(item => item.cantidad);
-      const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700'];  // Colores para cada rebanada
-
-      this.pieData = {
-        labels: labels,
-        datasets: [
-          {
-            data: values,
-            backgroundColor: colors.slice(0, values.length),
-            hoverBackgroundColor: colors.slice(0, values.length).map(color => `${color}1A`) // Color de resaltado al pasar el cursor
-          }
-        ]
-      };
-      this.pieOptions = {
-        plugins: {
-          legend: {
-            labels: {
-              usePointStyle: true,
-              color: textColor
-            }
-          }
+  this.pieData = {
+    labels: labels,
+    datasets: [
+      {
+        data: values,
+        backgroundColor: colors.slice(0, values.length),
+        hoverBackgroundColor: colors.slice(0, values.length).map(color => `${color}1A`) // Color de resaltado al pasar el cursor
+      }
+    ]
+  };
+  this.pieOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          usePointStyle: true,
+          color: textColor
         }
-      };
-    });
+      }
+    }
+  };
+});
+
 
 
 
@@ -208,7 +213,7 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
 
 
 
-
+/*
 
     // Obtener datos de la API para la gráfica de radar
     this.http.get<plantas[]>(this.url + "Plantas/PlantasPorArea").subscribe((data: plantas[]) => {
@@ -249,7 +254,7 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
       };
     });
 
-
+*/
   }
 
   ngOnDestroy() {

@@ -4407,15 +4407,22 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-dialog .p-dialog-header {
   border-bottom: 0 none;
-  background: #ffffff;
+  background: #ecffec;
   color: #343a40;
+  font-family: 'Segoe Script';
+  padding-top: 1.5rem;
   padding: 1.5rem;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
 }
 .p-dialog .p-dialog-header .p-dialog-title {
-  font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 25px;
+  margin-left: 10px;
+  height: 2rem;
+  color: #6c757d;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-right: 0.5rem;
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon {
   width: 2rem;
@@ -4451,12 +4458,15 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-dialog .p-dialog-footer {
   border-top: 0 none;
-  background: #ffffff;
-  color: #495057;
+  background-color: #495057;
+  color: #fff;
   padding: 0 1.5rem 1.5rem 1.5rem;
   text-align: right;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
+  background-image: url('https://i.ibb.co/pX4LM2Q/Dise-o-sin-t-tulo-10.png');
+  background-repeat: no-repeat;
+  background-position: center bottom;
 }
 .p-dialog .p-dialog-footer button {
   margin: 0 0.5rem 0 0;

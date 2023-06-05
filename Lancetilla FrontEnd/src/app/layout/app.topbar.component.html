@@ -1,10 +1,9 @@
 <div class="layout-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background-color: #fff;">
-    <a class="layout-topbar-logo" routerLink="/app">
+    <a class="layout-topbar-logo" routerLink="/app" style="left: 50%; position: center; margin: 90px;">
         <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'eso' : 'logo-white'}}.png" alt="logo" style="width: 120px; height: auto;">
-        <span>Lancetilla</span>
     </a>
 
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+    <button #menubutton class="p-link layout-menu-button layout-topbar-button" style=" position: fixed; margin: 310px;" (click)="layoutService.onMenuToggle()">
         <i class="pi pi-bars"></i>
     </button>
 

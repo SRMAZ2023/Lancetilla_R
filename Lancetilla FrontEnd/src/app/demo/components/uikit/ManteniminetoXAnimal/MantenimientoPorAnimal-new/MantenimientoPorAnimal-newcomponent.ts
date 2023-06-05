@@ -65,7 +65,21 @@ export class MantenimientoPorAnimalNewComponent implements OnInit {
 
   demoTable: MantenimintoViewModel[] = [];
 
-  cols: any[] = [];
+     
+
+  first: number = 0;
+  rows: number = 10;
+
+  cols: any[] = []; // Aquí debes definir las columnas de tu tabla
+
+  onPageChange(event: any) {
+      this.first = event.first;
+      this.rows = event.rows;
+  }
+  onRowsPerPageChange() {
+      this.first = 0;
+  }
+
 
   statuses: any[] = [];
   //validar espacio

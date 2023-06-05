@@ -1,28 +1,34 @@
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 <div class="grid p-fluid">
     <div class="col-12 lg:col-6">
-        <div class="card">
-            <h5>Géneros que nos han visitado</h5>
-            <p-chart type="line" [data]="lineData" [options]="lineOptions"></p-chart>
+        <div class="card flex flex-column align-items-center">
+            <h5 class="text-left w-full" style="font-family: 'Segoe script'; margin-left: 50%;">Mantenimientos por
+                animal
+            </h5>
+            <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
+
         </div>
 
-        <div class="card flex flex-column align-items-center">
-            <h5 class="text-left w-full">Animales por hábitat</h5>
-            <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
-        </div>
 
 
     </div>
     <div class="col-12 lg:col-6">
+     
         <div class="card">
-            <h5 class=""> Animales por área zoológica</h5>
+            <h5 class="" style="font-family: 'Segoe script'; margin-left: 35%;">Cuidados por plantas</h5>
             <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
-        </div>
+        </div>  
 
 
 
-        <div class="card flex flex-column align-items-center">
-            <h5 class="text-left w-full">Plantas por área botánica </h5>
-            <p-chart type="radar" [data]="radarData" [options]="radarOptions"></p-chart>
-        </div>
+
+
     </div>
 </div>

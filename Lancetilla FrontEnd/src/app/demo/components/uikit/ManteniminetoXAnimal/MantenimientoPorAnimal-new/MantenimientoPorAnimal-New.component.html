@@ -43,40 +43,45 @@
             <div class="grid p-fluid">
                 <div class="field col-2">
                     <button (click)="saveMantenimientoPorAnimal()" pButton pRipple label="Guardar" icon="pi pi-check"
-                        class="p-button-text"></button>
+                        class="p-button-outlined p-button-success"></button>
                 </div>
+
                 <div class="field col-2">
-                    <button pButton pRipple label="Finalizar" icon="pi pi-times" type="button" class="p-button-warning"
-                        [routerLink]="['/app/uikit/ManteniminetoXAnimal']"></button>
-                </div>
-                <div class="field col-2">
-                    <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button" class="p-button-danger"
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
+                        class="p-button-outlined p-button-danger"
                         [routerLink]="['/app/uikit/ManteniminetoXAnimal']"></button>
                 </div>
             </div>
         </div>
+
         <div class="card">
-            <h2>Tabla de datos</h2>
-            <p-table #dt [value]="DataAnimal" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="[
-                    'anim_Nombre',
-                    'maan_Fecha',
-                    'tima_Descripcion'
-                ]" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} "
-                [(selection)]="selectedMantenimiento" selectionMode="multiple" [rowHover]="true" dataKey="id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">DataAnimal</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
-                                class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
+
+            <div class="flex align-items-center justify-content-start">
+                <div class="mr-4">
+                    <span class="mr-3">Mostrar:</span>
+                    <p-dropdown [options]="rowsPerPageOptions" [(ngModel)]="rows" [style]="{width:'auto'}"
+                        (onChange)="onRowsPerPageChange()"></p-dropdown>
+                </div>
+    
+                <div class="ml-auto">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" style="color: rgb(0, 0, 0)"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="p-button-success" />
+                    </span>
+                </div>
+            </div>
+            <br>
+
+            <p-table #dt [value]="DataAnimal" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedMantenimiento"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+
+                
                 <ng-template pTemplate="header">
                     <tr>
+                        
+                        <th></th>
                         <th pSortableColumn="maan_Id">
                             Id <p-sortIcon field="maan_Id"></p-sortIcon>
                         </th>
@@ -88,29 +93,32 @@
                             <p-sortIcon field="maan_Fecha"></p-sortIcon>
                         </th>
                         <th pSortableColumn="cuid_Descripcion">
-                            Cuidado
+                            Mantenimiento
                             <p-sortIcon field="cuid_Descripcion"></p-sortIcon>
                         </th>
 
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-DataAnimal>
                     <tr>
-                        <td style="width: 2%; min-width: 5rem">
+                        <td style="width: 10%; min-width: 5rem">
+     
+                        </td>
+                        <td style="width: 10%; min-width: 5rem">
                             <span class="p-column-title">id</span>
                             {{ DataAnimal.maan_Id }}
                         </td>
-                        <td style="width: 14%; min-width: 10rem">
+                        <td style="width: 20%; min-width: 10rem">
                             <span class="p-column-title">Nombre</span>
                             {{ DataAnimal.anim_Nombre }}
                         </td>
-                        <td style="width: 15%; min-width: 15rem">
+                        <td style="width: 20%; min-width: 15rem">
                             <span class="p-column-title">Nombre Cientifico</span>
                             {{ DataAnimal.maan_Fecha }}
                         </td>
 
-                        <td style="width: 14%; min-width: 10rem">
+                        <td style="width: 20%; min-width: 10rem">
                             <span class="p-column-title">Cuidador</span>
                             {{ DataAnimal.tima_Descripcion }}
                         </td>
@@ -126,6 +134,9 @@
                 </ng-template>
             </p-table>
         </div>
+
+
+
         <p-dialog [(visible)]="deleteMantenimientoXanimalDialog" [modal]="true" [style]="{ width: '450px' }"
             header="Confirm">
             <div class="flex align-items-center justify-content-center">

@@ -42,16 +42,16 @@
                         <th pSortableColumn="empl_Nombre">Nombre <p-sortIcon field="empl_Nombre"></p-sortIcon></th>
                         <th pSortableColumn="empl_Identidad"> DNI <p-sortIcon field="empl_Identidad"></p-sortIcon></th>
                         <th pSortableColumn="EstadoCivil">Estado Civil <p-sortIcon field="EstadoCivil"></p-sortIcon></th>
-                        <th pSortableColumn="empl_Telefono"> Telefono <p-sortIcon field="empl_Telefono"></p-sortIcon></th>
+                        <th pSortableColumn="empl_Telefono"> Teléfono <p-sortIcon field="empl_Telefono"></p-sortIcon></th>
                         <th pSortableColumn="carg_Descripcion">  Cargo  <p-sortIcon field="carg_Descripcion"></p-sortIcon></th>
 
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-empleados>
                     <tr>
 
-                        <td style="width:2%; min-width:5rem;"><span class="p-column-title">id</span>
+                        <td style="width:7%; min-width:5rem;"><span class="p-column-title">id</span>
                             {{empleados.empl_Id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
@@ -59,7 +59,7 @@
                             {{empleados.empl_Nombre + " " + empleados.empl_Apellido}}
                         </td>
                         
-                        <td style="width:14%; min-width:8rem;">
+                        <td style="width:17%; min-width:8rem;">
                             <span class="p-column-title">DNI</span>
                             {{empleados.empl_Identidad}}
                         </td>
@@ -68,10 +68,10 @@
                             {{empleados.estc_Descripcion}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Telefono</span>
+                            <span class="p-column-title">Teléfono</span>
                             {{empleados.empl_Telefono}}
                         </td>
-                        <td style="width:16%; min-width:14rem;">
+                        <td style="width:20%; min-width:14rem;">
                             <span class="p-column-title">Cargo</span>
                             {{empleados.carg_Descripcion}}
                         </td>
@@ -79,9 +79,9 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"  
+                                    class="p-button-rounded p-button-warning mr-2"  
                                     [routerLink]="['/app/uikit/Empleados/Edit',empleados.empl_Id]"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteempleados(empleados)"></button>
                             </div>
                         </td>
@@ -92,20 +92,21 @@
 
          
 
-        <p-dialog [(visible)]="deleteempleadosDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteempleadosDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirmación">
             <br>
             <div class="flex align-items-center justify-content-center">
 
-                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
                     style="margin-right: 15px;">
-                <span *ngIf="empleado">¿Estás seguro de eliminar al empleado
-                    <b>{{empleado.empl_Nombre + ' ' + empleado.empl_Apellido}}</b>?</span>
-            </div>
+                    <span *ngIf="empleado">¿Estás seguro de eliminar al empleado
+                        <b>{{empleado.empl_Nombre + ' ' + empleado.empl_Apellido}}</b>?</span>
+                </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                    (click)="deleteempleadosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-                    (click)="confirmDelete()"></button>
+                <button (click)="deleteempleadosDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-outlined p-button-secondary" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+                    class="p-button-outlined p-button-success" label="Sí"></button>
             </ng-template>
         </p-dialog>
 

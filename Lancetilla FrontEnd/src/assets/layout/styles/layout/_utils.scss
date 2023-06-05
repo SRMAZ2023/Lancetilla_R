@@ -11,6 +11,40 @@
         margin-bottom: 0;
     }
 }
+.cardLogin {
+    background: #ffffff;
+    border: 2px solid var(--surface-border);
+    border-color: #1a9120;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    border-radius: $borderRadius;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.cardEmpleados {
+    background: #ffffff;
+    border: 2px solid var(--surface-border);
+    border-color: #1a9120;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    border-radius: $borderRadius;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    background-image: url('https://i.ibb.co/k85FNvY/Dise-o-sin-t-tulo-12.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% auto;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
 
 .cardEstadosCiviles {
     

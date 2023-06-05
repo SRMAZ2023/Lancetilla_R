@@ -34,8 +34,8 @@
 
 
             <p-table #dt [value]="Mantenimiento" [columns]="cols" responsiveLayout="scroll" [rows]="rows"
-            [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedMantenimiento"
-            selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
+                [paginator]="true" [showCurrentPageReport]="true" [(selection)]="selectedMantenimiento"
+                selectionMode="multiple" [rowHover]="true" dataKey="id" [first]="first" [rows]="rows">
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -48,11 +48,11 @@
                             <p-sortIcon field="mant_Observaciones"></p-sortIcon>
                         </th>
                         <th pSortableColumn="tima_Descripcion">
-                            Tipo de Mantenimiento
+                            Tipo de mantenimiento
                             <p-sortIcon field="tima_Descripcion"></p-sortIcon>
                         </th>
 
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-Mantenimiento>
@@ -61,72 +61,61 @@
                             <span class="p-column-title">Code</span>
                             {{ Mantenimiento.mant_Id }}
                         </td>
-                        <td style="width: 14%; min-width: 10rem">
+                        <td style="width: 40%; min-width: 10rem">
                             <span class="p-column-title">Name</span>
                             {{ Mantenimiento.mant_Observaciones }}
                         </td>
-                        <td style="width: 14%; min-width: 10rem">
+                        <td style="width: 30%; min-width: 10rem">
                             <span class="p-column-title">Name</span>
                             {{ Mantenimiento.tima_Descripcion }}
                         </td>
 
                         <td>
                             <div class="flex">
-                                <button
-                                    (click)="editMantenimiento(Mantenimiento)"
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
-                                ></button>
-                                <button
-                                    (click)="deleteMantenimiento(Mantenimiento)"
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-trash"
-                                    class="p-button-rounded p-button-warning"
-                                ></button>
+                                <button (click)="editMantenimiento(Mantenimiento)" pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-warning mr-2"></button>
+                                <button (click)="deleteMantenimiento(Mantenimiento)" pButton pRipple icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger"></button>
                             </div>
                         </td>
+
                     </tr>
                 </ng-template>
             </p-table>
         </div>
 
-        <p-dialog
-            [(visible)]="MantenimientotDialog"
-            [style]="{ width: '450px' }"
-            [modal]="true"
-            header="Mantenimientos"
-            class="p-fluid"
-        >
-        <br>
+        <p-dialog [(visible)]="MantenimientotDialog" [style]="{ width: '450px' }" [modal]="true" class="p-fluid">
+            <p-header>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Mantenimientos
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/mJBBwXAZyTwAAAAi/repair-mechanics.gif" width="55px" height="55px"
+                        style="margin-left: 20px;">
+
+                </div>
+
+            </p-header>
+            <br><br>
+
             <ng-template pTemplate="content">
                 <div class="field ">
                     <label for="tima_Id"> Tipo de manteniminto </label>
-                    <p-dropdown
-                        name="tima_Id"
-                        #tima_Id="ngModel"
-                        [autoDisplayFirst]="false"
-                        [options]="TipoMantenimiento"
-                        [(ngModel)]="Mantenimient.tima_Id"
-                        [ngClass]="{
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+
+                        <p-dropdown name="tima_Id" #tima_Id="ngModel" [autoDisplayFirst]="false"
+                            [options]="TipoMantenimiento" [(ngModel)]="Mantenimient.tima_Id" [ngClass]="{
                             'ng-invalid': submitted && !Mantenimient.tima_Id
-                        }"
-                        placeholder="Seleccione un tipo de mantenimineto"
-                        inputId="dropdown"
-                        optionLabel="label"
-                        optionValue="value"
-                        [ngClass]="{
+                        }" placeholder="Seleccione un tipo de mantenimineto" inputId="dropdown" optionLabel="label"
+                            optionValue="value" [ngClass]="{
                             'ng-invalid ng-dirty':
                                 submitted && !Mantenimient.tima_Id
-                        }"
-                    ></p-dropdown>
-                    <small
-                        *ngIf="submitted && !Mantenimient.tima_Id"
-                        class="ng-dirty ng-invalid"
-                        style="color: red"
-                    >
+                        }"></p-dropdown>
+                    </span>
+
+                    <small *ngIf="submitted && !Mantenimient.tima_Id" class="ng-dirty ng-invalid" style="color: red">
                         El tipo de mantenimiento es requerido.
                     </small>
                 </div>
@@ -134,86 +123,48 @@
                 <div class="field">
                     <label for="name">Observación</label>
 
-                    <textarea
-                        rows="5"
-                        cols="30"
-                        placeholder="Sú observación..."
-                        pInputTextarea
-                        [(ngModel)]="Mantenimient.mant_Observaciones"
-                        [ngClass]="{
+                    <textarea rows="5" cols="30" placeholder="Sú observación..." pInputTextarea
+                        [(ngModel)]="Mantenimient.mant_Observaciones" [ngClass]="{
                             'ng-invalid ng-dirty':
                                 submitted &&
                                 isInputEmptyOrWhitespace(
                                     Mantenimient.mant_Observaciones
                                 )
-                        }"
-                    ></textarea>
+                        }"></textarea>
 
-                    <small
-                        *ngIf="
+                    <small *ngIf="
                             submitted &&
                             isInputEmptyOrWhitespace(
                                 Mantenimient.mant_Observaciones
                             )
-                        "
-                        class="ng-dirty ng-invalid"
-                        style="color: red"
-                    >
+                        " class="ng-dirty ng-invalid" style="color: red">
                         La observación o descripción es requerida.
                     </small>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button
-                    (click)="hideDialog()"
-                    pButton
-                    pRipple
-                    label="Cancelar"
-                    icon="pi pi-times"
-                    class="p-button-outlined p-button-success"
-                ></button>
-                <button
-                    (click)="saveMantenimiento()"
-                    pButton
-                    pRipple
-                    label="Guardar"
-                    icon="pi pi-check"
-                    class="p-button-outlined p-button-success"
-                ></button>
+                <button (click)="hideDialog()" pButton pRipple label="Cancelar" icon="pi pi-times"
+                    class="p-button-outlined p-button-danger"></button>
+                <button (click)="saveMantenimiento()" pButton pRipple label="Guardar" icon="pi pi-check"
+                    class="p-button-outlined p-button-success"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog
-            [(visible)]="deleteMantenimientoDialog"
-            [modal]="true"
-            [style]="{ width: '450px' }"
-            header="Confirmación"
-        >
-   
-        <div class="flex align-items-center justify-content-center">
+        <p-dialog [(visible)]="deleteMantenimientoDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirmación">
+            <br>
+            <div class="flex align-items-center justify-content-center">
 
-            <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
-                style="margin-right: 15px;">
-            <span >¿Estás seguro de eliminar este mantenimiento?</span>
-        </div>
+                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
+                    style="margin-right: 15px;">
+                <span>¿Estás seguro de eliminar este mantenimiento?</span>
+            </div>
             <ng-template pTemplate="footer">
-                <button
-                    (click)="deleteMantenimientoDialog = false"
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    class="p-button-text"
-                    label="No"
-                ></button>
-                <button
-                    (click)="confirmDelete()"
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    label="Yes"
-                ></button>
+                <button (click)="deleteMantenimientoDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-outlined p-button-secondary" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+                    class="p-button-outlined p-button-success" label="Sí"></button>
             </ng-template>
         </p-dialog>
     </div>

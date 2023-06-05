@@ -38,20 +38,21 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-
-                        <th pSortableColumn="arbo_Id">Id                   <p-sortIcon field="arbo_Id"></p-sortIcon></th>
-                        <th pSortableColumn="arbo_Descripcion">Descripcion <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
-
                         <th></th>
+                        <th pSortableColumn="arbo_Id">Id                   <p-sortIcon field="arbo_Id"></p-sortIcon></th>
+                        <th pSortableColumn="arbo_Descripcion">Descripción <p-sortIcon field="arbo_Descripcion"></p-sortIcon></th>
+
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-AreaBot>
                     <tr>
-
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                        <td style="width:25%; min-width:10rem;">
+                        </td>
+                        <td style="width:10%; min-width:10rem;"><span class="p-column-title">Code</span>
                             {{AreaBot.arbo_Id}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:25%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
                             {{AreaBot.arbo_Descripcion}}
                         </td>
@@ -59,9 +60,9 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
+                                    class="p-button-rounded p-button-warning mr-2"
                                     (click)="editAreasBotanicas (AreaBot)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteAreasBotanicas(AreaBot)"></button>
                             </div>
                         </td>
@@ -71,11 +72,19 @@
         </div>
         <p-dialog [(visible)]="AreasBotanicasDialog" [style]="{width: '520px', 'background-color': '#97d4ad'}"  [modal]="true"  class="p-fluid" styleClass="custom-header">
             <p-header>
-                <div class="header-content">
-                <h5>Áreas Botánicas</h5>
-            </div>
-              </p-header>
-            <br>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Áreas Botánicas
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/J-3DoEpbEXkAAAAi/shermans-night-in-watering.gifs" width="55px" height="55px"
+                        style="margin-left: 20px;">
+
+                </div>
+
+            </p-header>
+            <br><br>
+
             <ng-template pTemplate="content">
                 <div class="field"> 
                     <label for="name">Descripción</label>

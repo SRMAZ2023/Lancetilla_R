@@ -73,8 +73,8 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2" (click)="editRazas(razas)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    class="p-button-rounded p-button-warning mr-2" (click)="editRazas(razas)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteRazas(razas)"></button>
                             </div>
                         </td>
@@ -130,7 +130,20 @@
 
         <p-dialog [(visible)]="RazaDialog" [style]="{width: '500px', height: '700'}" header="Razas" [modal]="true"
             class="p-fluid">
-            <br>
+            <p-header>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Razas
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/9uRejMMYygEAAAAi/kangaroo-joypixels.gif" width="55px" height="55px"
+                        style="margin-left: 20px;">
+
+                </div>
+
+            </p-header>
+            <br><br>
+
             <ng-template pTemplate="content">
 
                 <div class="grid p-fluid">
@@ -158,7 +171,7 @@
 
                     <div class="field col-6">
                         <label for="rein_Id"> Reino</label>
-                        <p-dropdown name="rein_Id" #rein_Id="ngModel" [autoDisplayFirst]="false" [options]="reinos"
+                        <p-dropdown name="rein_Id" #rein_Id="ngModel" [autoDisplayFirst]="false"   [appendTo]="'body'"  [options]="reinos"
                             [(ngModel)]="Raza.rein_Id" [ngClass]="{
                             'ng-invalid': submitted && !Raza.rein_Id
                         }" placeholder="Seleccione un reino" inputId="dropdown" optionLabel="label" optionValue="value"
@@ -180,7 +193,7 @@
                             optionValue="value" [ngClass]="{
                             'ng-invalid ng-dirty':
                                 submitted && !Raza.habi_Id
-                        }"></p-dropdown>
+                        }"   [appendTo]="'body'" ></p-dropdown>
                         <small *ngIf="submitted && !Raza.habi_Id" class="ng-dirty ng-invalid" style="color: red">
                             El hábitat de la raza es requerido.
                         </small>
@@ -188,7 +201,7 @@
 
                     <div class="field col-12">
                         <label for="espe_Id"> Especie </label>
-                        <p-dropdown name="espe_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="especies"
+                        <p-dropdown name="espe_Id" #tima_Id="ngModel"   [appendTo]="'body'"  [autoDisplayFirst]="false" [options]="especies"
                             [(ngModel)]="Raza.espe_Id" [ngClass]="{
                             'ng-invalid': submitted && !Raza.espe_Id
                         }" placeholder="Seleccione una especie" inputId="dropdown" optionLabel="label"
@@ -206,7 +219,7 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-secondary"
                     (click)="hideDialog()"></button>
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                     (click)="saveRazas()"></button>
@@ -216,20 +229,21 @@
 
 
 
-
-        <p-dialog [(visible)]="deleteRazaDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteRazaDialog" [modal]="true" [style]="{ width: '450px' }"
+            header="Confirmación">
+            <br>
             <div class="flex align-items-center justify-content-center">
 
-                <img src="https://media.tenor.com/26pNa498OS0AAAAi/warning-joypixels.gif" width="40px" height="40px"
+                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
                     style="margin-right: 15px;">
-                <span *ngIf="Raza">¿Estás seguro de eliminar la raza
-                    <b>{{Raza.raza_Descripcion}}</b>?</span>
-            </div>
+                    <span *ngIf="Raza">¿Estás seguro de eliminar la raza
+                        <b>{{Raza.raza_Descripcion}}</b>?</span>
+s                </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-outlined p-button-success" label="No"
-                    (click)="deleteRazaDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-outlined p-button-warning" label="Yes"
-                    (click)="confirmDelete()"></button>
+                <button (click)="deleteRazaDialog = false" pButton pRipple icon="pi pi-times"
+                    class="p-button-outlined p-button-secondary" label="No"></button>
+                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+                    class="p-button-outlined p-button-success" label="Sí"></button>
             </ng-template>
         </p-dialog>
 

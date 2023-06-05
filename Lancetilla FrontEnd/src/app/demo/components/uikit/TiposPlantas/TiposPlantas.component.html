@@ -66,9 +66,9 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
+                                    class="p-button-rounded p-button-warning mr-2"
                                     (click)="editTiposPlantas(tiposPlantas)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                                     (click)="deleteTiposPlantas(tiposPlantas)"></button>
                             </div>
                         </td>
@@ -109,10 +109,23 @@
 
         <p-dialog [(visible)]="NuevoDIalog" [style]="{width: '450px'}" header="Tipos de Plantas" [modal]="true"
             class="p-fluid">
-            <br>
+            <p-header>
+                <div class="header-content " style="display: inline-flex; align-items: center;">
+                    <h5 style="font-size: 25px;">Tipos de plantas
+
+                    </h5>
+                    <DIV></DIV>
+                    <img src="https://media.tenor.com/22-4oACe7KgAAAAi/loof-and-timmy-trex.gif" width="60px" height="60px"
+                        style="margin-left: 20px;">
+
+                </div>
+
+            </p-header>
+            <br><br>
+
             <ng-template pTemplate="content">
-                <div class="grid p-fluid">
-                    <div class="field col-6">
+                <div class="flex flex-wrap">
+                    <div class="field col-6 " style="width: 50%; padding-right: 1rem;">
                         <label for="name">Nombre Común</label>
                         <input type="text" pInputText id="name" [(ngModel)]="TiPlanta.tipl_NombreComun" required
                             autofocus
@@ -122,9 +135,9 @@
                             la planta es requerido.</small>
                     </div>
 
-                    <div class="field col-6">
+                    <div class="field col-6" style="width: 50%; padding-right: 1rem;">
                         <label for="name">Nombre Científico</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="TiPlanta.tipl_NombreCientifico" required
+                        <input type="text" pInputText id="name" [(ngModel)]="TiPlanta.tipl_NombreCientifico"  required
                             autofocus
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(TiPlanta.tipl_NombreCientifico)}" />
                         <small class="ng-dirty ng-invalid" style="color: red;"
@@ -132,12 +145,12 @@
                             cimún de la planta es requerido.</small>
                     </div>
 
-                    <div class="field col-12">
+                    <div class="field col-12" style="width: 100%; padding-right: 1rem;">
                         <label for="rein_Id"> Reino </label>
                         <p-dropdown name="rein_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="reino"
                             [(ngModel)]="TiPlanta.rein_Id" [ngClass]="{
                         'ng-invalid': submitted && !TiPlanta.rein_Id
-                    }" placeholder="Seleccione un hábitat" inputId="dropdown" optionLabel="label" optionValue="value"
+                    }" placeholder="Seleccione un hábitat" [appendTo]="'body'" inputId="dropdown" optionLabel="label" optionValue="value"
                             [ngClass]="{
                         'ng-invalid ng-dirty':
                             submitted && !TiPlanta.rein_Id
@@ -146,12 +159,11 @@
                             El reino de la planta es requerido.
                         </small>
                     </div>
-                </div>
-
+            </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-success"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-danger"
                     (click)="hideDialog()"></button>
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
                     (click)="saveTiposPlantas()"></button>
