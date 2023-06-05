@@ -22,6 +22,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class UsuariosComponent implements OnInit {
     EsAdmin: any;
     Permiso: any;
+    UsuarioES: any;
 
     //Dialogs
     InsertarUsuarioDialog: boolean = false;
@@ -73,7 +74,10 @@ export class UsuariosComponent implements OnInit {
     constructor( private _router: Router ,
         private localStorage: LocalStorageService,private changeDetectorRef: ChangeDetectorRef, private usuarioService: UsuarioService, private messageService: MessageService) {
             this.EsAdmin = this.localStorage.getItem('EsAdmin')
-            this.Permiso = this.localStorage.getItem('Usuarios')}
+            this.Permiso = this.localStorage.getItem('Usuarios')
+            this.UsuarioES = this.localStorage.getItem('UsuarioID')
+        }
+            
 
     ngOnInit() {
 
@@ -232,29 +236,39 @@ export class UsuariosComponent implements OnInit {
             "usua_Id": this.Usuario.usua_Id
         }
 
-        this.usuarioService.EliminarUsuario(params).subscribe(
-            Response => {
-                this.datos = Response;
-
-                if (this.datos.code == 500) {
-
-                    this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
-
-                } else if (this.datos.code == 200) {
-
-                    this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
-                    this.Usuario = {};
-                    this.InsertarUsuarioDialog = false;
-                    this.CargarUsuarios()
-
-                } else {
-                    this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
+        if (this.Usuario.usua_Id == this.UsuarioES) {
+           
+            this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: "No puedes eliminarte a ti mismo.", life: 3000 });
+            this.CargarUsuarios()
+        }else{
+            this.usuarioService.EliminarUsuario(params).subscribe(
+                Response => {
+                    this.datos = Response;
+    
+                    if (this.datos.code == 409) {
+    
+                        this.messageService.add({ severity: 'info', summary: 'Aviso:', detail: this.datos.message, life: 3000 });
+                        this.CargarUsuarios()
+                  
+                    } else if (this.datos.code == 200) {
+    
+                        this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: this.datos.message, life: 3000 });
+                        this.Usuario = {};
+                        this.InsertarUsuarioDialog = false;
+                        this.CargarUsuarios()
+    
+                    } else {
+                        this.messageService.add({ severity: 'error', summary: 'Error:', detail: this.datos.message, life: 3000 });
+                    }
+                },
+                error => {
+                    console.log("manzana")
                 }
-            },
-            error => {
-                console.log("manzana")
-            }
-        );
+            );
+
+        }
+
+        
 
     }
     //Confirma el eliminar
@@ -377,6 +391,7 @@ export class UsuariosComponent implements OnInit {
                     this.datos = Response;
                     if (this.datos.code == 409) {
                         this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+                        this.CargarUsuarios()
                     }
                     else if (this.datos.code == 200) {
                         this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
@@ -386,6 +401,7 @@ export class UsuariosComponent implements OnInit {
                     }
                     else {
                         this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    
                     }
                 },
                 error => {
