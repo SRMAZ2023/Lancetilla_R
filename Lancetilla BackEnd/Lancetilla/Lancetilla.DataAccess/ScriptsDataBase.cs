@@ -375,10 +375,15 @@ namespace Lancetilla.DataAccess
 
         #region Gráficas
 
-        public static string PlantasPorArea = "bota.UDP_tbPlantas_Grafica";
-        public static string AnimalesPorArea = "zool.UDP_tbAnimales_Grafica";
-        public static string Visitantes = "mant.UDP_tbVisitantes_Grafica";
         public static string AnimalesPorHabitat = "zool.UDP_tbAnimales_AnimalesHabitatGrafica";
+        public static string Grafica = "zool.UDP_tbMantenimientoAnimal_Grafica";
+        public static string Grafica2 = "bota.UDP_tbCuidadosPorPlantas_Grafica";
+        public static string CargarFacturasPorVisitante = "fact.UDP_FacturasPorVisitante";
+        public static string ActualizarPrecioTicket = "fact.UDP_tbTickets_EditarPrecio";
+        public static string dashboard1 = "fact.UDP_tbFacturas_ConteoZoologico";
+        public static string dashboard2 = "fact.UDP_tbFacturas_ConteoBotanica";
+        public static string dashboard3 = "mant.UDP_tbMantenimientosAnimal_Conteo";
+        public static string dashboard4 = "zool.UDP_tbAreasZoologico_Conteo";
 
 
         #endregion

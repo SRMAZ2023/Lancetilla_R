@@ -29,13 +29,13 @@ namespace Lancetilla.DataAccess.Repositories.Bota
         }
 
 
-        public IEnumerable<VW_tbPlantas> Find(int id)
+        public IEnumerable<VW_tbTiposPlantas> Find(int id)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
             parametros.Add("@tipl_Id", id, DbType.Int32, ParameterDirection.Input);
-            return db.Query<VW_tbPlantas>(ScriptsDataBase.BuscarTipoPlantas, parametros, commandType: CommandType.StoredProcedure);
+            return db.Query<VW_tbTiposPlantas>(ScriptsDataBase.BuscarTipoPlantas, parametros, commandType: CommandType.StoredProcedure);
         }
 
 
