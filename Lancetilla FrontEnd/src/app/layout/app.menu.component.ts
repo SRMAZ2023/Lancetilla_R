@@ -189,14 +189,7 @@ export class AppMenuComponent implements OnInit {
                 }
             });
 
-            this.datos.forEach((item: DatosItem) => {
-                if (item.pant_Id === 12) {
-                    this.Botanica.push( { label: 'Cuidados Generales', icon: 'pi pi-compass', routerLink: ['/app/uikit/Cuidados'] },);
-               
-                    this.CuidadosGenerales = true;
-                  
-                }
-            });
+           
 
 
 
@@ -499,7 +492,7 @@ export class AppMenuComponent implements OnInit {
                         items: [
                             { label: 'Cuidados de Plantas', icon: 'pi pi-apple', routerLink: ['/app/uikit/CuidadoPlantas'] }, 
                             { label: 'Tipos de Cuidados', icon: 'pi pi-arrows-v', routerLink: ['/app/uikit/TipoCuidado'] },
-                            { label: 'Cuidados Generales', icon: 'pi pi-compass', routerLink: ['/app/uikit/Cuidados'] },
+                         
                             { label: 'Áreas Botánica', icon: 'pi pi-gift', routerLink: ['/app/uikit/areasbotanicas'] },
                             { label: 'Tipos de Plantas', icon: 'pi pi-palette', routerLink: ['/app/uikit/TiposPlantas'] },
                             { label: 'Plantas', icon: 'pi pi-slack', routerLink: ['/app/uikit/Plantas'] },
