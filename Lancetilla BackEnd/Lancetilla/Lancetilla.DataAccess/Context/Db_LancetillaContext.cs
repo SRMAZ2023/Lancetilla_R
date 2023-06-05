@@ -264,9 +264,7 @@ namespace Lancetilla.DataAccess.Context
 
                 entity.ToView("VW_tbCuidadoPlanta", "bota");
 
-                entity.Property(e => e.arbo_Descripcion)
-                    .IsRequired()
-                    .HasMaxLength(100);
+               
 
                 entity.Property(e => e.cupl_Fecha)
                     .IsRequired()

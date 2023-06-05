@@ -11,7 +11,7 @@ namespace Lancetilla.Entities.Entities
         public int cupl_Id { get; set; }
         public int plan_Id { get; set; }
         public int arbo_Id { get; set; }
-        public string arbo_Descripcion { get; set; }
+        
         public string plan_Codigo { get; set; }
         public int tipl_Id { get; set; }
         public string tipl_NombreComun { get; set; }
