@@ -4,8 +4,8 @@
 			<p-toast></p-toast>
 
 			<div class="card-img-top">
-				<img src="https://i.ibb.co/ByVTPCG/mantenimientoxanimal.png" width="100%" height="40%">
-				<h2>PITO METEORICOOOOOOOOOOOO!!!!!!!!!!!!</h2>
+				<img src="https://i.ibb.co/vHrrg7R/ESTADOS-CIVILES-9.png" width="100%" height="40%">
+				
 			</div>
 			<br>
 
@@ -84,19 +84,19 @@
 											<ng-template pTemplate="header">
 						<tr>
 							<th pSortableColumn="maan_Id">ID <p-sortIcon field="maan_Id"></p-sortIcon></th>
-							<th pSortableColumn="anim_Nombre">Animal <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
-							<th pSortableColumn="maan_Fecha">Fecha <p-sortIcon field="maan_Fecha"></p-sortIcon></th>
-							<th pSortableColumn="tima_Descripcion">Tipo de Mantenimiento <p-sortIcon
+							<th pSortableColumn="anim_Nombre">Planta <p-sortIcon field="anim_Nombre"></p-sortIcon></th>
+							<th pSortableColumn="maan_Fecha">Codigo <p-sortIcon field="maan_Fecha"></p-sortIcon></th>
+							<th pSortableColumn="tima_Descripcion">Fecha <p-sortIcon
 									field="tima_Descripcion"></p-sortIcon></th>
 							<th pSortableColumn="customer">Eliminar <p-sortIcon field="customer"></p-sortIcon></th>
 						</tr>
 					</ng-template>
 					<ng-template pTemplate="body" let-datos>
 						<tr>
-							<td>{{datos.maan_Id}}</td>
-							<td>{{datos.anim_Nombre}}</td>
-							<td>{{datos.maan_Fecha}}</td>
-							<td>{{datos.tima_Descripcion}}</td>
+							<td>{{datos.plan_Id}}</td>
+							<td>{{datos.tipl_NombreComun}}</td>
+							<td>{{datos.plan_Codigo}}</td>
+							<td>{{datos.cupl_Fecha}}</td>
 							<td>
 								<div class="flex">
 									<button pButton pRipple icon="pi pi-trash"
