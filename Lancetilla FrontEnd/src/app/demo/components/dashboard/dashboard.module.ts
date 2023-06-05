@@ -9,11 +9,15 @@ import { ButtonModule } from 'primeng/button';
 import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        InputTextModule,
+        DropdownModule,
         ChartModule,
         MenuModule,
         TableModule,
