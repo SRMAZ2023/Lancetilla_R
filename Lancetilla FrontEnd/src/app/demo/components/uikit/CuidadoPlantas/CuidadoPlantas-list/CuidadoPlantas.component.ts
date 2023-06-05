@@ -96,7 +96,7 @@ export class CuidadoPlantasComponent implements OnInit {
                if (this.EsAdmin == false) {
    
                    if (this.Permiso == false) {
-                       this._router.navigate(['login']);
+                    this._router.navigate(['/app']);
                    }              
                }
        
@@ -106,27 +106,9 @@ export class CuidadoPlantasComponent implements OnInit {
            }
 
         // Obtén la fecha del API
-        this.AreaBotanicaService.getAreaBotanica().subscribe(
-            Response => {
-                 this.datos = Response;
         
-                // Filtrar los elementos duplicados por arbo_Id
-                const uniqueAnimals = this.datos.filter((valorActual: { arbo_Id: any; }, indiceActual: any, arreglo: { arbo_Id: any; }[]) => {
-                    return arreglo.findIndex((elemento: { arbo_Id: any; }) => elemento.arbo_Id === valorActual.arbo_Id) === indiceActual;
-                });
         
-                this.Roles = uniqueAnimals;
-        
-                 console.log( this.Roles)
-                this.formattedDate = this.datePipe.transform(this.datos.cupl_Fecha, 'yyyy-MM-dd')?.toString();
-        
-             },
-            error => {
-                console.log(error);
-            }
-        );
-        
-
+           this. getArea();
         //Modelo de los datos de la tabla
         this.cols = [
             { field: 'arbo_Id', header: 'arbo_Id' },
@@ -135,6 +117,28 @@ export class CuidadoPlantasComponent implements OnInit {
         ];
         //Modelo de los datos de la tabla
 
+    }
+
+    getArea(){
+      this.AreaBotanicaService.getAreaBotanica().subscribe(
+        Response => {
+             this.datos = Response;
+    
+            // Filtrar los elementos duplicados por arbo_Id
+            const uniqueAnimals = this.datos.filter((valorActual: { arbo_Id: any; }, indiceActual: any, arreglo: { arbo_Id: any; }[]) => {
+                return arreglo.findIndex((elemento: { arbo_Id: any; }) => elemento.arbo_Id === valorActual.arbo_Id) === indiceActual;
+            });
+    
+            this.Roles = uniqueAnimals;
+    
+             console.log( this.Roles)
+            this.formattedDate = this.datePipe.transform(this.datos.cupl_Fecha, 'yyyy-MM-dd')?.toString();
+    
+         },
+        error => {
+            console.log(error);
+        }
+    );
     }
 
     //Metodo que desactiva el dialog
@@ -219,11 +223,12 @@ export class CuidadoPlantasComponent implements OnInit {
             "arbo_Id": this.CuidadoPlanta.arbo_Id,
           }
         console.log(params)
-        this.AreaBotanicaService.DeleteAreaBotanica(params).subscribe(
+        this.cuidadosPLANTAS.DeleteCuidadoPlantas(params).subscribe(
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
                 if (this.datos.code == 409) {
+                  this.deleteCuidadoPlantasDialog = false;
 
                     this.messageService.add({ severity: 'info', summary: 'Atencion', detail: this.datos.message, life: 3000 });
 
@@ -231,11 +236,15 @@ export class CuidadoPlantasComponent implements OnInit {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
                     this.CuidadoPlantas = this.CuidadoPlantas.filter(val => val.arbo_Id !== this.CuidadoPlanta.arbo_Id);
+                    this.deleteCuidadoPlantasDialog = false;
+                    this. getArea();
 
-
+ 
                 } else {
                     this.messageService.add({ severity: 'warn', summary: 'Error', detail: this.datos.message, life: 3000 });
-                }
+                    this.deleteCuidadoPlantasDialog = false;
+
+                  }
             },
             error => {
                 console.log("manzana")

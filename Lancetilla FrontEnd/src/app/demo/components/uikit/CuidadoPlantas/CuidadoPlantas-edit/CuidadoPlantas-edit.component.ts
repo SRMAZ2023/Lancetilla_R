@@ -197,7 +197,7 @@ export class CuidadoPlantasEditComponent {
       if (this.EsAdmin == false) {
 
         if (this.Permiso == false) {
-          this._router.navigate(['login']);
+          this._router.navigate(['/app']);
         }
       }
 

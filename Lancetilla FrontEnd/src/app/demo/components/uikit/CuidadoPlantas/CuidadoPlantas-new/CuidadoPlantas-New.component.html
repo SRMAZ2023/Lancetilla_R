@@ -33,7 +33,7 @@
                             'ng-invalid ng-dirty': submitted && !CuidadoPlanta.cupl_Fecha
                         }" [minDate]="minDate"></p-calendar>
                     <small class="ng-dirty ng-invalid" style="color: red"
-                        *ngIf="submitted && !CuidadoPlanta.cupl_Fecha">La fecha de mantenimiento es
+                        *ngIf="submitted && !CuidadoPlanta.cupl_Fecha">La fecha del cuidado es
                         requerida.</small>
                 </div>
 
@@ -151,11 +151,7 @@
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="DataAnimal">
-                    Estas seguro de querer eliminar a
-                    <b>
-                        {{ DataAnimal.anim_Nombre }}
-                    </b>
-                    ?
+                    Estas seguro de querer eliminar este Cuidado ?
                 </span>
             </div>
             <ng-template pTemplate="footer">

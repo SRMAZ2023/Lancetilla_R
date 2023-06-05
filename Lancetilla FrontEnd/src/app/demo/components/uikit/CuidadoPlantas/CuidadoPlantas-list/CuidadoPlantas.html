@@ -1,3 +1,18 @@
+
+
+<p-dialog [(visible)]="deleteCuidadoPlantasDialog" header="Confirm" [modal]="true"
+		[style]="{width:'450px'}">
+		<div class="flex align-items-center justify-content-center">
+			<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+			<span *ngIf="CuidadoPlanta">Estas seguro de querer eliminar este registro?</span>
+		</div>
+		<ng-template pTemplate="footer">
+			<button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+				(click)="deleteCuidadoPlantasDialog = false"></button>
+			<button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+				(click)="confirmDelete()"></button>
+		</ng-template>
+	</p-dialog>
 <div class="grid">
 	<div class="col-12">
 		<div class="card px-6 py-6">
@@ -99,7 +114,7 @@
 							<td>{{datos.cupl_Fecha}}</td>
 							<td>
 								<div class="flex">
-									<button pButton pRipple icon="pi pi-trash"
+									<button pButton pRipple icon="pi pi-trash" (click)="deleteCuidadoPlantas(datos)"
 										class="p-button-rounded p-button-warning"></button>
 								</div>
 							</td>
@@ -115,22 +130,5 @@
 		</p-table>
 
 	</div>
-
-
-
-
-	<p-dialog [(visible)]="deleteCuidadoPlantasDialog" header="Confirm" [modal]="true"
-		[style]="{width:'450px'}">
-		<div class="flex align-items-center justify-content-center">
-			<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-			<span *ngIf="CuidadoPlanta">Estas seguro de querer eliminar este registro?</span>
-		</div>
-		<ng-template pTemplate="footer">
-			<button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-				(click)="deleteCuidadoPlantasDialog = false"></button>
-			<button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-				(click)="confirmDelete()"></button>
-		</ng-template>
-	</p-dialog>
 
 </div>

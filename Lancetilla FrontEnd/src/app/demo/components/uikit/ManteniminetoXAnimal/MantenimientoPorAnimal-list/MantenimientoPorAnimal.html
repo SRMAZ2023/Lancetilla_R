@@ -194,6 +194,7 @@
                                                             <button
                                                                 pButton
                                                                 pRipple
+                                                                (click)="deleteMantenimiento(datos)"
                                                                 icon="pi pi-trash"
                                                                 class="p-button-rounded p-button-danger"
                                                             ></button>
@@ -211,7 +212,7 @@
             </div>
 
             <p-dialog
-                [(visible)]="deleteMantenimientoPorAnimalDialog"
+                [(visible)]="deleteMantenimientoXanimalDialog"
                 header="Confirm"
                 [modal]="true"
                 [style]="{width:'450px'}"
@@ -233,7 +234,7 @@
                         icon="pi pi-times"
                         class="p-button-text"
                         label="No"
-                        (click)="deleteMantenimientoPorAnimalDialog = false"
+                        (click)="deleteMantenimientoXanimalDialog = false"
                     ></button>
                     <button
                         pButton

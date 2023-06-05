@@ -171,7 +171,7 @@ export class AppMenuComponent implements OnInit {
             
             this.datos.forEach((item: DatosItem) => {
                 if (item.pant_Id === 10) {
-                    this.Botanica.push( { label: 'Cuidado de Plantas', icon: 'pi pi-apple', routerLink: ['/app/uikit/cuidadosplantas'] },);
+                    this.Botanica.push( { label: 'Cuidado de Plantas', icon: 'pi pi-apple', routerLink: ['/app/uikit/CuidadoPlantas'] },);
                     this.CuidadoDePlantas = true;
                
                

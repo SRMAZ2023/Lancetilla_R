@@ -82,7 +82,7 @@ export class AlimentacionComponent implements OnInit {
             if (this.EsAdmin == false) {
 
                 if (this.AlimentacionPermiso == false) {
-                    this._router.navigate(['login']);
+                    this._router.navigate(['/app']);
                 }
                 
             }

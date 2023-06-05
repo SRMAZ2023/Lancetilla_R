@@ -13,8 +13,8 @@
                              <p-dropdown
                             #animalDropdown
                             [options]="Animal"
-                            name="anim_Id"
-                            [(ngModel)]="newParametros.anim_Id"
+                             name="anim_Id"
+                            [(ngModel)]="newParametros.anim_Id" 
                             placeholder="Seleccione un animal"
                             [ngClass]="{
                               'ng-invalid ng-dirty': submitted && !newParametros.anim_Id
@@ -157,11 +157,7 @@
                 style="font-size: 2rem"
             ></i>
             <span *ngIf="DataAnimal">
-                Estas seguro de querer eliminar a
-                <b>
-                    {{ DataAnimal.anim_Nombre }}
-                </b>
-                ?
+                Estas seguro de querer eliminar este Mantenimineto ?
             </span>
         </div>
         <ng-template pTemplate="footer">

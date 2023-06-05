@@ -107,7 +107,7 @@ public total = 0;
         if (this.EsAdmin == false) {
 
             if (this.Permiso2 == false) {
-                this._router.navigate(['login']);
+              this._router.navigate(['/app']);
             }              
         }
 

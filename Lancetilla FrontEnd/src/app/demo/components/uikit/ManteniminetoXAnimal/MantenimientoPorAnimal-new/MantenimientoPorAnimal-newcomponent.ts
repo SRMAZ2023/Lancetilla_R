@@ -104,13 +104,12 @@ export class MantenimientoPorAnimalNewComponent implements OnInit {
 
   ngOnInit() {
 
-      
     if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
 
       if (this.EsAdmin == false) {
 
           if (this.Permiso == false) {
-              this._router.navigate(['login']);
+              this._router.navigate(['/app']);
           }              
       }
 
