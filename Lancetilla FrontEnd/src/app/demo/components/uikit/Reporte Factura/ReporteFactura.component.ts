@@ -137,9 +137,9 @@ export class ReporteFacturaComponent implements OnInit {
       doc.addImage(
         'https://i.postimg.cc/s2XGcSRt/eso.jpg',
         'PNG', // Asegúrate de especificar el formato de imagen correcto
-        pageWidth - 95,  -10,  90,   55,
+        pageWidth - 90,  2,  65,  40,
 
-        doc.setFontSize(30),
+        doc.setFontSize(25),
         doc.setFont('Pacifico', 'normal'),
         doc.text('FACTURA', 10, 30)
       );
@@ -162,20 +162,20 @@ export class ReporteFacturaComponent implements OnInit {
   //    doc.addImage(imageUrl, 'JPEG', 0, doc.internal.pageSize.getHeight() - footerHeight, imageWidth, imageHeight);
     
       // Agregar textos en el footer
-      doc.setFontSize(16);
+      doc.setFontSize(11);
       doc.setFont('Helvetica', 'bold');
       doc.setTextColor(0, 0, 0);  // Establecer color de texto en negro
     
       doc.text(
         'La factura es beneficio de todos, Exijala!!!!',
-        35,
-        doc.internal.pageSize.getHeight() - footerHeight + 25
+        58,
+        doc.internal.pageSize.getHeight() - footerHeight + 38
       );
     
       doc.text(
         'Derechos recervados Lancetilla (R)',
-        43,
-        doc.internal.pageSize.getHeight() - footerHeight + 35
+        64,
+        doc.internal.pageSize.getHeight() - footerHeight + 45
       );
     };
   

@@ -767,7 +767,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Estado = 1)
+			IF EXISTS (SELECT * FROM mant.tbEstadosCiviles WHERE estc_Descripcion = @estc_Descripcion AND estc_Id <> @estc_Id AND estc_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El estado civil ya existe.' AS messageStatus
 			END
@@ -913,7 +913,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Estado = 1)
+			IF EXISTS (SELECT * FROM mant.tbCargos WHERE carg_Descripcion = @carg_Descripcion AND carg_Id <> @carg_Id AND carg_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El cargo ya existe.' AS messageStatus
 			END
@@ -1100,7 +1100,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbEmpleados WHERE empl_Identidad = @empl_Identidad AND empl_Estado = 1)
+			IF EXISTS (SELECT * FROM mant.tbEmpleados WHERE empl_Identidad = @empl_Identidad AND empl_Id <> @empl_Id AND empl_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El número de identidad ya existe.' AS messageStatus
 			END
@@ -1290,6 +1290,31 @@ AS BEGIN
 END
 GO
 
+
+CREATE OR ALTER PROCEDURE fact.UDP_FacturasPorVisitante 
+    @visi_Id INT
+AS
+BEGIN
+    SELECT T1.fact_Id,
+           T4.meto_Descripcion,
+           MAX(CASE WHEN T5.tick_Descripcion = 'Ticket de entrada al zoológico' THEN T5.tick_Descripcion + ' (' + CONVERT(VARCHAR(10), T3.fade_Cantidad) + ' x ' + CONVERT(VARCHAR(10), T3.fade_Total) + ')' END) AS Ticket_Zoologico,
+           MAX(CASE WHEN T5.tick_Descripcion = 'Ticket de entrada al jardín botánico' THEN T5.tick_Descripcion + ' (' + CONVERT(VARCHAR(10), T3.fade_Cantidad) + ' x ' + CONVERT(VARCHAR(10), T3.fade_Total) + ')' END) AS Ticket_JardinBotanico,
+           SUM(T3.fade_Cantidad * T3.fade_Total) AS fade_Total,
+		   t1.fact_Fecha
+    FROM fact.tbFacturas T1
+    INNER JOIN mant.tbVisitantes T2 ON T1.visi_Id = T2.visi_Id
+    INNER JOIN fact.tbFacturasDetalles T3 ON T1.fact_Id = T3.fact_Id
+    INNER JOIN fact.tbMetodosPago T4 ON T1.meto_Id = T4.meto_Id
+    INNER JOIN fact.tbTickets T5 ON T3.tick_Id = T5.tick_Id
+    WHERE T1.visi_Id = @visi_Id
+    GROUP BY T1.fact_Id, T4.meto_Descripcion,t1.fact_Fecha
+END
+
+
+
+
+GO
+
 --*************************************************************/TABLA DE VISITANTES***************************************************************************--
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1364,7 +1389,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-			IF EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion= @tima_Descripcion AND tima_Estado= 1)
+			IF EXISTS (SELECT * FROM mant.tbTiposMantenimientos WHERE tima_Descripcion= @tima_Descripcion AND tima_Id <> @tima_Id AND tima_Estado= 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El tipo de mantenimiento ya existe.' AS messageStatus
 			END
@@ -1512,7 +1537,7 @@ AS BEGIN
 BEGIN TRY
 BEGIN TRAN 
 
-IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_Observaciones AND mant_Estado = 1)
+IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_Observaciones AND mant_Id <> @mant_Id AND mant_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El mantenimiento ya existe.' AS messageStatus
 			END
@@ -1849,7 +1874,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion= @arzo_Descripcion AND arzo_Estado = 1)
+		IF EXISTS (SELECT * FROM zool.tbAreasZoologico WHERE arzo_Descripcion= @arzo_Descripcion AND arzo_Id <> @arzo_Id  AND arzo_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El área zoológica ya existe.' AS messageStatus
 			END
@@ -1994,7 +2019,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion AND habi_Estado= 1)
+		IF EXISTS (SELECT * FROM zool.tbHabitat WHERE habi_Descripcion = @habi_Descripcion AND habi_Id <> @habi_Id AND habi_Estado= 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El hábitat ya existe.' AS messageStatus
 			END
@@ -2142,7 +2167,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Estado= 1)
+		IF EXISTS (SELECT * FROM zool.tbEspecies WHERE espe_Descripcion = @espe_Descripcion AND espe_Id <> @espe_Id AND espe_Estado= 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'La especie ya existe.' AS messageStatus
 			END
@@ -2313,7 +2338,7 @@ AS BEGIN
   	BEGIN TRY
 		BEGIN TRAN
 		-- Si existe
-		IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_Estado = 1 AND  raza_Descripcion = @raza_Descripcion AND raza_Id != @raza_Id)
+		IF EXISTS (SELECT * FROM zool.tbRazas WHERE raza_Estado = 1 AND  raza_Descripcion = @raza_Descripcion AND raza_Id <> @raza_Id AND raza_Id != @raza_Id)
 		BEGIN
 			SELECT 409 AS codeStatus, 'La raza ya existe.' AS messageStatus
 		END
@@ -2486,7 +2511,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion = @alim_Descripcion AND alim_Estado= 1)
+		IF EXISTS (SELECT * FROM zool.tbAlimentacion WHERE alim_Descripcion = @alim_Descripcion AND alim_Id <> @alim_Id AND alim_Estado= 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'La alimentación ya existe.' AS messageStatus
 			END
@@ -2814,7 +2839,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion  AND arbo_Estado = 1)
+		IF EXISTS (SELECT * FROM bota.tbAreasBotanicas WHERE arbo_Descripcion = @arbo_Descripcion AND arbo_Id <> @arbo_Id AND arbo_Estado = 1)
 			BEGIN
 				SELECT 409 AS codeStatus, 'El área botánica ya existe.' AS messageStatus
 			END
@@ -3292,7 +3317,7 @@ AS BEGIN
 
   	BEGIN TRY
 		BEGIN TRAN
-		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo)  AND plan_Estado = 1 AND RTRIM(plan_Codigo) != RTRIM(@plan_Codigo))
+		IF EXISTS (SELECT * FROM bota.tbPlantas WHERE RTRIM(plan_Codigo) = RTRIM(@plan_Codigo) AND plan_Id <> @plan_Id  AND plan_Estado = 1 AND RTRIM(plan_Codigo) != RTRIM(@plan_Codigo))
 BEGIN
     SELECT 409 AS codeStatus, 'El código de la planta ya existe.' AS messageStatus
 END
@@ -3380,60 +3405,27 @@ GO
 --***************************************************************PROCS DE FACTURACIÓN************************************************************************--
 
 --*****************************************************************TABLA DE TICKETS***************************************************************************--
-CREATE OR ALTER PROC fact.UDP_tbTickets_CREATE
-@tick_Descripcion NVARCHAR(100),
+CREATE OR ALTER PROC fact.UDP_tbTickets_EditarPrecio
 @tick_Precio DECIMAL(8,2),
-@tick_UserCreacion INT
+@tick_Id  INT
+
 AS BEGIN
 
 BEGIN TRY
 
 	BEGIN TRAN
+	
+		    UPDATE fact.tbTickets
+			SET tick_Precio = @tick_Precio					
+			WHERE tick_Id = @tick_Id
 
-		-- Si existe
-		IF EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 1)
-		BEGIN
-			SELECT 409 AS codeStatus, 'El ticket ya existe.' AS messageStatus
-		END
+			  SELECT 200 AS codeStatus, 'El ticket ha sido creado con éxito.' AS messageStatus
 
-
-		ELSE IF EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 0)
-		BEGIN
-			DECLARE @Id INT = (SELECT tick_Id FROM fact.tbTickets WHERE tick_Descripcion = tick_Descripcion ) 
-
-			BEGIN TRAN -- Agregado BEGIN TRAN
-
-			UPDATE fact.tbTickets
-			SET
-				  tick_Descripcion =  @tick_Descripcion,
-				  tick_Precio = @tick_Precio,
-				  tick_UserCreacion = @tick_UserCreacion,
-				  tick_UserModificacion = NULL,
-				  tick_Estado = 1
-			WHERE tick_Id = @Id
-
-		    SELECT 200 AS codeStatus, 'El ticket ha sido creado con éxito.' AS messageStatus
-
-			COMMIT -- Agregado COMMIT
-		END
-
-
-		ELSE IF NOT EXISTS (SELECT * FROM fact.tbTickets WHERE tick_Descripcion = @tick_Descripcion AND tick_Estado= 1)
-		BEGIN
-			INSERT INTO fact.tbTickets(tick_Descripcion ,tick_Precio, tick_UserCreacion)
-			VALUES (@tick_Descripcion, @tick_Precio,@tick_UserCreacion)
-
-			BEGIN TRAN -- Agregado BEGIN TRAN
-
-			SELECT 200 AS codeStatus, 'El área botánica ha sido creada con éxito.' AS messageStatus
-
-			COMMIT -- Agregado COMMIT
-		END
+	
 
 		COMMIT
 
 END TRY
-
 
 BEGIN CATCH 
 ROLLBACK
@@ -3521,7 +3513,7 @@ AS BEGIN
   	BEGIN TRY
 		BEGIN TRAN
 		-- Si existe
-		IF EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Descripcion = @meto_Descripcion AND meto_Estado= 1)
+		IF EXISTS (SELECT * FROM fact.tbMetodosPago WHERE meto_Id <> @meto_Id AND meto_Descripcion = @meto_Descripcion AND meto_Estado= 1)
 		BEGIN
 			SELECT 409 AS codeStatus, 'El método de pago ya existe.' AS messageStatus
 		END

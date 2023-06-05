@@ -295,7 +295,7 @@ export class AppMenuComponent implements OnInit {
 
             this.datos.forEach((item: DatosItem) => {
                 if (item.pant_Id === 23) {
-                    this.Facturacion.push({ label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Especies'] },);
+                    this.Facturacion.push({ label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Tickets'] },);
                     this.Tickets = true;
    
                 
@@ -538,7 +538,7 @@ export class AppMenuComponent implements OnInit {
                         items: [
                             { label: 'Facturas', icon: 'pi pi-paypal', routerLink: ['/app/uikit/facturas'] },
                      
-                            { label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Especies'] },
+                            { label: 'Tickets', icon: 'pi pi-ticket', routerLink: ['/app/uikit/Tickets'] },
                             { label: 'Métodos de Pago', icon: 'pi pi-money-bill', routerLink: ['/app/uikit/MetodoDePago'] },
                         ]
                     },

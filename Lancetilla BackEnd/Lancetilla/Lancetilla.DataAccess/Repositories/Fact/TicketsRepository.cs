@@ -28,17 +28,17 @@ namespace Lancetilla.DataAccess.Repositories.Fact
             throw new NotImplementedException();
         }
 
-        public RequestStatus Insert(tbTickets item)
+        public RequestStatus ActualizarPrecio(tbTickets item)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             var parametros = new DynamicParameters();
 
-            parametros.Add("@tick_Descripcion", item.tick_Descripcion, DbType.String, ParameterDirection.Input);
+            parametros.Add("@tick_Id", item.tick_Id, DbType.String, ParameterDirection.Input);
             parametros.Add("@tick_Precio", item.tick_Precio, DbType.Decimal, ParameterDirection.Input);
-            parametros.Add("@tick_UserCreacion", item.tick_UserCreacion, DbType.Int32, ParameterDirection.Input);
+        ;
            
 
-            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.InsertarTicket, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.ActualizarPrecioTicket, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
 
@@ -50,6 +50,11 @@ namespace Lancetilla.DataAccess.Repositories.Fact
         }
 
         public RequestStatus Update(tbTickets item, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RequestStatus Insert(tbTickets item)
         {
             throw new NotImplementedException();
         }

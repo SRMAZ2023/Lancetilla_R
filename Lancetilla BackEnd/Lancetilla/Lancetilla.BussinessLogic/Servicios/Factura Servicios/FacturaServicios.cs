@@ -274,12 +274,12 @@ namespace Lancetilla.BussinessLogic.Servicios.Factura_Servicios
             }
         }
 
-        public ServiceResult InsertarTicket(tbTickets item)
+        public ServiceResult ActualizarPrecio(tbTickets item)
         {
             var result = new ServiceResult();
             try
             {
-                var map = _ticketsRepository.Insert(item);
+                var map = _ticketsRepository.ActualizarPrecio(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);

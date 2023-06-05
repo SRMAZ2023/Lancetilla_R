@@ -5,7 +5,8 @@ export class VisitantesViewModel {
         public visi_NombreCompleto?: string,
         public visi_Apellido?: string,
         public visi_RTN?: string,
-        public visi_Sexo?: string,      
+        public visi_Sexo?: string,     
+        public visi_Sexos?: string, 
         public visi_UserCreacion?: number,  
         public visi_UserModificacion?: number,
       

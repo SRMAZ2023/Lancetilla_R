@@ -6,6 +6,16 @@ import { MetodosPagoService } from 'src/app/demo/service/Pago.service';
 import { error } from 'console';
 import { VisitantesService } from 'src/app/demo/service/Visitantes.servicel';
 import { VisitantesViewModel } from 'src/app/demo/Models/VisitantesViewModel';
+import { ViewChild } from '@angular/core';
+import * as moment from 'moment';
+
+
+import { ContextMenu } from 'primeng/contextmenu';
+
+import { MegaMenuItem, MenuItem } from 'primeng/api';
+
+import { FacturasViewModel } from 'src/app/demo/Models/FacturasViewModel';
+
 //import { MetodoPagos } from 'src/app/demo/api/MetodoPagosViewModel';
 import { LocalStorageService } from '../../../../local-storage.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -21,13 +31,10 @@ export class visitantesComponent implements OnInit {
     //Dialogs
     visitanteDialog: boolean = false;
 
-    deletevisitanteDialog: boolean = false;
-
-    deletevisitantesDialog: boolean = false;
-    //Dialogs
-
     //datos
     datos:any = {};
+
+    DetallesFactura:any = {};
 
     public Editar: boolean = false;
     visitantes: VisitantesViewModel[] = [];
@@ -36,8 +43,14 @@ export class visitantesComponent implements OnInit {
     //validar espacio
     espacio: boolean = false;
 
+    tieredItems: MenuItem[] = [];
+
     //Paginacion de el datatable
     selectedVisitante: VisitantesViewModel[] = [];
+    expandedRows: VisitantesViewModel[] = [];
+
+    
+    expandedRow: any = null;
     rowsPerPageOptions = [5, 10, 20];
     //Paginacion de el datatable
 
@@ -46,6 +59,10 @@ export class visitantesComponent implements OnInit {
 
     first: number = 0;
     rows: number = 10;
+
+    Rol: FacturasViewModel = {};
+
+    
 
     cols: any[] = []; // Aquí debes definir las columnas de tu tabla
 
@@ -59,7 +76,9 @@ export class visitantesComponent implements OnInit {
       }
   
 
-
+      hideDialog() {
+        this.visitanteDialog = false;    
+    }
 
     statuses: any[] = [];
 
@@ -76,7 +95,7 @@ export class visitantesComponent implements OnInit {
             if (this.EsAdmin == false) {
 
                 if (this.Permiso == false) {
-                    this._router.navigate(['login']);
+                    this._router.navigate(['/app']);
                 }              
             }
     
@@ -87,8 +106,9 @@ export class visitantesComponent implements OnInit {
 
         this.VisitanteService.getVisitantes().subscribe(
             Response => {
-                console.log(Response);
+            
                 this.visitantes = Response
+               
             },
             error => (
                 console.log(error)
@@ -105,9 +125,109 @@ export class visitantesComponent implements OnInit {
 
     }
 
+     
 
 
+    toggleRow(row: any) {
+        if (this.isRowExpanded(row)) {
+          this.expandedRow = null;
+        } else {
+          this.expandedRow = row;
+        }
+      }
+      
+      isRowExpanded(row: any): boolean {
+        return this.expandedRow === row;
+      }
+
+
+    Pantallas(Roles: VisitantesViewModel) {
+        this.Rol = { ...Roles };
+      
+      
+        
+        var params = {
+          "visi_Id": this.Rol.visi_Id
+        };
+      
+      
+        this.VisitanteService.FacturasPorVisitante(params).subscribe(
+          Response => {
+            this.datos = Response;
+            this.datos.forEach((dato : any) => {
+              const fechaCreacion = moment(dato.fact_Fecha).format('DD/MM/YYYY HH:mm:ss');
+              dato.fact_Fecha = fechaCreacion;
+            });
+
+            // Verificar si la fila seleccionada ya está expandida
+            const index = this.expandedRows.findIndex(row => row.visi_Id === this.Rol.visi_Id);
+            if (index > -1) {
+              // La fila está expandida, la contraemos para ocultarla
+              this.expandedRows.splice(index, 1);
+              this.expandedRow = null;
+            } else {
+              // Cerrar todas las filas expandidas
+              this.expandedRows = [];
+      
+              // Expandir la fila seleccionada
+              const selectedRow = this.visitantes.find(row => row.visi_Id === this.Rol.visi_Id);
+              if (selectedRow) {
+                this.expandedRows.push(selectedRow);
+                this.expandedRow = selectedRow;
+              }
+            }
+       
+           
+          },
+
+          
+
+          
+          error => {
+            console.log("manzana");
+          }
+        );
+      }
    
+      Detalles(datos2: FacturasViewModel){
+        
+        this.DetallesFactura = datos2
+     
+        console.log(  this.DetallesFactura)
+        console.log(this.DetallesFactura.ticket_JardinBotanico)
+      console.log(this.DetallesFactura.ticket_Zoologico)
+    
+       
+
+        this.visitanteDialog = true
+
+      }
+
+      Factura(datos3: FacturasViewModel){
+       
+  
+  
+        
+        console.log(this.expandedRows[0].visi_Id)
+
+          console.log(datos3.fact_Id)
+
+          
+          this.localStorage.setItem('VisitanteID', this.expandedRows[0].visi_Id);
+
+          this.localStorage.setItem('FacturaID', datos3.fact_Id);
+
+          
+          
+          setTimeout(() => {
+           
+            this._router.navigate(['/app/uikit/Reporte Factura']);
+       
+          }, 1000);
+  
+    }
+  
+      
 
 
 

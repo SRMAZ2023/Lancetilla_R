@@ -30,11 +30,11 @@ namespace Lancetilla.API.Controllers
             return Ok(list);
         }
 
-        [HttpPost("InsertarTicket")]
-        public IActionResult InsertarTicket(TicketsViewModel item)
+        [HttpPost("ActualizarPrecio")]
+        public IActionResult ActualizarPrecio(TicketsViewModel item)
         {
             var tickets = _mapper.Map<tbTickets>(item);
-            var List = _facturaServicios.InsertarTicket(tickets);
+            var List = _facturaServicios.ActualizarPrecio(tickets);
             return Ok(List);
         }
     }

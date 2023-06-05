@@ -17,6 +17,9 @@ export class FacturasViewModel {
       
         public tick_Descripcion?: string,
         public tick_Precio?: string,
+
+        public ticket_Zoologico?: string,
+        public ticket_JardinBotanico?: string,
        
         public fade_Cantidad?: string,
         public fade_Total?: string,

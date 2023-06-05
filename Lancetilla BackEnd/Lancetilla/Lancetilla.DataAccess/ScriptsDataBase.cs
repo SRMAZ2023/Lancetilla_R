@@ -108,7 +108,9 @@ namespace Lancetilla.DataAccess
 
         public static string ActualizarVisitante = "mant.UDP_tbVisitantes_UPDATE";
 
-      
+        public static string CargarFacturasPorVisitante = "fact.UDP_FacturasPorVisitante";
+
+
 
         #endregion
 
@@ -258,7 +260,7 @@ namespace Lancetilla.DataAccess
 
         #region Tickets
 
-        public static string InsertarTicket = "fact.UDP_tbTickets_CREATE";
+        public static string ActualizarPrecioTicket = "fact.UDP_tbTickets_EditarPrecio";
 
 
         #endregion

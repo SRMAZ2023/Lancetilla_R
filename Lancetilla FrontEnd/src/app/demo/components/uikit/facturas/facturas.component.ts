@@ -532,9 +532,7 @@ public total = 0;
 
                   this.localStorage.setItem('FacturaID', this.IDFACTURA);
 
-                  console.log(this.visitante.visi_Id)
-
-                  console.log(this.IDFACTURA)
+                  
                   
                   setTimeout(() => {
                    

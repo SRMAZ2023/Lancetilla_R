@@ -27,9 +27,7 @@ namespace Lancetilla.Entities.Entities
         [NotMapped]
         public string visi_Sexo { get; set; }
 
-        [NotMapped]
-        public string meto_Descripcion { get; set; }
-
+       
         [NotMapped]
         public string empl_Nombre { get; set; }
 
@@ -46,8 +44,20 @@ namespace Lancetilla.Entities.Entities
         public string fade_Total { get; set; }
 
 
+        [NotMapped]
+        public string Ticket_Zoologico { get; set; }
 
-       
+
+        [NotMapped]
+        public string Ticket_JardinBotanico { get; set; }
+
+        [NotMapped]
+        public string meto_Descripcion { get; set; }
+
+
+
+
+
 
         public int meto_Id { get; set; }
         public DateTime fact_Fecha { get; set; }
