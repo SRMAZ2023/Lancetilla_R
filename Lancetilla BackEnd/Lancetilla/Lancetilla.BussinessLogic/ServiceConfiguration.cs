@@ -26,10 +26,10 @@ namespace Lancetilla.BussinessLogic
     {
         public static void DataAccess(this IServiceCollection services, string connection)
         {
-            
+
 
             Lancetilla.DataAccess.Lancetilla.BuildConnectionString(connection);
-            
+
             //Acceso
             services.AddScoped<PantallasRepository>();
             services.AddScoped<RolesPorPantallaRepository>();
@@ -50,9 +50,11 @@ namespace Lancetilla.BussinessLogic
 
             //Botanica
             services.AddScoped<AreasBotanicasRepository>();
-            services.AddScoped<CuidadosRepository>();
             services.AddScoped<PlantasRepository>();
             services.AddScoped<TiposdePlantasRepository>();
+            services.AddScoped<CuidadosRepository>();
+            services.AddScoped<TiposCuidados>();
+            services.AddScoped<CuidadoPlantas>();
 
             //Factura
             services.AddScoped<FacturaDetalleRepository>();

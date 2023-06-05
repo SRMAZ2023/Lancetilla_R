@@ -25,12 +25,7 @@ namespace Lancetilla.API.Controllers
             _botanicaServicios = botanicaServicios;
             _mapper = mapper;
         }
-        [HttpGet("ListarCuidadosDePlantas")]
-        public IActionResult ListarCuidadosDePlantas()
-        {
-            var list = _botanicaServicios.ListarCuidadosDePlantas();
-            return Ok(list);
-        }
+
 
         [HttpPost("InsertarCuidados")]
         public IActionResult InsertarCuidados(CuidadosDePlantaViewModel item)

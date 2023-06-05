@@ -81,7 +81,7 @@ namespace Lancetilla.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<VW_FacturasDetalle>(entity =>
             {
@@ -263,6 +263,10 @@ namespace Lancetilla.DataAccess.Context
                 entity.HasNoKey();
 
                 entity.ToView("VW_tbCuidadoPlanta", "bota");
+
+                entity.Property(e => e.arbo_Descripcion)
+                    .IsRequired()
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.cupl_Fecha)
                     .IsRequired()
@@ -887,7 +891,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbAlimentacion>(entity =>
             {
                 entity.HasKey(e => e.alim_Id)
-                    .HasName("PK__tbAlimen__E14BE4FC3D0F704C");
+                    .HasName("PK__tbAlimen__E14BE4FCF8D951A1");
 
                 entity.ToTable("tbAlimentacion", "zool");
 
@@ -917,11 +921,11 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbAnimales>(entity =>
             {
                 entity.HasKey(e => e.anim_Id)
-                    .HasName("PK__tbAnimal__565C1AC67E66DF61");
+                    .HasName("PK__tbAnimal__565C1AC637D9F8AD");
 
                 entity.ToTable("tbAnimales", "zool");
 
-                entity.HasIndex(e => e.anim_Codigo, "UQ__tbAnimal__47961D47F4A1B0C4")
+                entity.HasIndex(e => e.anim_Codigo, "UQ__tbAnimal__47961D476599268B")
                     .IsUnique();
 
                 entity.Property(e => e.anim_Codigo)
@@ -972,7 +976,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbAreasBotanicas>(entity =>
             {
                 entity.HasKey(e => e.arbo_Id)
-                    .HasName("PK__tbAreasB__D7D76ECAC18C711A");
+                    .HasName("PK__tbAreasB__D7D76ECAF1E4EE1D");
 
                 entity.ToTable("tbAreasBotanicas", "bota");
 
@@ -1002,7 +1006,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbAreasZoologico>(entity =>
             {
                 entity.HasKey(e => e.arzo_Id)
-                    .HasName("PK__tbAreasZ__A6877503ABC7D0FF");
+                    .HasName("PK__tbAreasZ__A687750379B92229");
 
                 entity.ToTable("tbAreasZoologico", "zool");
 
@@ -1032,7 +1036,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbCargos>(entity =>
             {
                 entity.HasKey(e => e.carg_Id)
-                    .HasName("PK__tbCargos__7299C3E6DC6E6998");
+                    .HasName("PK__tbCargos__7299C3E66329757C");
 
                 entity.ToTable("tbCargos", "mant");
 
@@ -1062,7 +1066,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbCuidadoPlanta>(entity =>
             {
                 entity.HasKey(e => e.cupl_Id)
-                    .HasName("PK__tbCuidad__93AC3C71DA5ADEB2");
+                    .HasName("PK__tbCuidad__93AC3C714B5FD8C3");
 
                 entity.ToTable("tbCuidadoPlanta", "bota");
 
@@ -1105,7 +1109,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbCuidados>(entity =>
             {
                 entity.HasKey(e => e.cuid_Id)
-                    .HasName("PK__tbCuidad__A5CC5EAAEC999DCF");
+                    .HasName("PK__tbCuidad__A5CC5EAA009D70C0");
 
                 entity.ToTable("tbCuidados", "bota");
 
@@ -1141,7 +1145,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbDepartamentos>(entity =>
             {
                 entity.HasKey(e => e.dept_Id)
-                    .HasName("PK__tbDepart__DCA97B6C90D9250F");
+                    .HasName("PK__tbDepart__DCA97B6C629722CF");
 
                 entity.ToTable("tbDepartamentos", "mant");
 
@@ -1176,7 +1180,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbEmpleados>(entity =>
             {
                 entity.HasKey(e => e.empl_Id)
-                    .HasName("PK__tbEmplea__4772AE3155CE040A");
+                    .HasName("PK__tbEmplea__4772AE31038CF8F8");
 
                 entity.ToTable("tbEmpleados", "mant");
 
@@ -1257,7 +1261,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbEspecies>(entity =>
             {
                 entity.HasKey(e => e.espe_Id)
-                    .HasName("PK__tbEspeci__F8D93E03205D5DDF");
+                    .HasName("PK__tbEspeci__F8D93E03AFD855B5");
 
                 entity.ToTable("tbEspecies", "zool");
 
@@ -1287,7 +1291,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbEstadosCiviles>(entity =>
             {
                 entity.HasKey(e => e.estc_Id)
-                    .HasName("PK__tbEstado__5C9E18A7122044A0");
+                    .HasName("PK__tbEstado__5C9E18A786DCB3EC");
 
                 entity.ToTable("tbEstadosCiviles", "mant");
 
@@ -1317,7 +1321,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbFacturas>(entity =>
             {
                 entity.HasKey(e => e.fact_Id)
-                    .HasName("PK__tbFactur__4BC2E72B6AF80FC5");
+                    .HasName("PK__tbFactur__4BC2E72B48D4B812");
 
                 entity.ToTable("tbFacturas", "fact");
 
@@ -1363,7 +1367,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbFacturasDetalles>(entity =>
             {
                 entity.HasKey(e => e.fade_Id)
-                    .HasName("PK__tbFactur__5E4AE484FB6EA09C");
+                    .HasName("PK__tbFactur__5E4AE48497EF5359");
 
                 entity.ToTable("tbFacturasDetalles", "fact");
 
@@ -1403,7 +1407,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbHabitat>(entity =>
             {
                 entity.HasKey(e => e.habi_Id)
-                    .HasName("PK__tbHabita__A9F51641CC7B7222");
+                    .HasName("PK__tbHabita__A9F51641FC53CBFA");
 
                 entity.ToTable("tbHabitat", "zool");
 
@@ -1433,7 +1437,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbMantenimientoAnimal>(entity =>
             {
                 entity.HasKey(e => e.maan_Id)
-                    .HasName("PK__tbManten__A4AE888D0DB56D8E");
+                    .HasName("PK__tbManten__A4AE888DE9231C3F");
 
                 entity.ToTable("tbMantenimientoAnimal", "mant");
 
@@ -1476,7 +1480,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbMantenimientos>(entity =>
             {
                 entity.HasKey(e => e.mant_Id)
-                    .HasName("PK__tbManten__C4A585D8EC9D2F66");
+                    .HasName("PK__tbManten__C4A585D87003293B");
 
                 entity.ToTable("tbMantenimientos", "mant");
 
@@ -1512,7 +1516,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbMetodosPago>(entity =>
             {
                 entity.HasKey(e => e.meto_Id)
-                    .HasName("PK__tbMetodo__CDF43E9AF3789C0A");
+                    .HasName("PK__tbMetodo__CDF43E9A1027AE59");
 
                 entity.ToTable("tbMetodosPago", "fact");
 
@@ -1542,7 +1546,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbMunicipios>(entity =>
             {
                 entity.HasKey(e => e.muni_Id)
-                    .HasName("PK__tbMunici__CF2E0951FB595CBE");
+                    .HasName("PK__tbMunici__CF2E0951BB12D75D");
 
                 entity.ToTable("tbMunicipios", "mant");
 
@@ -1589,7 +1593,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbPantallas>(entity =>
             {
                 entity.HasKey(e => e.pant_Id)
-                    .HasName("PK__tbPantal__64687FD2812FF9C2");
+                    .HasName("PK__tbPantal__64687FD2401BC4F0");
 
                 entity.ToTable("tbPantallas", "acce");
 
@@ -1617,11 +1621,11 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbPlantas>(entity =>
             {
                 entity.HasKey(e => e.plan_Id)
-                    .HasName("PK__tbPlanta__BE9E933534E4E464");
+                    .HasName("PK__tbPlanta__BE9E9335B83453BC");
 
                 entity.ToTable("tbPlantas", "bota");
 
-                entity.HasIndex(e => e.plan_Codigo, "UQ__tbPlanta__CDB8ADDB987E8C1A")
+                entity.HasIndex(e => e.plan_Codigo, "UQ__tbPlanta__CDB8ADDBA605966C")
                     .IsUnique();
 
                 entity.Property(e => e.plan_Codigo)
@@ -1662,11 +1666,11 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbRazas>(entity =>
             {
                 entity.HasKey(e => e.raza_Id)
-                    .HasName("PK__tbRazas__D23D30E574D6A198");
+                    .HasName("PK__tbRazas__D23D30E59F089F27");
 
                 entity.ToTable("tbRazas", "zool");
 
-                entity.HasIndex(e => e.raza_NombreCientifico, "UQ__tbRazas__03BB2666A6E36E65")
+                entity.HasIndex(e => e.raza_NombreCientifico, "UQ__tbRazas__03BB266630F596B0")
                     .IsUnique();
 
                 entity.Property(e => e.raza_Descripcion)
@@ -1717,7 +1721,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbReinos>(entity =>
             {
                 entity.HasKey(e => e.rein_Id)
-                    .HasName("PK__tbReinos__473EAA84E3BB3FF5");
+                    .HasName("PK__tbReinos__473EAA84987394F2");
 
                 entity.ToTable("tbReinos", "zool");
 
@@ -1747,7 +1751,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbRoles>(entity =>
             {
                 entity.HasKey(e => e.role_Id)
-                    .HasName("PK__tbRoles__760F99A43A5F1374");
+                    .HasName("PK__tbRoles__760F99A4F6CA6309");
 
                 entity.ToTable("tbRoles", "acce");
 
@@ -1777,7 +1781,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbRolesPantallas>(entity =>
             {
                 entity.HasKey(e => e.ropa_Id)
-                    .HasName("PK__tbRolesP__0572722952A9A071");
+                    .HasName("PK__tbRolesP__057272291576288E");
 
                 entity.ToTable("tbRolesPantallas", "acce");
 
@@ -1801,7 +1805,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbTickets>(entity =>
             {
                 entity.HasKey(e => e.tick_Id)
-                    .HasName("PK__tbTicket__26D61C66974E4CC4");
+                    .HasName("PK__tbTicket__26D61C665225DB6F");
 
                 entity.ToTable("tbTickets", "fact");
 
@@ -1833,7 +1837,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbTiposCuidados>(entity =>
             {
                 entity.HasKey(e => e.ticu_Id)
-                    .HasName("PK__tbTiposC__1679FD38DA1A6435");
+                    .HasName("PK__tbTiposC__1679FD38CD8F3459");
 
                 entity.ToTable("tbTiposCuidados", "bota");
 
@@ -1863,7 +1867,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbTiposMantenimientos>(entity =>
             {
                 entity.HasKey(e => e.tima_Id)
-                    .HasName("PK__tbTiposM__5E8300727EEEF1F9");
+                    .HasName("PK__tbTiposM__5E830072867B34DD");
 
                 entity.ToTable("tbTiposMantenimientos", "mant");
 
@@ -1893,11 +1897,11 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbTiposPlantas>(entity =>
             {
                 entity.HasKey(e => e.tipl_Id)
-                    .HasName("PK__tbTiposP__14B994BE6847079E");
+                    .HasName("PK__tbTiposP__14B994BE5141AB58");
 
                 entity.ToTable("tbTiposPlantas", "bota");
 
-                entity.HasIndex(e => e.tipl_NombreCientifico, "UQ__tbTiposP__F5FBE65DD38837D1")
+                entity.HasIndex(e => e.tipl_NombreCientifico, "UQ__tbTiposP__F5FBE65D75152BC8")
                     .IsUnique();
 
                 entity.Property(e => e.tipl_Estado).HasDefaultValueSql("((1))");
@@ -1936,7 +1940,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbUsuarios>(entity =>
             {
                 entity.HasKey(e => e.usua_Id)
-                    .HasName("PK__tbUsuari__EA3EC7A2BD60225B");
+                    .HasName("PK__tbUsuari__EA3EC7A2F4F2AEC3");
 
                 entity.ToTable("tbUsuarios", "acce");
 
@@ -1971,7 +1975,7 @@ namespace Lancetilla.DataAccess.Context
             modelBuilder.Entity<tbVisitantes>(entity =>
             {
                 entity.HasKey(e => e.visi_Id)
-                    .HasName("PK__tbVisita__0B633A079D367F8A");
+                    .HasName("PK__tbVisita__0B633A0763D4F508");
 
                 entity.ToTable("tbVisitantes", "mant");
 

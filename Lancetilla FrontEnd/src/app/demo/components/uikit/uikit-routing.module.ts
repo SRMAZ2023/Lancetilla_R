@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [RouterModule.forChild([
+        { path: 'CuidadoPlantas', data: { breadcrumb: 'CuidadoPlantas' }, loadChildren: () => import('./CuidadoPlantas/CuidadoPlantas.module').then(m => m.CuidadoPlantasModule) },
         { path: 'Empleados', data: { breadcrumb: 'Empleados' }, loadChildren: () => import('./Empleados/empleados.module').then(m => m.EmpleadosModule) },
         { path: 'Reporte Factura', data: { breadcrumb: 'Reporte Factura' }, loadChildren: () => import('./Reporte Factura/ReporteFactura.module').then(m => m.ReporteFacturaModule) },
         { path: 'charts', data: { breadcrumb: 'charts' }, loadChildren: () => import('./charts/chartsdemo.module').then(m => m.ChartsDemoModule) },

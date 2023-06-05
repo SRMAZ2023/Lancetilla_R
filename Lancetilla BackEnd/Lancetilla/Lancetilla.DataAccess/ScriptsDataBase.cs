@@ -179,6 +179,40 @@ namespace Lancetilla.DataAccess
 
         #region Apartado de Botanica
 
+        #region Cuidados
+
+        public static string InsertarCuidados = "bota.UDP_tbCuidados_CREATE";
+
+        public static string ActualizarCuidados = "bota.UDP_tbCuidados_UPDATE";
+
+        public static string EliminarCuidados = "bota.UDP_tbCuidados_DELETE";
+
+        #endregion
+
+        #region CuidadoPlantas
+
+        public static string tbCuidadoPlanta_FINDArea = "bota.tbCuidadoPlanta_FINDArea";
+        public static string tbCuidadoPlanta_FINDArea2 = "bota.tbCuidadoPlanta_FINDArea2";
+
+        public static string tbCuidadoPlanta_CREATE = "bota.tbCuidadoPlanta_CREATE";
+
+        public static string tbCuidadoPlanta_UPDATE = "bota.tbCuidadoPlanta_UPDATE";
+
+        public static string tbCuidadoPlanta_DELETE = "bota.tbCuidadoPlanta_DELETE";
+
+        #endregion
+
+        #region TiposCuidados
+
+        public static string tbTiposCuidados_CREATE = "bota.tbTiposCuidados_CREATE";
+
+        public static string tbTiposCuidados_UPDATE = "bota.tbTiposCuidados_UPDATE";
+
+        public static string tbTiposCuidados_DELETE = "bota.tbTiposCuidados_DELETE";
+
+
+        #endregion
+
         #region Areas de Botanica
 
         public static string InsertarAreaBotanica = "bota.UDP_tbAreasBotanicas_CREATE";
@@ -187,17 +221,6 @@ namespace Lancetilla.DataAccess
 
          public static string EliminarAreaBotanica = "bota.UDP_tbAreasBotanicas_DELETE";
 
-
-
-        #endregion
-
-        #region Cuidados de Plantas
-
-        public static string InsertarCuidados = "bota.UDP_tbCuidados_CREATE";
-
-        public static string ActualizarCuidados = "bota.UDP_tbCuidados_UPDATE";
-
-        public static string EliminarCuidados = "bota.UDP_tbCuidados_DELETE";
 
 
         #endregion
@@ -211,6 +234,19 @@ namespace Lancetilla.DataAccess
         public static string ActualizarPlantas = "bota.UDP_tbPlantas_UPDATE";
 
         public static string EliminarPlantas = "bota.UDP_tbPlanta_DELETE";
+
+
+        #endregion
+
+        #region Tipos de plantas
+
+        public static string InsertarTipoPlanta = "bota.UDP_tbTiposPlantas_CREATE";
+
+        public static string ActualizarTipoPlantas = "bota.UDP_tbTiposPlantas_UPDATE";
+
+        public static string EliminarTipoPlantas = "bota.UDP_tbTiposPlantas_DELETE";
+
+        public static string BuscarTipoPlantas = "bota.UDP_tbTiposPlantas_Find";
 
 
         #endregion
@@ -245,13 +281,17 @@ namespace Lancetilla.DataAccess
 
         public static string TablaFactura = "fact.UPD_CargarInformacionTabla_Factura";
 
+        public static string FacturaInsert = "fact.UDP_InsertarFactura";
+
+        public static string FacturaInsertMetodoPago = "fact.UDP_InsertarFacturaMetodoDePago";
+
 
         #endregion
 
         #region Factura Detalle
 
 
-
+        public static string InsertarDetallesFactura = "fact.UDP_InsertarFacturaDetalle";
 
         #endregion
 

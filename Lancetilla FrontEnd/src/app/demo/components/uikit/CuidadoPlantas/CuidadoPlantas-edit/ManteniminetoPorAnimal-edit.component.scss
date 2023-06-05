@@ -1,0 +1,23 @@
+#Desplegable {
+  padding: 1.25rem;
+  border: 1px solid #000000;
+  color: #6c757d;
+  background: #f8f9fa;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+}
+
+#titulo {
+  padding: 1.25rem;
+  border: 1px solid #000000;
+  color: #6c757d;
+  background: #f8f9fa;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+}
+
+#Desplegable.expanded {
+  height: auto; /* Opcional: ajusta la altura automáticamente cuando está expandido */
+}

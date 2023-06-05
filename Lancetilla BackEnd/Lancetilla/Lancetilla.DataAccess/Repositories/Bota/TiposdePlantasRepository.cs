@@ -24,6 +24,11 @@ namespace Lancetilla.DataAccess.Repositories.Bota
         {
             throw new NotImplementedException();
         }
+        
+        public IEnumerable<VW_tbTiposPlantas> Find2(int? id)
+        {
+            return con.VW_tbTiposPlantas.AsList();
+        }
 
         public RequestStatus Insert(tbTiposPlantas item)
         {
@@ -36,6 +41,11 @@ namespace Lancetilla.DataAccess.Repositories.Bota
         }
 
         public RequestStatus Update(tbTiposPlantas item, int id)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public RequestStatus Update2(tbTiposPlantas item)
         {
             throw new NotImplementedException();
         }

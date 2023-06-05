@@ -46,5 +46,25 @@ namespace Lancetilla.API.Controllers
             var List = _facturaServicios.TablaFactura(municipios);
             return Ok(List);
         }
+
+        //[HttpPost("InsertFactura")]
+        //public IActionResult InsertFactura(FacturasViewModel item)
+        //{
+        //    var visitantes = _mapper.Map<tbFacturas>(item);
+        //    var List = _facturaServicios.InsertFactura(visitantes);
+
+        //    List.Data = _mapper.Map<FacturasViewModel>(List.Data);
+        //    return Ok(List);
+        //}
+
+        //[HttpPost("InsertFacturaMetodoPago")]
+        //public IActionResult InsertFacturaMetodoPago(FacturasViewModel item)
+        //{
+        //    var visitantes = _mapper.Map<tbFacturas>(item);
+        //    var List = _facturaServicios.InsertarMetodoDePagoFactura(visitantes);
+ 
+        //    return Ok(List);
+        //}
+
     }
 }

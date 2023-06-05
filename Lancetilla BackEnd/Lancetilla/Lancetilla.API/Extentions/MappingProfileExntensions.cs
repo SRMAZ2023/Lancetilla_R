@@ -24,6 +24,9 @@ namespace Lancetilla.API.Extentions
             CreateMap<CuidadosDePlantaViewModel, tbCuidados>().ReverseMap();
             CreateMap<PlantasViewModel, tbPlantas>().ReverseMap();
             CreateMap<TiposdePlantasViewModel, tbTiposPlantas>().ReverseMap();
+            CreateMap<tbTiposCuidadosViewModel, tbTiposCuidados>().ReverseMap();
+            CreateMap<CuidadosViewModel, tbCuidados>().ReverseMap();
+            CreateMap<CuidadoPlantasViewModel, tbCuidadoPlanta>().ReverseMap();
 
             //Facturas
             CreateMap<FacturaDetalleViewModel, tbFacturasDetalles>().ReverseMap();
@@ -52,7 +55,7 @@ namespace Lancetilla.API.Extentions
             CreateMap<ReinosViewModel, tbReinos>().ReverseMap();
             CreateMap<HabitatViewModel, tbHabitat>().ReverseMap();
             CreateMap<RazasViewModel, tbRazas>().ReverseMap();
-          
+
             // CreateMap<, tbHabitat>().ReverseMap();
 
 
