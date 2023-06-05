@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,13 +30,40 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.EliminarPlantas, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
+        public IEnumerable<VW_MantenimientoAnimales> MantenimientosPorAnimal(string fechaInicio, string fechafinal)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
 
+            DateTime fechaInicioDateTime;
+            DateTime fechafinalDateTime;
+
+            if (!DateTime.TryParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaInicioDateTime))
+            {
+                // Manejar el error si la conversión falla
+                // Puedes lanzar una excepción, asignar un valor predeterminado, etc.
+            }
+
+            if (!DateTime.TryParseExact(fechafinal, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechafinalDateTime))
+            {
+                // Manejar el error si la conversión falla
+                // Puedes lanzar una excepción, asignar un valor predeterminado, etc.
+            }
+
+            parametros.Add("@maan_FechaInicio", fechaInicioDateTime, DbType.Date, ParameterDirection.Input);
+            parametros.Add("@maan_FechaFinal", fechafinalDateTime, DbType.Date, ParameterDirection.Input);
+
+            var result = db.Query<VW_MantenimientoAnimales>(ScriptsDataBase.Grafica, parametros, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        /*
         public IEnumerable MantenimientosPorAnimal()
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);
             return db.Query(ScriptsDataBase.Grafica, null, commandType: System.Data.CommandType.StoredProcedure);
         }
-
+        */
         public IEnumerable CuidadosPorPlantas()
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);

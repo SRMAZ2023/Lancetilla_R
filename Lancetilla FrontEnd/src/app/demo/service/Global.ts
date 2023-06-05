@@ -1,5 +1,5 @@
 export var Global = {
-    url:"https://localhost:44305/api/"
+    url:"http://www.lancetilla2.somee.com/api/"
 };
 
  

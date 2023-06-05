@@ -12,3 +12,13 @@ export class CuidadoDePlantasViewModel {
         public cuid_Estado?: boolean
     ){}
 }
+
+
+export class FechaSS {
+    constructor(
+
+       public fechaInicio?: string,
+       public fechafinal?: string,
+
+   ){}
+}

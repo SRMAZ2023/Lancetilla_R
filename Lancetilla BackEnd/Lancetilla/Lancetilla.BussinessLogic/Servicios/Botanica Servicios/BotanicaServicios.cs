@@ -440,19 +440,23 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             }
         }
 
-        public IEnumerable MantenimientosPorAnimal()
+
+        public IEnumerable<VW_MantenimientoAnimales> MantenimientosPorAnimal(string fechaInicio, string fechafinal)
         {
-            var result = new ServiceResult();
             try
             {
-                var list = _plantasRepository.MantenimientosPorAnimal();
+                var list = _plantasRepository.MantenimientosPorAnimal(fechaInicio, fechafinal);
                 return list;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return Enumerable.Empty<VW_tbPlantas>();
+
+                return Enumerable.Empty<VW_MantenimientoAnimales>();
             }
         }
+
+        
+
         public IEnumerable ConteoZoologico()
         {
             var result = new ServiceResult();

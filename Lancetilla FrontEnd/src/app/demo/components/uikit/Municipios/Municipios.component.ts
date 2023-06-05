@@ -268,8 +268,8 @@ export class MunicipiosComponent implements OnInit {
 
       var params = {
             "muni_Id": this.Municipio.muni_Id?.toString(),
-            "muni_Descripcion": this.Municipio.muni_Descripcion?.trim(),
-            "dept_Id": this.Municipio.dept_Id?.toString(),
+            "muni_Descripcion": this.Municipio.muni_Descripcion ? this.Municipio.muni_Descripcion.trim() : '',
+            "dept_Id": this.Municipio.dept_Id ? this.Municipio.dept_Id: 0,
             "dept_Descripcion": "d",
             "muni_UserCreacion": 1,
             "muni_UserModificacion": 1
@@ -279,81 +279,87 @@ export class MunicipiosComponent implements OnInit {
  
       
 
-         
-       
-        //Validacion de params
-        if (params.muni_Id?.toString() !== undefined &&
-            params.muni_Id?.toString().length < 5  &&
-            parseInt(params.muni_Id?.toString()) > 0 &&
-            params.muni_Descripcion !== undefined &&
-            params.muni_Descripcion !== "" &&
-            params.dept_Id?.toString() !== undefined &&
-            params.dept_Descripcion.trim() !== '' &&
-            params.muni_UserCreacion !== undefined &&
-            params.muni_UserModificacion !== undefined) {
+         if(params.muni_Descripcion == "" || params.dept_Id == 0){
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'Los campos son requeridos.', life: 3000 });
 
-            //Si insertara o editara
-            if (!this.Editar) {
+         }
+         else{
+    //Validacion de params
+    if (params.muni_Id?.toString() !== undefined &&
+    params.muni_Id?.toString().length < 5  &&
+    parseInt(params.muni_Id?.toString()) > 0 &&
+    params.muni_Descripcion !== undefined &&
+    params.muni_Descripcion !== "" &&
+    params.dept_Id?.toString() !== undefined &&
+    params.dept_Descripcion.trim() !== '' &&
+    params.muni_UserCreacion !== undefined &&
+    params.muni_UserModificacion !== undefined) {
 
-                this.MunicipiosService.CrearMunicipio(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        console.log(this.datos)
-                        if (this.datos.code == 409) {
+    //Si insertara o editara
+    if (!this.Editar) {
 
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+        this.MunicipiosService.CrearMunicipio(params).subscribe(
+            Response => {
+                this.datos = Response;
+                console.log(this.datos)
+                if (this.datos.code == 409) {
 
-                            this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
+                    this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: this.datos.message, life: 3000 });
 
-                        } else if (this.datos.code == 200) {
+                    this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.Municipio = {};
-                            this.InsertMunicipiostDialog = false;
-                            this.departamentoselect = ""
-                            this.CargarMunicipios() 
-                        } else {
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: "Fallo al Insertar en Codigo del municipio", life: 3000 });
-                            this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                        this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
-                    }
-                )
+                } else if (this.datos.code == 200) {
 
-            } else {
-                this.MunicipiosService.EditarMunicipio(params).subscribe(
-                    Response => {
-                        this.datos = Response;
-                        if (this.datos.code == 409) {
-
-                            this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
-
-                        } else if (this.datos.code == 200) {
-
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                            this.Municipio = {};
-                            this.EditarMunicipiostDialog = false;
-                            this.CargarMunicipios() 
-                        } else {
-                            this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
-                            
-                        }
-                    },
-                    error => {
-                        console.log(error);
-                      
-                    }
-                )
-
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.Municipio = {};
+                    this.InsertMunicipiostDialog = false;
+                    this.departamentoselect = ""
+                    this.CargarMunicipios() 
+                } else {
+                    this.messageService.add({ severity: 'info', summary: 'Error', detail: "Fallo al Insertar en Codigo del municipio", life: 3000 });
+                    this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
+                }
+            },
+            error => {
+                console.log(error);
+                this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);
             }
+        )
 
+    } else {
+        this.MunicipiosService.EditarMunicipio(params).subscribe(
+            Response => {
+                this.datos = Response;
+                if (this.datos.code == 409) {
 
-        }
-        else{ this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);}
+                    this.messageService.add({ severity: 'info', summary: 'Error', detail: this.datos.message, life: 3000 });
+
+                } else if (this.datos.code == 200) {
+
+                    this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
+                    this.Municipio = {};
+                    this.EditarMunicipiostDialog = false;
+                    this.CargarMunicipios() 
+                } else {
+                    this.messageService.add({ severity: 'warm', summary: 'Error', detail: this.datos.message, life: 3000 });
+                    
+                }
+            },
+            error => {
+                console.log(error);
+              
+            }
+        )
+
     }
+
+
+}
+else{ this.Municipio.muni_Id = this.Municipio.muni_Id?.substring(2);}
+}
+         }
+       
+    
     //Enviamos y editamos datos
 
 

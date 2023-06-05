@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     obtenerValorVariable() {
-        const url = 'https://localhost:44305/api/Plantas/ConteoZoologico';
+        const url = 'http://www.lancetilla2.somee.com/api/Plantas/ConteoZoologico';
 
         this.http.get(url)
             .subscribe(
@@ -124,7 +124,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     obtenerValorVariableBotanica() {
-        const url = 'https://localhost:44305/api/Plantas/ConteoBotanica';
+        const url = 'http://www.lancetilla2.somee.com/api/Plantas/ConteoBotanica';
 
         this.http.get(url)
             .subscribe(
@@ -140,7 +140,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     obtenerValorVariablemants() {
-        const url = 'https://localhost:44305/api/Plantas/qntienemasmantenimientos';
+        const url = 'http://www.lancetilla2.somee.com/api/Plantas/qntienemasmantenimientos';
 
         this.http.get(url)
             .subscribe(
@@ -155,7 +155,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
     obtenerValorVariableareas() {
-        const url = 'https://localhost:44305/api/Plantas/AnimalesPorAreas';
+        const url = 'http://www.lancetilla2.somee.com/api/Plantas/AnimalesPorAreas';
 
         this.http.get(url)
             .subscribe(

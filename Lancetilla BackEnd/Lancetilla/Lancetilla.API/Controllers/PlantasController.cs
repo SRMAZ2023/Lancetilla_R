@@ -46,13 +46,13 @@ namespace Lancetilla.API.Controllers
             return Ok(List);
         }
 
-        [HttpGet("MantenimientosPorAnimal")]
-        public IActionResult MantenimientosPorAnimal()
+        [HttpPost("MantenimientosPorAnimal")]
+        public IActionResult MantenimientosPorAnimal(fecaha item)
         {
-            var list = _botanicaServicios.MantenimientosPorAnimal();
-
+            var list = _botanicaServicios.MantenimientosPorAnimal(item.fechaInicio, item.FechaFinal);
             return Ok(list);
         }
+
 
         [HttpGet("CuidadosPorPlantas")]
         public IActionResult CuidadosPorPlantas()

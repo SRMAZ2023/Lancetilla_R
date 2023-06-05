@@ -215,7 +215,7 @@ export class DepartamentosComponent implements OnInit {
 
         var params = {
             "dept_Id": this.Departamento.dept_Id?.toString(),
-            "dept_Descripcion": this.Departamento.dept_Descripcion!.trim(),
+            "dept_Descripcion": this.Departamento.dept_Descripcion ? this.Departamento.dept_Descripcion.trim() : '',
             "dept_UserCreacion": 1,
             "dept_UserModificacion": 1
         }
@@ -231,12 +231,16 @@ export class DepartamentosComponent implements OnInit {
         const deptId = params.dept_Id?.toString();
         if (deptId == undefined || parseInt(deptId) < 1 && this.Editar ==  false) {
             
-            this.messageService.add({ severity: 'info', summary: 'info', detail: "Ingrese un código válido.", life: 3000 });
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: "Ingrese un código válido.", life: 3000 });
 
         }
       
-        
-        if (params.dept_Id?.toString() !== undefined &&
+        if(params.dept_Descripcion == ""){
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia:', detail: 'El campo es requerido.', life: 3000 });
+
+        }
+        else{
+            if (params.dept_Id?.toString() !== undefined &&
             params.dept_Id?.toString().length < 3  &&
             parseInt(params.dept_Id?.toString()) > 0 &&
             params.dept_Descripcion !== undefined &&
@@ -303,6 +307,8 @@ export class DepartamentosComponent implements OnInit {
         }
     }
     //Enviamos y editamos datos
+        }
+       
 
 
 

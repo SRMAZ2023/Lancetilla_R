@@ -1,35 +1,45 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Global } from 'src/app/demo/service/Global';
+import { CuidadoDePlantasViewModel } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
+import { FechaSS } from 'src/app/demo/Models/CuidadoDePlantasViewModel';
 
+import * as moment from 'moment';
 
 interface data {
-    arzo_Descripcion: string;
-    cantidad: number;
-  }
+  arzo_Descripcion: string;
+  cantidad: number;
+}
 
-  interface habitat {
-    habi_Descripcion: string;
-    cantidad: number;
-  }
-  interface plantas {
-    tipl_NombreComun: string;
-    conteo: number;
-    plan_Is: number;
-  }
+interface habitat {
+  habi_Descripcion: string;
+  cantidad: number;
+}
+interface plantas {
+  tipl_NombreComun: string;
+  conteo: number;
+  plan_Is: number;
+}
 
-  interface visis {
-    visi_Sexo: string;
-    cantidad: number;
-  }
-  interface anims {
-    conteo: number;
-    anim_Nombre: string;
-    anim_Id: number;
-  }
+interface visis {
+  visi_Sexo: string;
+  cantidad: number;
+}
+interface anims {
+  conteo: number;
+  anim_Nombre: string;
+  anim_Id: number;
+}
+
+interface fechas {
+  fechaInicio: string;
+  fechaFinal: string;
   
+}
+
+
 @Component({
   templateUrl: './chartsdemo.component.html'
 })
@@ -44,26 +54,84 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
   pieOptions: any;
   radarOptions: any;
 
+  fecha:FechaSS = {}
+
+   
+  fechainicio: any = {};
+  fechafinal:  any = {};
+
+
+
   subscription: Subscription;
   public url: string;
   constructor(
-    
+
     public layoutService: LayoutService,
     private http: HttpClient
   ) {
     this.subscription = this.layoutService.configUpdate$.subscribe(config => {
       this.initCharts();
-      
+
     });
     this.url = Global.url;
   }
 
   ngOnInit() {
+    this.filt();
     this.initCharts();
   }
 
 
   
+filt(){
+
+  const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+console.log(this.fecha)
+
+const fechaCreacion1 = moment(this.fecha.fechaInicio).format('YYYY/MM/DD').toString();
+
+const fechaCreacion2 = moment(this.fecha.fechafinal).format('YYYY/MM/DD').toString();
+
+  var params = {
+
+    "fechaInicio": fechaCreacion1,
+    "fechafinal": fechaCreacion2
+
+  }
+  console.log(params)
+  // Obtener datos de la API para la gráfica de tarta
+  this.http.post<anims[]>('https://localhost:44305/api/Plantas/MantenimientosPorAnimal', params).subscribe((data: anims[]) => {
+    const labels = data.map(item => item.anim_Nombre);
+    const values = data.map(item => item.conteo);
+    console.log(data);
+    const colors = ['#c2ff9d', '#a3ff7e', '#66ff66', '#33ff33', '#00cc00'];  // Colores para cada rebanada
+
+    this.pieData = {
+      labels: labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: colors.slice(0, values.length),
+          hoverBackgroundColor: colors.slice(0, values.length).map(color => `${color}1A`) // Color de resaltado al pasar el cursor
+        }
+      ]
+    };
+    this.pieOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: textColor
+          }
+        }
+      }
+    };
+  });
+}
 
   initCharts() {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -71,190 +139,62 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    // Obtener datos de la API para la gráfica de barras
-    this.http.get<plantas[]>(this.url + "TiposCuidados/CuidadoPorPlanta").subscribe((data: plantas[]) => {
-      const labels = data.map(item => item.tipl_NombreComun);
-      const values = data.map(item => item.conteo);
 
-      const colors = ['#c2ff9d', '#a3ff7e', '#66ff66', '#33ff33', '#00cc00'];  // Colores para cada rebanada
 
-      this.barData = {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Plantas',
-            backgroundColor: colors.slice(0, values.length),
-            borderColor: '#122341',
-            data: values
-          }
-        ]
-      };
 
-      this.barOptions = {
-        plugins: {
-          legend: {
-            labels: {
-              fontColor: textColor
-            }
-          }
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: textColorSecondary,
-              font: {
-                weight: 500
+
+
+    
+
+
+
+
+
+
+
+
+    /*
+    
+        // Obtener datos de la API para la gráfica de radar
+        this.http.get<plantas[]>(this.url + "Plantas/PlantasPorArea").subscribe((data: plantas[]) => {
+            const labels = data.map(item => item.arbo_Descripcion);
+            const values = data.map(item => item.cantidad);
+            const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700'];  // Colores para cada rebanada
+    
+            this.radarData = {
+              labels: labels,
+              datasets: [
+                {
+                  label: '',
+                  borderColor: colors,
+                  pointBackgroundColor: colors,
+                  pointBorderColor: colors,
+                  pointHoverBackgroundColor: textColor,
+                  pointHoverBorderColor: colors,
+                  data: values
+                }
+              ]
+            };
+    
+          this.radarOptions = {
+            plugins: {
+              legend: {
+                labels: {
+                  fontColor: textColor
+                }
               }
             },
-            grid: {
-              display: false,
-              drawBorder: false
+            scales: {
+              r: {
+                grid: {
+                  color: textColorSecondary
+                }
+              }
             }
-          },
-          y: {
-            ticks: {
-              color: textColorSecondary
-            },
-            grid: {
-              color: surfaceBorder,
-              drawBorder: false
-            }
-          }
-        }
-      };
-    });
-
-
- // Obtener datos de la API para la gráfica de tarta
- this.http.get<anims[]>(this.url + "TiposCuidados/MantenimientosPorAnimal").subscribe((data: anims[]) => {
-  const labels = data.map(item => item.anim_Nombre);
-  const values = data.map(item => item.conteo);
-  const colors = ['#c2ff9d', '#a3ff7e', '#66ff66', '#33ff33', '#00cc00'];  // Colores para cada rebanada
-
-  this.pieData = {
-    labels: labels,
-    datasets: [
-      {
-        data: values,
-        backgroundColor: colors.slice(0, values.length),
-        hoverBackgroundColor: colors.slice(0, values.length).map(color => `${color}1A`) // Color de resaltado al pasar el cursor
-      }
-    ]
-  };
-  this.pieOptions = {
-    plugins: {
-      legend: {
-        labels: {
-          usePointStyle: true,
-          color: textColor
-        }
-      }
-    }
-  };
-});
-
-
-
-
-
-
-
-    // Obtener datos de la API para la gráfica de línea
-    this.http.get<visis[]>(this.url + "Visitantes/VisitantesSexo").subscribe((data: visis[]) => {
-        const labels = data.map(item => item.visi_Sexo);
-        const values = data.map(item => item.cantidad);
-        const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700'];  // Colores para cada rebanada
-
-        this.lineData = {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Visitantes',
-              data: values,
-              fill: false,
-              backgroundColor: colors,
-              borderColor: colors,
-              tension: 0.4
-            }
-          ]
-        };
-
-      this.lineOptions = {
-        plugins: {
-          legend: {
-            labels: {
-              fontColor: textColor
-            }
-          }
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: textColorSecondary
-            },
-            grid: {
-              color: surfaceBorder,
-              drawBorder: false
-            }
-          },
-          y: {
-            ticks: {
-              color: textColorSecondary
-            },
-            grid: {
-              color: surfaceBorder,
-              drawBorder: false
-            }
-          },
-        }
-      };
-    });
-
-
-
-
-/*
-
-    // Obtener datos de la API para la gráfica de radar
-    this.http.get<plantas[]>(this.url + "Plantas/PlantasPorArea").subscribe((data: plantas[]) => {
-        const labels = data.map(item => item.arbo_Descripcion);
-        const values = data.map(item => item.cantidad);
-        const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700'];  // Colores para cada rebanada
-
-        this.radarData = {
-          labels: labels,
-          datasets: [
-            {
-              label: '',
-              borderColor: colors,
-              pointBackgroundColor: colors,
-              pointBorderColor: colors,
-              pointHoverBackgroundColor: textColor,
-              pointHoverBorderColor: colors,
-              data: values
-            }
-          ]
-        };
-
-      this.radarOptions = {
-        plugins: {
-          legend: {
-            labels: {
-              fontColor: textColor
-            }
-          }
-        },
-        scales: {
-          r: {
-            grid: {
-              color: textColorSecondary
-            }
-          }
-        }
-      };
-    });
-
-*/
+          };
+        });
+    
+    */
   }
 
   ngOnDestroy() {
@@ -263,3 +203,7 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
     }
   }
 }
+function filtro() {
+  throw new Error('Function not implemented.');
+}
+
