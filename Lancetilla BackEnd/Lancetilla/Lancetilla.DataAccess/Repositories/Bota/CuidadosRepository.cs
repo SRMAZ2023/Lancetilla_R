@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -17,6 +18,17 @@ namespace Lancetilla.DataAccess.Repositories.Bota
         public IEnumerable<VW_tbCuidados> ListarCuidados()
         {
             return con.VW_tbCuidados.AsList();
+        }
+
+        public IEnumerable MantenimientoPorAnimal()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.Grafica, null, commandType: System.Data.CommandType.StoredProcedure);
+        }
+        public IEnumerable CuidadoPorPlanta()
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            return db.Query(ScriptsDataBase.Grafica2, null, commandType: System.Data.CommandType.StoredProcedure);
         }
 
         public RequestStatus Delete(tbCuidados item)

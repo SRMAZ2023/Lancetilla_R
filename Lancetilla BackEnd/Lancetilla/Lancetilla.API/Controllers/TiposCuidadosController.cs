@@ -24,13 +24,29 @@ namespace Lancetilla.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("MantenimientosPorAnimal")]
+        public IActionResult MantenimientosPorAnimal()
+        {
+            var list = _botanicaServicios.MantenimientoPorAnimal();
+
+            return Ok(list);
+        }
+
+
         [HttpGet("List")]
         public IActionResult ListarTiposPlantas()
         {
             var list = _botanicaServicios.ListarTiposCuidados();
             return Ok(list);
         }
-    
+        [HttpGet("CuidadoPorPlanta")]
+        public IActionResult CuidadoPorPlanta()
+        {
+            var list = _botanicaServicios.CuidadoPorPlanta();
+
+            return Ok(list);
+        }
+
 
 
         [HttpPost("Insert")]

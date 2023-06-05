@@ -72,11 +72,11 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     // Obtener datos de la API para la gráfica de barras
-    this.http.get<plantas[]>(this.url + "Cuidados/CuidadoPorPlanta").subscribe((data: plantas[]) => {
+    this.http.get<plantas[]>(this.url + "TiposCuidados/CuidadoPorPlanta").subscribe((data: plantas[]) => {
       const labels = data.map(item => item.tipl_NombreComun);
       const values = data.map(item => item.conteo);
 
-      const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700']; // Escala de colores verdes
+      const colors = ['#c2ff9d', '#a3ff7e', '#66ff66', '#33ff33', '#00cc00'];  // Colores para cada rebanada
 
       this.barData = {
         labels: labels,
@@ -126,10 +126,10 @@ export class ChartsDemoComponent implements OnInit, OnDestroy {
 
 
  // Obtener datos de la API para la gráfica de tarta
- this.http.get<anims[]>(this.url + "Animales/MantenimientosPorAnimal").subscribe((data: anims[]) => {
+ this.http.get<anims[]>(this.url + "TiposCuidados/MantenimientosPorAnimal").subscribe((data: anims[]) => {
   const labels = data.map(item => item.anim_Nombre);
   const values = data.map(item => item.conteo);
-  const colors = ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700'];  // Colores para cada rebanada
+  const colors = ['#c2ff9d', '#a3ff7e', '#66ff66', '#33ff33', '#00cc00'];  // Colores para cada rebanada
 
   this.pieData = {
     labels: labels,
