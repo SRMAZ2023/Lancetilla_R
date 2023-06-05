@@ -440,12 +440,12 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             }
         }
 
-        public IEnumerable PlantasPorArea()
+        public IEnumerable MantenimientosPorAnimal()
         {
             var result = new ServiceResult();
             try
             {
-                var list = _plantasRepository.PlantasPorArea();
+                var list = _plantasRepository.MantenimientosPorAnimal();
                 return list;
             }
             catch (Exception e)
@@ -453,7 +453,73 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
                 return Enumerable.Empty<VW_tbPlantas>();
             }
         }
+        public IEnumerable ConteoZoologico()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _plantasRepository.ConteoZoologico();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_FacturasDetalle>();
+            }
+        }
+        public IEnumerable ConteoBotanica()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _plantasRepository.ConteoBotanica();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_FacturasDetalle>();
+            }
+        }
+        public IEnumerable qntienemasmantenimientos()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _plantasRepository.qntienemasmantenimientos();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_MantenimientoAnimales>();
+            }
+        }
+        public IEnumerable AnimalesPorAreas()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _plantasRepository.AnimalesPorAreas();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbAreasZoologico>();
+            }
 
+        }
+
+        public IEnumerable CuidadosPorPlantas()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _plantasRepository.CuidadosPorPlantas();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbPlantas>();
+            }
+        }
         public VW_tbPlantas BuscarPlantas(int id)
         {
             try
@@ -557,7 +623,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         {
             try
             {
-                var list = _tiposdePlantasRepository.Find2(id);
+                var list = _tiposdePlantasRepository.Find(id);
                 return list;
             }
             catch (Exception ex)
@@ -614,12 +680,14 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             }
         }
 
+
+
         public ServiceResult ActualizarTiposPlanta(tbTiposPlantas item)
         {
             var result = new ServiceResult();
             try
             {
-                var map = _tiposdePlantasRepository.Update2(item);
+                var map = _tiposdePlantasRepository.Update(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
@@ -639,7 +707,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
                 return result.Error(ex.Message);
             }
         }
-
+        
         public ServiceResult EliminarTiposPlanta(tbTiposPlantas item)
         {
             var result = new ServiceResult();
@@ -668,6 +736,34 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         #endregion
 
         #region CuidadosPlantas 
+
+        public IEnumerable CuidadoPorPlanta()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _cuidadosRepository.CuidadoPorPlanta();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_tbCuidados>();
+            }
+        }
+
+        public IEnumerable MantenimientoPorAnimal()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _cuidadosRepository.MantenimientoPorAnimal();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<VW_MantenimientoAnimales>();
+            }
+        }
         public IEnumerable<VW_tbCuidadoPlanta> ListarCuidadoPlantas()
         {
             try
