@@ -165,14 +165,15 @@
 
                     <div class="field col-2">
                         <button pButton pRipple label="Guardar" icon="pi pi-check" type="submit"
-                            [disabled]="empleadosForm.invalid" class="p-button-success"></button>
+                            [disabled]="empleadosForm.invalid" class="p-button-outlined p-button-success"></button>
 
 
                     </div>
                     <div class="field col-2">
 
-                        <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
-                            class="p-button-danger" [routerLink]="['/app/uikit/Empleados']"></button>
+                        <button pButton pRipple label="Cancelar"   type="button"
+                        icon="pi pi-times"
+                        class="p-button-outlined p-button-secondary" [routerLink]="['/app/uikit/Empleados']"></button>
 
                     </div>
                 </div>
