@@ -1,3 +1,127 @@
+<p-dialog [(visible)]="RazaDialog" [style]="{width: '500px', height: '700'}" header="Razas" [modal]="true"
+class="p-fluid">
+<p-header>
+    <div class="header-content " style="display: inline-flex; align-items: center;">
+        <h5 style="font-size: 25px;">Razas
+
+        </h5>
+        <DIV></DIV>
+        <img src="https://media.tenor.com/9uRejMMYygEAAAAi/kangaroo-joypixels.gif" width="55px" height="55px"
+            style="margin-left: 20px;">
+
+    </div>
+
+</p-header>
+<br><br>
+
+<ng-template pTemplate="content">
+
+    <div class="grid p-fluid">
+
+        <div class="field col-6">
+            <label for="name">Descripción</label>
+            <input type="text" pInputText id="name" [(ngModel)]="Raza.raza_Descripcion" required autofocus
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Raza.raza_Descripcion)}" />
+            <small class="ng-dirty ng-invalid" style="color: red;"
+                *ngIf="submitted && isInputEmptyOrWhitespace(Raza.raza_Descripcion)">
+                La descripción o el nombre de la raza es requerido.
+            </small>
+        </div>
+
+        <div class="field col-6">
+            <label for="name">Nombre Científico</label>
+            <input type="text" pInputText id="name" [(ngModel)]="Raza.raza_NombreCientifico" required
+                autofocus
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Raza.raza_NombreCientifico)}" />
+            <small class="ng-dirty ng-invalid" style="color: red;"
+                *ngIf="submitted && isInputEmptyOrWhitespace(Raza.raza_NombreCientifico)">
+                El nombre científico de la raza es requerido.
+            </small>
+        </div>
+
+        <div class="field col-6">
+            <label for="rein_Id"> Reino</label>
+            <p-dropdown name="rein_Id" #rein_Id="ngModel" [autoDisplayFirst]="false"   [appendTo]="'body'"  [options]="reinos"
+                [(ngModel)]="Raza.rein_Id" [ngClass]="{
+                'ng-invalid': submitted && !Raza.rein_Id
+            }" placeholder="Seleccione un reino" inputId="dropdown" optionLabel="label" optionValue="value"
+                [ngClass]="{
+                'ng-invalid ng-dirty':
+                    submitted && !Raza.rein_Id
+            }"></p-dropdown>
+            <small *ngIf="submitted && !Raza.rein_Id" class="ng-dirty ng-invalid" style="color: red">
+                El reino de la raza es requerido.
+            </small>
+        </div>
+
+        <div class="field col-6">
+            <label for="habi_Id"> Hábitat </label>
+            <p-dropdown name="habi_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="habitat"
+                [(ngModel)]="Raza.habi_Id" [ngClass]="{
+                'ng-invalid': submitted && !Raza.habi_Id
+            }" placeholder="Seleccione un hábitat" inputId="dropdown" optionLabel="label"
+                optionValue="value" [ngClass]="{
+                'ng-invalid ng-dirty':
+                    submitted && !Raza.habi_Id
+            }"   [appendTo]="'body'" ></p-dropdown>
+            <small *ngIf="submitted && !Raza.habi_Id" class="ng-dirty ng-invalid" style="color: red">
+                El hábitat de la raza es requerido.
+            </small>
+        </div>
+
+        <div class="field col-12">
+            <label for="espe_Id"> Especie </label>
+            <p-dropdown name="espe_Id" #tima_Id="ngModel"   [appendTo]="'body'"  [autoDisplayFirst]="false" [options]="especies"
+                [(ngModel)]="Raza.espe_Id" [ngClass]="{
+                'ng-invalid': submitted && !Raza.espe_Id
+            }" placeholder="Seleccione una especie" inputId="dropdown" optionLabel="label"
+                optionValue="value" [ngClass]="{
+                'ng-invalid ng-dirty':
+                    submitted && !Raza.espe_Id
+            }"></p-dropdown>
+            <small *ngIf="submitted && !Raza.espe_Id" class="ng-dirty ng-invalid" style="color: red">
+                La especie de la raza es requerida.
+            </small>
+        </div>
+
+    </div>
+
+</ng-template>
+
+<ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-secondary"
+        (click)="hideDialog()"></button>
+    <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
+        (click)="saveRazas()"></button>
+</ng-template>
+</p-dialog>
+
+
+
+
+<p-dialog [(visible)]="deleteRazaDialog" [modal]="true" [style]="{ width: '450px' }"
+header="Confirmación">
+<br>
+<div class="flex align-items-center justify-content-center">
+
+    <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
+        style="margin-right: 15px;">
+        <span *ngIf="Raza">¿Estás seguro de eliminar la raza
+            <b>{{Raza.raza_Descripcion}}</b>?</span>
+</div>
+<ng-template pTemplate="footer">
+    <button (click)="deleteRazaDialog = false" pButton pRipple icon="pi pi-times"
+        class="p-button-outlined p-button-secondary" label="No"></button>
+    <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
+        class="p-button-outlined p-button-success" label="Sí"></button>
+</ng-template>
+</p-dialog>
+
+
+
+
+
+
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
@@ -17,7 +141,7 @@
                 </div>
                 <div class="mr-3">
                     <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
-                        (click)="openNew()"></button>
+                      (click)="openNew()"></button>
                 </div>
 
 
@@ -61,7 +185,7 @@
                 <ng-template pTemplate="body" let-razas let-expanded="expanded">
                     <tr>
                         <td>
-                            <button type="button" (click)="Animales(razas)" pButton pRipple
+                            <button (click)="Animales(razas)" pButton pRipple
                                 class="p-button-text p-button-rounded p-button-plain"
                                 [icon]="isRowExpanded(razas) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                         </td>
@@ -121,131 +245,14 @@
 
 
 
-
-
-
-
-
-
-
-        <p-dialog [(visible)]="RazaDialog" [style]="{width: '500px', height: '700'}" header="Razas" [modal]="true"
-            class="p-fluid">
-            <p-header>
-                <div class="header-content " style="display: inline-flex; align-items: center;">
-                    <h5 style="font-size: 25px;">Razas
-
-                    </h5>
-                    <DIV></DIV>
-                    <img src="https://media.tenor.com/9uRejMMYygEAAAAi/kangaroo-joypixels.gif" width="55px" height="55px"
-                        style="margin-left: 20px;">
-
-                </div>
-
-            </p-header>
-            <br><br>
-
-            <ng-template pTemplate="content">
-
-                <div class="grid p-fluid">
-
-                    <div class="field col-6">
-                        <label for="name">Descripción</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="Raza.raza_Descripcion" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Raza.raza_Descripcion)}" />
-                        <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="submitted && isInputEmptyOrWhitespace(Raza.raza_Descripcion)">
-                            La descripción o el nombre de la raza es requerido.
-                        </small>
-                    </div>
-
-                    <div class="field col-6">
-                        <label for="name">Nombre Científico</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="Raza.raza_NombreCientifico" required
-                            autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && isInputEmptyOrWhitespace(Raza.raza_NombreCientifico)}" />
-                        <small class="ng-dirty ng-invalid" style="color: red;"
-                            *ngIf="submitted && isInputEmptyOrWhitespace(Raza.raza_NombreCientifico)">
-                            El nombre científico de la raza es requerido.
-                        </small>
-                    </div>
-
-                    <div class="field col-6">
-                        <label for="rein_Id"> Reino</label>
-                        <p-dropdown name="rein_Id" #rein_Id="ngModel" [autoDisplayFirst]="false"   [appendTo]="'body'"  [options]="reinos"
-                            [(ngModel)]="Raza.rein_Id" [ngClass]="{
-                            'ng-invalid': submitted && !Raza.rein_Id
-                        }" placeholder="Seleccione un reino" inputId="dropdown" optionLabel="label" optionValue="value"
-                            [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                submitted && !Raza.rein_Id
-                        }"></p-dropdown>
-                        <small *ngIf="submitted && !Raza.rein_Id" class="ng-dirty ng-invalid" style="color: red">
-                            El reino de la raza es requerido.
-                        </small>
-                    </div>
-
-                    <div class="field col-6">
-                        <label for="habi_Id"> Hábitat </label>
-                        <p-dropdown name="habi_Id" #tima_Id="ngModel" [autoDisplayFirst]="false" [options]="habitat"
-                            [(ngModel)]="Raza.habi_Id" [ngClass]="{
-                            'ng-invalid': submitted && !Raza.habi_Id
-                        }" placeholder="Seleccione un hábitat" inputId="dropdown" optionLabel="label"
-                            optionValue="value" [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                submitted && !Raza.habi_Id
-                        }"   [appendTo]="'body'" ></p-dropdown>
-                        <small *ngIf="submitted && !Raza.habi_Id" class="ng-dirty ng-invalid" style="color: red">
-                            El hábitat de la raza es requerido.
-                        </small>
-                    </div>
-
-                    <div class="field col-12">
-                        <label for="espe_Id"> Especie </label>
-                        <p-dropdown name="espe_Id" #tima_Id="ngModel"   [appendTo]="'body'"  [autoDisplayFirst]="false" [options]="especies"
-                            [(ngModel)]="Raza.espe_Id" [ngClass]="{
-                            'ng-invalid': submitted && !Raza.espe_Id
-                        }" placeholder="Seleccione una especie" inputId="dropdown" optionLabel="label"
-                            optionValue="value" [ngClass]="{
-                            'ng-invalid ng-dirty':
-                                submitted && !Raza.espe_Id
-                        }"></p-dropdown>
-                        <small *ngIf="submitted && !Raza.espe_Id" class="ng-dirty ng-invalid" style="color: red">
-                            La especie de la raza es requerida.
-                        </small>
-                    </div>
-
-                </div>
-
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-outlined p-button-secondary"
-                    (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-outlined p-button-success"
-                    (click)="saveRazas()"></button>
-            </ng-template>
-        </p-dialog>
-
-
-
-
-        <p-dialog [(visible)]="deleteRazaDialog" [modal]="true" [style]="{ width: '450px' }"
-            header="Confirmación">
-            <br>
-            <div class="flex align-items-center justify-content-center">
-
-                <img src="https://media.tenor.com/bWV8ttASPb4AAAAi/ebichu-hamster.gif" width="100px" height="100px"
-                    style="margin-right: 15px;">
-                    <span *ngIf="Raza">¿Estás seguro de eliminar la raza
-                        <b>{{Raza.raza_Descripcion}}</b>?</span>
-s                </div>
-            <ng-template pTemplate="footer">
-                <button (click)="deleteRazaDialog = false" pButton pRipple icon="pi pi-times"
-                    class="p-button-outlined p-button-secondary" label="No"></button>
-                <button (click)="confirmDelete()" pButton pRipple icon="pi pi-check"
-                    class="p-button-outlined p-button-success" label="Sí"></button>
-            </ng-template>
-        </p-dialog>
-
-
     </div>
+
+
+
+
+
+
+     
+
+
+  
