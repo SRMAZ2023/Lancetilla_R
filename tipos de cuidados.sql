@@ -12,6 +12,34 @@ BEGIN
 
 END
 
+GO 
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_FINDArea 
+@arbo int
+AS
+BEGIN
+
+	SELECT TOP (1000) *
+	FROM [bota].[VW_tbCuidadoPlanta]
+	where cupl_Estado = 1
+	and arbo_Id = @arbo
+ 	
+
+END
+
+GO 
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_FINDArea2
+@arbo int
+AS
+BEGIN
+
+	SELECT TOP (1000) *
+	FROM [bota].VW_tbPlantas
+	where arbo_Id = @arbo
+	  
+ 	
+
+END
+
 GO
 CREATE OR ALTER PROC bota.tbCuidadoPlanta_CREATE  
 @plan_Id int,

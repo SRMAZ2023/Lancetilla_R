@@ -699,6 +699,8 @@ AS
 
 SELECT cupl_Id, 
 	   T1.plan_Id,
+	   T2.arbo_Id,
+	   t5.arbo_Descripcion,
 	   plan_Codigo,
 	   T4.tipl_Id,
 	   T4.tipl_NombreComun,
@@ -722,6 +724,8 @@ SELECT cupl_Id,
 	   ON T1.ticu_Id = T3.ticu_Id
 	   INNER JOIN bota.tbTiposPlantas T4
 	   ON T2.tipl_Id = T4.tipl_Id
+	   inner join bota.tbAreasBotanicas t5
+	   on t2.arbo_Id = t5.arbo_Id
 	   WHERE ticu_Estado = 1;
 GO
 --**********************************************************/TABLA DE CUIDADOS POR PLANTA**********************************************************************--
