@@ -27,12 +27,10 @@ namespace Lancetilla.DataAccess.Repositories.Mant
         Lancetilla con = new Lancetilla();
         public IEnumerable<VW_MantenimientoAnimales> ListarMantenimientoAnimal()
         {
-            using var db = new SqlConnection(Lancetilla.ConnectionString);
-            var parametros = new DynamicParameters();
+            return con.VW_MantenimientoAnimales.AsList();
+        }
 
-            return db.Query<VW_MantenimientoAnimales>(ScriptsDataBase.UDP_tbMantenimientosAnimal_SELECT, null, commandType: CommandType.StoredProcedure);
-
-        } 
+    
         public IEnumerable<VW_MantenimientoAnimales> ListarMantenimientoAnimalInsert(int? id)
         {
             using var db = new SqlConnection(Lancetilla.ConnectionString);

@@ -13,6 +13,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 //Areas
 import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
+
+import { CuidadoPlantasService } from 'src/app/demo/service/CuidadoPlantas.service';
 import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
 interface expandedRows {
     [key: string]: boolean;
@@ -20,7 +22,7 @@ interface expandedRows {
 
 @Component({
     templateUrl: './CuidadoPlantas.html',
-    providers: [MessageService, AreaBotanicaService, DatePipe]
+    providers: [MessageService, AreaBotanicaService, CuidadoPlantasService,DatePipe]
 })
 export class CuidadoPlantasComponent implements OnInit {
 
@@ -81,7 +83,7 @@ export class CuidadoPlantasComponent implements OnInit {
 
 
     constructor( private _router: Router ,
-      private localStorage: LocalStorageService,private AreaBotanicaService: AreaBotanicaService, private datePipe: DatePipe, private messageService: MessageService) {
+      private localStorage: LocalStorageService,private AreaBotanicaService: AreaBotanicaService,private cuidadosPLANTAS: CuidadoPlantasService, private datePipe: DatePipe, private messageService: MessageService) {
         this.EsAdmin = this.localStorage.getItem('EsAdmin')
         this.Permiso = this.localStorage.getItem('CuidadoDePlantas')}
 
@@ -180,7 +182,7 @@ export class CuidadoPlantasComponent implements OnInit {
         };
       
         console.log(params);
-        this.AreaBotanicaService.getAreaBotanica().subscribe(
+        this.cuidadosPLANTAS.postBuscarPlantas2(params).subscribe(
           Response => {
             this.datos = Response;
             console.log(this.datos);
