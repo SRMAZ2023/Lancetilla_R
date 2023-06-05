@@ -1564,7 +1564,7 @@ IF EXISTS (SELECT * FROM mant.tbMantenimientos WHERE mant_Observaciones = @mant_
 					  tima_Id = @tima_Id,
 					  mant_UserModificacion = @mant_UserModificacion,
 					  mant_FechaModificacion = GETDATE()
-				WHERE mant_Id = @tima_Id
+				WHERE mant_Id = @mant_Id
 
 				SELECT 200 AS codeStatus, 'El mantenimiento ha sido actualizado con éxito.' AS messageStatus
 			END

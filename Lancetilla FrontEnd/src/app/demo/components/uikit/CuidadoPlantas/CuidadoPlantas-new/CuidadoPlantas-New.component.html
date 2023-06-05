@@ -2,16 +2,15 @@
     <div class="col-12">
         <div class="card">
             <p-toast></p-toast>
-            <h1>Mantenimiento a Animal</h1>
+            <h1>Cuidado a Plantas</h1>
             <div class="grid p-fluid">
                 <div class="field col-6">
                     <p-dropdown [options]="Area" [(ngModel)]="CuidadoPlanta.arbo_Id"
                         placeholder="Seleccione un Area Botanica"
                         [ngClass]="{'ng-invalid ng-dirty': submitted && !CuidadoPlanta.arbo_Id}"
-                        (onChange)="onAnimalChange($event); FiltrarPlantas(CuidadoPlanta.arbo_Id)">
+                        (onChange)="onAreaBotanicaChange($event); FiltrarPlantas(CuidadoPlanta.arbo_Id)">
                     </p-dropdown>
-                    <small *ngIf="submitted && !CuidadoPlanta.arbo_Id" class="ng-dirty ng-invalid"
-                        style="color: red">
+                    <small *ngIf="submitted && !CuidadoPlanta.arbo_Id" class="ng-dirty ng-invalid" style="color: red">
                         El Area es requerido.
                     </small>
                 </div>
@@ -19,11 +18,11 @@
                 <div class="field col-6">
                     <p-dropdown [options]="plantas" [(ngModel)]="CuidadoPlanta.plan_Id"
                         placeholder="Seleccione un Area Botanica"
+                        [disabled]="desabilitado"
                         [ngClass]="{'ng-invalid ng-dirty': submitted && !CuidadoPlanta.plan_Id}"
                         (onChange)="onAnimalChange($event)">
                     </p-dropdown>
-                    <small *ngIf="submitted && !CuidadoPlanta.plan_Id" class="ng-dirty ng-invalid"
-                        style="color: red">
+                    <small *ngIf="submitted && !CuidadoPlanta.plan_Id" class="ng-dirty ng-invalid" style="color: red">
                         La planta es requerida.
                     </small>
                 </div>
@@ -46,8 +45,7 @@
                         [ngClass]="{'ng-invalid ng-dirty': submitted && !CuidadoPlanta.ticu_Id}"
                         (onChange)="onTipoMantenimientoChange($event)">
                     </p-dropdown>
-                    <small *ngIf="submitted && !CuidadoPlanta.ticu_Id" class="ng-dirty ng-invalid"
-                        style="color: red">
+                    <small *ngIf="submitted && !CuidadoPlanta.ticu_Id" class="ng-dirty ng-invalid" style="color: red">
                         El tipo de cuidado es requerido.
                     </small>
                 </div>
@@ -86,13 +84,20 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="maan_Id">
-                            Id <p-sortIcon field="maan_Id"></p-sortIcon>
+                            ID <p-sortIcon field="maan_Id"></p-sortIcon>
                         </th>
                         <th pSortableColumn="anim_Nombre">
                             Nombre <p-sortIcon field="anim_Nombre"></p-sortIcon>
                         </th>
+                        <th pSortableColumn="maan_Id">
+                            Codigo <p-sortIcon field="maan_Id"></p-sortIcon>
+                        </th>
                         <th pSortableColumn="cupl_Fecha">
-                            Fecha de Mantenimineto
+                            Area Botanica
+                            <p-sortIcon field="cupl_Fecha"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="cupl_Fecha">
+                            Fecha de Cuidado
                             <p-sortIcon field="cupl_Fecha"></p-sortIcon>
                         </th>
                         <th pSortableColumn="cuid_Descripcion">
@@ -107,11 +112,19 @@
                     <tr>
                         <td style="width: 2%; min-width: 5rem">
                             <span class="p-column-title">id</span>
-                            {{ DataAnimal.maan_Id }}
+                            {{ DataAnimal.cupl_Id }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Nombre</span>
-                            {{ DataAnimal.anim_Nombre }}
+                            {{ DataAnimal.tipl_NombreComun }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Nombre</span>
+                            {{ DataAnimal.plan_Codigo }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Nombre</span>
+                            {{ DataAnimal.AreaBotanica }}
                         </td>
                         <td style="width: 15%; min-width: 15rem">
                             <span class="p-column-title">Nombre Cientifico</span>
@@ -120,7 +133,7 @@
 
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Cuidador</span>
-                            {{ DataAnimal.tima_Descripcion }}
+                            {{ DataAnimal.ticu_Descripcion }}
                         </td>
 
                         <td>
@@ -134,8 +147,7 @@
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog [(visible)]="deleteCuidadoPlantasDialog" [modal]="true" [style]="{ width: '450px' }"
-            header="Confirm">
+        <p-dialog [(visible)]="deleteCuidadoPlantasDialog" [modal]="true" [style]="{ width: '450px' }" header="Confirm">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="DataAnimal">

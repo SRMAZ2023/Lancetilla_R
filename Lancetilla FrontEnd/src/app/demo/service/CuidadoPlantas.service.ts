@@ -32,6 +32,14 @@ export class CuidadoPlantasService {
         let params = JSON.stringify(CuidadoDePlantasViewModel);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
+        return this.http.post<Response>(this.url + 'CuidadoPlantas/Buscar2', params, { headers: headers });
+    }
+
+    postBuscarPlantas2(CuidadoDePlantasViewModel: any): Observable<any> {
+
+        let params = JSON.stringify(CuidadoDePlantasViewModel);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
         return this.http.post<Response>(this.url + 'CuidadoPlantas/Buscar', params, { headers: headers });
     }
 

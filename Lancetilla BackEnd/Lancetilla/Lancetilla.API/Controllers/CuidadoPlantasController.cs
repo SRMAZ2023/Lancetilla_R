@@ -39,6 +39,13 @@ namespace Lancetilla.API.Controllers
             var List = _botanicaServicios.BuscarCuidadoPlantas(item.arbo_Id);
             return Ok(List);
         }
+        [HttpPost("Buscar2")]
+        public IActionResult BuscarMantenimientoAnimal2(CuidadoPlantasViewModel item)
+        {
+            var mantenimientos = _mapper.Map<tbCuidadoPlanta>(item);
+            var List = _botanicaServicios.BuscarCuidadoPlantas2(item.arbo_Id);
+            return Ok(List);
+        }
 
         [HttpPost("Inser")]
         public IActionResult InsertarCuidadoPlantas(CuidadoPlantasViewModel item)

@@ -18,14 +18,14 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
         private readonly PlantasRepository _plantasRepository;
         private readonly TiposdePlantasRepository _tiposdePlantasRepository;
         private readonly CuidadoPlantas _cuidadoPlantas;
-      
 
-        public BotanicaServicios(AreasBotanicasRepository areasBotanicasRepository, 
-                                 CuidadosRepository cuidadosRepository, 
+
+        public BotanicaServicios(AreasBotanicasRepository areasBotanicasRepository,
+                                 CuidadosRepository cuidadosRepository,
                                  PlantasRepository plantasRepository,
                                  TiposCuidados tiposCuidados,
-                                 TiposdePlantasRepository  tiposdePlantasRepository,
-                                  CuidadoPlantas cuidadoPlantas)
+                                 TiposdePlantasRepository tiposdePlantasRepository,
+                                 CuidadoPlantas cuidadoPlantas)
         {
             _areasBotanicasRepository = areasBotanicasRepository;
             _cuidadosRepository = cuidadosRepository;
@@ -33,7 +33,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             _tiposCuidados = tiposCuidados;
             _tiposdePlantasRepository = tiposdePlantasRepository;
             _cuidadoPlantas = cuidadoPlantas;
-           
+
         }
 
         #region AreasBotanicas
@@ -553,11 +553,11 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
 
         #region Tipos de Plantas
 
-        public IEnumerable<VW_tbPlantas> BuscarPlantasporTipo(int id)
+        public IEnumerable<VW_tbTiposPlantas> BuscarPlantasporTipo(int id)
         {
             try
             {
-                var list = _tiposdePlantasRepository.Find(id);
+                var list = _tiposdePlantasRepository.Find2(id);
                 return list;
             }
             catch (Exception ex)
@@ -619,7 +619,7 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             var result = new ServiceResult();
             try
             {
-                var map = _tiposdePlantasRepository.Update(item);
+                var map = _tiposdePlantasRepository.Update2(item);
                 if (map.CodeStatus == 200)
                 {
                     return result.SetMessage(map.MessageStatus, ServiceResultType.Success);
@@ -688,6 +688,20 @@ namespace Lancetilla.BussinessLogic.Servicios.Botanica_Servicios
             try
             {
                 var list = _cuidadoPlantas.Find2(id);
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                return Enumerable.Empty<VW_tbCuidadoPlanta>();
+
+            }
+        }
+        public IEnumerable<VW_tbCuidadoPlanta> BuscarCuidadoPlantas2(int id)
+        {
+            try
+            {
+                var list = _cuidadoPlantas.Find3(id);
                 return list;
             }
             catch (Exception ex)

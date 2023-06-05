@@ -1,4 +1,6 @@
- GO 
+ï»¿GO
+USE db_Lancetilla
+GO 
 CREATE OR ALTER PROC bota.tbCuidadoPlanta_SELECT
 AS
 BEGIN
@@ -10,25 +12,39 @@ BEGIN
 
 END
 
- GO 
+GO 
 CREATE OR ALTER PROC bota.tbCuidadoPlanta_FINDArea 
-@arbo INT
+@arbo int
 AS
 BEGIN
 
 	SELECT TOP (1000) *
 	FROM [bota].[VW_tbCuidadoPlanta]
 	where cupl_Estado = 1
-	and  arbo_Id = @arbo
+	and arbo_Id = @arbo
  	
 
 END
- 
- GO
+
+GO 
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_FINDArea2
+@arbo int
+AS
+BEGIN
+
+	SELECT TOP (1000) *
+	FROM [bota].VW_tbPlantas
+	where arbo_Id = @arbo
+	  
+ 	
+
+END
+
+GO
 CREATE OR ALTER PROC bota.tbCuidadoPlanta_CREATE  
 @plan_Id int,
 @ticu_Id int,
-@cupl_Fecha varchar(100),
+@cupl_Fecha varchar(30),
 @cupl_UserCreacion int
 AS BEGIN
 
@@ -48,7 +64,7 @@ INSERT INTO [bota].[tbCuidadoPlanta]
 
 
 
-			SELECT 200 AS codeStatus, 'El cuidado por planta ha sido creado con éxito.' AS messageStatus
+			SELECT 200 AS codeStatus,  SCOPE_IDENTITY() AS messageStatus
 END TRY
 
 BEGIN CATCH
@@ -59,11 +75,11 @@ END
 GO
 
 
-CREATE OR ALTER PROC bota.tbCuidadoPlanta_UPDATE  
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_UPDATE 
 @cupl_Id int,
 @plan_Id int,
 @ticu_Id int,
-@cupl_Fecha varchar(100),
+@cupl_Fecha  varchar(30),
 @cupl_UserModificacion int
 AS BEGIN
 BEGIN TRY
@@ -75,11 +91,11 @@ UPDATE [bota].[tbCuidadoPlanta]
    SET [plan_Id] = @plan_Id
       ,[ticu_Id] = @ticu_Id
       ,[cupl_Fecha] = @cupl_Fecha
-        ,[cupl_UserModificacion]  =@cupl_UserModificacion
+      ,[cupl_UserModificacion]  =@cupl_UserModificacion
       ,[cupl_FechaModificacion] = GETDATE()
   WHERE  cupl_Id = @cupl_Id
 
-			SELECT 200 AS codeStatus, 'El cuidado por planta ha sido editado con éxito.' AS messageStatus
+			SELECT 200 AS codeStatus, 'El cuidado por planta ha sido editado con ï¿½xito.' AS messageStatus
 COMMIT
 			
 END TRY
@@ -94,7 +110,7 @@ GO
 
 
 GO
-CREATE OR ALTER PROC bota.tbCuidadoPlanta_DELETE 
+CREATE OR ALTER PROC bota.tbCuidadoPlanta_DELETE
 @cupl_Id INT
  AS BEGIN
 
@@ -108,7 +124,7 @@ UPDATE [bota].[tbCuidadoPlanta]
   WHERE  cupl_Id = @cupl_Id
  
 
- 			SELECT 200 AS codeStatus, 'El Cuidado ha sido eliminado con éxito.' AS messageStatus
+ 			SELECT 200 AS codeStatus, 'El Cuidado ha sido eliminado con ï¿½xito.' AS messageStatus
 
  COMMIT
  END TRY

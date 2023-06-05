@@ -5,66 +5,71 @@
             <p-toast></p-toast>
             <h1 id="hasta_Arriba">{{ page_title }}</h1>
 
-            <p-accordion (click)="toco()"  aria-disabled="false">
+            <div id="titulo" style="display: block;" (click)="message()"> Cuidado A planta</div>
+            <div id="Desplegable" [hidden]="mostrar">
 
-                <p-accordionTab   header=" Editar el mantenimineto de un Animal" [selected]="panelCollapsed" class="line-height-3 m-0">
-                    <div class="grid p-fluid">
-                        <div class="field col-6">
-                             <p-dropdown
-                            #animalDropdown
-                            [options]="Animal"
-                            name="anim_Id"
-                            [(ngModel)]="newParametros.anim_Id"
-                            placeholder="Seleccione un animal"
-                            [ngClass]="{
-                              'ng-invalid ng-dirty': submitted && !newParametros.anim_Id
-                            }"
-                          ></p-dropdown>
-                          
+                <h1>Cuidado a Plantas</h1>
+                <div class="grid p-fluid">
+                    <div class="field col-6">
+                        <p-dropdown [options]="Area"   #animalDropdown
+                         [(ngModel)]="newParametros.arbo_Id"
+                            placeholder="Seleccione un Area Botanica"
+                            [ngClass]="{'ng-invalid ng-dirty': submitted && !newParametros.arbo_Id}"
+                            (onChange)="onAreaBotanicaChange($event); FiltrarPlantas(newParametros.arbo_Id)">
+                        </p-dropdown>
+                        <small *ngIf="submitted && !newParametros.arbo_Id" class="ng-dirty ng-invalid" style="color: red">
+                            El Area es requerido.
+                        </small>
+                    </div>
     
-                            <small *ngIf="submitted && !newParametros.anim_Id" class="ng-dirty ng-invalid"
-                                style="color: red">
-                                El animal es requerido.
-                            </small>
-                        </div>
+                    <div class="field col-6">
+                        <p-dropdown [options]="plantas" [(ngModel)]="newParametros.plan_Id"
+                            placeholder="Seleccione un Area Botanica"
+                            [disabled]="desabilitado"
+                            [ngClass]="{'ng-invalid ng-dirty': submitted && !newParametros.plan_Id}"
+                            (onChange)="onAnimalChange($event)">
+                        </p-dropdown>
+                        <small *ngIf="submitted && !newParametros.plan_Id" class="ng-dirty ng-invalid" style="color: red">
+                            La planta es requerida.
+                        </small>
+                    </div>
     
-                        <div class="field col-6">
-                            <p-calendar name="maan_Fecha" aria-placeholder="Seleccione una fecha." [(ngModel)]="fechaSola"
-                                [showIcon]="true" inputId="icon" [ngClass]="{
+                    <div class="field col-6">
+                        <p-calendar name="cupl_Fecha" aria-placeholder="Seleccione una fecha."
+                            [(ngModel)]="fechaSola" [showIcon]="true" inputId="icon" [ngClass]="{
                                 'ng-invalid ng-dirty': submitted && !fechaSola
                             }" [minDate]="minDate"></p-calendar>
-                            <small class="ng-dirty ng-invalid" style="color: red" *ngIf="submitted && !fechaSola">La fecha
-                                de
-                                mantenimiento es requerida.</small>
-                        </div>
+                        <small class="ng-dirty ng-invalid" style="color: red"
+                            *ngIf="submitted && !fechaSola">La fecha de mantenimiento es
+                            requerida.</small>
+                    </div>
     
     
-                        <div class="field col-6">
-                            <p-dropdown [options]="tipoMantenimiento" name="tima_Id" [(ngModel)]="newParametros.tima_Id"
-                                placeholder="Seleccione un tipo e Mantenimiento" [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    submitted && !newParametros.tima_Id
-                            }"></p-dropdown>
-                            <small *ngIf="submitted && !newParametros.tima_Id" class="ng-dirty ng-invalid"
-                                style="color: red">
-                                El tipo de mantenimineto es requerido.
-                            </small>
-                        </div>
+                    <div class="field col-6">
+                        <!-- Dropdown para el Tipo de Mantenimiento -->
+                        <p-dropdown [options]="tipoCuidado" [(ngModel)]="newParametros.ticu_Id"
+                            placeholder="Seleccione un tipo de Cuidado"
+                            [ngClass]="{'ng-invalid ng-dirty': submitted && !newParametros.ticu_Id}"
+                            (onChange)="onTipoMantenimientoChange($event)">
+                        </p-dropdown>
+                        <small *ngIf="submitted && !newParametros.ticu_Id" class="ng-dirty ng-invalid" style="color: red">
+                            El tipo de cuidado es requerido.
+                        </small>
                     </div>
-                    <div class="grid p-fluid">
-                        <div class="field col-2">
-                            <button (click)="saveMantenimientoPorAnimal()" pButton pRipple label="Guardar"
-                                icon="pi pi-check" class="p-button-text"></button>
-                        </div>
-          
+                </div>
+                <div class="grid p-fluid">
+                    <div class="field col-2">
+                        <button (click)="saveCuidadoPlantas()" pButton pRipple label="Guardar" icon="pi pi-check"
+                            class="p-button-text"></button>
                     </div>
-                </p-accordionTab>
-                  
-            </p-accordion>
+                   
+                </div>
+                   
+            </div>
              
             <div class="field col-2">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button"
-                    class="p-button-danger" [routerLink]="['/app/uikit/ManteniminetoXAnimal']"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" type="button" class="p-button-danger"
+                        [routerLink]="['/app/uikit/CuidadoPlantas']"></button>
             </div>
  
 
@@ -95,14 +100,21 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="maan_Id">
-                            Id <p-sortIcon field="maan_Id"></p-sortIcon>
+                            ID <p-sortIcon field="maan_Id"></p-sortIcon>
                         </th>
                         <th pSortableColumn="anim_Nombre">
                             Nombre <p-sortIcon field="anim_Nombre"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="maan_Fecha">
-                            Fecha de Mantenimineto
-                            <p-sortIcon field="maan_Fecha"></p-sortIcon>
+                        <th pSortableColumn="maan_Id">
+                            Codigo <p-sortIcon field="maan_Id"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="cupl_Fecha">
+                            Area Botanica
+                            <p-sortIcon field="cupl_Fecha"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="cupl_Fecha">
+                            Fecha de Cuidado
+                            <p-sortIcon field="cupl_Fecha"></p-sortIcon>
                         </th>
                         <th pSortableColumn="cuid_Descripcion">
                             Cuidado
@@ -116,26 +128,34 @@
                     <tr>
                         <td style="width: 2%; min-width: 5rem">
                             <span class="p-column-title">id</span>
-                            {{ DataAnimal.maan_Id }}
+                            {{ DataAnimal.cupl_Id }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Nombre</span>
-                            {{ DataAnimal.anim_Nombre }}
+                            {{ DataAnimal.tipl_NombreComun }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Nombre</span>
+                            {{ DataAnimal.plan_Codigo }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Nombre</span>
+                            {{ DataAnimal.ticu_Descripcion }}
                         </td>
                         <td style="width: 15%; min-width: 15rem">
                             <span class="p-column-title">Nombre Cientifico</span>
-                            {{ DataAnimal.maan_Fecha }}
+                            {{ DataAnimal.cupl_Fecha }}
                         </td>
 
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Cuidador</span>
-                            {{ DataAnimal.tima_Descripcion }}
+                            {{ DataAnimal.ticu_Descripcion }}
                         </td>
 
                         <td>
 
                             <div class="flex">
-                                <button (click)="getInputsValues(DataAnimal.maan_Id)" pButton pRipple
+                                <button (click)="getInputsValues(DataAnimal.cupl_Id)" pButton pRipple
                                     icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
                                 <button (click)="deleteMantenimiento(DataAnimal)" pButton pRipple icon="pi pi-trash"
                                     class="p-button-rounded p-button-warning"></button>
@@ -147,7 +167,7 @@
             </p-table>
         </div>
         <p-dialog
-        [(visible)]="deleteMantenimientoXanimalDialog"
+        [(visible)]="deleteCuidadoPlantasDialog"
         [modal]="true"
         [style]="{ width: '450px' }"
         header="Confirm"
@@ -167,7 +187,7 @@
         </div>
         <ng-template pTemplate="footer">
             <button
-                (click)="deleteMantenimientoXanimalDialog = false"
+                (click)="deleteCuidadoPlantasDialog = false"
                 pButton
                 pRipple
                 icon="pi pi-times"

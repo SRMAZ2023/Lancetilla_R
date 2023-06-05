@@ -10,12 +10,13 @@ namespace Lancetilla.API.Models
 
         public int cupl_Id { get; set; }
         public int plan_Id { get; set; }
-         public int tipl_Id { get; set; }
-         public int arbo_Id { get; set; }
-         public int ticu_Id { get; set; }
-         public string cupl_Fecha { get; set; }
-          public string usua_UserCreaNombre { get; set; }
+        public int ticu_Id { get; set; }
+
+        public int arbo_Id { get; set; }
+
+        public string cupl_Fecha { get; set; }
+        public int? cupl_UserCreacion { get; set; }
         public int? cupl_UserModificacion { get; set; }
-   
+
     }
 }

@@ -1,21 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ManteniminetoXAnimalViewModel } from 'src/app/demo/Models/ManteniminetoXAnimalViewModel';
-import { ManteniminetoXAnimalService } from 'src/app/demo/service/ManteniminetoXAnimal.service';
+// import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
+// import { AreaBotanicaService } from 'src/app/demo/service/ManteniminetoXAnimal.service';
+
+// import { AreaBotanicaService } from 'src/app/demo/service/CuidadoPlantas.service';
+//import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
 import { error } from 'console';
 import { DatePipe } from '@angular/common';
 import { LocalStorageService } from '../../../../../local-storage.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-
+//Areas
+import { AreaBotanicaService } from 'src/app/demo/service/AreaBotanica.service';
+import { AreaBotanicaViewModel } from 'src/app/demo/Models/AreaBotanicaViewModel';
 interface expandedRows {
     [key: string]: boolean;
 }
 
 @Component({
     templateUrl: './CuidadoPlantas.html',
-    providers: [MessageService, ManteniminetoXAnimalService, DatePipe]
+    providers: [MessageService, AreaBotanicaService, DatePipe]
 })
 export class CuidadoPlantasComponent implements OnInit {
 
@@ -34,11 +39,11 @@ export class CuidadoPlantasComponent implements OnInit {
 
 
     public Editar: boolean = false;
-    CuidadoPlantas: ManteniminetoXAnimalViewModel[] = [];
-    mantenimientoXanimal: ManteniminetoXAnimalViewModel = {};
+    CuidadoPlantas: AreaBotanicaViewModel[] = [];
+    CuidadoPlanta: AreaBotanicaViewModel = {};
 
     //Paginacion de el datatable
-    selectedCuidadoPlantas: ManteniminetoXAnimalViewModel[] = [];
+    selectedCuidadoPlantas: AreaBotanicaViewModel[] = [];
     rowsPerPageOptions = [5, 10, 20];
     //Paginacion de el datatable
 
@@ -63,20 +68,20 @@ export class CuidadoPlantasComponent implements OnInit {
     formattedDate: string | undefined;
     formattedDate3!: Date;
 
-    expandedRows: ManteniminetoXAnimalViewModel[] = [];
+    expandedRows: AreaBotanicaViewModel[] = [];
     expandedRow: any = null;
 
     Animal: any;
 
-    Roles: ManteniminetoXAnimalViewModel[] = [];
-    Pantallass: ManteniminetoXAnimalViewModel[] = [];
+    Roles: AreaBotanicaViewModel[] = [];
+    Pantallass: AreaBotanicaViewModel[] = [];
 
-    Rol: ManteniminetoXAnimalViewModel = {};
+    Rol: AreaBotanicaViewModel = {};
 
 
 
     constructor( private _router: Router ,
-      private localStorage: LocalStorageService,private ManteniminetoXAnimalService: ManteniminetoXAnimalService, private datePipe: DatePipe, private messageService: MessageService) {
+      private localStorage: LocalStorageService,private AreaBotanicaService: AreaBotanicaService, private datePipe: DatePipe, private messageService: MessageService) {
         this.EsAdmin = this.localStorage.getItem('EsAdmin')
         this.Permiso = this.localStorage.getItem('CuidadoDePlantas')}
 
@@ -99,19 +104,19 @@ export class CuidadoPlantasComponent implements OnInit {
            }
 
         // Obtén la fecha del API
-        this.ManteniminetoXAnimalService.getManteniminetoXAnimal().subscribe(
+        this.AreaBotanicaService.getAreaBotanica().subscribe(
             Response => {
                  this.datos = Response;
         
-                // Filtrar los elementos duplicados por anim_Id
-                const uniqueAnimals = this.datos.filter((valorActual: { anim_Id: any; }, indiceActual: any, arreglo: { anim_Id: any; }[]) => {
-                    return arreglo.findIndex((elemento: { anim_Id: any; }) => elemento.anim_Id === valorActual.anim_Id) === indiceActual;
+                // Filtrar los elementos duplicados por arbo_Id
+                const uniqueAnimals = this.datos.filter((valorActual: { arbo_Id: any; }, indiceActual: any, arreglo: { arbo_Id: any; }[]) => {
+                    return arreglo.findIndex((elemento: { arbo_Id: any; }) => elemento.arbo_Id === valorActual.arbo_Id) === indiceActual;
                 });
         
                 this.Roles = uniqueAnimals;
         
                  console.log( this.Roles)
-                this.formattedDate = this.datePipe.transform(this.datos.maan_Fecha, 'yyyy-MM-dd')?.toString();
+                this.formattedDate = this.datePipe.transform(this.datos.cupl_Fecha, 'yyyy-MM-dd')?.toString();
         
              },
             error => {
@@ -122,11 +127,9 @@ export class CuidadoPlantasComponent implements OnInit {
 
         //Modelo de los datos de la tabla
         this.cols = [
-            { field: 'maan_Id', header: 'maan_Id' },
-            { field: 'anim_Nombre', header: 'anim_Nombre' },
-            { field: 'maan_Fecha', header: 'maan_Fecha' },
-            { field: 'tima_Descripcion', header: 'tima_Descripcion' }
-
+            { field: 'arbo_Id', header: 'arbo_Id' },
+            { field: 'arbo_Descripcion', header: 'arbo_Descripcion' },
+ 
         ];
         //Modelo de los datos de la tabla
 
@@ -153,37 +156,37 @@ export class CuidadoPlantasComponent implements OnInit {
 
     //Metodo que activa el dialog
     openNew() {
-        this.mantenimientoXanimal = {};
+        this.CuidadoPlanta = {};
         this.submitted = false;
         this.CuidadoPlantastDialog = true;
     }
     //Metodo que activa el dialog
 
     //Toma el id del item
-    deleteCuidadoPlantas(CuidadoPlantas: ManteniminetoXAnimalViewModel) {
+    deleteCuidadoPlantas(CuidadoPlantas: AreaBotanicaViewModel) {
         this.deleteCuidadoPlantasDialog = true;
-        this.mantenimientoXanimal = { ...CuidadoPlantas };
+        this.CuidadoPlanta = { ...CuidadoPlantas };
     }
     //Toma el id del item
-    emmmm:ManteniminetoXAnimalViewModel = {}
-    mante:ManteniminetoXAnimalViewModel = {};
+    emmmm:AreaBotanicaViewModel = {}
+    mante:AreaBotanicaViewModel = {};
     
     
-    Pantallas(Roles: ManteniminetoXAnimalViewModel) {
+    Pantallas(Roles: AreaBotanicaViewModel) {
         this.Rol = { ...Roles };
       
         var params = {
-          "anim_Id": this.Rol.anim_Id
+          "arbo_Id": this.Rol.arbo_Id
         };
       
         console.log(params);
-        this.ManteniminetoXAnimalService.GetAnimalesXMantenimineto(params).subscribe(
+        this.AreaBotanicaService.getAreaBotanica().subscribe(
           Response => {
             this.datos = Response;
             console.log(this.datos);
       
             // Verificar si la fila seleccionada ya está expandida
-            const index = this.expandedRows.findIndex(row => row.anim_Id === this.Rol.anim_Id);
+            const index = this.expandedRows.findIndex(row => row.arbo_Id === this.Rol.arbo_Id);
             if (index > -1) {
               // La fila está expandida, la contraemos para ocultarla
               this.expandedRows.splice(index, 1);
@@ -193,7 +196,7 @@ export class CuidadoPlantasComponent implements OnInit {
               this.expandedRows = [];
       
               // Expandir la fila seleccionada
-              const selectedRow = this.Roles.find(row => row.anim_Id === this.Rol.anim_Id);
+              const selectedRow = this.Roles.find(row => row.arbo_Id === this.Rol.arbo_Id);
               if (selectedRow) {
                 this.expandedRows.push(selectedRow);
                 this.expandedRow = selectedRow;
@@ -210,14 +213,11 @@ export class CuidadoPlantasComponent implements OnInit {
     //Confirma el eliminar
     confirmDelete() {
         this.deleteCuidadoPlantasDialog = false;
-        var maan_Id = this.mantenimientoXanimal.maan_Id;
-        var params = {
-            "maan_Id": this.mantenimientoXanimal.maan_Id,
-            "plan_UserCreacion": 1,
-            "plan_UserModificacion": 1
-        }
+         var params = {
+            "arbo_Id": this.CuidadoPlanta.arbo_Id,
+          }
         console.log(params)
-        this.ManteniminetoXAnimalService.DeleteManteniminetoXAnimal(params).subscribe(
+        this.AreaBotanicaService.DeleteAreaBotanica(params).subscribe(
             Response => {
                 this.datos = Response;
                 console.log(this.datos)
@@ -228,7 +228,7 @@ export class CuidadoPlantasComponent implements OnInit {
                 } else if (this.datos.code == 200) {
 
                     this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: this.datos.message, life: 3000 });
-                    this.CuidadoPlantas = this.CuidadoPlantas.filter(val => val.maan_Id !== this.mantenimientoXanimal.maan_Id);
+                    this.CuidadoPlantas = this.CuidadoPlantas.filter(val => val.arbo_Id !== this.CuidadoPlanta.arbo_Id);
 
 
                 } else {

@@ -1,5 +1,28 @@
+ï»¿ GO 
+CREATE OR ALTER PROC bota.tbTiposCuidados_SELECT
+AS
+BEGIN
 
+	SELECT TOP (1000) *
+	FROM [bota].[VW_tbTiposCuidados]
+	where ticu_Estado = 1  
+ 	
+END
 
+GO
+CREATE OR ALTER PROC bota.tbTiposCuidados_FIND 
+@ticu_Id int
+AS
+BEGIN
+
+	SELECT TOP (1000) *
+	FROM [bota].[VW_tbTiposCuidados]
+	where ticu_Estado = 1  
+	AND	ticu_Id = @ticu_Id
+ 	
+END
+
+GO
 CREATE OR ALTER PROC bota.tbTiposCuidados_CREATE
 @ticu_Descripcion nvarchar(100),
 @ticu_UserCreacion int 
@@ -14,7 +37,7 @@ BEGIN TRY
 	if @Existe > 0 
 	begin
  					
-		SELECT 409 AS codeStatus, 'El tipo de cuidado ya éxiste.' AS messageStatus
+		SELECT 409 AS codeStatus, 'El tipo de cuidado ya ï¿½xiste.' AS messageStatus
 
 	 end else begin
 
@@ -25,7 +48,7 @@ BEGIN TRY
            (@ticu_Descripcion
            ,@ticu_UserCreacion)
 
-		   SELECT 200 AS codeStatus, 'El tipo cuidado por planta ha sido creado con éxito.' AS messageStatus
+		   SELECT 200 AS codeStatus, 'El tipo cuidado por planta ha sido creado con ï¿½xito.' AS messageStatus
 
 	end
 
@@ -57,7 +80,7 @@ BEGIN TRAN
 
 	if @Existe > 0 BEGIN  
 
-			SELECT 409 AS codeStatus, 'El tipo de cuidado ya éxiste.' AS messageStatus
+			SELECT 409 AS codeStatus, 'El tipo de cuidado ya ï¿½xiste.' AS messageStatus
 
 	END ELSE BEGIN
 			
@@ -67,7 +90,7 @@ BEGIN TRAN
 					,[ticu_FechaModificacion] = GETDATE()
 			WHERE	 ticu_Id = @ticu_Id
 
-		   SELECT 200 AS codeStatus, 'El tipo cuidado por planta ha sido editado con éxito.' AS messageStatus
+		   SELECT 200 AS codeStatus, 'El tipo cuidado por planta ha sido editado con ï¿½xito.' AS messageStatus
 
 
 	END
@@ -99,7 +122,7 @@ CREATE OR ALTER PROC bota.tbTiposCuidados_DELETE
 	   SET  [ticu_Estado] = 0
 	  WHERE ticu_Id = @ticu_Id
  
-		SELECT 200 AS codeStatus, 'El tipo cuidado ha sido eliminado con éxito.' AS messageStatus
+		SELECT 200 AS codeStatus, 'El tipo cuidado ha sido eliminado con ï¿½xito.' AS messageStatus
 
  COMMIT
  END TRY

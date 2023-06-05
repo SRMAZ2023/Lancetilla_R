@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 //XAnimal
 import { ManteniminetoXAnimalService } from 'src/app/demo/service/ManteniminetoXAnimal.service';
- //Mantenimiento
+//Mantenimiento
 import { TiposDeMantenimientoService } from 'src/app/demo/service/TipoDeMantenimiento.service';
 import { TipoDeMatenimientoViewModel } from 'src/app/demo/Models/TipoDeManteniminetoViewModel';
 //Animal
@@ -38,13 +38,16 @@ export class CuidadoPlantasNewComponent implements OnInit {
 
   minDate: Date;
 
+  desabilitado:boolean = true;
 
-  animNombre: string = ""; // Variable para almacenar el valor del label del ddl Animal
-  timaDescripcion: string = ""; // Variable para almacenar el valor del label del ddl Tipo de Mantenimiento
+  AreaBotanica: string = "";  
+  PlantaASelecionad: string = ""; 
+  CodigoPlanta: string = ""; 
+  CuidadoSeleccionado: string = ""; 
 
 
   EsAdmin: any;
-    Permiso: any;
+  Permiso: any;
 
   //Dialogs
   CuidadoPlantasDialog: boolean = false;
@@ -86,19 +89,22 @@ export class CuidadoPlantasNewComponent implements OnInit {
 
   //TipoCuidado
   tipoCuidado: TiposCuidadosViewModel[] = []
-
+  tipoCuidadoFind: TiposCuidadosViewModel[] = []
+ 
   //Plantas
   plantas: PlantasViewModel[] = []
+  plantasFind: PlantasViewModel[] = []
 
   //Area Botanica
   Area: AreaBotanicaViewModel[] = []
+  AreaFind: AreaBotanicaViewModel[] = []
 
 
 
 
-  constructor( private _router: Router ,
- private localStorage: LocalStorageService,
-private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
+  constructor(private _router: Router,
+    private localStorage: LocalStorageService,
+    private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private messageService: MessageService,
     private TiposDeMantenimientoService: TiposDeMantenimientoService,
     private AreaBotanicaService: AreaBotanicaService,
@@ -106,33 +112,33 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     private CuidadoPlantasService: CuidadoPlantasService,
     private PlantasService: PlantasService,
     private _route: ActivatedRoute,
-    
+
 
     private _rauter: Router) {
     this.page_title = "Editar Mantenimiento A Animal";
     this.minDate = new Date();
     this.EsAdmin = this.localStorage.getItem('EsAdmin')
     this.Permiso = this.localStorage.getItem('CuidadoDePlantas')
-         
+
 
   }
 
   ngOnInit() {
 
-        
-    if (this.EsAdmin  != null || this.EsAdmin  != undefined  ) {
+
+    if (this.EsAdmin != null || this.EsAdmin != undefined) {
 
       if (this.EsAdmin == false) {
 
-          if (this.Permiso == false) {
-              this._router.navigate(['login']);
-          }              
+        if (this.Permiso == false) {
+          this._router.navigate(['login']);
+        }
       }
 
-  }else{
+    } else {
 
       this._router.navigate(['login']);
-  }
+    }
 
 
     //this.getPlanta();
@@ -149,11 +155,10 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
       }
     );
 
-     
+
 
     this.ManteniminetoXAnimalService.getAnimal().subscribe(
       response => {
-        console.log(response)
 
         this.Animal = response.map((item: { anim_Nombre: any; tipl_Id: any; anim_Codigo: any }) => ({ label: `${item.anim_Nombre}  Codigo:${item.anim_Codigo}`, value: item.tipl_Id }));
       },
@@ -167,6 +172,8 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     this.AreaBotanicaService.getAreaBotanica().subscribe(
       response => {
         this.Area = response.map((item: { arbo_Descripcion: any; arbo_Id: any; }) => ({ label: item.arbo_Descripcion, value: item.arbo_Id }));
+        this.AreaFind = response;
+        console.log(this.AreaFind)
       },
       Error => {
         console.log(Error)
@@ -178,8 +185,8 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     this.TiposCuidadosService.getTiposCuidados().subscribe(
       response => {
         this.tipoCuidado = response.map((item: { ticu_Descripcion: any; ticu_Id: any }) => ({ label: item.ticu_Descripcion, value: item.ticu_Id }));
-
-      },
+        this.tipoCuidadoFind = response;
+       },
       error => {
         console.log(error)
       }
@@ -195,6 +202,7 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     ];
     //Modelo de los datos de la tabla
 
+    this.GetMantenimientoInsert(1);
   }
 
 
@@ -206,11 +214,11 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
 
     }
 
-    this.ManteniminetoXAnimalService.GetMantenimientoInsert(params).subscribe(
+    this.CuidadoPlantasService.getCuidadoPlantas().subscribe(
       Response => {
 
 
-        this.DataAnimal = Response;
+        this.CuidadoPlantas = Response;
         console.log(Response);
       },
       error => {
@@ -272,8 +280,17 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
     this.CuidadoPlantasService.postBuscarPlantas(params).subscribe(
       response => {
 
-        console.log(response)
         this.plantas = response.map((item: { tipl_NombreComun: any; plan_Id: any; plan_Codigo: any }) => ({ label: `${item.tipl_NombreComun}       - Codigo:${item.plan_Codigo}`, value: item.plan_Id }));
+        this.plantasFind = response;
+        console.log(this.plantasFind)
+        if (this.plantas.length !== 0) {
+
+          this.desabilitado = false;
+        }else{
+          this.messageService.add({ severity: 'info', summary: 'Error', detail: "El area botanica que as seleccionado aun no tiene plantas", life: 3000 });
+          this.desabilitado = true;
+
+        }
 
       },
       error => {
@@ -281,61 +298,84 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
       }
     )
 
-    
+
+  }
+
+
+  onAreaBotanicaChange(event: any) {
+
+    const selectedAnimal: any = this.AreaFind.find((animal: any) => animal.arbo_Id === this.CuidadoPlanta.arbo_Id);
+   
+    if (selectedAnimal) {
+      // Aquí puedes acceder a la descripción del animal seleccionado
+      console.log('area seleccionado:', selectedAnimal.arbo_Descripcion);
+      this.AreaBotanica = selectedAnimal.arbo_Descripcion;
+    }
   }
 
   onAnimalChange(event: any) {
+    console.log(this.plantasFind)
+    const selectedAnimal: any = this.plantasFind.find((animal: any) => animal.plan_Id === this.CuidadoPlanta.plan_Id);
+    console.log(selectedAnimal)
+    console.log(this.CuidadoPlanta.plan_Id)
 
-    console.log(this.Animal)
-    const selectedAnimal: any = this.Animal.find((animal: any) => animal.value === this.CuidadoPlanta.tipl_Id);
     if (selectedAnimal) {
       // Aquí puedes acceder a la descripción del animal seleccionado
-      console.log('Animal seleccionado:', selectedAnimal.label);
-      this.animNombre = selectedAnimal.label;
+      console.log('planta seleccionado:', selectedAnimal.tipl_NombreComun);
+      console.log('area seleccionado:', selectedAnimal.plan_Codigo);
+      this.CodigoPlanta = selectedAnimal.plan_Codigo;
+      this.PlantaASelecionad = selectedAnimal.tipl_NombreComun;
     }
   }
 
 
 
   onTipoMantenimientoChange(event: any) {
-    const selectedTipoMantenimiento: any = this.tipoMantenimiento.find((tipo: any) => tipo.value === this.CuidadoPlanta.tipl_Id);
+    const selectedTipoMantenimiento: any = this.tipoCuidadoFind.find((tipo: any) => tipo.ticu_Id === this.CuidadoPlanta.ticu_Id);
+    console.log(selectedTipoMantenimiento);
     if (selectedTipoMantenimiento) {
       // Aquí puedes acceder a la descripción del tipo de mantenimiento seleccionado
-      console.log('Tipo de Mantenimiento seleccionado:', selectedTipoMantenimiento.label);
+      console.log('Tipo de Mantenimiento seleccionado:', selectedTipoMantenimiento.ticu_Descripcion);
     }
-    this.timaDescripcion = selectedTipoMantenimiento.label;
+    this.CuidadoSeleccionado = selectedTipoMantenimiento.ticu_Descripcion;
   }
 
 
   //Enviamos y editamos datos
   saveCuidadoPlantas() {
-    
+
+  
+
     this.submitted = true;
     var params = {
-      "cupl_Id": 0,
-      "tipl_Id": this.CuidadoPlanta.tipl_Id,
-      "anim_Nombre": "",
-      "cupl_Fecha": this.CuidadoPlanta.cupl_Fecha,
-      "plan_Id": this.CuidadoPlanta.plan_Id,
-      "tima_Descripcion": "",
-      "maan_UserCreacion": 1
-    }
+        "cupl_Id":2,
+        "plan_Id":  this.CuidadoPlanta.plan_Id,
+        "plan_Codigo":"",
+        "tipl_NombreComun":"",
+        "tipl_Id":0,
+        "arbo_Id": 0,
+        "AreaBotanica": "",
+        "ticu_Id": this.CuidadoPlanta.ticu_Id,
+        "ticu_Descripcion" : "",
+        "cupl_Fecha": this.CuidadoPlanta.cupl_Fecha,
+        "cupl_UserCreacion": 1
+     }
 
     console.log(params)
 
-    if (params.tipl_Id != 0 && params.tipl_Id != undefined && params.plan_Id != 0 && params.plan_Id != undefined && params.cupl_Fecha != "" && params.cupl_Fecha != undefined) {
+    if (params.ticu_Id != 0 && params.ticu_Id != undefined && params.plan_Id != 0 && params.plan_Id != undefined && params.cupl_Fecha != "" && params.cupl_Fecha != undefined) {
 
 
-      this.ManteniminetoXAnimalService.postManteniminetoXAnimal(params).subscribe(Response => {
+      this.CuidadoPlantasService.postCuidadoPlantas(params).subscribe(Response => {
         this.datos = Response;
         if (this.datos.code == 409) {
 
           this.messageService.add({ severity: 'info', summary: 'Error', detail: "Error con el servidor", life: 3000 });
 
         } else if (this.datos.code = 200) {
-          this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'El mantenimiento por animal ha sido creado con éxito.', life: 1500 });
+          this.messageService.add({ severity: 'success', summary: 'Felicidades', detail: 'El cuidado de la planta ha sido creado con éxito.', life: 1500 });
 
-          var fechaFormateada = this.CuidadoPlanta.cupl_Id;
+          var fechaFormateada = this.CuidadoPlanta.cupl_Fecha;
           var fechaFormateadaDDMMYYYY: any;
           if (fechaFormateada) {
             var fecha = new Date(fechaFormateada);
@@ -352,10 +392,16 @@ private ManteniminetoXAnimalService: ManteniminetoXAnimalService,
 
           // tomar el valor de los labels de los ddls
           params.cupl_Id = this.datos.message;
-          params.anim_Nombre = this.animNombre;
+          params.AreaBotanica = this.AreaBotanica;
+          params.tipl_NombreComun = this.PlantaASelecionad;
+          params.plan_Codigo = this.CodigoPlanta;
           params.cupl_Fecha = fechaFormateadaDDMMYYYY;
-          params.tima_Descripcion = this.timaDescripcion;
+          params.ticu_Descripcion = this.CuidadoSeleccionado;
+
+          
+
           this.DataAnimal.push(params)
+          console.log(this.DataAnimal)
           console.log(params)
 
         }

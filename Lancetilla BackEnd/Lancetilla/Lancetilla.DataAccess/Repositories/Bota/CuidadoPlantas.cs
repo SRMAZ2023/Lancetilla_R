@@ -39,6 +39,15 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             return db.Query<VW_tbCuidadoPlanta>(ScriptsDataBase.tbCuidadoPlanta_FINDArea, parametros, commandType: CommandType.StoredProcedure);
 
         }
+        public IEnumerable<VW_tbCuidadoPlanta> Find3(int? id)
+        {
+            using var db = new SqlConnection(Lancetilla.ConnectionString);
+            var parametros = new DynamicParameters();
+
+            parametros.Add("@arbo", id, DbType.Int32, ParameterDirection.Input);
+            return db.Query<VW_tbCuidadoPlanta>(ScriptsDataBase.tbCuidadoPlanta_FINDArea2, parametros, commandType: CommandType.StoredProcedure);
+
+        }
 
 
         public tbCuidadoPlanta Find(int? id)
@@ -69,7 +78,7 @@ namespace Lancetilla.DataAccess.Repositories.Bota
             parametros.Add("@plan_Id", item.plan_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@ticu_Id", item.ticu_Id, DbType.Int32, ParameterDirection.Input);
             parametros.Add("@cupl_Fecha", item.cupl_Fecha, DbType.String, ParameterDirection.Input);
-            parametros.Add("@cupl_UserCreacion", item.cupl_UserCreacion, DbType.Int32, ParameterDirection.Input);
+            parametros.Add("@cupl_UserCreacion", item.cupl_UserModificacion, DbType.Int32, ParameterDirection.Input);
 
             var result = db.QueryFirst<RequestStatus>(ScriptsDataBase.tbCuidadoPlanta_UPDATE, parametros, commandType: System.Data.CommandType.StoredProcedure);
             return result;

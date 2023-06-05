@@ -108,8 +108,6 @@ namespace Lancetilla.DataAccess
 
         public static string ActualizarVisitante = "mant.UDP_tbVisitantes_UPDATE";
 
-        public static string CargarFacturasPorVisitante = "fact.UDP_FacturasPorVisitante";
-
 
 
         #endregion
@@ -193,7 +191,8 @@ namespace Lancetilla.DataAccess
 
         #region CuidadoPlantas
 
-        public static string tbCuidadoPlanta_FINDArea = "bota.tbCuidadoPlanta_FINDArea ";
+        public static string tbCuidadoPlanta_FINDArea = "bota.tbCuidadoPlanta_FINDArea";
+        public static string tbCuidadoPlanta_FINDArea2 = "bota.tbCuidadoPlanta_FINDArea2";
 
         public static string tbCuidadoPlanta_CREATE = "bota.tbCuidadoPlanta_CREATE";
 
@@ -218,9 +217,9 @@ namespace Lancetilla.DataAccess
 
         public static string InsertarAreaBotanica = "bota.UDP_tbAreasBotanicas_CREATE";
 
-         public static string ActualizarAreaBotanica = "bota.UDP_tbAreasBotanicas_UPDATE";
+        public static string ActualizarAreaBotanica = "bota.UDP_tbAreasBotanicas_UPDATE";
 
-         public static string EliminarAreaBotanica = "bota.UDP_tbAreasBotanicas_DELETE";
+        public static string EliminarAreaBotanica = "bota.UDP_tbAreasBotanicas_DELETE";
 
 
 
@@ -260,7 +259,7 @@ namespace Lancetilla.DataAccess
 
         #region Tickets
 
-        public static string ActualizarPrecioTicket = "fact.UDP_tbTickets_EditarPrecio";
+        public static string InsertarTicket = "fact.UDP_tbTickets_CREATE";
 
 
         #endregion
@@ -325,7 +324,7 @@ namespace Lancetilla.DataAccess
 
         #endregion
 
-       
+
         #region Alimentacion
 
         public static string InsertarAlimentacion = "zool.UDP_tbAlimentacion_CREATE";
@@ -351,21 +350,21 @@ namespace Lancetilla.DataAccess
 
 
         #region Habitat
-        public static string InsertarHabitat= "zool.UDP_tbHabitat_CREATE";
+        public static string InsertarHabitat = "zool.UDP_tbHabitat_CREATE";
 
-        public static string ActualizarHabitat= "zool.UDP_tbHabitat_UPDATE";
+        public static string ActualizarHabitat = "zool.UDP_tbHabitat_UPDATE";
 
-        public static string EliminacionHabitat= "zool.UDP_tbHabitat_DELETE";
+        public static string EliminacionHabitat = "zool.UDP_tbHabitat_DELETE";
 
         #endregion
 
 
         #region Razas
-        public static string InsertarRaza= "zool.UDP_tbRazas_CREATE";
+        public static string InsertarRaza = "zool.UDP_tbRazas_CREATE";
 
-        public static string ActualizarRaza= "zool.UDP_tbRazas_UPDATE";
+        public static string ActualizarRaza = "zool.UDP_tbRazas_UPDATE";
 
-        public static string EliminacionRaza= "zool.UDP_tbRazas_DELETE";
+        public static string EliminacionRaza = "zool.UDP_tbRazas_DELETE";
 
         #endregion
 

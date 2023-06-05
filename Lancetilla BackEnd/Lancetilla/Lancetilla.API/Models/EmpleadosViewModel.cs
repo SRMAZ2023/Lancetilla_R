@@ -27,7 +27,7 @@ namespace Lancetilla.API.Models
 
         [NotMapped]
         public string carg_Descripcion { get; set; }
-        public int muni_Id { get; set; }
+        public string muni_Id { get; set; }
 
         [NotMapped]
         public string muni_Descripcion { get; set; }
