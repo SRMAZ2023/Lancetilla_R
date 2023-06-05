@@ -1125,7 +1125,7 @@ AS BEGIN
 				empl_Estado = 1
 				WHERE   empl_Id = @Id
 
-				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+				SELECT 200 AS codeStatus, 'El empleado ha sido actualizado con éxito.' AS messageStatus
 			END
 
 			ELSE --Empleado no existe, se realiza la actualización
@@ -1153,7 +1153,7 @@ AS BEGIN
 		END TRY
 		BEGIN CATCH
 			ROLLBACK
-			SELECT 500 AS codeStatus, ERROR_MESSAGE() AS messageStatus
+			SELECT 500 AS codeStatus, 'El empleado ha sido actualizado con éxito.' AS messageStatus
 		END CATCH
 
 END
@@ -1416,7 +1416,7 @@ AS BEGIN
 					  tima_FechaModificacion = GETDATE()
 				WHERE tima_Id = @tima_Id
 
-				SELECT 200 AS codeStatus, 'El cargo ha sido actualizado con éxito.' AS messageStatus
+				SELECT 200 AS codeStatus,  'El tipo de mantenimiento ha sido actualizado con éxito.' AS messageStatus
 			END
 
 			COMMIT

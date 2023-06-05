@@ -30,7 +30,9 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class RazasComponent implements OnInit {
 
     //Dialogs
-    RazaDialog: boolean = false;
+  
+      public RazaDialog: boolean = false;
+    
 
     EsAdmin: any;
     Permiso: any;
@@ -113,14 +115,14 @@ export class RazasComponent implements OnInit {
         this.Raza = { ...razas };
       
         var params = {
-          "raza_Id": this.Raza.raza_Id
+          "raza_Id": razas.raza_Id
         };
       
-        console.log(params);
+     
         this.RazasService.GetAnimalesXRaza(params).subscribe(
           Response => {
             this.datos = Response;
-            console.log(this.datos);
+          
       
             // Verificar si la fila seleccionada ya está expandida
             const index = this.expandedRows.findIndex(row => row.raza_Id === this.Raza.raza_Id);
@@ -168,14 +170,14 @@ export class RazasComponent implements OnInit {
             Response => {
                  this.datos = Response;
         
-                // Filtrar los elementos duplicados por anim_Id
+             
                 const uniqueAnimals = this.datos.filter((valorActual: { anim_Id: any; }, indiceActual: any, arreglo: { anim_Id: any; }[]) => {
                     return arreglo.findIndex((elemento: { anim_Id: any; }) => elemento.anim_Id === valorActual.anim_Id) === indiceActual;
                 });
         
                 this.Razas = uniqueAnimals;
         
-                 console.log( this.Razas)
+               
                 this.formattedDate = this.datePipe.transform(this.datos.maan_Fecha, 'yyyy-MM-dd')?.toString();
         
              },
@@ -242,10 +244,13 @@ export class RazasComponent implements OnInit {
 
     //Metodo que activa el dialog
     openNew() {
+        console.log(this.RazaDialog);
         this.Raza = {};
         this.submitted = false;
         this.RazaDialog = true;
-    }
+        console.log(this.RazaDialog);
+      }
+      
     //Metodo que activa el dialog
 
 

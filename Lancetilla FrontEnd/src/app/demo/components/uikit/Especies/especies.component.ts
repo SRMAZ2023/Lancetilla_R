@@ -229,7 +229,7 @@ export class especiesComponent implements OnInit {
 
                         } else if (this.datos.code == 200) {
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: 'Has ingresado una nueva Pago', life: 3000 });
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: 'La especie ha sido creada con éxito.', life: 3000 });
                             this.Especie = {};
                             this.EspeciestDialog = false;
 
@@ -255,7 +255,7 @@ export class especiesComponent implements OnInit {
 
                         } else if (this.datos.code == 200) {
 
-                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: 'Has ingresado una nueva Pago', life: 3000 });
+                            this.messageService.add({ severity: 'success', summary: 'Felicidades:', detail: 'La especie ha sido actualizado con éxito.', life: 3000 });
                             this.Especie = {};
                             this.EspeciestDialog = false;
                             this.loadData();
